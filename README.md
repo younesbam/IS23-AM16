@@ -9,7 +9,7 @@
 * [Younes Bamhaoud](https://github.com/younesbam)
 
 ## UML
-* [Initial UML]()
+* [Initial UML](https://github.com/younesbam/IS23-AM16/blob/main/Deliveries/UML/Initial/UML_initial.png)
 
 ## Implemented Functionalities
 | Functionality | Status |
