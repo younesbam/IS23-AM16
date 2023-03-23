@@ -10,15 +10,15 @@ public class PersonalGoalCard extends Card {
      * Initialize the personal goal card grid with empty Cells and initialize the hashtable, used to get the points, based on the number of matches.
      */
     public PersonalGoalCard() {
-        this.grid = new Cell[5][6];
-        this.points = new Hashtable<>();
-        this.points.put(0,0);
-        this.points.put(1,1);
-        this.points.put(2,2);
-        this.points.put(3,4);
-        this.points.put(4,6);
-        this.points.put(5,9);
-        this.points.put(6,12);
+        grid = new Cell[5][6];
+        points = new Hashtable<>();
+        points.put(0,0);
+        points.put(1,1);
+        points.put(2,2);
+        points.put(3,4);
+        points.put(4,6);
+        points.put(5,9);
+        points.put(6,12);
     }
 
     /**
@@ -36,7 +36,7 @@ public class PersonalGoalCard extends Card {
         for(int j=4; j>=0; j--){
             for(int i=5; i>=0; i--){
                 if(grid[i][j].getOccupied()){
-                    if(grid[i][j].getObjectTile().getType().equals(player.grid[i][j].getObjectTile()))
+                    if(grid[i][j].getObjectTile().getType().equals(player.getGrid()[i][j].getObjectTile()))
                         actualMatches++;
                 }
             }

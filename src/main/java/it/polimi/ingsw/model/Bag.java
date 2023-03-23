@@ -42,13 +42,6 @@ public class Bag {
     }
 
     /**
-     * This method re-initialize the tiles' queue. Used when a new game is starting to refill the virtual bag.
-     */
-    public void init(){
-        objectTiles = new PriorityQueue<>(initSet);
-    }
-
-    /**
      * This method is used to pick a tile in order to refill the game board.
      * Note that this method remove from the Object from the queue.
      * @return ObjectTile
