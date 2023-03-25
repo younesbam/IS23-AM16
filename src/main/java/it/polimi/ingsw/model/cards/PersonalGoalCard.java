@@ -32,15 +32,15 @@ public class PersonalGoalCard extends Card {
     }
 
     public int checkScheme(Player player) {
-        int actualMatches = 0;
+        int matches = 0;
         for(int j=4; j>=0; j--){
             for(int i=5; i>=0; i--){
-                if(grid[i][j].getOccupied()){
+                if(grid[i][j].getType()){
                     if(grid[i][j].getObjectTile().getType().equals(player.getGrid()[i][j].getObjectTile()))
-                        actualMatches++;
+                        matches++;
                 }
             }
         }
-        return this.points.get(actualMatches);
+        return this.points.get(matches);
     }
 }
