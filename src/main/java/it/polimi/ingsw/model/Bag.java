@@ -20,22 +20,22 @@ public class Bag {
         initSet = new HashSet<>();
 
         for(int i=0; i<MAXBLUE; i++){
-            initSet.add(new ObjectTile(BLUE));
+            initSet.add(new ObjectTile(Type.BLUE));
         }
         for(int i=0; i<MAXPINK; i++){
-            initSet.add(new ObjectTile(PINK));
+            initSet.add(new ObjectTile(Type.PINK));
         }
         for(int i=0; i<MAXWHITE; i++){
-            initSet.add(new ObjectTile(WHITE));
+            initSet.add(new ObjectTile(Type.WHITE));
         }
         for(int i=0; i<MAXGREEN; i++){
-            initSet.add(new ObjectTile(GREEN));
+            initSet.add(new ObjectTile(Type.GREEN));
         }
         for(int i=0; i<MAXYELLOW; i++){
-            initSet.add(new ObjectTile(YELLOW));
+            initSet.add(new ObjectTile(Type.YELLOW));
         }
         for(int i=0; i<MAXLIGHTBLUE; i++){
-            initSet.add(new ObjectTile(LIGHTBLUE));
+            initSet.add(new ObjectTile(Type.LIGHTBLUE));
         }
 
         objectTiles = new PriorityQueue<>(initSet);

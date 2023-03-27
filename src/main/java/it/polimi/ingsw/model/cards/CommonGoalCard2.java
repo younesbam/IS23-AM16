@@ -1,12 +1,82 @@
 package it.polimi.ingsw.model.cards;
 
+/**
+ * <p>
+ *     Represent card n.2,6.
+ * </p>
+ * Different cards in a row/column
+ * @author Nicolo' Gandini
+ */
 public class CommonGoalCard2 extends CommonGoalCard {
 
     public CommonGoalCard2(int playerNum) {
         super(playerNum);
     }
 
-    public Integer checkScheme(Player player, int notEq, int repetition, Direction dir) {
-        return pickScoreTile();
+    /**
+     * Check if the player respect the rules to obtain the card's points
+     * @param player actual player
+     * @param repetition number of pattern's repetition
+     * @param dir orientation of the check
+     * @return Integer which represent the points that the player can obtain. 0 can be returned
+     * @author Nicolo' Gandini
+     */
+    public Integer checkScheme(Player player, int repetition, Direction dir) {
+        int actualRepetition = 0;  // Rappresenta il numero di ripetizioni dello stesso algoritmo. Sulle carte indicate come "x2", "x3"...
+        int k = 0;  // Variabile incrementale che controlla le tessere sulla stessa riga/colonna.
+        final int maxI;
+        final int maxJ;
+        Cell[][] grid = player.getBookShelf().getGrid();
+        Type tileType;
+        Type nextTileType;
+
+        /*
+        Le variabili maxI e maxJ servono per dare un limite alla tabella. La variabile j è quella che incrementa sempre
+        per controllare se le tessere sono uguali/deverse o no. La variabile i è quella che fa spostare di riga/colonna.
+        Se devo controllare in verticale che le tessere siano diverse devo limitare la variaible j come MAXROW-1.
+        Se devo controllare in orizzontale che le tessere siano diverse devo limitare la variaible j come MAXCOL-1.
+         */
+        if(dir == Direction.N || dir == Direction.S){
+            maxJ = MAXROW-1;
+            maxI = MAXCOL;
+        } else {
+            maxJ = MAXCOL-1;
+            maxI = MAXROW;
+        }
+        for(int i=0; i<maxI; i++){
+            for(int j=0; j<maxJ; j++){
+                /*
+                Devo invertire la variabile j per i controlli, in base a se sto controllando sulla riga o colonna.
+                 */
+                if(dir == Direction.N || dir == Direction.S)
+                    tileType = grid[i][j].getObjectTile().getType();
+                else
+                    tileType = grid[j][i].getObjectTile().getType();
+                k = j+1;
+                /*
+                Uso la variaible k per controllare le tessere successive alla tessera di riferimento (controllata da j)
+                 */
+                while(k<maxJ){
+                    if(dir == Direction.N || dir == Direction.S)
+                        nextTileType = grid[i][k].getObjectTile().getType();
+                    else
+                        nextTileType = grid[k][i].getObjectTile().getType();
+
+                    if(tileType == nextTileType || tileType==Type.BLANK || nextTileType==Type.BLANK)
+                        break;
+                    /*
+                    Se le tessere sono tutte diverse, vuol dire che sono arrivato in fondo, sia con j che con k.
+                    j arriverà alla riga o colonna massima -1, k invece deve arrivare in fondo.
+                     */
+                    if(j==maxJ-2 && k==maxJ-1)
+                        actualRepetition++;
+                    k++;
+                }
+            }
+            if(actualRepetition >= repetition){
+                return pickScoreTile();
+            }
+        }
+        return 0;
     }
 }

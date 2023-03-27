@@ -2,15 +2,22 @@ package it.polimi.ingsw.model.cards;
 
 import java.util.Hashtable;
 
+/**
+ * Personal goal card
+ * @author Nicolo' Gandini
+ */
 public class PersonalGoalCard extends Card {
     private Cell[][] grid;
+    /**
+     * Hashtable of Integer type used to transform the number of matches into points
+     */
     private Hashtable<Integer, Integer> points;
 
     /**
      * Initialize the personal goal card grid with empty Cells and initialize the hashtable, used to get the points, based on the number of matches.
      */
     public PersonalGoalCard() {
-        grid = new Cell[5][6];
+        grid = new Cell[MAXCOL][MAXROW];
         points = new Hashtable<>();
         points.put(0,0);
         points.put(1,1);
@@ -26,21 +33,22 @@ public class PersonalGoalCard extends Card {
      * @param x abscissa's coordinate of the grid.
      * @param y ordinate's coordinate of the grid.
      * @return ObjectTile corresponding to the related x,y coordinate inside the grid.
+     * @author Nicolo' Gandini
      */
     public ObjectTile getTile(int x, int y){
-        return this.grid[x][y].getObjectTile();
+        return grid[x][y].getObjectTile();
     }
 
-    public int checkScheme(Player player) {
+    public Integer checkScheme(Player player) {
         int matches = 0;
-        for(int j=4; j>=0; j--){
-            for(int i=5; i>=0; i--){
-                if(grid[i][j].getType()){
-                    if(grid[i][j].getObjectTile().getType().equals(player.getGrid()[i][j].getObjectTile()))
+        for(int j=MAXCOL-1; j>=0; j--){
+            for(int i=MAXROW-1; i>=0; i--){
+                if(grid[i][j].getType() != Type.BLANK){
+                    if(grid[i][j].getObjectTile().getType() == player.getGrid()[i][j].getObjectTile().getType())
                         matches++;
                 }
             }
         }
-        return this.points.get(matches);
+        return points.get(matches);
     }
 }
