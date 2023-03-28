@@ -11,17 +11,34 @@ public class BookShelf {
     Cell[][] grid = new Cell[6][5];
 
     /**
-     * This method checks whether the column chosen by the player is correct or not.
-     * The column is correct if it has a number of free cells at least equals to the number of tiles
-     * the player wants to insert.
-     * @param col Number of the column chosen by the player.
-     * @param tiles Number of tiles the player wants to insert.
-     * @return True if the play is valid, false otherwise.
+     * This attribute represents the maximum number a column can assume.
      */
-    Boolean checkColumn(int col, int tiles) {
-        int n = col;
+    public static final int MAXCOL = 5;
 
-        return false;
+
+    /**
+     * This attribute represents the maximum number a row can assume.
+     */
+    public static final int MAXROW = 6;
+
+
+    /**
+     * This method controls whether the player can insert the tiles he picked in the column he selects.
+     * @param n number of the selected column
+     * @param nTiles number of the tiles to insert
+     * @return true if the tiles can be inserted.
+     */
+    Boolean checkColumn(int n, int nTiles) {
+
+        /**
+         * Check of the validity of the column's number.
+         */
+        if (n>MAXCOL || n<1)
+            return false;
+
+
+
+        return null;
     }
 
 }

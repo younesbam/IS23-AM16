@@ -10,52 +10,48 @@ public class Board {
      */
     Cell[][] grid = new Cell[9][9];
 
+
     /**
-     * This method determines whether a cell is pickable or not.
-     * A cell is pickable if it has at least one side free and at least one side occupied.
-     * @param cell This is the cell we want to check.
-     * @return returns true if the cell is pickable.
+     * This attribute represents the maximum number of tiles the board can have.
      */
-    Boolean isPickable(Cell cell) {
-
-        /**
-         * This variable represents the cell's x coordinate.
-         */
-        int x = cell.x;
-
-        /**
-         * This variable represents the cell's y coordinate.
-         */
-        int y = cell.y;
+    public static final int MAX = 22;
 
 
-        /**
-         * If the cell has all of its side free, the method will return false because the cell isn't pickable.
-         */
-        if ( grid[x+1][y].occupied == false
-                && grid[x-1][y].occupied == false
-                && grid[x][y+1].occupied == false
-                && grid[x][y-1].occupied == false ){
-            return false;
-        }
+    /**
+     * This method refills the board when needed (if all the tiles are isolated or if the board is empty).
+     */
+    void updateBoard(){
 
-
-        /**
-         * If the cell has all of its side occupied, the method will return false because the cell isn't pickable.
-         */
-        if ( grid[x+1][y].occupied == true &&
-                grid[x-1][y].occupied == true &&
-                grid[x][y+1].occupied == true &&
-                grid[x][y-1].occupied == true) {
-            return false;
-        }
-
-
-        /**
-         * If none of the conditions above is verified, the method will return true because the cell is pickable.
-         */
-        return true;
     }
 
+    /**
+     * This method checks if the board must be refilled (if the tiles in the board are isolated).
+     * @return true if the board must be refilled.
+     */
+    boolean refillNeeded() {
+        return false;
+    }
+
+    /**
+     * This method checks is a tile can be picked or not (so if it has at least one free side and at least one
+     * occupied side).
+     * @param x x coordinate of the cell to check.
+     * @param y y coordinate of the cell to check.
+     * @return true if the tile can be picked.
+     */
+    boolean isPickable(int x, int y) {
+        return false;
+    }
+
+
+    /**
+     * This method removes the tile the player has chosen.
+     * @param x x coordinate of the tile the player has chosen.
+     * @param y y coordinate of the tile the player has chosen.
+     * @return the tile the player has picked.
+     */
+    Tile removeTile(int x, int y) {
+        return grid[x][y].getTile();
+    }
 
 }
