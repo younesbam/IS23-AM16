@@ -9,8 +9,8 @@ package it.polimi.ingsw.model.cards;
  */
 public class CommonGoalCard5 extends CommonGoalCard {
 
-    public CommonGoalCard5(int playerNum) {
-        super(playerNum);
+    public CommonGoalCard5(int playerNum, int cardNumber) {
+        super(playerNum, cardNumber);
     }
 
     /**
@@ -25,11 +25,11 @@ public class CommonGoalCard5 extends CommonGoalCard {
         /*
         Controllo che le tessere siano uguali agli angoli della libreria e che siano diverse da blank.
          */
-        if(grid[0][0].getObjectTile().getType() == grid[0][MAXCOL-1].getObjectTile().getType() &&
-                grid[0][0].getObjectTile().getType() == grid[MAXROW-1][MAXCOL-1].getObjectTile().getType() &&
-                grid[0][0].getObjectTile().getType() == grid[MAXROW-1][0].getObjectTile().getType() &&
-                grid[0][0].getObjectTile().getType() != Type.BLANK){
-            return pickScoreTile();
+        if(grid[0][0].getTile() == grid[0][MAXCOL-1].getTile() &&
+                grid[0][0].getTile() == grid[MAXROW-1][MAXCOL-1].getTile() &&
+                grid[0][0].getTile() == grid[MAXROW-1][0].getTile() &&
+                grid[0][0].getTile() != Tile.BLANK){
+            return getScore();
         }
         return 0;
     }

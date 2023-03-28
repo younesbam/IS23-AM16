@@ -9,8 +9,8 @@ package it.polimi.ingsw.model.cards;
  */
 public class CommonGoalCard8 extends CommonGoalCard {
 
-    public CommonGoalCard8(int playerNum) {
-        super(playerNum);
+    public CommonGoalCard8(int playerNum, int cardNumber) {
+        super(playerNum, cardNumber);
     }
 
     /**
@@ -25,16 +25,17 @@ public class CommonGoalCard8 extends CommonGoalCard {
         In tal modo riesco a sottrarre al numero delle colonne da controllare, fino ad arrivare a 1 cella da controllare
         in alto. In questo caso poi esco dal ciclo.
          */
+        Cell[][] grid = player.getBookShelf().getGrid();
         int k = 0;
         for(int j=MAXROW-1; j>=1; j--) {
             for(int i=MAXCOL-1-k; i>=0; i--){
-                if(grid[i][j].getObjectTile().getType() == Type.BLANK)
+                if(grid[i][j].getTile() == Tile.BLANK)
                     return 0;
             }
             k++;
             if(k>=MAXCOL-1)
                 return 0;
         }
-        return pickScoreTile();
+        return getScore();
     }
 }

@@ -14,8 +14,8 @@ package it.polimi.ingsw.model.cards;
  */
 public class CommonGoalCard7 extends CommonGoalCard {
 
-    public CommonGoalCard7(int playerNum) {
-        super(playerNum);
+    public CommonGoalCard7(int playerNum, int cardNumber) {
+        super(playerNum, cardNumber);
     }
 
     /**
@@ -33,11 +33,11 @@ public class CommonGoalCard7 extends CommonGoalCard {
         Cell[][] grid = player.getBookShelf().getGrid();
 
         for(int i=0; i<Math.min(MAXROW, MAXCOL); i++) {
-            if(grid[0][0].getObjectTile().getType() == Type.BLANK || grid[0][0].getObjectTile().getType() != grid[i][i].getObjectTile().getType())
+            if(grid[0][0].getTile() == Tile.BLANK || grid[0][0].getTile() != grid[i][i].getTile())
                 return 0;
-            if(grid[0][0].getObjectTile().getType() == Type.BLANK || grid[0][1].getObjectTile().getType() != grid[i][i+1].getObjectTile().getType())
+            if(grid[0][0].getTile() == Tile.BLANK || grid[0][1].getTile() != grid[i][i+1].getTile())
                 return 0;
         }
-        return pickScoreTile();
+        return getScore();
     }
 }

@@ -10,9 +10,25 @@ import java.util.*;
  * @author Nicolo' Gandini
  */
 public class CommonGoalCard4 extends CommonGoalCard {
+    private int maxNotEq;
+    private int repetition;
+    private int group;
+    private Direction dir;
 
-    public CommonGoalCard4(int playerNum) {
-        super(playerNum);
+    public CommonGoalCard4(int playerNum, int cardNumber) {
+        super(playerNum, cardNumber);
+        switch (cardNumber){
+            case 5:
+                maxNotEq = 3;
+                repetition = 3;
+                group = 6;
+                dir = Direction.N;
+            case 7:
+                maxNotEq = 3;
+                repetition = 4;
+                group = 5;
+                dir = Direction.E;
+        }
     }
 
     /**
@@ -24,11 +40,11 @@ public class CommonGoalCard4 extends CommonGoalCard {
      * @return Integer which represent the points that the player can obtain. 0 can be returned
      * @author Nicolo' Gandini
      */
-    public Integer checkScheme(Player player, int maxNotEq, int group, Direction dir) {
+    public Integer checkScheme(Player player) {
         int occurrences = 0;  // Viene incrementato se il tipo è trovato all'interno del Set.
         final int maxI;
         final int maxJ;
-        Set<Type> set = new HashSet<>();
+        Set<Tile> set = new HashSet<>();
         Cell[][] grid = player.getBookShelf().getGrid();
 
         if(dir == Direction.N || dir == Direction.S){
@@ -47,17 +63,17 @@ public class CommonGoalCard4 extends CommonGoalCard {
             for(int j=0; j<maxJ; j++){
                 set.clear();
                 if(dir == Direction.N || dir == Direction.S)
-                    set.add(grid[i][j].getObjectTile().getType());
+                    set.add(grid[i][j].getTile());
                 else
-                    set.add(grid[j][i].getObjectTile().getType());
+                    set.add(grid[j][i].getTile());
             }
-            for(Type type : Type.values()){
-                if(type == Type.BLANK)
+            for(Tile type : Tile.values()){
+                if(type == Tile.BLANK)
                     break;
                 if(set.contains(type))
                     occurrences++;
                 if(occurrences <= maxNotEq)
-                    return pickScoreTile();
+                    return getScore();
             }
         }
         return 0;

@@ -12,9 +12,11 @@ import java.util.List;
  * @author Nicolo' Gandini
  */
 public class CommonGoalCard6 extends CommonGoalCard {
+    int eq;
 
-    public CommonGoalCard6(int playerNum) {
-        super(playerNum);
+    public CommonGoalCard6(int playerNum, int cardNumber) {
+        super(playerNum, cardNumber);
+        eq = 8;
     }
 
     /**
@@ -24,23 +26,23 @@ public class CommonGoalCard6 extends CommonGoalCard {
      * @return Integer which represent the points that the player can obtain. 0 can be returned
      * @author Nicolo' Gandini
      */
-    public Integer checkScheme(Player player, int eq) {
+    public Integer checkScheme(Player player) {
         Cell[][] grid = player.getBookShelf().getGrid();
-        List<Type> list = new ArrayList<>();  //Creo una lista per cercare le occorrenze
+        List<Tile> list = new ArrayList<>();  //Creo una lista per cercare le occorrenze
 
         for(int j=0; j<MAXROW; j++) {
             for (int i=0; i<MAXCOL; i++) {
-                list.add(grid[i][j].getObjectTile().getType());
+                list.add(grid[i][j].getTile());
             }
         }
         /*
         Itero tutti i tipi delle tessere per cercare la frequenza con cui compaiono nella lista.
          */
-        for(Type type : Type.values()){
-            if(type != Type.BLANK) {
+        for(Tile type : Tile.values()){
+            if(type != Tile.BLANK) {
                 int occurrences = Collections.frequency(list, type);
                 if (occurrences >= eq)
-                    return pickScoreTile();
+                    return getScore();
             }
         }
         return 0;

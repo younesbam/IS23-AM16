@@ -8,9 +8,19 @@ package it.polimi.ingsw.model.cards;
  * @author Nicolo' Gandini
  */
 public class CommonGoalCard2 extends CommonGoalCard {
+    private int repetition;
+    private Direction dir;
 
-    public CommonGoalCard2(int playerNum) {
-        super(playerNum);
+    public CommonGoalCard2(int playerNum, int cardNumber) {
+        super(playerNum, cardNumber);
+        switch(cardNumber){
+            case 2:
+                repetition = 2;
+                dir = Direction.N;
+            case 6:
+                repetition = 2;
+                dir = Direction.E;
+        }
     }
 
     /**
@@ -21,14 +31,14 @@ public class CommonGoalCard2 extends CommonGoalCard {
      * @return Integer which represent the points that the player can obtain. 0 can be returned
      * @author Nicolo' Gandini
      */
-    public Integer checkScheme(Player player, int repetition, Direction dir) {
+    public Integer checkScheme(Player player) {
         int actualRepetition = 0;  // Rappresenta il numero di ripetizioni dello stesso algoritmo. Sulle carte indicate come "x2", "x3"...
         int k = 0;  // Variabile incrementale che controlla le tessere sulla stessa riga/colonna.
         final int maxI;
         final int maxJ;
         Cell[][] grid = player.getBookShelf().getGrid();
-        Type tileType;
-        Type nextTileType;
+        Tile tileType;
+        Tile nextTileType;
 
         /*
         Le variabili maxI e maxJ servono per dare un limite alla tabella. La variabile j è quella che incrementa sempre
@@ -49,20 +59,20 @@ public class CommonGoalCard2 extends CommonGoalCard {
                 Devo invertire la variabile j per i controlli, in base a se sto controllando sulla riga o colonna.
                  */
                 if(dir == Direction.N || dir == Direction.S)
-                    tileType = grid[i][j].getObjectTile().getType();
+                    tileType = grid[i][j].getTile();
                 else
-                    tileType = grid[j][i].getObjectTile().getType();
+                    tileType = grid[j][i].getTile();
                 k = j+1;
                 /*
                 Uso la variaible k per controllare le tessere successive alla tessera di riferimento (controllata da j)
                  */
                 while(k<maxJ){
                     if(dir == Direction.N || dir == Direction.S)
-                        nextTileType = grid[i][k].getObjectTile().getType();
+                        nextTileType = grid[i][k].getTile();
                     else
-                        nextTileType = grid[k][i].getObjectTile().getType();
+                        nextTileType = grid[k][i].getTile();
 
-                    if(tileType == nextTileType || tileType==Type.BLANK || nextTileType==Type.BLANK)
+                    if(tileType == nextTileType || tileType== Tile.BLANK || nextTileType== Tile.BLANK)
                         break;
                     /*
                     Se le tessere sono tutte diverse, vuol dire che sono arrivato in fondo, sia con j che con k.
@@ -74,7 +84,7 @@ public class CommonGoalCard2 extends CommonGoalCard {
                 }
             }
             if(actualRepetition >= repetition){
-                return pickScoreTile();
+                return getScore();
             }
         }
         return 0;

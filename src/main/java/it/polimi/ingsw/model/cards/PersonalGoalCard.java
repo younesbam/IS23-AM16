@@ -16,8 +16,13 @@ public class PersonalGoalCard extends Card {
     /**
      * Initialize the personal goal card grid with empty Cells and initialize the hashtable, used to get the points, based on the number of matches.
      */
-    public PersonalGoalCard() {
+    public PersonalGoalCard(int cardNumber) {
+        this.cardNumber = cardNumber;
         grid = new Cell[MAXCOL][MAXROW];
+        for(int i=0; i<MAXCOL; i++)
+            for(int j=0; j<MAXROW; j++)
+                grid[i][j].setTile(Tile.BLANK);
+
         points = new Hashtable<>();
         points.put(0,0);
         points.put(1,1);
@@ -26,6 +31,31 @@ public class PersonalGoalCard extends Card {
         points.put(4,6);
         points.put(5,9);
         points.put(6,12);
+
+        switch (cardNumber){
+            // DA FARE SONO SBAGLIATI
+            case 1:
+                grid[0][0].setTile(Tile.PINK);
+                grid[2][0].setTile(Tile.BLUE);
+                grid[4][1].setTile(Tile.GREEN);
+                grid[3][2].setTile(Tile.WHITE);
+                grid[4][1].setTile(Tile.GREEN);
+                grid[5][2].setTile(Tile.LIGHTBLUE);
+            case 2:
+                grid[1][1].setTile(Tile.PINK);
+                grid[2][0].setTile(Tile.GREEN);
+                grid[2][2].setTile(Tile.YELLOW);
+                grid[3][4].setTile(Tile.WHITE);
+                grid[4][3].setTile(Tile.LIGHTBLUE);
+                grid[5][4].setTile(Tile.BLUE);
+            case 3
+                grid[0][1].setTile(Tile.BLUE);
+                grid[3][1].setTile(Tile.YELLOW);
+                grid[2][2].setTile(Tile.PINK);
+                grid[1][3].setTile(Tile.GREEN);
+                grid[5][0].setTile(Tile.WHITE);
+                grid[5][2].setTile(Tile.LIGHTBLUE);
+        }
     }
 
     /**
@@ -35,16 +65,16 @@ public class PersonalGoalCard extends Card {
      * @return ObjectTile corresponding to the related x,y coordinate inside the grid.
      * @author Nicolo' Gandini
      */
-    public ObjectTile getTile(int x, int y){
-        return grid[x][y].getObjectTile();
+    public Tile getTile(int x, int y){
+        return grid[x][y].getTile();
     }
 
     public Integer checkScheme(Player player) {
         int matches = 0;
         for(int j=MAXCOL-1; j>=0; j--){
             for(int i=MAXROW-1; i>=0; i--){
-                if(grid[i][j].getType() != Type.BLANK){
-                    if(grid[i][j].getObjectTile().getType() == player.getGrid()[i][j].getObjectTile().getType())
+                if(grid[i][j].getType() != Tile.BLANK){
+                    if(grid[i][j].getTile() == player.getGrid()[i][j].getTile())
                         matches++;
                 }
             }

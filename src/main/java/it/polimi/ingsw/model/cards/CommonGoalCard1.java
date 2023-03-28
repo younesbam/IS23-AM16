@@ -13,9 +13,19 @@ import java.util.List;
  * @author Nicolo' Gandini
  */
 public class CommonGoalCard1 extends CommonGoalCard {
+    private int repetition;
+    private int squareSide;
 
-    public CommonGoalCard1(int playerNum) {
-        super(playerNum);
+    public CommonGoalCard1(int playerNum, int cardNumber) {
+        super(playerNum, cardNumber);
+        switch(cardNumber){
+            case 1:
+                repetition = 2;
+                squareSide = 2;
+            case 2:
+                repetition = 1;
+                squareSide = 3;
+        }
     }
 
     /**
@@ -26,11 +36,12 @@ public class CommonGoalCard1 extends CommonGoalCard {
      * @return Integer which represent the points that the player can obtain. 0 can be returned
      * @author Nicolo' Gandini
      */
-    public Integer checkScheme(Player player, int repetition, int squareSide) {
+    public Integer checkScheme(Player player) {
         int actualRepetition = 0;  // Rappresenta il numero di ripetizioni dello stesso algoritmo. Sulle carte indicate come "x2", "x3"...
-        List<Type> firstDiag = new ArrayList<>();  // Diagonale principale
-        List<Type> secDiag = new ArrayList<>();  // Diagonale secondaria.
-        Type ref;  // Tessera di riferimento
+        Cell[][] grid = player.getBookShelf().getGrid();
+        List<Tile> firstDiag = new ArrayList<>();  // Diagonale principale
+        List<Tile> secDiag = new ArrayList<>();  // Diagonale secondaria.
+        Tile ref;  // Tessera di riferimento
         int k=0;  // Contatore per prendere le tessere sulla prima diagonale.
 
         /*
@@ -47,19 +58,19 @@ public class CommonGoalCard1 extends CommonGoalCard {
                 Aggiungo le tessere sulla prima e seconda diagonale. Non mi interessa delle ripetizioni,
                 tanto devo controllare che siano tutte uguali, non quante.
                  */
-                ref = grid[i][j].getObjectTile().getType();
+                ref = grid[i][j].getTile();
                 while(k<=squareSide){
-                    firstDiag.add(grid[i+k][j+k].getObjectTile().getType());
-                    secDiag.add(grid[i+(squareSide-1)-k][j+k].getObjectTile().getType());  // Tessera di riferimento di coordinare i+lato del quadrato
+                    firstDiag.add(grid[i+k][j+k].getTile());
+                    secDiag.add(grid[i+(squareSide-1)-k][j+k].getTile());  // Tessera di riferimento di coordinare i+lato del quadrato
                     k++;
                 }
                 /*
                 Controllo se contiene qualche tessera di tipo BLANK; in tal caso, discard. Controllo che le due liste siano uguali.
                  */
-                if(Utils.equalLists(firstDiag, secDiag) && !firstDiag.contains(Type.BLANK) && !secDiag.contains(Type.BLANK))
+                if(Utils.equalLists(firstDiag, secDiag) && !firstDiag.contains(Tile.BLANK) && !secDiag.contains(Tile.BLANK))
                     actualRepetition++;
                 if(actualRepetition>=repetition)
-                    return pickScoreTile();
+                    return getScore();
             }
         }
         return 0;

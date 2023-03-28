@@ -3,7 +3,7 @@ package it.polimi.ingsw;
 import java.util.List;
 
 /**
- * Utilities class used to keep most used methods that doesn't have a specific class
+ * Utilities class used to keep most used methods that don't have a specific class
  */
 public final class Utils {
     /**

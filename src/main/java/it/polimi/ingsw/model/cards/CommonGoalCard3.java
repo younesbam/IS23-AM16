@@ -8,9 +8,22 @@ package it.polimi.ingsw.model.cards;
  * @author Nicolo' Gandini
  */
 public class CommonGoalCard3 extends CommonGoalCard {
+    private int eq;
+    private int repetition;
+    private Direction dir;
 
-    public CommonGoalCard3(int playerNum) {
-        super(playerNum);
+    public CommonGoalCard3(int playerNum, int cardNumber) {
+        super(playerNum, cardNumber);
+        switch (cardNumber){
+            case 3;
+                eq = 4;
+                repetition = 4;
+                dir = Direction.N;
+            case 4:
+                eq = 2;
+                repetition = 6;
+                dir = Direction.N;
+        }
     }
 
     /**
@@ -22,30 +35,30 @@ public class CommonGoalCard3 extends CommonGoalCard {
      * @return Integer which represent the points that the player can obtain. 0 can be returned
      * @author Nicolo' Gandini
      */
-    public Integer checkScheme(Player player, int eq, int repetition, Direction dir) {
+    public Integer checkScheme(Player player) {
         int actualRepetition = 0;  // Rappresenta il numero di ripetizioni dello stesso algoritmo. Sulle carte indicate come "x2", "x3"...
         int actualEq = 0;  // Conto il numero di tessere uguali per poter incrementare le ripetizioni.
         final int maxRow;
         int k = 0;
         Cell[][] grid = player.getBookShelf().getGrid();
-        Type tileType;
-        Type nextTileType;
+        Tile tileType;
+        Tile nextTileType;
 
         maxRow = MAXROW - eq + 1;  // Definisco il numero massimo a cui può arrivare la tessera di riferimento, in base al numero di tessere che devo controllare.
         for(int i=0; i<MAXCOL; i++){
             for(int j=0; j<maxRow; j++){
-                tileType = grid[i][j].getObjectTile().getType();
+                tileType = grid[i][j].getTile();
                 k=j+1;
                 while(k-j<eq){  // Perchè è un riferimento relativo non assoluto.
-                    nextTileType = grid[i][k].getObjectTile().getType();
-                    if(tileType == nextTileType && tileType != Type.BLANK)
+                    nextTileType = grid[i][k].getTile();
+                    if(tileType == nextTileType && tileType != Tile.BLANK)
                         actualEq++;
                     k++;
                 }
                 if(actualEq >= eq)
                     actualRepetition++;
                 if(actualRepetition >= repetition)
-                    return pickScoreTile();
+                    return getScore();
                 actualEq = 0;  // Azzero per passare al prossimo gruppo di tessere uguali.
             }
         }
