@@ -12,15 +12,19 @@
 * [Initial UML](https://github.com/younesbam/IS23-AM16/blob/main/Deliveries/UML/Initial/UML_initial.png)
 
 ## Implemented Functionalities
-| Functionality | Status |
-|:-----------------------|:------------------------------------:|
-| Basic rules | []() |
-| Complete rules | []() |
-| Socket |[]() |
-| RMI |[]() |
-| CLI | []() |
-| GUI |[]() |
-| AF: Multiple games | []()|
-| AF: Persistence | []() |
-| AF: Resilience | []() |
-| AF: Chat | []() |
+| Functionality      | Status | Percentage |
+|:-------------------|:-----:|:----------:|
+| UML                | [⚠️]() |    50%     |
+| Basic rules        | [⚠️]() |     0%     |
+| Complete rules     | [⛔]() |     0%     |
+| Socket             | [⛔]() |     0%     |
+| RMI                | [⛔]() |     0%     |
+| CLI                | [⛔]() |     0%     |
+| GUI                | [⛔]() |     0%     |
+| AF: Multiple games | [⛔]() |     0%     |
+| AF: Persistence    | [⛔]() |     0%     |
+| AF: Resilience     | [⛔]() |     0%     |
+| AF: Chat           | [⛔]() |     0%     |
+
+#### Legend
+[⛔]() Not Implemented &nbsp;&nbsp;&nbsp;&nbsp;[⚠️]() Implementing&nbsp;&nbsp;&nbsp;&nbsp;[✅]() Implemented
