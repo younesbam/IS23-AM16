@@ -3,18 +3,29 @@ package it.polimi.ingsw.model;
 /**
  * This class represents the game's board.
  */
-public class Board {
+public abstract class Board {
 
     /**
      * This variable represents the board.
+     * The board is composed by cells.
      */
-    Cell[][] grid = new Cell[9][9];
+    Cell[][] grid = new Cell[8][8];
 
 
     /**
-     * This attribute represents the maximum number of tiles the board can have.
+     * This constant represents the maximum number for any tile's type.
      */
-    public static final int MAX = 22;
+    public static final int MAXTILES = 22;
+
+    /**
+     * This constant represents the maximum number of columns.
+     */
+    public static final int MAXCOL = 8;
+
+    /**
+     * This constant represents the maximum number of rows.
+     */
+    public static final int MAXROW = 8;
 
 
     /**
@@ -29,6 +40,9 @@ public class Board {
      * @return true if the board must be refilled.
      */
     boolean refillNeeded() {
+
+
+
         return false;
     }
 
@@ -51,7 +65,11 @@ public class Board {
      * @return the tile the player has picked.
      */
     Tile removeTile(int x, int y) {
-        return grid[x][y].getTile();
+        Tile tile = grid[x][y].getTile();
+
+        grid[x][y].setTile(tile.BLANK);
+
+        return tile;
     }
 
 }

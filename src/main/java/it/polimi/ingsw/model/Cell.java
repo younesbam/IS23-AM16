@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 /**
  * This class represents the cell.
+ * The cell is used from both the board and the bookshelf.
  */
 public class Cell {
     /**
