@@ -9,13 +9,13 @@ import java.util.*;
  * Maximum 3 different types og tiles in the row/column
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard4 extends CommonGoalCard {
+public class MaxDiffGroup extends CommonGoalCard {
     private int maxNotEq;
     private int repetition;
     private int group;
     private Direction dir;
 
-    public CommonGoalCard4(int playerNum, int cardNumber) {
+    public MaxDiffGroup(int playerNum, int cardNumber) {
         super(playerNum, cardNumber);
         switch (cardNumber){
             case 5:

@@ -7,7 +7,7 @@ import java.util.Queue;
  * Represent a generic common card.
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard extends Card {
+public abstract class CommonGoalCard extends Card {
     private Queue<Integer> score;
 
     /**
@@ -28,26 +28,23 @@ public class CommonGoalCard extends Card {
         this.cardNumber = cardNumber;
         score = new PriorityQueue<>();
         switch (playerNum) {
-            case 2 -> {
+            case 2:
                 score.add(8);
                 score.add(4);
-            }
-            case 3 -> {
+            case 3:
                 score.add(8);
                 score.add(6);
                 score.add(4);
-            }
-            case 4 -> {
+            case 4:
                 score.add(8);
                 score.add(6);
                 score.add(4);
                 score.add(2);
-            }
         }
     }
 
     /**
-     * Get score points based on the Queue order
+     * Get score points based on the number of players.
      * @return score points
      */
     public Integer getScore(){
@@ -57,6 +54,6 @@ public class CommonGoalCard extends Card {
     /*
     Method to override into the subclasses.
      */
-    public Integer checkScheme(Player player){return -1};
+    public abstract Integer checkScheme(Player player);
 
 }

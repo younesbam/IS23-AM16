@@ -1,5 +1,10 @@
 package it.polimi.ingsw.model;
 
+import java.util.HashSet;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Set;
+
 /**
  * This class represents the game's board.
  */
@@ -10,18 +15,39 @@ public class Board {
      */
     Cell[][] grid = new Cell[9][9];
 
+    private Set<Tile> initTileSet;
+    private Queue<Tile> tiles;
+
+
 
     /**
      * This attribute represents the maximum number of tiles the board can have.
      */
-    public static final int MAX = 22;
+    public static final int MAXTILES = 22;
 
+    public Board (){
+        initTileSet = new HashSet<>();
+        for(Tile type : Tile.values())
+            for(int i=0; i<MAXTILES; i++)
+                initTileSet.add(type);
+        tiles = new PriorityQueue<>(initTileSet);
+    }
 
     /**
      * This method refills the board when needed (if all the tiles are isolated or if the board is empty).
      */
     void updateBoard(){
 
+    }
+
+    /**
+     * This method is used to pick a tile in order to refill the game board.
+     * Note that this method removes the Object from the queue.
+     * @return An enumeration of type Tile
+     * @author Nicolo' Gandini
+     */
+    public Tile pickTile() {
+        return tiles.poll();
     }
 
     /**

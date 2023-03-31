@@ -4,12 +4,12 @@ package it.polimi.ingsw.model.cards;
  * <p>
  *     Represent card n.8.
  * </p>
- * Tiles in top edges must me the same
+ * Equal tiles in corners.
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard5 extends CommonGoalCard {
+public class EqualCorners extends CommonGoalCard {
 
-    public CommonGoalCard5(int playerNum, int cardNumber) {
+    public EqualCorners(int playerNum, int cardNumber) {
         super(playerNum, cardNumber);
     }
 

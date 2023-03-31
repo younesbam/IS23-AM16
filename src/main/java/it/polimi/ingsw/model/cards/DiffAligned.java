@@ -7,11 +7,11 @@ package it.polimi.ingsw.model.cards;
  * Different cards in a row/column
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard2 extends CommonGoalCard {
+public class DiffAligned extends CommonGoalCard {
     private int repetition;
     private Direction dir;
 
-    public CommonGoalCard2(int playerNum, int cardNumber) {
+    public DiffAligned(int playerNum, int cardNumber) {
         super(playerNum, cardNumber);
         switch(cardNumber){
             case 2:

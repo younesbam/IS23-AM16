@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.cards;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * <p>
@@ -11,10 +10,10 @@ import java.util.List;
  * Eight tiles in random order must me the same.
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard6 extends CommonGoalCard {
+public class EqualRand extends CommonGoalCard {
     int eq;
 
-    public CommonGoalCard6(int playerNum, int cardNumber) {
+    public EqualRand(int playerNum, int cardNumber) {
         super(playerNum, cardNumber);
         eq = 8;
     }

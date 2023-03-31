@@ -12,11 +12,5 @@ public class App
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
-
-        Bag bag = new Bag(2);
-        CommonGoalCard cgc;
-
-        cgc = bag.pickCommonGoalCard();
-        cgc.
     }
 }
