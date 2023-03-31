@@ -13,12 +13,10 @@ public abstract class Board {
      */
     private Cell[][] grid = new Cell[8][8];
 
-
     /**
      * ????
      */
     private ArrayList<Tile> objectTilesBag;
-
 
     /**
      * This constant represents the maximum number for any tile's type.
@@ -48,7 +46,6 @@ public abstract class Board {
      * @return true if the board must be refilled.
      */
     public boolean refillNeeded() {
-
         return false;
     }
 
