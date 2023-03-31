@@ -9,7 +9,7 @@ public abstract class Board {
      * This variable represents the board.
      * The board is composed by cells.
      */
-    Cell[][] grid = new Cell[8][8];
+    private Cell[][] grid = new Cell[8][8];
 
 
     /**
@@ -31,7 +31,7 @@ public abstract class Board {
     /**
      * This method refills the board when needed (if all the tiles are isolated or if the board is empty).
      */
-    void updateBoard(){
+    public void updateBoard(){
 
     }
 
@@ -39,7 +39,7 @@ public abstract class Board {
      * This method checks if the board must be refilled (if the tiles in the board are isolated).
      * @return true if the board must be refilled.
      */
-    boolean refillNeeded() {
+    public boolean refillNeeded() {
 
 
 
@@ -53,7 +53,7 @@ public abstract class Board {
      * @param y y coordinate of the cell to check.
      * @return true if the tile can be picked.
      */
-    boolean isPickable(int x, int y) {
+    public boolean isPickable(int x, int y) {
         return false;
     }
 
@@ -64,7 +64,7 @@ public abstract class Board {
      * @param y y coordinate of the tile the player has chosen.
      * @return the tile the player has picked.
      */
-    Tile removeTile(int x, int y) {
+    public Tile removeTile(int x, int y) {
         Tile tile = grid[x][y].getTile();
 
         grid[x][y].setTile(tile.BLANK);

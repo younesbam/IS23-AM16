@@ -10,7 +10,7 @@ public class BookShelf {
     /**
      * This attribute specifies the grid's dimensions.
      */
-    Cell[][] grid = new Cell[6][5];
+    private Cell[][] grid = new Cell[6][5];
 
     /**
      * This attribute represents the maximum number a column can assume.
@@ -30,7 +30,7 @@ public class BookShelf {
      * @param nTiles number of the tiles to insert
      * @return true if the tiles can be inserted.
      */
-    Boolean checkColumn(int n, int nTiles){
+    public Boolean checkColumn(int n, int nTiles){
 
         /**
          * This attribute counts the number of available cells in the column.
@@ -40,7 +40,7 @@ public class BookShelf {
         /**
          * Check of the validity of the column's number.
          */
-        if (n>MAXCOL || n<1)
+        if (n>MAXCOL || n<0)
             return false;
 
 
@@ -52,67 +52,51 @@ public class BookShelf {
         if (available >= nTiles)
             return true;
         else
-            System.out.println("Invalid move, try again");
+            System.out.println("Invalid column, try again");
 
         return false;
     }
 
-    /**
-     * This method inserts 1 tile if there is availability (check by the method checkColumn).
-     * @param y number of the selected column.
-     * @param tile1 tile to insert.
-     */
-    void placeTiles(int y, Tile tile1) {
-        if (checkColumn(y, 1) == false)
-            return;
-
-
-        int i = 0;
-        while (grid[y][i].getTile() != Tile.BLANK)
-            i++;
-
-        grid[y][i].setTile(tile1);
-
-
-    }
 
     /**
-     * This method inserts 2 tiles if there is availability (checked by the method checkColumn).
-     * @param y number of the selected column.
-     * @param tile1 first tile to insert.
-     * @param tile2 second tile to insert.
+     * This method adds the tile(s) the player selects in the desired column if the column has enough free
+     * spaces (checked by checkColumn()).
+     * @param y number of the desired column.
+     * @param list list of tile(s) selected by the player.
      */
-    void placeTiles(int y, Tile tile1, Tile tile2) {
-        if (checkColumn(y, 2) == false)
+    public void placeTiles(int y, List<Tile> list) {
+
+        /**
+         * This statement controls whether the number of the picked tiles is valid.
+         * (Not sure if this control has to be done here, maybe in another place).
+         */
+        if (list.size() > 3 || list.size() == 0) {
+            System.out.println("Error: invalid number of tiles.");
+            return;
+        }
+
+        if (checkColumn(y, list.size()) == false)
             return;
 
-        int i = 0;
+
+        int i=0;
         while (grid[y][i].getTile() != Tile.BLANK)
             i++;
 
-        grid[y][i].setTile(tile1);
-        grid[y][i+1].setTile(tile2);
-    }
-
-
-    void placeTiles(int y, Tile tile1, Tile tile2, Tile tile3) {
-        if (checkColumn(y, 3) == false)
-            return;
-
-        int i = 0;
-        while (grid[y][i].getTile() != Tile.BLANK)
+        for (Tile tile : list) {
+            grid[y][i].setTile(tile);
             i++;
+        }
 
-        grid[y][i].setTile(tile1);
-        grid[y][i+1].setTile(tile2);
-        grid[y][i+2].setTile(tile3);
     }
+
+
 
     /**
      * This method returns the bookshelf.
      * @return the current status of the bookshelf.
      */
-    Cell[][] getGrid() {
+    public Cell[][] getGrid() {
         return grid;
     }
 
@@ -121,7 +105,7 @@ public class BookShelf {
      * If so, the game ends.
      * @return true if the bookshelf is full.
      */
-    boolean checkEndGame() {
+    public boolean checkEndGame() {
         for (int i=0; i<MAXCOL; i++) {
             for (int j=0; j<MAXROW; j++) {
                 if (grid[i][j].getTile() == Tile.BLANK) {
