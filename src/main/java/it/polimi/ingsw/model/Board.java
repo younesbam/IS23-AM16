@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
+
 /**
  * This class represents the game's board.
  */
@@ -10,6 +12,12 @@ public abstract class Board {
      * The board is composed by cells.
      */
     private Cell[][] grid = new Cell[8][8];
+
+
+    /**
+     * ????
+     */
+    private ArrayList<Tile> objectTilesBag;
 
 
     /**
@@ -41,8 +49,6 @@ public abstract class Board {
      */
     public boolean refillNeeded() {
 
-
-
         return false;
     }
 
@@ -71,5 +77,4 @@ public abstract class Board {
 
         return tile;
     }
-
 }
