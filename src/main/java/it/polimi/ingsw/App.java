@@ -1,8 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.model.Bag;
-import it.polimi.ingsw.model.cards.CommonGoalCard;
-
 /**
  * Hello world!
  *

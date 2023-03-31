@@ -1,9 +1,11 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
+
 /**
  * This class represents the game's board.
  */
-public class Board {
+public abstract class Board {
 
     /**
      * This variable represents the board.
@@ -11,6 +13,10 @@ public class Board {
      */
     private Cell[][] grid = new Cell[8][8];
 
+    /**
+     * ????
+     */
+    private ArrayList<Tile> objectTilesBag;
 
     /**
      * This constant represents the maximum number for any tile's type.
@@ -40,9 +46,6 @@ public class Board {
      * @return true if the board must be refilled.
      */
     public boolean refillNeeded() {
-
-
-
         return false;
     }
 
@@ -71,5 +74,4 @@ public class Board {
 
         return tile;
     }
-
 }
