@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 /**
  * <p>
  *     Represent card n.12.
@@ -7,10 +9,10 @@ package it.polimi.ingsw.model.cards;
  * All the cells below the main diagonal must be full and not BLANK.
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard8 extends CommonGoalCard {
+public class SubMatrix extends CommonGoalCard {
 
-    public CommonGoalCard8(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public SubMatrix(int cardNumber) {
+        super(cardNumber);
     }
 
     /**

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 import java.util.Hashtable;
 
 /**
@@ -23,6 +25,9 @@ public class PersonalGoalCard extends Card {
             for(int j=0; j<MAXROW; j++)
                 grid[i][j].setTile(Tile.BLANK);
 
+        /*
+        Initialize the hastable based on the personal card.
+         */
         points = new Hashtable<>();
         points.put(0,0);
         points.put(1,1);
@@ -32,6 +37,9 @@ public class PersonalGoalCard extends Card {
         points.put(5,9);
         points.put(6,12);
 
+        /*
+        Initialize the grid based on the card number.
+         */
         switch (cardNumber){
             // DA FARE SONO SBAGLIATI
             case 1:
@@ -48,7 +56,7 @@ public class PersonalGoalCard extends Card {
                 grid[3][4].setTile(Tile.WHITE);
                 grid[4][3].setTile(Tile.LIGHTBLUE);
                 grid[5][4].setTile(Tile.BLUE);
-            case 3
+            case 3:
                 grid[0][1].setTile(Tile.BLUE);
                 grid[3][1].setTile(Tile.YELLOW);
                 grid[2][2].setTile(Tile.PINK);
@@ -73,8 +81,8 @@ public class PersonalGoalCard extends Card {
         int matches = 0;
         for(int j=MAXCOL-1; j>=0; j--){
             for(int i=MAXROW-1; i>=0; i--){
-                if(grid[i][j].getType() != Tile.BLANK){
-                    if(grid[i][j].getTile() == player.getGrid()[i][j].getTile())
+                if(grid[i][j].getTile() != Tile.BLANK){
+                    if(grid[i][j].getTile() == player.getBookShelf().getGrid()[i][j].getTile())
                         matches++;
                 }
             }

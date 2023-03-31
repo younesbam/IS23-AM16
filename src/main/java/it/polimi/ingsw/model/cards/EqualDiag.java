@@ -1,10 +1,12 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 /**
  * <p>
  *     Represent card n.11.
  * </p>
- * All the tiles in the diagonal must me the same.
+ * Equal tiles on the diagonal.
  * <p>
  *     <b>Note:</b>
  *     there are two diagonals to check. Based on requirements, no preferred diagonal to check is specified.
@@ -12,10 +14,10 @@ package it.polimi.ingsw.model.cards;
  *
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard7 extends CommonGoalCard {
+public class EqualDiag extends CommonGoalCard {
 
-    public CommonGoalCard7(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public EqualDiag(int cardNumber) {
+        super(cardNumber);
     }
 
     /**

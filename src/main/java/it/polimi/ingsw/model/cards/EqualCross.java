@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.Utils;
+import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +13,12 @@ import java.util.List;
  * Equal tiles in a diagonal orientation
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard1 extends CommonGoalCard {
+public class EqualCross extends CommonGoalCard {
     private int repetition;
     private int squareSide;
 
-    public CommonGoalCard1(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public EqualCross(int cardNumber) {
+        super(cardNumber);
         switch(cardNumber){
             case 1:
                 repetition = 2;

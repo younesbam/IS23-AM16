@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 /**
  * <p>
  *     Represent card n.3,4.
@@ -7,15 +9,15 @@ package it.polimi.ingsw.model.cards;
  * Equal tiles in a column
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard3 extends CommonGoalCard {
+public class EqualInCol extends CommonGoalCard {
     private int eq;
     private int repetition;
     private Direction dir;
 
-    public CommonGoalCard3(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public EqualInCol(int cardNumber) {
+        super(cardNumber);
         switch (cardNumber){
-            case 3;
+            case 3:
                 eq = 4;
                 repetition = 4;
                 dir = Direction.N;

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.cards.*;
+
 import java.util.ArrayList;
 
 /**
@@ -17,13 +19,13 @@ public class Game {
     private final Board board;
     private final ArrayList<Player> players = new ArrayList<>();
     private Player currentPlayer;
-    private final int numOfPlayers;
+    private int numOfPlayers;
     private final ArrayList<CommonGoalCard> commonGoalCards = new ArrayList<>();
 
     private final Bag bag;
 
 
-    public Game{
+    public Game() {
         this.board = new Board();
         this.bag = new Bag();
     }

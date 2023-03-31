@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 /**
  * <p>
  *     Represent card n.2,6.
@@ -7,12 +9,12 @@ package it.polimi.ingsw.model.cards;
  * Different cards in a row/column
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard2 extends CommonGoalCard {
+public class DiffAligned extends CommonGoalCard {
     private int repetition;
     private Direction dir;
 
-    public CommonGoalCard2(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public DiffAligned(int cardNumber) {
+        super(cardNumber);
         switch(cardNumber){
             case 2:
                 repetition = 2;
@@ -20,6 +22,9 @@ public class CommonGoalCard2 extends CommonGoalCard {
             case 6:
                 repetition = 2;
                 dir = Direction.E;
+            default:
+                repetition = -1;
+                dir = Direction.N;
         }
     }
 

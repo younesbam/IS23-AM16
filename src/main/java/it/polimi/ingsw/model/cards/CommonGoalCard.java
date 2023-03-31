@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -7,7 +9,7 @@ import java.util.Queue;
  * Represent a generic common card.
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard extends Card {
+public abstract class CommonGoalCard extends Card {
     private Queue<Integer> score;
 
     /**
@@ -24,39 +26,41 @@ public class CommonGoalCard extends Card {
      * @param playerNum number of total players in the game
      * @param cardNumber number of the corresponding physical card
      */
-    public CommonGoalCard(int playerNum, int cardNumber){
+    public CommonGoalCard(int cardNumber){
         this.cardNumber = cardNumber;
         score = new PriorityQueue<>();
-        switch (playerNum) {
-            case 2 -> {
-                score.add(8);
-                score.add(4);
-            }
-            case 3 -> {
-                score.add(8);
-                score.add(6);
-                score.add(4);
-            }
-            case 4 -> {
-                score.add(8);
-                score.add(6);
-                score.add(4);
-                score.add(2);
-            }
-        }
     }
 
     /**
-     * Get score points based on the Queue order
+     * Get score points based on the number of players.
      * @return score points
      */
     public Integer getScore(){
         return score.poll();
     }
 
-    /*
-    Method to override into the subclasses.
+    public void placePoints(int playerNum){
+        switch (playerNum) {
+            case 2:
+                score.add(8);
+                score.add(4);
+            case 3:
+                score.add(8);
+                score.add(6);
+                score.add(4);
+            case 4:
+                score.add(8);
+                score.add(6);
+                score.add(4);
+                score.add(2);
+        }
+    }
+
+    /**
+     * Check the scheme to observe in order to get points.
+     * @param player actual player
+     * @return points achieved
      */
-    public Integer checkScheme(Player player){return -1};
+    public abstract Integer checkScheme(Player player);
 
 }

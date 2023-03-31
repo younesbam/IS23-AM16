@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 import java.util.*;
 
 /**
@@ -9,14 +11,14 @@ import java.util.*;
  * Maximum 3 different types og tiles in the row/column
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard4 extends CommonGoalCard {
+public class MaxDiffGroup extends CommonGoalCard {
     private int maxNotEq;
     private int repetition;
     private int group;
     private Direction dir;
 
-    public CommonGoalCard4(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public MaxDiffGroup(int cardNumber) {
+        super(cardNumber);
         switch (cardNumber){
             case 5:
                 maxNotEq = 3;
