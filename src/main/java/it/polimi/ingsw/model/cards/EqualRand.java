@@ -1,7 +1,10 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * <p>
@@ -13,8 +16,8 @@ import java.util.Collections;
 public class EqualRand extends CommonGoalCard {
     int eq;
 
-    public EqualRand(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public EqualRand(int cardNumber) {
+        super(cardNumber);
         eq = 8;
     }
 

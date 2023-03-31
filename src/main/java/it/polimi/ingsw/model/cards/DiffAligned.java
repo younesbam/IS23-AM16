@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 /**
  * <p>
  *     Represent card n.2,6.
@@ -11,8 +13,8 @@ public class DiffAligned extends CommonGoalCard {
     private int repetition;
     private Direction dir;
 
-    public DiffAligned(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public DiffAligned(int cardNumber) {
+        super(cardNumber);
         switch(cardNumber){
             case 2:
                 repetition = 2;
@@ -20,6 +22,9 @@ public class DiffAligned extends CommonGoalCard {
             case 6:
                 repetition = 2;
                 dir = Direction.E;
+            default:
+                repetition = -1;
+                dir = Direction.N;
         }
     }
 

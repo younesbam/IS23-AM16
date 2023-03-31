@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 /**
  * <p>
  *     Represent card n.12.
@@ -9,8 +11,8 @@ package it.polimi.ingsw.model.cards;
  */
 public class SubMatrix extends CommonGoalCard {
 
-    public SubMatrix(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public SubMatrix(int cardNumber) {
+        super(cardNumber);
     }
 
     /**

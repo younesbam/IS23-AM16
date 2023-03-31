@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 /**
  * <p>
  *     Represent card n.8.
@@ -9,8 +11,8 @@ package it.polimi.ingsw.model.cards;
  */
 public class EqualCorners extends CommonGoalCard {
 
-    public EqualCorners(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public EqualCorners(int cardNumber) {
+        super(cardNumber);
     }
 
     /**

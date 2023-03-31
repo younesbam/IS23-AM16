@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.Utils;
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Tile;
+import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +17,8 @@ public class EqualCross extends CommonGoalCard {
     private int repetition;
     private int squareSide;
 
-    public EqualCross(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public EqualCross(int cardNumber) {
+        super(cardNumber);
         switch(cardNumber){
             case 1:
                 repetition = 2;

@@ -20,7 +20,7 @@ public class Bag {
     /**
      * Initialize all the tiles inside the bag into a Set.
      */
-    public Bag(int playerNum) {
+    public Bag() {
         initCommSet = new HashSet<>();
         initPersSet = new HashSet<>();
 
@@ -30,18 +30,18 @@ public class Bag {
         for(int i=0; i<MAXPERSCARD; i++){
             initPersSet.add(new PersonalGoalCard(i));
         }
-        initCommSet.add(new EqualCross(playerNum, 1));
-        initCommSet.add(new EqualCross(playerNum, 10));
-        initCommSet.add(new DiffAligned(playerNum, 2));
-        initCommSet.add(new DiffAligned(playerNum, 6));
-        initCommSet.add(new EqualInCol(playerNum, 3));
-        initCommSet.add(new EqualInCol(playerNum, 4));
-        initCommSet.add(new MaxDiffGroup(playerNum, 5));
-        initCommSet.add(new MaxDiffGroup(playerNum, 7));
-        initCommSet.add(new EqualCorners(playerNum, 8));
-        initCommSet.add(new EqualRand(playerNum, 9));
-        initCommSet.add(new EqualDiag(playerNum, 11));
-        initCommSet.add(new SubMatrix(playerNum, 12));
+        initCommSet.add(new EqualCross(1));
+        initCommSet.add(new EqualCross(10));
+        initCommSet.add(new DiffAligned(2));
+        initCommSet.add(new DiffAligned(6));
+        initCommSet.add(new EqualInCol(3));
+        initCommSet.add(new EqualInCol(4));
+        initCommSet.add(new MaxDiffGroup(5));
+        initCommSet.add(new MaxDiffGroup(7));
+        initCommSet.add(new EqualCorners(8));
+        initCommSet.add(new EqualRand(9));
+        initCommSet.add(new EqualDiag(11));
+        initCommSet.add(new SubMatrix(12));
 
         /*
         Trasformazione del Set in una coda con priorità, disordinata.
@@ -50,8 +50,12 @@ public class Bag {
         persCards = new PriorityQueue<>(initPersSet);
     }
 
-    public CommonGoalCard pickCommonGoalCard(){
-        return commCards.poll();
+    public CommonGoalCard pickCommonGoalCard(int playerNum) throws NullPointerException {
+        CommonGoalCard comCard;
+        comCard = commCards.poll();
+        if(comCard == null) throw new NullPointerException("Common card's deck is empty");
+        comCard.placePoints(playerNum);
+        return comCard;
     }
 
     public PersonalGoalCard pickPersonalGoalCard(){

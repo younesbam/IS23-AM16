@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 /**
  * <p>
  *     Represent card n.3,4.
@@ -12,8 +14,8 @@ public class EqualInCol extends CommonGoalCard {
     private int repetition;
     private Direction dir;
 
-    public EqualInCol(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public EqualInCol(int cardNumber) {
+        super(cardNumber);
         switch (cardNumber){
             case 3:
                 eq = 4;

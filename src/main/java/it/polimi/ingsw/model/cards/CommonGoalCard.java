@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -24,9 +26,20 @@ public abstract class CommonGoalCard extends Card {
      * @param playerNum number of total players in the game
      * @param cardNumber number of the corresponding physical card
      */
-    public CommonGoalCard(int playerNum, int cardNumber){
+    public CommonGoalCard(int cardNumber){
         this.cardNumber = cardNumber;
         score = new PriorityQueue<>();
+    }
+
+    /**
+     * Get score points based on the number of players.
+     * @return score points
+     */
+    public Integer getScore(){
+        return score.poll();
+    }
+
+    public void placePoints(int playerNum){
         switch (playerNum) {
             case 2:
                 score.add(8);
@@ -44,15 +57,9 @@ public abstract class CommonGoalCard extends Card {
     }
 
     /**
-     * Get score points based on the number of players.
-     * @return score points
-     */
-    public Integer getScore(){
-        return score.poll();
-    }
-
-    /*
-    Method to override into the subclasses.
+     * Check the scheme to observe in order to get points.
+     * @param player actual player
+     * @return points achieved
      */
     public abstract Integer checkScheme(Player player);
 

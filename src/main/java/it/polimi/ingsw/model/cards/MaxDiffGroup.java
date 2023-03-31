@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 import java.util.*;
 
 /**
@@ -15,8 +17,8 @@ public class MaxDiffGroup extends CommonGoalCard {
     private int group;
     private Direction dir;
 
-    public MaxDiffGroup(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public MaxDiffGroup(int cardNumber) {
+        super(cardNumber);
         switch (cardNumber){
             case 5:
                 maxNotEq = 3;

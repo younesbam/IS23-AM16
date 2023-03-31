@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 /**
  * <p>
  *     Represent card n.11.
@@ -14,8 +16,8 @@ package it.polimi.ingsw.model.cards;
  */
 public class EqualDiag extends CommonGoalCard {
 
-    public EqualDiag(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public EqualDiag(int cardNumber) {
+        super(cardNumber);
     }
 
     /**

@@ -2,22 +2,23 @@ package it.polimi.ingsw.model;
 
 /**
  * This class represents the cell.
+ * The cell is used from both the board and the bookshelf.
  */
 public class Cell {
     /**
      * This attribute represents the object tile contained in the cell.
      */
-    Tile tile;
+    private Tile tile;
 
     /**
      * This variable specifies the x coordinate of the cell.
      */
-    int x;
+    private int x;
 
     /**
      * This variable specifies the y coordinate of the cell.
      */
-    int y;
+    private int y;
 
 
     /**

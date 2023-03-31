@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Tile;
+import it.polimi.ingsw.model.*;
 
 import java.util.Hashtable;
 
@@ -82,8 +81,8 @@ public class PersonalGoalCard extends Card {
         int matches = 0;
         for(int j=MAXCOL-1; j>=0; j--){
             for(int i=MAXROW-1; i>=0; i--){
-                if(grid[i][j].getType() != Tile.BLANK){
-                    if(grid[i][j].getTile() == player.getGrid()[i][j].getTile())
+                if(grid[i][j].getTile() != Tile.BLANK){
+                    if(grid[i][j].getTile() == player.getBookShelf().getGrid()[i][j].getTile())
                         matches++;
                 }
             }
