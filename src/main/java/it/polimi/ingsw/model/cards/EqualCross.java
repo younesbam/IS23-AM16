@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+
 /**
  * <p>
  *     Represent card n.1,10.
@@ -50,8 +53,8 @@ public class EqualCross extends CommonGoalCard {
         e in alto a dx per la seconda diagonale. Si andrà poi a scendere (++ dell'indice) di riga in entrambe le diagonali e rispettivamente:
         per la prima diagonale aumentare di colonna, per la seconda diagonale diminuire.
          */
-        for (int j=0; j<MAXROW-squareSide+1; j++) {
-            for(int i=0; i<MAXCOL-squareSide+1; i++){
+        for (int j = 0; j< MAXBOOKSHELFROW -squareSide+1; j++) {
+            for(int i = 0; i< MAXBOOKSHELFCOL -squareSide+1; i++){
                 firstDiag.clear();
                 secDiag.clear();
                 k=0;

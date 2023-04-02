@@ -15,6 +15,7 @@ public enum Tile {
     GREEN,
     YELLOW,
     LIGHTBLUE,
-    BLANK;
+    BLANK,
+    UNAVAILABLE;
 
 }

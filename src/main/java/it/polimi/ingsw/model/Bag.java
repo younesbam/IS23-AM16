@@ -9,8 +9,7 @@ import java.util.*;
  * @author Nicolo' Gandini
  */
 public class Bag {
-    public static final int MAXCOMMCARD = 12;
-    public static final int MAXPERSCARD = 12;
+    public static final int MAXCARDS = 12;
 
     private Set<CommonGoalCard> initCommSet;
     private Set<PersonalGoalCard> initPersSet;
@@ -27,7 +26,7 @@ public class Bag {
         /*
         Inizializzazione dei vari Set con elementi sparsi.
          */
-        for(int i=0; i<MAXPERSCARD; i++){
+        for(int i=0; i<MAXCARDS; i++){
             initPersSet.add(new PersonalGoalCard(i));
         }
         initCommSet.add(new EqualCross(1));

@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+
 /**
  * <p>
  *     Represent card n.3,4.
@@ -46,8 +49,8 @@ public class EqualInCol extends CommonGoalCard {
         Tile tileType;
         Tile nextTileType;
 
-        maxRow = MAXROW - eq + 1;  // Definisco il numero massimo a cui può arrivare la tessera di riferimento, in base al numero di tessere che devo controllare.
-        for(int i=0; i<MAXCOL; i++){
+        maxRow = MAXBOOKSHELFROW - eq + 1;  // Definisco il numero massimo a cui può arrivare la tessera di riferimento, in base al numero di tessere che devo controllare.
+        for(int i = 0; i< MAXBOOKSHELFCOL; i++){
             for(int j=0; j<maxRow; j++){
                 tileType = grid[i][j].getTile();
                 k=j+1;
