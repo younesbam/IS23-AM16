@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Board2Players;
-import it.polimi.ingsw.model.Board3Players;
-import it.polimi.ingsw.model.Board4Players;
+import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.Board2Players;
+import it.polimi.ingsw.model.board.Board3Players;
+import it.polimi.ingsw.model.board.Board4Players;
 
 /**
  * This class is used to apply the factory pattern.

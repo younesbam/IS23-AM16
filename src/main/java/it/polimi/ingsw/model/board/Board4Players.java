@@ -1,6 +1,4 @@
-package it.polimi.ingsw.model;
-
-import it.polimi.ingsw.model.Board;
+package it.polimi.ingsw.model.board;
 
 /**
  * This is the board for 4 players.

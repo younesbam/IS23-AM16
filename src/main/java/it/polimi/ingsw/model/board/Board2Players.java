@@ -1,12 +1,12 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.board;
 
-import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Tile;
 
 /**
  * This is the board for 2 players.
  * @author Francesca Rosa Diz.
  */
-public class Board2Players extends Board implements IBoard{
+public class Board2Players extends Board implements IBoard {
 
     /**
      * Constructor for the board.
