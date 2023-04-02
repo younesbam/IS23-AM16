@@ -34,7 +34,7 @@ public class SubMatrix extends CommonGoalCard {
         int k = 0;
         for(int j = MAXBOOKSHELFROW -1; j>=1; j--) {
             for(int i = MAXBOOKSHELFCOL -1-k; i>=0; i--){
-                if(grid[i][j].getTile() == Tile.BLANK)
+                if(grid[j][i].getTile() == Tile.BLANK)
                     return 0;
             }
             k++;

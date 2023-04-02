@@ -67,18 +67,18 @@ public class DiffAligned extends CommonGoalCard {
                 Devo invertire la variabile j per i controlli, in base a se sto controllando sulla riga o colonna.
                  */
                 if(dir == Direction.N || dir == Direction.S)
-                    tileType = grid[i][j].getTile();
-                else
                     tileType = grid[j][i].getTile();
+                else
+                    tileType = grid[i][j].getTile();
                 k = j+1;
                 /*
                 Uso la variaible k per controllare le tessere successive alla tessera di riferimento (controllata da j)
                  */
                 while(k<maxJ){
                     if(dir == Direction.N || dir == Direction.S)
-                        nextTileType = grid[i][k].getTile();
-                    else
                         nextTileType = grid[k][i].getTile();
+                    else
+                        nextTileType = grid[i][k].getTile();
 
                     if(tileType == nextTileType || tileType== Tile.BLANK || nextTileType== Tile.BLANK)
                         break;

@@ -82,8 +82,8 @@ public class PersonalGoalCard extends Card {
 
     public Integer checkScheme(Player player) {
         int matches = 0;
-        for(int j = MAXBOOKSHELFCOL -1; j>=0; j--){
-            for(int i = MAXBOOKSHELFROW -1; i>=0; i--){
+        for(int j=0; j<MAXBOOKSHELFCOL; j++){
+            for(int i=0; i<MAXBOOKSHELFROW; i++){
                 if(grid[i][j].getTile() != Tile.BLANK){
                     if(grid[i][j].getTile() == player.getBookShelf().getGrid()[i][j].getTile())
                         matches++;

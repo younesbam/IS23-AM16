@@ -68,9 +68,9 @@ public class MaxDiffGroup extends CommonGoalCard {
             for(int j=0; j<maxJ; j++){
                 set.clear();
                 if(dir == Direction.N || dir == Direction.S)
-                    set.add(grid[i][j].getTile());
-                else
                     set.add(grid[j][i].getTile());
+                else
+                    set.add(grid[i][j].getTile());
             }
             for(Tile type : Tile.values()){
                 if(type == Tile.BLANK)

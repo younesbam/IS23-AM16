@@ -52,10 +52,10 @@ public class EqualInCol extends CommonGoalCard {
         maxRow = MAXBOOKSHELFROW - eq + 1;  // Definisco il numero massimo a cui può arrivare la tessera di riferimento, in base al numero di tessere che devo controllare.
         for(int i = 0; i< MAXBOOKSHELFCOL; i++){
             for(int j=0; j<maxRow; j++){
-                tileType = grid[i][j].getTile();
+                tileType = grid[j][i].getTile();
                 k=j+1;
                 while(k-j<eq){  // Perchè è un riferimento relativo non assoluto.
-                    nextTileType = grid[i][k].getTile();
+                    nextTileType = grid[k][i].getTile();
                     if(tileType == nextTileType && tileType != Tile.BLANK)
                         actualEq++;
                     k++;

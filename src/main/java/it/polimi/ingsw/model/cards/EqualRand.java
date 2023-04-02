@@ -37,7 +37,7 @@ public class EqualRand extends CommonGoalCard {
 
         for(int j = 0; j< MAXBOOKSHELFROW; j++) {
             for (int i = 0; i< MAXBOOKSHELFCOL; i++) {
-                list.add(grid[i][j].getTile());
+                list.add(grid[j][i].getTile());
             }
         }
         /*
