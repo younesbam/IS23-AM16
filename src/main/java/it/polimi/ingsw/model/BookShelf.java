@@ -4,24 +4,17 @@ import java.util.List;
 
 /**
  * This class represents the player's bookshelf.
+ * @author Francesca Rosa Diz
  */
 public class BookShelf {
 
-    /**
-     * This attribute specifies the grid's dimensions.
-     */
-    private Cell[][] grid = new Cell[6][5];
+    // This attribute specifies the grid's dimensions.
+    private Cell[][] grid = new Cell[MAXBOOKSHELFROW][MAXBOOKSHELFCOL];
 
-    /**
-     * This attribute represents the maximum number a column can assume.
-     */
-    public static final int MAXCOL = 5;
-
-
-    /**
-     * This attribute represents the maximum number a row can assume.
-     */
-    public static final int MAXROW = 6;
+    // Maximum numbers of rows
+    public static final int MAXBOOKSHELFROW = 6;
+    // Maximum number of columns.
+    public static final int MAXBOOKSHELFCOL = 5;
 
 
     /**
@@ -40,12 +33,12 @@ public class BookShelf {
         /**
          * Check of the validity of the column's number.
          */
-        if (n>MAXCOL || n<0)
+        if (n>MAXBOOKSHELFCOL || n<0)
             return false;
 
 
 
-        for (int i=0; i<MAXROW; i++) {
+        for (int i=0; i<MAXBOOKSHELFCOL; i++) {
             if(grid[n][i].getTile() == Tile.BLANK)
                 available++;
         }
@@ -66,8 +59,7 @@ public class BookShelf {
      */
     public void placeTiles(int y, List<Tile> list) {
 
-        /**
-         * This statement controls whether the number of the picked tiles is valid.
+        /* This statement controls whether the number of the picked tiles is valid.
          * (Not sure if this control has to be done here, maybe in another place).
          */
         if (list.size() > 3 || list.size() == 0) {
@@ -106,8 +98,8 @@ public class BookShelf {
      * @return true if the bookshelf is full.
      */
     public boolean checkEndGame() {
-        for (int i=0; i<MAXCOL; i++) {
-            for (int j=0; j<MAXROW; j++) {
+        for (int i=0; i<MAXBOOKSHELFCOL; i++) {
+            for (int j=0; j<MAXBOOKSHELFROW; j++) {
                 if (grid[i][j].getTile() == Tile.BLANK) {
                     return false;
                 }

@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.*;
 
 import java.util.*;
 
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+
 /**
  * <p>
  *     Represent card n.5,7.
@@ -50,11 +53,11 @@ public class MaxDiffGroup extends CommonGoalCard {
         Cell[][] grid = player.getBookShelf().getGrid();
 
         if(dir == Direction.N || dir == Direction.S){
-            maxJ = MAXROW;
-            maxI = MAXCOL;
+            maxJ = MAXBOOKSHELFROW;
+            maxI = MAXBOOKSHELFCOL;
         } else {
-            maxJ = MAXCOL;
-            maxI = MAXROW;
+            maxJ = MAXBOOKSHELFCOL;
+            maxI = MAXBOOKSHELFROW;
         }
         /*
         Trasformo la colonna/riga in un Set. In questo modo trovo subito se Type.X è contenuto nel Set e decido se può ottenere punteggio o no il player.
@@ -65,9 +68,9 @@ public class MaxDiffGroup extends CommonGoalCard {
             for(int j=0; j<maxJ; j++){
                 set.clear();
                 if(dir == Direction.N || dir == Direction.S)
-                    set.add(grid[i][j].getTile());
-                else
                     set.add(grid[j][i].getTile());
+                else
+                    set.add(grid[i][j].getTile());
             }
             for(Tile type : Tile.values()){
                 if(type == Tile.BLANK)

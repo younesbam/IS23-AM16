@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+
 /**
  * <p>
  *     Represent card n.11.
@@ -34,10 +37,10 @@ public class EqualDiag extends CommonGoalCard {
          */
         Cell[][] grid = player.getBookShelf().getGrid();
 
-        for(int i=0; i<Math.min(MAXROW, MAXCOL); i++) {
+        for(int i = 0; i<Math.min(MAXBOOKSHELFROW, MAXBOOKSHELFCOL); i++) {
             if(grid[0][0].getTile() == Tile.BLANK || grid[0][0].getTile() != grid[i][i].getTile())
                 return 0;
-            if(grid[0][0].getTile() == Tile.BLANK || grid[0][1].getTile() != grid[i][i+1].getTile())
+            if(grid[0][0].getTile() == Tile.BLANK || grid[1][0].getTile() != grid[i+1][i].getTile())
                 return 0;
         }
         return getScore();

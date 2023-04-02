@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.*;
 
 import java.util.Hashtable;
 
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+
 /**
  * Personal goal card
  * @author Nicolo' Gandini
@@ -20,9 +23,9 @@ public class PersonalGoalCard extends Card {
      */
     public PersonalGoalCard(int cardNumber) {
         this.cardNumber = cardNumber;
-        grid = new Cell[MAXCOL][MAXROW];
-        for(int i=0; i<MAXCOL; i++)
-            for(int j=0; j<MAXROW; j++)
+        grid = new Cell[MAXBOOKSHELFCOL][MAXBOOKSHELFROW];
+        for(int i = 0; i< MAXBOOKSHELFCOL; i++)
+            for(int j = 0; j< MAXBOOKSHELFROW; j++)
                 grid[i][j].setTile(Tile.BLANK);
 
         /*
@@ -79,8 +82,8 @@ public class PersonalGoalCard extends Card {
 
     public Integer checkScheme(Player player) {
         int matches = 0;
-        for(int j=MAXCOL-1; j>=0; j--){
-            for(int i=MAXROW-1; i>=0; i--){
+        for(int j=0; j<MAXBOOKSHELFCOL; j++){
+            for(int i=0; i<MAXBOOKSHELFROW; i++){
                 if(grid[i][j].getTile() != Tile.BLANK){
                     if(grid[i][j].getTile() == player.getBookShelf().getGrid()[i][j].getTile())
                         matches++;

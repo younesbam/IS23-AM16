@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+
 /**
  * <p>
  *     Represent card n.1,10.
@@ -50,8 +53,8 @@ public class EqualCross extends CommonGoalCard {
         e in alto a dx per la seconda diagonale. Si andrà poi a scendere (++ dell'indice) di riga in entrambe le diagonali e rispettivamente:
         per la prima diagonale aumentare di colonna, per la seconda diagonale diminuire.
          */
-        for (int j=0; j<MAXROW-squareSide+1; j++) {
-            for(int i=0; i<MAXCOL-squareSide+1; i++){
+        for (int j = 0; j< MAXBOOKSHELFROW-squareSide+1; j++) {
+            for(int i = 0; i< MAXBOOKSHELFCOL-squareSide+1; i++){
                 firstDiag.clear();
                 secDiag.clear();
                 k=0;
@@ -59,10 +62,10 @@ public class EqualCross extends CommonGoalCard {
                 Aggiungo le tessere sulla prima e seconda diagonale. Non mi interessa delle ripetizioni,
                 tanto devo controllare che siano tutte uguali, non quante.
                  */
-                ref = grid[i][j].getTile();
+                ref = grid[j][i].getTile();
                 while(k<=squareSide){
-                    firstDiag.add(grid[i+k][j+k].getTile());
-                    secDiag.add(grid[i+(squareSide-1)-k][j+k].getTile());  // Tessera di riferimento di coordinare i+lato del quadrato
+                    firstDiag.add(grid[j+k][i+k].getTile());
+                    secDiag.add(grid[j+k][i+(squareSide-1)-k].getTile());  // Tessera di riferimento di coordinare i+lato del quadrato
                     k++;
                 }
                 /*

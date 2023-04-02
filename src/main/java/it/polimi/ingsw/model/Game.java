@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.cards.*;
 
 import java.util.ArrayList;
@@ -16,7 +17,8 @@ public class Game {
 
     private static final int MAXPLAYERS = 4;
     private static final int COMGOALCARDS = 2;
-    private final Board board;
+    private Board board;
+    private CreationFactory creationFactory;
     private final ArrayList<Player> players = new ArrayList<>();
     private Player currentPlayer;
     private int numOfPlayers;
@@ -26,8 +28,14 @@ public class Game {
 
 
     public Game() {
-        this.board = new Board();
+
         this.bag = new Bag();
+
+        /**
+         * Factory method to create the board based on the number of players.
+         */
+        this.creationFactory = new CreationFactory();
+        this.board = creationFactory.createBoard(numOfPlayers);
     }
 
     /**
@@ -36,7 +44,6 @@ public class Game {
      */
     public void createPlayer(Player player){
         this.players.add(player);
-
     }
 
     /**
@@ -45,7 +52,6 @@ public class Game {
      */
     public void removePlayer(Player player){
         this.players.remove(player);
-
     }
 
     public void setNumOfPlayers(int numOfPlayers){
@@ -55,6 +61,8 @@ public class Game {
     public int getNumOfPlayers(){
         return this.numOfPlayers;
     }
+
+
 
     public void setCurrentPlayer(Player currentPlayer){
         this.currentPlayer = currentPlayer;

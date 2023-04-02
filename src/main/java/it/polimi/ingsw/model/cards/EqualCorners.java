@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+
 /**
  * <p>
  *     Represent card n.8.
@@ -27,9 +30,9 @@ public class EqualCorners extends CommonGoalCard {
         /*
         Controllo che le tessere siano uguali agli angoli della libreria e che siano diverse da blank.
          */
-        if(grid[0][0].getTile() == grid[0][MAXCOL-1].getTile() &&
-                grid[0][0].getTile() == grid[MAXROW-1][MAXCOL-1].getTile() &&
-                grid[0][0].getTile() == grid[MAXROW-1][0].getTile() &&
+        if(grid[0][0].getTile() == grid[0][MAXBOOKSHELFCOL-1].getTile() &&
+                grid[0][0].getTile() == grid[MAXBOOKSHELFROW-1][MAXBOOKSHELFCOL-1].getTile() &&
+                grid[0][0].getTile() == grid[MAXBOOKSHELFROW-1][0].getTile() &&
                 grid[0][0].getTile() != Tile.BLANK){
             return getScore();
         }
