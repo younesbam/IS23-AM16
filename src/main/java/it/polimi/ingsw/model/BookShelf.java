@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
+import java.security.InvalidParameterException;
 import java.util.List;
+
 
 /**
  * This class represents the player's bookshelf.
@@ -15,6 +17,8 @@ public class BookShelf {
     public static final int MAXBOOKSHELFROW = 6;
     // Maximum number of columns.
     public static final int MAXBOOKSHELFCOL = 5;
+    // Maximum number of picked tiles.
+    public static final int MAXPICKEDTILES = 3;
 
 
     /**
@@ -23,18 +27,17 @@ public class BookShelf {
      * @param nTiles number of the tiles to insert
      * @return true if the tiles can be inserted.
      */
-    public Boolean checkColumn(int n, int nTiles){
+    public Boolean checkColumn(int n, int nTiles) throws InvalidParameterException {
 
-        /**
+        /*
          * This attribute counts the number of available cells in the column.
          */
         int available = 0;
 
-        /**
+        /*
          * Check of the validity of the column's number.
          */
-        if (n>MAXBOOKSHELFCOL || n<0)
-            return false;
+        if (n>MAXBOOKSHELFCOL || n<0 || nTiles<0 || nTiles> MAXPICKEDTILES) throw new InvalidParameterException();
 
 
 
@@ -42,8 +45,8 @@ public class BookShelf {
             if(grid[n][i].getTile() == Tile.BLANK)
                 available++;
         }
-        if (available >= nTiles)
-            return true;
+        if (available >= nTiles) return true;
+
         else
             System.out.println("Invalid column, try again");
 
@@ -57,15 +60,12 @@ public class BookShelf {
      * @param y number of the desired column.
      * @param list list of tile(s) selected by the player.
      */
-    public void placeTiles(int y, List<Tile> list) {
+    public void placeTiles(int y, List<Tile> list) throws InvalidParameterException{
 
         /* This statement controls whether the number of the picked tiles is valid.
          * (Not sure if this control has to be done here, maybe in another place).
          */
-        if (list.size() > 3 || list.size() == 0) {
-            System.out.println("Error: invalid number of tiles.");
-            return;
-        }
+        if (list.size() > MAXPICKEDTILES || list.size() == 0) throw new InvalidParameterException();
 
         if (checkColumn(y, list.size()) == false)
             return;
@@ -105,7 +105,6 @@ public class BookShelf {
                 }
             }
         }
-
         return true;
     }
 

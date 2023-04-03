@@ -4,16 +4,18 @@ import it.polimi.ingsw.model.BookShelf;
 import it.polimi.ingsw.model.Player;
 import org.junit.jupiter.api.Test;
 
-public class TestDiffAligned {
+import static org.junit.jupiter.api.Assertions.*;
+
+class DiffAlignedTest {
+
     @Test
-    public void testCheckScheme(){
+    public void checkScheme() {
         /*
          * With 1 player. Card number 1.
          */
         BookShelf bookshelf = new BookShelf();
         Player player = new Player("CiccioPanza");
         CommonGoalCard commonCard = new DiffAligned(1);
-
 
     }
 }

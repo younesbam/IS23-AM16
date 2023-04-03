@@ -28,7 +28,9 @@ public abstract class Board {
     public static final int MAXBOARDDIM = 9;
 
 
-    // Constructor of the board, used by the subclasses.
+    /**
+     * Constructor of the board, used by the subclasses.
+     */
     public Board(){
         initTileSet = new HashSet<>();
         for (Tile tile : Tile.values())
@@ -129,7 +131,7 @@ public abstract class Board {
             else
                 occupied++;
         }
-        if(east< MAXBOARDDIM) {
+        if(east<MAXBOARDDIM) {
             if (grid[east][y].getTile() == Tile.BLANK || grid[east][y].getTile() == Tile.UNAVAILABLE)
                 free++;
             else
