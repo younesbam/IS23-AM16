@@ -1,8 +1,13 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
 
 /**
  * <p>
@@ -11,11 +16,11 @@ import java.util.List;
  * Eight tiles in random order must me the same.
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard6 extends CommonGoalCard {
+public class EqualRand extends CommonGoalCard {
     int eq;
 
-    public CommonGoalCard6(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public EqualRand(int cardNumber) {
+        super(cardNumber);
         eq = 8;
     }
 
@@ -30,9 +35,9 @@ public class CommonGoalCard6 extends CommonGoalCard {
         Cell[][] grid = player.getBookShelf().getGrid();
         List<Tile> list = new ArrayList<>();  //Creo una lista per cercare le occorrenze
 
-        for(int j=0; j<MAXROW; j++) {
-            for (int i=0; i<MAXCOL; i++) {
-                list.add(grid[i][j].getTile());
+        for(int j = 0; j< MAXBOOKSHELFROW; j++) {
+            for (int i = 0; i< MAXBOOKSHELFCOL; i++) {
+                list.add(grid[j][i].getTile());
             }
         }
         /*

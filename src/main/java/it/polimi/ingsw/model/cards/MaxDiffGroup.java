@@ -1,6 +1,11 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
 import java.util.*;
+
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
 
 /**
  * <p>
@@ -9,14 +14,14 @@ import java.util.*;
  * Maximum 3 different types og tiles in the row/column
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard4 extends CommonGoalCard {
+public class MaxDiffGroup extends CommonGoalCard {
     private int maxNotEq;
     private int repetition;
     private int group;
     private Direction dir;
 
-    public CommonGoalCard4(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public MaxDiffGroup(int cardNumber) {
+        super(cardNumber);
         switch (cardNumber){
             case 5:
                 maxNotEq = 3;
@@ -48,11 +53,11 @@ public class CommonGoalCard4 extends CommonGoalCard {
         Cell[][] grid = player.getBookShelf().getGrid();
 
         if(dir == Direction.N || dir == Direction.S){
-            maxJ = MAXROW;
-            maxI = MAXCOL;
+            maxJ = MAXBOOKSHELFROW;
+            maxI = MAXBOOKSHELFCOL;
         } else {
-            maxJ = MAXCOL;
-            maxI = MAXROW;
+            maxJ = MAXBOOKSHELFCOL;
+            maxI = MAXBOOKSHELFROW;
         }
         /*
         Trasformo la colonna/riga in un Set. In questo modo trovo subito se Type.X è contenuto nel Set e decido se può ottenere punteggio o no il player.
@@ -63,9 +68,9 @@ public class CommonGoalCard4 extends CommonGoalCard {
             for(int j=0; j<maxJ; j++){
                 set.clear();
                 if(dir == Direction.N || dir == Direction.S)
-                    set.add(grid[i][j].getTile());
-                else
                     set.add(grid[j][i].getTile());
+                else
+                    set.add(grid[i][j].getTile());
             }
             for(Tile type : Tile.values()){
                 if(type == Tile.BLANK)

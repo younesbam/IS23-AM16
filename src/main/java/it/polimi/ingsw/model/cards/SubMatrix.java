@@ -1,5 +1,10 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+
 /**
  * <p>
  *     Represent card n.12.
@@ -7,10 +12,10 @@ package it.polimi.ingsw.model.cards;
  * All the cells below the main diagonal must be full and not BLANK.
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard8 extends CommonGoalCard {
+public class SubMatrix extends CommonGoalCard {
 
-    public CommonGoalCard8(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public SubMatrix(int cardNumber) {
+        super(cardNumber);
     }
 
     /**
@@ -27,13 +32,13 @@ public class CommonGoalCard8 extends CommonGoalCard {
          */
         Cell[][] grid = player.getBookShelf().getGrid();
         int k = 0;
-        for(int j=MAXROW-1; j>=1; j--) {
-            for(int i=MAXCOL-1-k; i>=0; i--){
-                if(grid[i][j].getTile() == Tile.BLANK)
+        for(int j = MAXBOOKSHELFROW -1; j>=1; j--) {
+            for(int i = MAXBOOKSHELFCOL -1-k; i>=0; i--){
+                if(grid[j][i].getTile() == Tile.BLANK)
                     return 0;
             }
             k++;
-            if(k>=MAXCOL-1)
+            if(k>= MAXBOOKSHELFCOL -1)
                 return 0;
         }
         return getScore();

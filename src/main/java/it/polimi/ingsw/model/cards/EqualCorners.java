@@ -1,16 +1,21 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+
 /**
  * <p>
  *     Represent card n.8.
  * </p>
- * Tiles in top edges must me the same
+ * Equal tiles in corners.
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard5 extends CommonGoalCard {
+public class EqualCorners extends CommonGoalCard {
 
-    public CommonGoalCard5(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public EqualCorners(int cardNumber) {
+        super(cardNumber);
     }
 
     /**
@@ -25,9 +30,9 @@ public class CommonGoalCard5 extends CommonGoalCard {
         /*
         Controllo che le tessere siano uguali agli angoli della libreria e che siano diverse da blank.
          */
-        if(grid[0][0].getTile() == grid[0][MAXCOL-1].getTile() &&
-                grid[0][0].getTile() == grid[MAXROW-1][MAXCOL-1].getTile() &&
-                grid[0][0].getTile() == grid[MAXROW-1][0].getTile() &&
+        if(grid[0][0].getTile() == grid[0][MAXBOOKSHELFCOL-1].getTile() &&
+                grid[0][0].getTile() == grid[MAXBOOKSHELFROW-1][MAXBOOKSHELFCOL-1].getTile() &&
+                grid[0][0].getTile() == grid[MAXBOOKSHELFROW-1][0].getTile() &&
                 grid[0][0].getTile() != Tile.BLANK){
             return getScore();
         }

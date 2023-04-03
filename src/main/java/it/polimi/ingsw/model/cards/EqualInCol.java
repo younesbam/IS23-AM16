@@ -1,5 +1,10 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+
 /**
  * <p>
  *     Represent card n.3,4.
@@ -7,15 +12,15 @@ package it.polimi.ingsw.model.cards;
  * Equal tiles in a column
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard3 extends CommonGoalCard {
+public class EqualInCol extends CommonGoalCard {
     private int eq;
     private int repetition;
     private Direction dir;
 
-    public CommonGoalCard3(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public EqualInCol(int cardNumber) {
+        super(cardNumber);
         switch (cardNumber){
-            case 3;
+            case 3:
                 eq = 4;
                 repetition = 4;
                 dir = Direction.N;
@@ -44,13 +49,13 @@ public class CommonGoalCard3 extends CommonGoalCard {
         Tile tileType;
         Tile nextTileType;
 
-        maxRow = MAXROW - eq + 1;  // Definisco il numero massimo a cui può arrivare la tessera di riferimento, in base al numero di tessere che devo controllare.
-        for(int i=0; i<MAXCOL; i++){
+        maxRow = MAXBOOKSHELFROW - eq + 1;  // Definisco il numero massimo a cui può arrivare la tessera di riferimento, in base al numero di tessere che devo controllare.
+        for(int i = 0; i< MAXBOOKSHELFCOL; i++){
             for(int j=0; j<maxRow; j++){
-                tileType = grid[i][j].getTile();
+                tileType = grid[j][i].getTile();
                 k=j+1;
                 while(k-j<eq){  // Perchè è un riferimento relativo non assoluto.
-                    nextTileType = grid[i][k].getTile();
+                    nextTileType = grid[k][i].getTile();
                     if(tileType == nextTileType && tileType != Tile.BLANK)
                         actualEq++;
                     k++;

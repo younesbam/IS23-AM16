@@ -1,5 +1,10 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+
 /**
  * <p>
  *     Represent card n.2,6.
@@ -7,12 +12,12 @@ package it.polimi.ingsw.model.cards;
  * Different cards in a row/column
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard2 extends CommonGoalCard {
+public class DiffAligned extends CommonGoalCard {
     private int repetition;
     private Direction dir;
 
-    public CommonGoalCard2(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public DiffAligned(int cardNumber) {
+        super(cardNumber);
         switch(cardNumber){
             case 2:
                 repetition = 2;
@@ -20,6 +25,9 @@ public class CommonGoalCard2 extends CommonGoalCard {
             case 6:
                 repetition = 2;
                 dir = Direction.E;
+            default:
+                repetition = -1;
+                dir = Direction.N;
         }
     }
 
@@ -47,11 +55,11 @@ public class CommonGoalCard2 extends CommonGoalCard {
         Se devo controllare in orizzontale che le tessere siano diverse devo limitare la variaible j come MAXCOL-1.
          */
         if(dir == Direction.N || dir == Direction.S){
-            maxJ = MAXROW-1;
-            maxI = MAXCOL;
+            maxJ = MAXBOOKSHELFROW -1;
+            maxI = MAXBOOKSHELFCOL;
         } else {
-            maxJ = MAXCOL-1;
-            maxI = MAXROW;
+            maxJ = MAXBOOKSHELFCOL -1;
+            maxI = MAXBOOKSHELFROW;
         }
         for(int i=0; i<maxI; i++){
             for(int j=0; j<maxJ; j++){
@@ -59,18 +67,18 @@ public class CommonGoalCard2 extends CommonGoalCard {
                 Devo invertire la variabile j per i controlli, in base a se sto controllando sulla riga o colonna.
                  */
                 if(dir == Direction.N || dir == Direction.S)
-                    tileType = grid[i][j].getTile();
-                else
                     tileType = grid[j][i].getTile();
+                else
+                    tileType = grid[i][j].getTile();
                 k = j+1;
                 /*
                 Uso la variaible k per controllare le tessere successive alla tessera di riferimento (controllata da j)
                  */
                 while(k<maxJ){
                     if(dir == Direction.N || dir == Direction.S)
-                        nextTileType = grid[i][k].getTile();
-                    else
                         nextTileType = grid[k][i].getTile();
+                    else
+                        nextTileType = grid[i][k].getTile();
 
                     if(tileType == nextTileType || tileType== Tile.BLANK || nextTileType== Tile.BLANK)
                         break;

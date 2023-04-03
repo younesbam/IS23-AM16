@@ -1,10 +1,15 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
+
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+
 /**
  * <p>
  *     Represent card n.11.
  * </p>
- * All the tiles in the diagonal must me the same.
+ * Equal tiles on the diagonal.
  * <p>
  *     <b>Note:</b>
  *     there are two diagonals to check. Based on requirements, no preferred diagonal to check is specified.
@@ -12,10 +17,10 @@ package it.polimi.ingsw.model.cards;
  *
  * @author Nicolo' Gandini
  */
-public class CommonGoalCard7 extends CommonGoalCard {
+public class EqualDiag extends CommonGoalCard {
 
-    public CommonGoalCard7(int playerNum, int cardNumber) {
-        super(playerNum, cardNumber);
+    public EqualDiag(int cardNumber) {
+        super(cardNumber);
     }
 
     /**
@@ -32,10 +37,10 @@ public class CommonGoalCard7 extends CommonGoalCard {
          */
         Cell[][] grid = player.getBookShelf().getGrid();
 
-        for(int i=0; i<Math.min(MAXROW, MAXCOL); i++) {
+        for(int i = 0; i<Math.min(MAXBOOKSHELFROW, MAXBOOKSHELFCOL); i++) {
             if(grid[0][0].getTile() == Tile.BLANK || grid[0][0].getTile() != grid[i][i].getTile())
                 return 0;
-            if(grid[0][0].getTile() == Tile.BLANK || grid[0][1].getTile() != grid[i][i+1].getTile())
+            if(grid[0][0].getTile() == Tile.BLANK || grid[1][0].getTile() != grid[i+1][i].getTile())
                 return 0;
         }
         return getScore();
