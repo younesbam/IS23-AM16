@@ -5,5 +5,5 @@ package it.polimi.ingsw.model.cards;
  * @author Nicolo' Gandini
  */
 public abstract class Card {
-    int cardNumber;
+    protected int cardNumber;
 }
