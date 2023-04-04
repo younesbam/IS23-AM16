@@ -19,7 +19,7 @@ public class TurnController {
         return controller;
     }
 
-    public void pickTiles(){
+    public void pickTiles(int numOfTiles, int ){
         int numOfTilesToPick = view.getNumOfTilesToPick();
         int[][] coordinatesOfTilesToPick = new int[numOfTilesToPick][2];
         Tile[] tiles = null;

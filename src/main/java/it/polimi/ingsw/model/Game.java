@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.*;
 import it.polimi.ingsw.model.cards.*;
+import jdk.internal.access.JavaSecurityAccess;
 
 import java.util.ArrayList;
 
@@ -62,7 +63,13 @@ public class Game {
         return this.numOfPlayers;
     }
 
+    public ArrayList<Player> getPlayers(){
+        return this.players;
+    }
 
+    public ArrayList<CommonGoalCard> getCommonGoalCards() {
+        return this.commonGoalCards;
+    }
 
     public void setCurrentPlayer(Player currentPlayer){
         this.currentPlayer = currentPlayer;
