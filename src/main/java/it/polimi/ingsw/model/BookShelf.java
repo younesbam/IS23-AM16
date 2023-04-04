@@ -11,7 +11,7 @@ import java.util.List;
 public class BookShelf {
 
     // This attribute specifies the grid's dimensions.
-    private Cell[][] grid = new Cell[MAXBOOKSHELFROW][MAXBOOKSHELFCOL];
+    private Cell[][] grid;
 
     // Maximum numbers of rows
     public static final int MAXBOOKSHELFROW = 6;
@@ -22,10 +22,26 @@ public class BookShelf {
 
 
     /**
+     * Constructor for the BookShelf.
+     * The cycle sets initially BLANK all the cells contained in the BookShelf.
+     */
+    public BookShelf() {
+        grid = new Cell[MAXBOOKSHELFROW][MAXBOOKSHELFCOL];
+        for(int i=0; i<MAXBOOKSHELFROW; i++){
+            grid[i] = new Cell[]{new Cell()};
+        }
+
+        for(int i=0; i<MAXBOOKSHELFROW; i++)
+            for (int j=0; j<MAXBOOKSHELFCOL; j++)
+                grid[i][j].setTile(Tile.BLANK);
+    }
+
+    /**
      * This method controls whether the player can insert the tiles he picked in the column he selects.
      * @param n number of the selected column
      * @param nTiles number of the tiles to insert
      * @return true if the tiles can be inserted.
+     * @throws InvalidParameterException if the number of the column of the tiles are invalid.
      */
     public Boolean checkColumn(int n, int nTiles) throws InvalidParameterException {
 
@@ -37,14 +53,13 @@ public class BookShelf {
         /*
          * Check of the validity of the column's number.
          */
-        if (n>MAXBOOKSHELFCOL || n<0 || nTiles<0 || nTiles> MAXPICKEDTILES) throw new InvalidParameterException();
-
-
+        if (n>MAXBOOKSHELFCOL || n<0 || nTiles<0 || nTiles>MAXPICKEDTILES) throw new InvalidParameterException();
 
         for (int i=0; i<MAXBOOKSHELFCOL; i++) {
             if(grid[n][i].getTile() == Tile.BLANK)
                 available++;
         }
+
         if (available >= nTiles) return true;
 
         else
@@ -62,13 +77,16 @@ public class BookShelf {
      */
     public void placeTiles(int y, List<Tile> list) throws InvalidParameterException{
 
-        /* This statement controls whether the number of the picked tiles is valid.
-         * (Not sure if this control has to be done here, maybe in another place).
+        /*
+        If the method checkColumn throws an exception because the parameters are invalid,
+        this method will return an exception.
          */
-        if (list.size() > MAXPICKEDTILES || list.size() == 0) throw new InvalidParameterException();
-
-        if (checkColumn(y, list.size()) == false)
-            return;
+        try{
+            if (!checkColumn(y, list.size()))
+                return;
+        } catch (Exception e) {
+            throw new InvalidParameterException("Invalid column or number of picked tiles.");
+        }
 
 
         int i=0;

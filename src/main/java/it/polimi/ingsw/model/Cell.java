@@ -16,6 +16,11 @@ public class Cell {
     // This variable specifies the y coordinate of the cell.
     private int y;
 
+    public Cell(){
+        x=0;
+        y=0;
+        tile=Tile.BLANK;
+    }
 
     /**
      * This method returns the tile contained in the cell.

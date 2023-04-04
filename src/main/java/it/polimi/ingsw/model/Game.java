@@ -64,7 +64,9 @@ public class Game {
     }
 
 
+    public ArrayList<Player> getPlayers() {return this.players;}
 
+    public ArrayList<CommonGoalCard> getCommonGoalCards() {return this.commonGoalCards;}
     public void setCurrentPlayer(Player currentPlayer){
         this.currentPlayer = currentPlayer;
     }
