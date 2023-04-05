@@ -2,10 +2,14 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Hashtable;
-
 import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
 import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Personal goal card
@@ -43,6 +47,9 @@ public class PersonalGoalCard extends Card {
         /*
         Initialize the grid based on the card number.
          */
+
+//        String jStr = new String(Files.readAllBytes(Paths.get("personalGoalCard.json")));
+//        JSONObject rootObject = JSONObject.
         switch (cardNumber){
             // DA FARE SONO SBAGLIATI
             case 1:

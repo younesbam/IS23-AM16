@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.exceptions.NotEmptyColumnException;
+
 import java.security.InvalidParameterException;
 import java.util.List;
 
@@ -43,7 +45,7 @@ public class BookShelf {
      * @return true if the tiles can be inserted.
      * @throws InvalidParameterException if the number of the column of the tiles are invalid.
      */
-    public Boolean checkColumn(int n, int nTiles) throws InvalidParameterException {
+    public void checkColumn(int n, int nTiles) throws InvalidParameterException, NotEmptyColumnException {
 
         /*
          * This attribute counts the number of available cells in the column.
@@ -60,12 +62,9 @@ public class BookShelf {
                 available++;
         }
 
-        if (available >= nTiles) return true;
-
-        else
-            System.out.println("Invalid column, try again");
-
-        return false;
+        if (available < nTiles) {
+            throw new NotEmptyColumnException();
+        }
     }
 
 
@@ -75,20 +74,7 @@ public class BookShelf {
      * @param y number of the desired column.
      * @param list list of tile(s) selected by the player.
      */
-    public void placeTiles(int y, List<Tile> list) throws InvalidParameterException{
-
-        /*
-        If the method checkColumn throws an exception because the parameters are invalid,
-        this method will return an exception.
-         */
-        try{
-            if (!checkColumn(y, list.size()))
-                return;
-        } catch (Exception e) {
-            throw new InvalidParameterException("Invalid column or number of picked tiles.");
-        }
-
-
+    public void placeTiles(int y, List<Tile> list){
         int i=0;
         while (grid[y][i].getTile() != Tile.BLANK)
             i++;
@@ -97,7 +83,6 @@ public class BookShelf {
             grid[y][i].setTile(tile);
             i++;
         }
-
     }
 
 
