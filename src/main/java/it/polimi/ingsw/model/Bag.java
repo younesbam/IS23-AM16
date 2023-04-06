@@ -1,8 +1,15 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.Utils;
+import it.polimi.ingsw.common.exceptions.InvalidDirectoryException;
 import it.polimi.ingsw.model.cards.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.*;
+
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
 
 /**
  * Represent the black bag with all the shuffled cards and tiles inside.
@@ -20,15 +27,14 @@ public class Bag {
      * Initialize all the tiles inside the bag into a Set.
      */
     public Bag() {
+        // Create Sets to insert random cards.
         initCommSet = new HashSet<>();
         initPersSet = new HashSet<>();
 
         /*
-        Inizializzazione dei vari Set con elementi sparsi.
+        Common card initialization
          */
-        for(int i=0; i<MAXCARDS; i++){
-            initPersSet.add(new PersonalGoalCard(i));
-        }
+        // Add common cards in the Set
         initCommSet.add(new EqualCross(1));
         initCommSet.add(new EqualCross(10));
         initCommSet.add(new DiffAligned(2));
@@ -43,8 +49,56 @@ public class Bag {
         initCommSet.add(new SubMatrix(12));
 
         /*
-        Trasformazione del Set in una coda con priorità, disordinata.
+        Personal card read from json
          */
+        Hashtable<Integer, Integer> persCardPoints = new Hashtable<>();
+        Cell[][] personalCardGrid = Utils.createBlankGrid(MAXBOOKSHELFROW, MAXBOOKSHELFCOL);
+
+        String jsonString = Utils.convertFileIntoString("json/initSetup.json");
+        // Get the json object from the string
+        JSONObject obj = new JSONObject(jsonString);
+        // Get personal cards array
+        JSONArray personalCardsArray = obj.getJSONArray("personalCards");
+        // Iterate all the objects in the cards array. Each element is an object of boh, it's hidden now.
+        for(int i=0; i<personalCardsArray.length(); i++){
+            // Get each object in a variable. Now we don't know what's inside
+            JSONObject objInPersonalCardsArray = personalCardsArray.getJSONObject(i);
+            // Get the descr key that must be inside the mystery object
+            int descr = objInPersonalCardsArray.getInt("descr");
+            // Get the coordinates key array and pointsTable that must be inside the mystery object
+            JSONArray coordinateArrayInObj = objInPersonalCardsArray.getJSONArray("coordinates");
+            JSONArray pointsTableArrayInObj = objInPersonalCardsArray.getJSONArray("pointsTable");
+            // Iterate the pointsTable array. Again, each element is an object of boh, it's hidden now
+            for(int j=0; j<pointsTableArrayInObj.length(); j++){
+                // Get each object in a variable. Now we don't know what's inside
+                JSONObject objInPointsTable = pointsTableArrayInObj.getJSONObject(j);
+                // Get all the useful keys inside the mystery object
+                int matches = objInPointsTable.getInt("matches");
+                int points = objInPointsTable.getInt("points");
+                persCardPoints.put(matches, points);
+            }
+            // Iterate the coordinate array. Again, each element is an object of boh, it's hidden now
+            for(int j=0; j<coordinateArrayInObj.length(); j++){
+                // Get each object in a variable. Now we don't know what's inside
+                JSONObject objInCoordinate = coordinateArrayInObj.getJSONObject(j);
+                // Get all the useful keys inside the mystery object
+                int x = objInCoordinate.getInt("x");
+                int y = objInCoordinate.getInt("y");
+                Tile tile = Tile.valueOf(objInCoordinate.getString("type").toUpperCase());
+
+                personalCardGrid[y][x].setTile(tile);
+            }
+            // Save all the retrieved information into the card
+            initPersSet.add(new PersonalGoalCard(descr, persCardPoints, personalCardGrid));
+            // Reset all the previous grid and points.
+            persCardPoints.clear();
+            personalCardGrid = Utils.createBlankGrid(MAXBOOKSHELFROW, MAXBOOKSHELFCOL);
+        }
+
+        /*
+        Final operations
+         */
+        // Transform the Set into priority queue. Useful to poll the first element.
         commCards = new PriorityQueue<>(initCommSet);
         persCards = new PriorityQueue<>(initPersSet);
     }

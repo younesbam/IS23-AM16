@@ -2,14 +2,10 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Hashtable;
+
 import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
 import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Personal goal card
@@ -25,55 +21,10 @@ public class PersonalGoalCard extends Card {
     /**
      * Initialize the personal goal card grid with empty Cells and initialize the hashtable, used to get the points, based on the number of matches.
      */
-    public PersonalGoalCard(int cardNumber) {
+    public PersonalGoalCard(int cardNumber, Hashtable<Integer, Integer> points, Cell[][] grid){
         this.cardNumber = cardNumber;
-        grid = new Cell[MAXBOOKSHELFCOL][MAXBOOKSHELFROW];
-        for(int i = 0; i< MAXBOOKSHELFCOL; i++)
-            for(int j = 0; j< MAXBOOKSHELFROW; j++)
-                grid[i][j].setTile(Tile.BLANK);
-
-        /*
-        Initialize the hastable based on the personal card.
-         */
-        points = new Hashtable<>();
-        points.put(0,0);
-        points.put(1,1);
-        points.put(2,2);
-        points.put(3,4);
-        points.put(4,6);
-        points.put(5,9);
-        points.put(6,12);
-
-        /*
-        Initialize the grid based on the card number.
-         */
-
-//        String jStr = new String(Files.readAllBytes(Paths.get("personalGoalCard.json")));
-//        JSONObject rootObject = JSONObject.
-        switch (cardNumber){
-            // DA FARE SONO SBAGLIATI
-            case 1:
-                grid[0][0].setTile(Tile.PINK);
-                grid[2][0].setTile(Tile.BLUE);
-                grid[4][1].setTile(Tile.GREEN);
-                grid[3][2].setTile(Tile.WHITE);
-                grid[4][1].setTile(Tile.GREEN);
-                grid[5][2].setTile(Tile.LIGHTBLUE);
-            case 2:
-                grid[1][1].setTile(Tile.PINK);
-                grid[2][0].setTile(Tile.GREEN);
-                grid[2][2].setTile(Tile.YELLOW);
-                grid[3][4].setTile(Tile.WHITE);
-                grid[4][3].setTile(Tile.LIGHTBLUE);
-                grid[5][4].setTile(Tile.BLUE);
-            case 3:
-                grid[0][1].setTile(Tile.BLUE);
-                grid[3][1].setTile(Tile.YELLOW);
-                grid[2][2].setTile(Tile.PINK);
-                grid[1][3].setTile(Tile.GREEN);
-                grid[5][0].setTile(Tile.WHITE);
-                grid[5][2].setTile(Tile.LIGHTBLUE);
-        }
+        this.points = points;
+        this.grid = grid;
     }
 
     /**

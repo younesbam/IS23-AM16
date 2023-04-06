@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.exceptions.NotEmptyColumnException;
+import it.polimi.ingsw.common.exceptions.NotEmptyColumnException;
 
 import java.security.InvalidParameterException;
 import java.util.List;

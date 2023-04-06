@@ -1,0 +1,1461 @@
+{
+  "personalCards": [
+    {
+      "descr": 1,
+      "pointsTable": [
+        {
+          "matches": 0,
+          "points": 0
+        },
+        {
+          "matches": 1,
+          "points": 1
+        },
+        {
+          "matches": 2,
+          "points": 2
+        },
+        {
+          "matches": 3,
+          "points": 4
+        },
+        {
+          "matches": 4,
+          "points": 6
+        },
+        {
+          "matches": 5,
+          "points": 9
+        },
+        {
+          "matches": 6,
+          "points": 12
+        }
+      ],
+      "coordinates":[
+        {
+          "y": 0,
+          "x": 0,
+          "type": "PINK"
+        },
+        {
+          "y": 0,
+          "x": 2,
+          "type": "BLUE"
+        },
+        {
+          "y": 1,
+          "x": 4,
+          "type": "GREEN"
+        },
+        {
+          "y": 2,
+          "x": 3,
+          "type": "WHITE"
+        },
+        {
+          "y": 3,
+          "x": 1,
+          "type": "YELLOW"
+        },
+        {
+          "y": 5,
+          "x": 2,
+          "type": "LIGHTBLUE"
+        }
+      ]
+    },
+    {
+      "descr": 2,
+      "pointsTable": [
+        {
+          "matches": 0,
+          "points": 0
+        },
+        {
+          "matches": 1,
+          "points": 1
+        },
+        {
+          "matches": 2,
+          "points": 2
+        },
+        {
+          "matches": 3,
+          "points": 4
+        },
+        {
+          "matches": 4,
+          "points": 6
+        },
+        {
+          "matches": 5,
+          "points": 9
+        },
+        {
+          "matches": 6,
+          "points": 12
+        }
+      ],
+      "coordinates":[
+        {
+          "y": 1,
+          "x": 1,
+          "type": "PINK"
+        },
+        {
+          "y": 2,
+          "x": 0,
+          "type": "GREEN"
+        },
+        {
+          "y": 2,
+          "x": 2,
+          "type": "YELLOW"
+        },
+        {
+          "y": 3,
+          "x": 4,
+          "type": "WHITE"
+        },
+        {
+          "y": 4,
+          "x": 3,
+          "type": "LIGHTBLUE"
+        },
+        {
+          "y": 5,
+          "x": 4,
+          "type": "BLUE"
+        }
+      ]
+    },
+    {
+      "descr": 3,
+      "pointsTable": [
+        {
+          "matches": 0,
+          "points": 0
+        },
+        {
+          "matches": 1,
+          "points": 1
+        },
+        {
+          "matches": 2,
+          "points": 2
+        },
+        {
+          "matches": 3,
+          "points": 4
+        },
+        {
+          "matches": 4,
+          "points": 6
+        },
+        {
+          "matches": 5,
+          "points": 9
+        },
+        {
+          "matches": 6,
+          "points": 12
+        }
+      ],
+      "coordinate": [
+        {
+          "y": 1,
+          "x": 0,
+          "type": "BLUE"
+        },
+        {
+          "y": 1,
+          "x": 3,
+          "type": "YELLOW"
+        },
+        {
+          "y": 2,
+          "x": 2,
+          "type": "PINK"
+        },
+        {
+          "y": 3,
+          "x": 1,
+          "type": "GREEN"
+        },
+        {
+          "y": 3,
+          "x": 4,
+          "type": "LIGHTBLUE"
+        },
+        {
+          "y": 5,
+          "x": 0,
+          "type": "WHITE"
+        }
+      ]
+    },
+    {
+      "descr": 4,
+      "pointsTable": [
+        {
+          "matches": 0,
+          "points": 0
+        },
+        {
+          "matches": 1,
+          "points": 1
+        },
+        {
+          "matches": 2,
+          "points": 2
+        },
+        {
+          "matches": 3,
+          "points": 4
+        },
+        {
+          "matches": 4,
+          "points": 6
+        },
+        {
+          "matches": 5,
+          "points": 9
+        },
+        {
+          "matches": 6,
+          "points": 12
+        }
+      ],
+      "coordinate": [
+        {
+          "y": 0,
+          "x": 4,
+          "type": "YELLOW"
+        },
+        {
+          "y": 2,
+          "x": 0,
+          "type": "LIGHTBLUE"
+        },
+        {
+          "y": 2,
+          "x": 2,
+          "type": "BLUE"
+        },
+        {
+          "y": 3,
+          "x": 3,
+          "type": "PINK"
+        },
+        {
+          "y": 4,
+          "x": 1,
+          "type": "WHITE"
+        },
+        {
+          "y": 4,
+          "x": 2,
+          "type": "GREEN"
+        }
+      ]
+    },
+    {
+      "descr": 5,
+      "pointsTable": [
+        {
+          "matches": 0,
+          "points": 0
+        },
+        {
+          "matches": 1,
+          "points": 1
+        },
+        {
+          "matches": 2,
+          "points": 2
+        },
+        {
+          "matches": 3,
+          "points": 4
+        },
+        {
+          "matches": 4,
+          "points": 6
+        },
+        {
+          "matches": 5,
+          "points": 9
+        },
+        {
+          "matches": 6,
+          "points": 12
+        }
+      ],
+      "coordinate": [
+        {
+          "y": 1,
+          "x": 1,
+          "type": "LIGHTBLUE"
+        },
+        {
+          "y": 3,
+          "x": 1,
+          "type": "BLUE"
+        },
+        {
+          "y": 3,
+          "x": 2,
+          "type": "WHITE"
+        },
+        {
+          "y": 4,
+          "x": 4,
+          "type": "PINK"
+        },
+        {
+          "y": 5,
+          "x": 0,
+          "type": "YELLOW"
+        },
+        {
+          "y": 5,
+          "x": 3,
+          "type": "GREEN"
+        }
+      ]
+    },
+    {
+      "descr": 6,
+      "pointsTable": [
+        {
+          "matches": 0,
+          "points": 0
+        },
+        {
+          "matches": 1,
+          "points": 1
+        },
+        {
+          "matches": 2,
+          "points": 2
+        },
+        {
+          "matches": 3,
+          "points": 4
+        },
+        {
+          "matches": 4,
+          "points": 6
+        },
+        {
+          "matches": 5,
+          "points": 9
+        },
+        {
+          "matches": 6,
+          "points": 12
+        }
+      ],
+      "coordinate": [
+        {
+          "y": 0,
+          "x": 2,
+          "type": "LIGHTBLUE"
+        },
+        {
+          "y": 0,
+          "x": 4,
+          "type": "GREEN"
+        },
+        {
+          "y": 2,
+          "x": 3,
+          "type": "WHITE"
+        },
+        {
+          "y": 4,
+          "x": 1,
+          "type": "YELLOW"
+        },
+        {
+          "y": 4,
+          "x": 3,
+          "type": "BLUE"
+        },
+        {
+          "y": 5,
+          "x": 0,
+          "type": "PINK"
+        }
+      ]
+    },
+    {
+      "descr": 7,
+      "pointsTable": [
+        {
+          "matches": 0,
+          "points": 0
+        },
+        {
+          "matches": 1,
+          "points": 1
+        },
+        {
+          "matches": 2,
+          "points": 2
+        },
+        {
+          "matches": 3,
+          "points": 4
+        },
+        {
+          "matches": 4,
+          "points": 6
+        },
+        {
+          "matches": 5,
+          "points": 9
+        },
+        {
+          "matches": 6,
+          "points": 12
+        }
+      ],
+      "coordinate": [
+        {
+          "y": 0,
+          "x": 0,
+          "type": "GREEN"
+        },
+        {
+          "y": 1,
+          "x": 3,
+          "type": "BLUE"
+        },
+        {
+          "y": 2,
+          "x": 1,
+          "type": "PINK"
+        },
+        {
+          "y": 3,
+          "x": 0,
+          "type": "LIGHTBLUE"
+        },
+        {
+          "y": 4,
+          "x": 4,
+          "type": "YELLOW"
+        },
+        {
+          "y": 5,
+          "x": 2,
+          "type": "WHITE"
+        }
+      ]
+    },
+    {
+      "descr": 8,
+      "pointsTable": [
+        {
+          "matches": 0,
+          "points": 0
+        },
+        {
+          "matches": 1,
+          "points": 1
+        },
+        {
+          "matches": 2,
+          "points": 2
+        },
+        {
+          "matches": 3,
+          "points": 4
+        },
+        {
+          "matches": 4,
+          "points": 6
+        },
+        {
+          "matches": 5,
+          "points": 9
+        },
+        {
+          "matches": 6,
+          "points": 12
+        }
+      ],
+      "coordinate": [
+        {
+          "y": 0,
+          "x": 4,
+          "type": "BLUE"
+        },
+        {
+          "y": 1,
+          "x": 1,
+          "type": "GREEN"
+        },
+        {
+          "y": 2,
+          "x": 2,
+          "type": "LIGHTBLUE"
+        },
+        {
+          "y": 3,
+          "x": 0,
+          "type": "PINK"
+        },
+        {
+          "y": 4,
+          "x": 3,
+          "type": "WHITE"
+        },
+        {
+          "y": 5,
+          "x": 3,
+          "type": "YELLOW"
+        }
+      ]
+    },
+    {
+      "descr": 9,
+      "pointsTable": [
+        {
+          "matches": 0,
+          "points": 0
+        },
+        {
+          "matches": 1,
+          "points": 1
+        },
+        {
+          "matches": 2,
+          "points": 2
+        },
+        {
+          "matches": 3,
+          "points": 4
+        },
+        {
+          "matches": 4,
+          "points": 6
+        },
+        {
+          "matches": 5,
+          "points": 9
+        },
+        {
+          "matches": 6,
+          "points": 12
+        }
+      ],
+      "coordinate": [
+        {
+          "y": 0,
+          "x": 2,
+          "type": "GREEN"
+        },
+        {
+          "y": 2,
+          "x": 2,
+          "type": "GREEN"
+        },
+        {
+          "y": 3,
+          "x": 4,
+          "type": "WHITE"
+        },
+        {
+          "y": 4,
+          "x": 1,
+          "type": "LIGHTBLUE"
+        },
+        {
+          "y": 4,
+          "x": 4,
+          "type": "PINK"
+        },
+        {
+          "y": 5,
+          "x": 0,
+          "type": "BLUE"
+        }
+      ]
+    },
+    {
+      "descr": 10,
+      "pointsTable": [
+        {
+          "matches": 0,
+          "points": 0
+        },
+        {
+          "matches": 1,
+          "points": 1
+        },
+        {
+          "matches": 2,
+          "points": 2
+        },
+        {
+          "matches": 3,
+          "points": 4
+        },
+        {
+          "matches": 4,
+          "points": 6
+        },
+        {
+          "matches": 5,
+          "points": 9
+        },
+        {
+          "matches": 6,
+          "points": 12
+        }
+      ],
+      "coordinate": [
+        {
+          "y": 0,
+          "x": 4,
+          "type": "LIGHTBLUE"
+        },
+        {
+          "y": 1,
+          "x": 1,
+          "type": "YELLOW"
+        },
+        {
+          "y": 2,
+          "x": 0,
+          "type": "WHITE"
+        },
+        {
+          "y": 3,
+          "x": 3,
+          "type": "GREEN"
+        },
+        {
+          "y": 4,
+          "x": 1,
+          "type": "BLUE"
+        },
+        {
+          "y": 5,
+          "x": 3,
+          "type": "PINK"
+        }
+      ]
+    },
+    {
+      "descr": 11,
+      "pointsTable": [
+        {
+          "matches": 0,
+          "points": 0
+        },
+        {
+          "matches": 1,
+          "points": 1
+        },
+        {
+          "matches": 2,
+          "points": 2
+        },
+        {
+          "matches": 3,
+          "points": 4
+        },
+        {
+          "matches": 4,
+          "points": 6
+        },
+        {
+          "matches": 5,
+          "points": 9
+        },
+        {
+          "matches": 6,
+          "points": 12
+        }
+      ],
+      "coordinate": [
+        {
+          "y": 0,
+          "x": 2,
+          "type": "PINK"
+        },
+        {
+          "y": 1,
+          "x": 1,
+          "type": "WHITE"
+        },
+        {
+          "y": 2,
+          "x": 0,
+          "type": "YELLOW"
+        },
+        {
+          "y": 3,
+          "x": 2,
+          "type": "BLUE"
+        },
+        {
+          "y": 4,
+          "x": 4,
+          "type": "GREEN"
+        },
+        {
+          "y": 5,
+          "x": 3,
+          "type": "LIGHTBLUE"
+        }
+      ]
+    },
+    {
+      "descr": 12,
+      "pointsTable": [
+        {
+          "matches": 0,
+          "points": 0
+        },
+        {
+          "matches": 1,
+          "points": 1
+        },
+        {
+          "matches": 2,
+          "points": 2
+        },
+        {
+          "matches": 3,
+          "points": 4
+        },
+        {
+          "matches": 4,
+          "points": 6
+        },
+        {
+          "matches": 5,
+          "points": 9
+        },
+        {
+          "matches": 6,
+          "points": 12
+        }
+      ],
+      "coordinate": [
+        {
+          "y": 0,
+          "x": 2,
+          "type": "WHITE"
+        },
+        {
+          "y": 1,
+          "x": 1,
+          "type": "PINK"
+        },
+        {
+          "y": 2,
+          "x": 2,
+          "type": "BLUE"
+        },
+        {
+          "y": 3,
+          "x": 3,
+          "type": "LIGHTBLUE"
+        },
+        {
+          "y": 4,
+          "x": 4,
+          "type": "YELLOW"
+        },
+        {
+          "y": 5,
+          "x": 0,
+          "type": "GREEN"
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "players": 2,
+      "coordinates": [
+        {
+          "y": 0,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 2,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 3,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 4,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 5,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 6,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 2,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 5,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 6,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 2,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 2,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 2,
+          "x": 2,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 2,
+          "x": 6,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 2,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 2,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 3,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 3,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 3,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 4,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 4,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 5,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 5,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 5,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 6,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 6,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 6,
+          "x": 2,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 6,
+          "x": 6,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 6,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 6,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 2,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 3,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 6,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 2,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 3,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 4,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 5,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 6,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        }
+      ]
+    },
+    {
+      "players": 3,
+      "coordinates": [
+        {
+          "y": 0,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 2,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 4,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 5,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 6,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 2,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 5,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 6,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 2,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 2,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 2,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 2,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 3,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 3,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 4,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 4,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 5,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 5,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 6,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 6,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 6,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 6,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 2,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 3,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 6,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 2,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 3,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 4,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 6,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        }
+      ]
+    },
+    {
+      "players": 4,
+      "coordinates": [
+        {
+          "y": 0,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 2,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 5,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 6,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 0,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 2,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 6,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 1,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 2,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 2,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 2,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 2,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 3,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 5,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 6,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 6,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 6,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 6,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 2,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 6,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 7,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 0,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 1,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 2,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 3,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 6,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 7,
+          "type": "UNAVAILABLE"
+        },
+        {
+          "y": 8,
+          "x": 8,
+          "type": "UNAVAILABLE"
+        }
+      ]
+    }
+  ]
+}
