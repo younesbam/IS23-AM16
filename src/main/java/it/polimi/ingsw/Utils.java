@@ -1,10 +1,12 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.common.exceptions.InvalidDimensionException;
 import it.polimi.ingsw.common.exceptions.InvalidDirectoryException;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Tile;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -37,8 +39,8 @@ public final class Utils {
      * @throws InvalidDirectoryException
      * @author Nicolo' Gandini
      */
-    public static String convertFileIntoString(String fileName) throws InvalidDirectoryException {
-        String result;
+    public static String convertFileIntoString(String fileName) {
+        String result=null;
         /*
         Insert the relative path where the files are located (usually in resources). Only one slash is permitted.
         We use the get() method of Paths to get the file data.
@@ -47,8 +49,9 @@ public final class Utils {
         File directory = new File("src/main/resources/" + fileName);
         try{
             result = new String(Files.readAllBytes(Paths.get(directory.getAbsolutePath())));
-        } catch (Exception e){
-            throw new InvalidDirectoryException();
+        } catch (IOException e){
+            e.printStackTrace();
+            System.exit(-1);
         }
         return result;
     }
@@ -59,7 +62,7 @@ public final class Utils {
      * @param columns number of columns
      * @return empty bi-dimensional array of Cell
      */
-    public static Cell[][] createBlankGrid(int rows, int columns){
+    public static Cell[][] createBlankGrid(int rows, int columns) {
         Cell[][] grid;
 
         grid = new Cell[rows][columns];

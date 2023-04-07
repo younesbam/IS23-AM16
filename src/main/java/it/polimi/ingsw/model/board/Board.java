@@ -32,40 +32,14 @@ public abstract class Board {
      * Constructor of the board, used by the subclasses.
      */
     public Board(){
+        /*
+        Creation of the tile queue
+         */
         initTileSet = new HashSet<>();
         for (Tile tile : Tile.values())
             for (int i=0; i<MAXTILES; i++)
                 initTileSet.add(tile);
         tiles = new PriorityQueue<>(initTileSet);
-
-
-        // This cycle sets blank in each cell in order to let the cell be filled.
-        for (int i=0; i<MAXBOARDDIM; i++)
-            for (int j = 0; j< MAXBOARDDIM; j++)
-                grid[i][j].setTile(Tile.BLANK);
-
-
-        // This cycle sets UNAVAILABLE the cells in the top left corner.
-        for (int j=0; j<4; j++)
-            for (int i=0; i<4-j; i++)
-                grid[i][j].setTile(Tile.UNAVAILABLE);
-
-        // This cycle sets UNAVAILABLE the cells in the top right corner.
-        for (int j = 5; j<= MAXBOARDDIM; j++)
-            for (int i=0; i<3; i++)
-                grid[i][j].setTile(Tile.UNAVAILABLE);
-
-        // This cycle sets UNAVAILABLE the cells in the bottom left corner.
-        for (int i=6; i<=MAXBOARDDIM; i++)
-            for (int j=0; j<3; j++){
-                grid[i][j].setTile(Tile.UNAVAILABLE);
-                grid[i][j+1].setTile(Tile.UNAVAILABLE);
-            }
-
-        //This cycle sets UNAVAILABLE the cells in the bottom right corner.
-        for (int i=5; i<=MAXBOARDDIM; i++)
-            for (int j = MAXBOARDDIM; j<5; j--)
-                grid[i][j].setTile(Tile.UNAVAILABLE);
     }
 
 

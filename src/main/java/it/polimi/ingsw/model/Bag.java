@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.Utils;
-import it.polimi.ingsw.common.exceptions.InvalidDirectoryException;
+import it.polimi.ingsw.common.JSONParser;
 import it.polimi.ingsw.model.cards.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,7 +12,7 @@ import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
 import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
 
 /**
- * Represent the black bag with all the shuffled cards and tiles inside.
+ * Represent the black bag with all the shuffled cards inside.
  * @author Nicolo' Gandini
  */
 public class Bag {
@@ -51,49 +51,8 @@ public class Bag {
         /*
         Personal card read from json
          */
-        Hashtable<Integer, Integer> persCardPoints = new Hashtable<>();
-        Cell[][] personalCardGrid = Utils.createBlankGrid(MAXBOOKSHELFROW, MAXBOOKSHELFCOL);
-
-        String jsonString = Utils.convertFileIntoString("json/initSetup.json");
-        // Get the json object from the string
-        JSONObject obj = new JSONObject(jsonString);
-        // Get personal cards array
-        JSONArray personalCardsArray = obj.getJSONArray("personalCards");
-        // Iterate all the objects in the cards array. Each element is an object of boh, it's hidden now.
-        for(int i=0; i<personalCardsArray.length(); i++){
-            // Get each object in a variable. Now we don't know what's inside
-            JSONObject objInPersonalCardsArray = personalCardsArray.getJSONObject(i);
-            // Get the descr key that must be inside the mystery object
-            int descr = objInPersonalCardsArray.getInt("descr");
-            // Get the coordinates key array and pointsTable that must be inside the mystery object
-            JSONArray coordinateArrayInObj = objInPersonalCardsArray.getJSONArray("coordinates");
-            JSONArray pointsTableArrayInObj = objInPersonalCardsArray.getJSONArray("pointsTable");
-            // Iterate the pointsTable array. Again, each element is an object of boh, it's hidden now
-            for(int j=0; j<pointsTableArrayInObj.length(); j++){
-                // Get each object in a variable. Now we don't know what's inside
-                JSONObject objInPointsTable = pointsTableArrayInObj.getJSONObject(j);
-                // Get all the useful keys inside the mystery object
-                int matches = objInPointsTable.getInt("matches");
-                int points = objInPointsTable.getInt("points");
-                persCardPoints.put(matches, points);
-            }
-            // Iterate the coordinate array. Again, each element is an object of boh, it's hidden now
-            for(int j=0; j<coordinateArrayInObj.length(); j++){
-                // Get each object in a variable. Now we don't know what's inside
-                JSONObject objInCoordinate = coordinateArrayInObj.getJSONObject(j);
-                // Get all the useful keys inside the mystery object
-                int x = objInCoordinate.getInt("x");
-                int y = objInCoordinate.getInt("y");
-                Tile tile = Tile.valueOf(objInCoordinate.getString("type").toUpperCase());
-
-                personalCardGrid[y][x].setTile(tile);
-            }
-            // Save all the retrieved information into the card
-            initPersSet.add(new PersonalGoalCard(descr, persCardPoints, personalCardGrid));
-            // Reset all the previous grid and points.
-            persCardPoints.clear();
-            personalCardGrid = Utils.createBlankGrid(MAXBOOKSHELFROW, MAXBOOKSHELFCOL);
-        }
+        JSONParser jsonParser = new JSONParser("json/initSetup.json");
+        initPersSet = jsonParser.getPersonalGoalCards();
 
         /*
         Final operations
