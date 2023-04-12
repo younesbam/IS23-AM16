@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.Tile;
 
 import java.util.*;
 
+import static it.polimi.ingsw.Utils.MAXBOARDDIM;
+import static it.polimi.ingsw.Utils.MAXTILES;
+
 /**
  * This class represents the game's board.
  * @author Francesca Rosa Diz.
@@ -20,13 +23,6 @@ public abstract class Board {
 
     // Queue of the tiles.
     private Queue<Tile> tiles;
-
-    // This constant represents the maximum number for any tile's type.
-    public static final int MAXTILES = 22;
-
-    // This constant represents the maximum number of columns and rows for the board.
-    public static final int MAXBOARDDIM = 9;
-
 
     /**
      * Constructor of the board, used by the subclasses.

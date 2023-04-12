@@ -2,8 +2,8 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+import static it.polimi.ingsw.Utils.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Utils.MAXBOOKSHELFROW;
 
 /**
  * <p>
@@ -13,10 +13,25 @@ import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
  * @author Nicolo' Gandini
  */
 public class EqualInCol extends CommonGoalCard {
+    /**
+     * Number of equal tiles
+     */
     private int eq;
+
+    /**
+     * Number of repetition of the pattern
+     */
     private int repetition;
+
+    /**
+     * Orientation of the check
+     */
     private Direction dir;
 
+    /**
+     * Initialize repetition, direction and equal tiles based on the card number
+     * @param cardNumber number of the card
+     */
     public EqualInCol(int cardNumber) {
         super(cardNumber);
         switch (cardNumber){
@@ -34,11 +49,7 @@ public class EqualInCol extends CommonGoalCard {
     /**
      * Check if the player respect the rules to obtain the card's points
      * @param player actual player
-     * @param eq number of equal tiles
-     * @param repetition number of pattern's repetition
-     * @param dir orientation of the check
      * @return Integer which represent the points that the player can obtain. 0 can be returned
-     * @author Nicolo' Gandini
      */
     public Integer checkScheme(Player player) {
         int actualRepetition = 0;  // Rappresenta il numero di ripetizioni dello stesso algoritmo. Sulle carte indicate come "x2", "x3"...

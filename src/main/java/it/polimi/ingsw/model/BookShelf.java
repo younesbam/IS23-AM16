@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.common.exceptions.NotEmptyColumnException;
 
 import java.security.InvalidParameterException;
 import java.util.List;
+
+import static it.polimi.ingsw.Utils.*;
 
 
 /**
@@ -12,30 +15,17 @@ import java.util.List;
  */
 public class BookShelf {
 
-    // This attribute specifies the grid's dimensions.
+    /**
+     * This attribute specifies the grid's dimensions.
+     */
     private Cell[][] grid;
-
-    // Maximum numbers of rows
-    public static final int MAXBOOKSHELFROW = 6;
-    // Maximum number of columns.
-    public static final int MAXBOOKSHELFCOL = 5;
-    // Maximum number of picked tiles.
-    public static final int MAXPICKEDTILES = 3;
-
 
     /**
      * Constructor for the BookShelf.
-     * The cycle sets initially BLANK all the cells contained in the BookShelf.
+     * It sets initially BLANK all the cells contained in the BookShelf.
      */
     public BookShelf() {
-        grid = new Cell[MAXBOOKSHELFROW][MAXBOOKSHELFCOL];
-        for(int i=0; i<MAXBOOKSHELFROW; i++){
-            grid[i] = new Cell[]{new Cell()};
-        }
-
-        for(int i=0; i<MAXBOOKSHELFROW; i++)
-            for (int j=0; j<MAXBOOKSHELFCOL; j++)
-                grid[i][j].setTile(Tile.BLANK);
+        grid = Utils.createBlankGrid(MAXBOOKSHELFROW, MAXBOOKSHELFCOL);
     }
 
     /**

@@ -1,30 +1,33 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.common.JSONParser;
 import it.polimi.ingsw.model.cards.*;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.*;
-
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
 
 /**
  * Represent the black bag with all the shuffled cards inside.
  * @author Nicolo' Gandini
  */
 public class Bag {
-    public static final int MAXCARDS = 12;
+
 
     private Set<CommonGoalCard> initCommSet;
     private Set<PersonalGoalCard> initPersSet;
+
+    /**
+     * Queue used to represent common goal cards
+     */
     private Queue<CommonGoalCard> commCards;
+
+    /**
+     * Queue used to represent the personal goal cards
+     */
     private Queue<PersonalGoalCard> persCards;
 
     /**
-     * Initialize all the tiles inside the bag into a Set.
+     * Initialize all the tiles inside the bag into a Set, in order to have an unordered collection.
+     * Then transform the Set to a Queue, in a random order.
      */
     public Bag() {
         // Create Sets to insert random cards.
@@ -62,6 +65,12 @@ public class Bag {
         persCards = new PriorityQueue<>(initPersSet);
     }
 
+    /**
+     * Pick from the deck a random common goal card
+     * @param playerNum number of players in the actual game
+     * @return common goal card
+     * @throws NullPointerException
+     */
     public CommonGoalCard pickCommonGoalCard(int playerNum) throws NullPointerException {
         CommonGoalCard comCard;
         comCard = commCards.poll();
@@ -70,7 +79,15 @@ public class Bag {
         return comCard;
     }
 
-    public PersonalGoalCard pickPersonalGoalCard(){
-        return persCards.poll();
+    /**
+     * Pick from the deck a random personal goal card
+     * @return personal goal card
+     * @throws NullPointerException
+     */
+    public PersonalGoalCard pickPersonalGoalCard() throws NullPointerException {
+        PersonalGoalCard persCard;
+        persCard = persCards.poll();
+        if(persCard == null) throw new NullPointerException("Personal card's deck is empty");
+        return persCard;
     }
 }

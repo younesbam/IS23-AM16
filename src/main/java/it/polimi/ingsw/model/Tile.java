@@ -5,7 +5,7 @@ package it.polimi.ingsw.model;
  */
 public enum Tile {
 
-    /**
+    /*
      * These are the possible colors for the object tiles.
      */
 

@@ -4,14 +4,17 @@ import it.polimi.ingsw.model.*;
 
 import java.util.Hashtable;
 
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+import static it.polimi.ingsw.Utils.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Utils.MAXBOOKSHELFROW;
 
 /**
  * Personal goal card
  * @author Nicolo' Gandini
  */
 public class PersonalGoalCard extends Card {
+    /**
+     * Grid that represent the bookshelf of the card
+     */
     private Cell[][] grid;
     /**
      * Hashtable of Integer type used to transform the number of matches into points
@@ -38,6 +41,11 @@ public class PersonalGoalCard extends Card {
         return grid[x][y].getTile();
     }
 
+    /**
+     * Check the scheme to observe in order to get points.
+     * @param player actual player
+     * @return points achieved
+     */
     public Integer checkScheme(Player player) {
         int matches = 0;
         for(int j=0; j<MAXBOOKSHELFCOL; j++){

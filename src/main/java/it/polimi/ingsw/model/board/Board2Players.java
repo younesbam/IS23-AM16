@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.common.JSONParser;
-import it.polimi.ingsw.model.Tile;
 
 /**
  * This is the board for 2 players.
