@@ -6,8 +6,8 @@ import it.polimi.ingsw.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+import static it.polimi.ingsw.Utils.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Utils.MAXBOOKSHELFROW;
 
 /**
  * <p>
@@ -17,9 +17,20 @@ import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
  * @author Nicolo' Gandini
  */
 public class EqualCross extends CommonGoalCard {
+    /**
+     * Repetition of the pattern
+     */
     private int repetition;
+
+    /**
+     * Measure [cells] of the square side
+     */
     private int squareSide;
 
+    /**
+     * Initialize repetition and square side based on the card number
+     * @param cardNumber number of the card
+     */
     public EqualCross(int cardNumber) {
         super(cardNumber);
         switch(cardNumber){
@@ -35,10 +46,7 @@ public class EqualCross extends CommonGoalCard {
     /**
      * Check if the player respect the rules to obtain the card's points
      * @param player actual player
-     * @param repetition number of pattern's repetition
-     * @param squareSide measure [cells] of the square side
      * @return Integer which represent the points that the player can obtain. 0 can be returned
-     * @author Nicolo' Gandini
      */
     public Integer checkScheme(Player player) {
         int actualRepetition = 0;  // Rappresenta il numero di ripetizioni dello stesso algoritmo. Sulle carte indicate come "x2", "x3"...

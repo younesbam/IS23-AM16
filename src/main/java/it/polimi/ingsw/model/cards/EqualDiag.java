@@ -2,8 +2,8 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+import static it.polimi.ingsw.Utils.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Utils.MAXBOOKSHELFROW;
 
 /**
  * <p>
@@ -27,7 +27,6 @@ public class EqualDiag extends CommonGoalCard {
      * Check if the player respect the rules to obtain the card's points
      * @param player actual player
      * @return Integer which represent the points that the player can obtain. 0 can be returned
-     * @author Nicolo' Gandini
      */
     public Integer checkScheme(Player player) {
         /*

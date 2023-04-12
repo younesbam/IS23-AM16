@@ -1,34 +1,43 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.common.JSONParser;
 import it.polimi.ingsw.model.cards.*;
 
 import java.util.*;
 
 /**
- * Represent the black bag with all the shuffled cards and tiles inside.
+ * Represent the black bag with all the shuffled cards inside.
  * @author Nicolo' Gandini
  */
 public class Bag {
-    public static final int MAXCARDS = 12;
+
 
     private Set<CommonGoalCard> initCommSet;
     private Set<PersonalGoalCard> initPersSet;
+
+    /**
+     * Queue used to represent common goal cards
+     */
     private Queue<CommonGoalCard> commCards;
+
+    /**
+     * Queue used to represent the personal goal cards
+     */
     private Queue<PersonalGoalCard> persCards;
 
     /**
-     * Initialize all the tiles inside the bag into a Set.
+     * Initialize all the tiles inside the bag into a Set, in order to have an unordered collection.
+     * Then transform the Set to a Queue, in a random order.
      */
     public Bag() {
+        // Create Sets to insert random cards.
         initCommSet = new HashSet<>();
         initPersSet = new HashSet<>();
 
         /*
-        Inizializzazione dei vari Set con elementi sparsi.
+        Common card initialization
          */
-        for(int i=0; i<MAXCARDS; i++){
-            initPersSet.add(new PersonalGoalCard(i));
-        }
+        // Add common cards in the Set
         initCommSet.add(new EqualCross(1));
         initCommSet.add(new EqualCross(10));
         initCommSet.add(new DiffAligned(2));
@@ -43,12 +52,25 @@ public class Bag {
         initCommSet.add(new SubMatrix(12));
 
         /*
-        Trasformazione del Set in una coda con priorità, disordinata.
+        Personal card read from json
          */
+        JSONParser jsonParser = new JSONParser("json/initSetup.json");
+        initPersSet = jsonParser.getPersonalGoalCards();
+
+        /*
+        Final operations
+         */
+        // Transform the Set into priority queue. Useful to poll the first element.
         commCards = new PriorityQueue<>(initCommSet);
         persCards = new PriorityQueue<>(initPersSet);
     }
 
+    /**
+     * Pick from the deck a random common goal card
+     * @param playerNum number of players in the actual game
+     * @return common goal card
+     * @throws NullPointerException
+     */
     public CommonGoalCard pickCommonGoalCard(int playerNum) throws NullPointerException {
         CommonGoalCard comCard;
         comCard = commCards.poll();
@@ -57,7 +79,15 @@ public class Bag {
         return comCard;
     }
 
-    public PersonalGoalCard pickPersonalGoalCard(){
-        return persCards.poll();
+    /**
+     * Pick from the deck a random personal goal card
+     * @return personal goal card
+     * @throws NullPointerException
+     */
+    public PersonalGoalCard pickPersonalGoalCard() throws NullPointerException {
+        PersonalGoalCard persCard;
+        persCard = persCards.poll();
+        if(persCard == null) throw new NullPointerException("Personal card's deck is empty");
+        return persCard;
     }
 }

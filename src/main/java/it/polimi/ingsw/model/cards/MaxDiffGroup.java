@@ -4,8 +4,8 @@ import it.polimi.ingsw.model.*;
 
 import java.util.*;
 
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+import static it.polimi.ingsw.Utils.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Utils.MAXBOOKSHELFROW;
 
 /**
  * <p>
@@ -15,11 +15,30 @@ import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
  * @author Nicolo' Gandini
  */
 public class MaxDiffGroup extends CommonGoalCard {
+    /**
+     * Maximum number of different tiles in the group
+     */
     private int maxNotEq;
+
+    /**
+     *
+     */
     private int repetition;
+
+    /**
+     * Specify the number of tiles to take into consideration
+     */
     private int group;
+
+    /**
+     * Direction of the group
+     */
     private Direction dir;
 
+    /**
+     * Initialize all the attributes based on the card number
+     * @param cardNumber number of the card
+     */
     public MaxDiffGroup(int cardNumber) {
         super(cardNumber);
         switch (cardNumber){
@@ -39,11 +58,7 @@ public class MaxDiffGroup extends CommonGoalCard {
     /**
      * Check if the player respect the rules to obtain the card's points
      * @param player actual player
-     * @param maxNotEq maximum number of different tiles in the group
-     * @param group specify the number of tiles to take into consideration
-     * @param dir direction of the group
      * @return Integer which represent the points that the player can obtain. 0 can be returned
-     * @author Nicolo' Gandini
      */
     public Integer checkScheme(Player player) {
         int occurrences = 0;  // Viene incrementato se il tipo è trovato all'interno del Set.
