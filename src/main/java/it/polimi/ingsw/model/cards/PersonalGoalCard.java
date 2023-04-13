@@ -4,14 +4,17 @@ import it.polimi.ingsw.model.*;
 
 import java.util.Hashtable;
 
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+import static it.polimi.ingsw.Utils.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Utils.MAXBOOKSHELFROW;
 
 /**
  * Personal goal card
  * @author Nicolo' Gandini
  */
 public class PersonalGoalCard extends Card {
+    /**
+     * Grid that represent the bookshelf of the card
+     */
     private Cell[][] grid;
     /**
      * Hashtable of Integer type used to transform the number of matches into points
@@ -21,52 +24,10 @@ public class PersonalGoalCard extends Card {
     /**
      * Initialize the personal goal card grid with empty Cells and initialize the hashtable, used to get the points, based on the number of matches.
      */
-    public PersonalGoalCard(int cardNumber) {
+    public PersonalGoalCard(int cardNumber, Hashtable<Integer, Integer> points, Cell[][] grid){
         this.cardNumber = cardNumber;
-        grid = new Cell[MAXBOOKSHELFCOL][MAXBOOKSHELFROW];
-        for(int i = 0; i< MAXBOOKSHELFCOL; i++)
-            for(int j = 0; j< MAXBOOKSHELFROW; j++)
-                grid[i][j].setTile(Tile.BLANK);
-
-        /*
-        Initialize the hastable based on the personal card.
-         */
-        points = new Hashtable<>();
-        points.put(0,0);
-        points.put(1,1);
-        points.put(2,2);
-        points.put(3,4);
-        points.put(4,6);
-        points.put(5,9);
-        points.put(6,12);
-
-        /*
-        Initialize the grid based on the card number.
-         */
-        switch (cardNumber){
-            // DA FARE SONO SBAGLIATI
-            case 1:
-                grid[0][0].setTile(Tile.PINK);
-                grid[2][0].setTile(Tile.BLUE);
-                grid[4][1].setTile(Tile.GREEN);
-                grid[3][2].setTile(Tile.WHITE);
-                grid[4][1].setTile(Tile.GREEN);
-                grid[5][2].setTile(Tile.LIGHTBLUE);
-            case 2:
-                grid[1][1].setTile(Tile.PINK);
-                grid[2][0].setTile(Tile.GREEN);
-                grid[2][2].setTile(Tile.YELLOW);
-                grid[3][4].setTile(Tile.WHITE);
-                grid[4][3].setTile(Tile.LIGHTBLUE);
-                grid[5][4].setTile(Tile.BLUE);
-            case 3:
-                grid[0][1].setTile(Tile.BLUE);
-                grid[3][1].setTile(Tile.YELLOW);
-                grid[2][2].setTile(Tile.PINK);
-                grid[1][3].setTile(Tile.GREEN);
-                grid[5][0].setTile(Tile.WHITE);
-                grid[5][2].setTile(Tile.LIGHTBLUE);
-        }
+        this.points = points;
+        this.grid = grid;
     }
 
     /**
@@ -80,6 +41,11 @@ public class PersonalGoalCard extends Card {
         return grid[x][y].getTile();
     }
 
+    /**
+     * Check the scheme to observe in order to get points.
+     * @param player actual player
+     * @return points achieved
+     */
     public Integer checkScheme(Player player) {
         int matches = 0;
         for(int j=0; j<MAXBOOKSHELFCOL; j++){

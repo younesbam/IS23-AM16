@@ -6,16 +6,26 @@ package it.polimi.ingsw.model;
  * @author Francesca Rosa Diz
  */
 public class Cell {
-
-    // This attribute represents the object tile contained in the cell.
+    /**
+     * This attribute represents the object tile contained in the cell.
+     */
     private Tile tile;
 
-    // This variable specifies the x coordinate of the cell.
+    /**
+     * This variable specifies the x coordinate of the cell.
+     */
     private int x;
 
-    // This variable specifies the y coordinate of the cell.
+    /**
+     * This variable specifies the y coordinate of the cell.
+     */
     private int y;
 
+    public Cell(){
+        x=0;
+        y=0;
+        tile=Tile.BLANK;
+    }
 
     /**
      * This method returns the tile contained in the cell.

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+import static it.polimi.ingsw.Utils.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Utils.MAXBOOKSHELFROW;
 
 /**
  * <p>
@@ -17,8 +17,15 @@ import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
  * @author Nicolo' Gandini
  */
 public class EqualRand extends CommonGoalCard {
+    /**
+     * Number of tiles that must me the same, in a random order
+     */
     int eq;
 
+    /**
+     * Initialize number of equal tiles based on the card number
+     * @param cardNumber number of the card
+     */
     public EqualRand(int cardNumber) {
         super(cardNumber);
         eq = 8;
@@ -27,9 +34,7 @@ public class EqualRand extends CommonGoalCard {
     /**
      * Check if the player respect the rules to obtain the card's points
      * @param player actual player
-     * @param eq number of tiles that must me the same
      * @return Integer which represent the points that the player can obtain. 0 can be returned
-     * @author Nicolo' Gandini
      */
     public Integer checkScheme(Player player) {
         Cell[][] grid = player.getBookShelf().getGrid();

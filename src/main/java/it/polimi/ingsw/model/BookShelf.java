@@ -1,6 +1,13 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.Utils;
+import it.polimi.ingsw.common.exceptions.NotEmptyColumnException;
+
+import java.security.InvalidParameterException;
 import java.util.List;
+
+import static it.polimi.ingsw.Utils.*;
+
 
 /**
  * This class represents the player's bookshelf.
@@ -8,46 +15,46 @@ import java.util.List;
  */
 public class BookShelf {
 
-    // This attribute specifies the grid's dimensions.
-    private Cell[][] grid = new Cell[MAXBOOKSHELFROW][MAXBOOKSHELFCOL];
+    /**
+     * This attribute specifies the grid's dimensions.
+     */
+    private Cell[][] grid;
 
-    // Maximum numbers of rows
-    public static final int MAXBOOKSHELFROW = 6;
-    // Maximum number of columns.
-    public static final int MAXBOOKSHELFCOL = 5;
-
+    /**
+     * Constructor for the BookShelf.
+     * It sets initially BLANK all the cells contained in the BookShelf.
+     */
+    public BookShelf() {
+        grid = Utils.createBlankGrid(MAXBOOKSHELFROW, MAXBOOKSHELFCOL);
+    }
 
     /**
      * This method controls whether the player can insert the tiles he picked in the column he selects.
      * @param n number of the selected column
      * @param nTiles number of the tiles to insert
      * @return true if the tiles can be inserted.
+     * @throws InvalidParameterException if the number of the column of the tiles are invalid.
      */
-    public Boolean checkColumn(int n, int nTiles){
+    public void checkColumn(int n, int nTiles) throws InvalidParameterException, NotEmptyColumnException {
 
-        /**
+        /*
          * This attribute counts the number of available cells in the column.
          */
         int available = 0;
 
-        /**
+        /*
          * Check of the validity of the column's number.
          */
-        if (n>MAXBOOKSHELFCOL || n<0)
-            return false;
-
-
+        if (n>MAXBOOKSHELFCOL || n<0 || nTiles<0 || nTiles>MAXPICKEDTILES) throw new InvalidParameterException();
 
         for (int i=0; i<MAXBOOKSHELFCOL; i++) {
             if(grid[n][i].getTile() == Tile.BLANK)
                 available++;
         }
-        if (available >= nTiles)
-            return true;
-        else
-            System.out.println("Invalid column, try again");
 
-        return false;
+        if (available < nTiles) {
+            throw new NotEmptyColumnException();
+        }
     }
 
 
@@ -57,20 +64,7 @@ public class BookShelf {
      * @param y number of the desired column.
      * @param list list of tile(s) selected by the player.
      */
-    public void placeTiles(int y, List<Tile> list) {
-
-        /* This statement controls whether the number of the picked tiles is valid.
-         * (Not sure if this control has to be done here, maybe in another place).
-         */
-        if (list.size() > 3 || list.size() == 0) {
-            System.out.println("Error: invalid number of tiles.");
-            return;
-        }
-
-        if (checkColumn(y, list.size()) == false)
-            return;
-
-
+    public void placeTiles(int y, List<Tile> list){
         int i=0;
         while (grid[y][i].getTile() != Tile.BLANK)
             i++;
@@ -79,7 +73,6 @@ public class BookShelf {
             grid[y][i].setTile(tile);
             i++;
         }
-
     }
 
 
@@ -105,7 +98,6 @@ public class BookShelf {
                 }
             }
         }
-
         return true;
     }
 

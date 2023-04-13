@@ -10,22 +10,11 @@ import java.util.Queue;
  * @author Nicolo' Gandini
  */
 public abstract class CommonGoalCard extends Card {
+    /**
+     * Score queue. This is based on the number of players in the game
+     */
     private Queue<Integer> score;
 
-    /**
-     * Add score based on the number of players.
-     * <p>
-     *      2 Players: 8, 4 score points.
-     * </p>
-     * <p>
-     *     3 Players: 8, 6, 4 score points.
-     * </p>
-     * <p>
-     *     4 Players: 8, 6, 4, 2 score points.
-     * </p>
-     * @param playerNum number of total players in the game
-     * @param cardNumber number of the corresponding physical card
-     */
     public CommonGoalCard(int cardNumber){
         this.cardNumber = cardNumber;
         score = new PriorityQueue<>();
@@ -39,6 +28,19 @@ public abstract class CommonGoalCard extends Card {
         return score.poll();
     }
 
+    /**
+     * Add score based on the number of players.
+     * <p>
+     *      2 Players: 8, 4 score points.
+     * </p>
+     * <p>
+     *     3 Players: 8, 6, 4 score points.
+     * </p>
+     * <p>
+     *     4 Players: 8, 6, 4, 2 score points.
+     * </p>
+     * @param playerNum number of total players in the game
+     */
     public void placePoints(int playerNum){
         switch (playerNum) {
             case 2:
