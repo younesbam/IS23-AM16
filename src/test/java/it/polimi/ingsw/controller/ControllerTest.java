@@ -1,6 +1,9 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Tile;
+import it.polimi.ingsw.model.cards.CommonGoalCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static it.polimi.ingsw.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static it.polimi.ingsw.Utils.MAXBOARDDIM;
 
 class ControllerTest {
 
@@ -19,7 +22,34 @@ class ControllerTest {
     public void setUp() {
         controller = new Controller();
     }
+    @Test
+    public void testSetup(){
+        Game game = controller.getGame();
+        int numOfPlayers = game.getNumOfPlayers();
+        assertTrue(numOfPlayers > 0);
 
+        List<Player> players = game.getPlayers();
+        assertNotNull(players);
+        assertEquals(numOfPlayers, players.size());
+
+        int numChairs = 0;
+        for (Player player : players) {
+            if (player.hasChair()) {
+                numChairs++;
+            }
+        }
+        assertEquals(1, numChairs);
+
+        List<CommonGoalCard> commonGoalCards = game.getCommonGoalCards();
+        assertNotNull(commonGoalCards);
+
+        for (Player player : players) {
+            assertNotNull(player.getPersonalGoalCard());
+            assertNotNull(player.getBookShelf());
+        }
+
+        assertNotNull(game.getBoard());
+    }
     @Test
     public void testGetGame() {
         assertNotNull(controller.getGame());
@@ -27,6 +57,7 @@ class ControllerTest {
 
     @Test
     public void testPickTiles() {
+        controller.getGame().getBoard().updateBoard();
         // Select a random tile
         Random random = new Random();
         int x = random.nextInt(MAXBOARDDIM);
@@ -35,7 +66,7 @@ class ControllerTest {
             x = random.nextInt(MAXBOARDDIM);
             y = random.nextInt(MAXBOARDDIM);
         }
-        int[][] coordinates = {{0, 0}};
+        int[][] coordinates = {{x, y}};
         controller.pickTiles(1, coordinates);
 
         // Check if the tile has been removed from the board
@@ -59,25 +90,60 @@ class ControllerTest {
 
     @Test
     void checkCommonGoal() {
+
     }
 
     @Test
     void checkPersonalGoal() {
+
     }
 
     @Test
     void checkEndGame() {
+        controller.setup();
+        // Fill the current player's bookshelf to end the game
+        List<Tile> tiles = new ArrayList<>();
+        for (int i = 0; i < MAXBOOKSHELFROW; i++) {
+            tiles.add(Tile.GREEN);
+        }
+        for (int i = 0; i < MAXBOOKSHELFCOL; i++) {
+            controller.getGame().getCurrentPlayer().getBookShelf().placeTiles(i,tiles);
+        }
+
+        // Check if the game has ended
+        assertTrue(controller.checkEndGame());
     }
 
     @Test
     void updatePoints() {
+        // store previous points
+        int prevPoints = controller.getGame().getCurrentPlayer().getPoints();
+        // Add random points to the current player's score
+        Random random = new Random();
+        int pointsAdded = random.nextInt();
+        controller.updatePoints(pointsAdded);
+
+        // Check if the current player's score has been updated correctly
+        assertEquals(pointsAdded, controller.getGame().getCurrentPlayer().getPoints()- prevPoints);
     }
 
     @Test
     void setCurrentPlayer() {
+        Player firstPlayer = controller.getGame().getPlayers().get(0);
+        controller.setCurrentPlayer(firstPlayer);
+        assertEquals(firstPlayer, controller.getGame().getCurrentPlayer());
     }
 
     @Test
     void nextPlayer() {
+        List<Player> players = controller.getGame().getPlayers();
+        int numOfPlayers = players.size();
+        // Last player is the current player
+        controller.getGame().setCurrentPlayer(players.get(numOfPlayers-1));
+        // Now NextPlayer() should follow the order of the list of players -> the first next is the first player and so on
+        for(int i = 0 ; i < numOfPlayers; i++){
+            controller.nextPlayer();
+            assertEquals(players.get(i), controller.getGame().getCurrentPlayer());
+        }
     }
 }
