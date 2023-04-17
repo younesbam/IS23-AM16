@@ -74,7 +74,7 @@ class ControllerTest {
     }
 
     @Test
-    void placeTiles() {
+    void testPlaceTiles() {
         // Add 4 tiles to the current player's bookshelf
         List<Tile> tiles = new ArrayList<>();
         tiles.add(Tile.BLUE);
@@ -89,17 +89,22 @@ class ControllerTest {
     }
 
     @Test
-    void checkCommonGoal() {
-
+    void testCheckCommonGoal() {
+        Player player = controller.getGame().getCurrentPlayer();
+        int prevPoints = player.getPoints();
+        /* TO DO complete a common goal and check if points update */
     }
 
     @Test
-    void checkPersonalGoal() {
-
+    void testCheckPersonalGoal() {
+        Player player = controller.getGame().getCurrentPlayer();
+        int prevPoints = player.getPoints();
+        /* TO DO complete personal goal */
+        // assertEquals(player.getPersonalGoalCard().checkScheme(player), player.getPoints()- prevPoints);
     }
 
     @Test
-    void checkEndGame() {
+    void testCheckEndGame() {
         controller.setup();
         // Fill the current player's bookshelf to end the game
         List<Tile> tiles = new ArrayList<>();
@@ -115,7 +120,7 @@ class ControllerTest {
     }
 
     @Test
-    void updatePoints() {
+    void testUpdatePoints() {
         // store previous points
         int prevPoints = controller.getGame().getCurrentPlayer().getPoints();
         // Add random points to the current player's score
@@ -128,14 +133,14 @@ class ControllerTest {
     }
 
     @Test
-    void setCurrentPlayer() {
+    void testSetCurrentPlayer() {
         Player firstPlayer = controller.getGame().getPlayers().get(0);
         controller.setCurrentPlayer(firstPlayer);
         assertEquals(firstPlayer, controller.getGame().getCurrentPlayer());
     }
 
     @Test
-    void nextPlayer() {
+    void testNextPlayer() {
         List<Player> players = controller.getGame().getPlayers();
         int numOfPlayers = players.size();
         // Last player is the current player
