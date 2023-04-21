@@ -1,5 +1,9 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.cli.CLI;
+import it.polimi.ingsw.client.gui.GUI;
+import it.polimi.ingsw.communications.serveranswers.Answer;
+
 import java.beans.PropertyChangeSupport;
 
 public class ActionHandler {
@@ -32,5 +36,14 @@ public class ActionHandler {
         this.modelView = modelView;
         view.addPropertyChangeListener(gui);
     }
+
+
+
+    public void answerManager(Answer a){
+
+
+
+    }
+
 
 }

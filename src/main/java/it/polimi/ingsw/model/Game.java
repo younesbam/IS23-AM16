@@ -16,10 +16,10 @@ public class Game {
     private Board board;
     private CreationFactory creationFactory;
     private final ArrayList<Player> players = new ArrayList<>();
+    private final ArrayList<Player> activePlayers = new ArrayList<>();
     private Player currentPlayer;
     private int numOfPlayers;
     private final ArrayList<CommonGoalCard> commonGoalCards = new ArrayList<>();
-
     private final Bag bag;
 
 
@@ -78,5 +78,18 @@ public class Game {
         return this.bag;
     }
 
+    /**
+     * This method returns the ID corresponding player.
+     * @param id
+     * @return
+     */
+    public Player getPlayerByID(int id) {
+        for (Player player : activePlayers) {
+            if (player.getID() == id) {
+                return player;
+            }
+        }
+        return null;
+    }
 
 }
