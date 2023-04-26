@@ -1,12 +1,30 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.common.JSONParser;
+
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
 
-    private final ServerSideSocket serverSideSocket;
+    private ServerSideSocket serverSideSocket;
+
+    /**
+     * Rmi port, read from json file
+     */
+    private final int rmiPort;
+
+    /**
+     * Socket port, read from json file
+     */
+    private final int socketPort;
+    private JSONParser jsonParser;
+
 
     private GameHandler gameHandler;
 
@@ -39,20 +57,73 @@ public class Server {
      */
     private final Map<Integer, VirtualPlayer> IDMapVirtualPlayer;
 
+    /**
+     * List of clients represented by nickname and connection
+     */
+    private Map<String, CSConnection> clients;
+
 
     /**
      * Class constructor
      */
     public Server() {
-        serverSideSocket = new ServerSideSocket(Utils.getPort(), this);
         numOfPlayers = 0;
         usernameMapID = new HashMap<>();
         IDMapUsername = new HashMap<>();
         IDMapVirtualPlayer = new HashMap<>();
         virtualPlayerToClientSocketConnection = new HashMap<>();
 
+        jsonParser = new JSONParser("json/network.json");
+        this.rmiPort = jsonParser.getServerRmiPort();
+        this.socketPort = jsonParser.getServerSocketPort();
+
+
+        try {
+            socketInit(this);
+        } catch (Exception e){
+            LOGGER.log(Level.SEVERE, "Socket setup failed", e);
+            System.exit(-1);
+        }
+        LOGGER.log(Level.INFO, "Socket setup complete");
+
+        /*
+        RMI initialization
+         */
+        try {
+            RMIInit();
+        } catch (RemoteException | AlreadyBoundException e){
+            LOGGER.log(Level.SEVERE, "RMI setup failed", e);
+            System.exit(-1);
+        }
+        LOGGER.log(Level.INFO, "RMI setup complete");
+
+        new Thread(new ServerPing(clients)).start();
+
         Thread thread = new Thread(this::quitConnection);
         thread.start();
+    }
+
+    /**
+     * Initialize RMI communication.
+     * @throws RemoteException
+     * @throws AlreadyBoundException
+     */
+    private void RMIInit() throws RemoteException, AlreadyBoundException {
+        Registry registry = LocateRegistry.createRegistry(this.rmiPort);
+        registry.bind(jsonParser.getServerName(), new RMIServerHandler(this));
+    }
+
+
+
+    /**
+     * Initialize Socket communication.
+     * @throws Exception
+     */
+    private void socketInit(Server server) throws Exception {
+        serverSideSocket = new ServerSideSocket(this, this.socketPort);
+
+        ExecutorService executor = Executors.newCachedThreadPool();
+        executor.submit(server.serverSideSocket);
     }
 
 
@@ -60,6 +131,9 @@ public class Server {
      * This method closes all the connections to the server.
      */
     public void quitConnection() {
+        //DA MODIFICARE E FARE IN MODO CHE CON "QUIT" DI CHIUDA ANCHE LA CONNESSIONE RMI (IF/ELSE)
+
+        //forse sto metodo è inutile e poteva essere gestito come un normale messaggio (?)
         Scanner in = new Scanner(System.in);
         while (true) {
             if (in.next().equalsIgnoreCase("QUIT")) {
@@ -142,9 +216,6 @@ public class Server {
         Utils.setPort(port);
 
         Server server = new Server();
-        ExecutorService executor = Executors.newCachedThreadPool();
-        executor.submit(server.serverSideSocket);
-
     }
 
 
