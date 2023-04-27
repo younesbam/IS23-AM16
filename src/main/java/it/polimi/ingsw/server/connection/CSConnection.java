@@ -1,11 +1,14 @@
 package it.polimi.ingsw.server.connection;
 
+import it.polimi.ingsw.server.Server;
+
 /**
  * Represent a generic connection client-server
  * @author Nicolo' Gandini
  */
 public abstract class CSConnection {
     protected boolean alive = false;  // False initialization to ensure successful connection in the subclasses.
+    protected Server server;
 
     /**
      * Check if the connection is alive.

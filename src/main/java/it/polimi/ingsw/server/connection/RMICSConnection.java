@@ -11,7 +11,6 @@ import java.util.logging.Level;
  * @author Nicolo' Gandini
  */
 public class RMICSConnection extends CSConnection {
-    private final Server server;
     private final IRMIClient client;
 
     public RMICSConnection(Server server, IRMIClient client) {

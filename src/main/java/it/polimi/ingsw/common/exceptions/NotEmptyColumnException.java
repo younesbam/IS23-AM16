@@ -1,4 +1,4 @@
 package it.polimi.ingsw.common.exceptions;
 
-public class NotEmptyColumnException extends Exception{
+public class NotEmptyColumnException extends Exception {
 }

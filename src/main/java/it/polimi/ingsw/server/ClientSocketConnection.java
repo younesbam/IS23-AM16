@@ -4,21 +4,19 @@ import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.Communication;
 import it.polimi.ingsw.communications.clientmessages.SerializedCommunication;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
+import it.polimi.ingsw.server.connection.CSConnection;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ClientSocketConnection {
+public class ClientSocketConnection extends CSConnection {
 
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
     private final Socket socket;
-    private final Server server;
     private Integer ID;
-    private boolean isActive;
-
 
     /**
      * Class constructor.
@@ -26,7 +24,7 @@ public class ClientSocketConnection {
      * @param socket
      */
     public ClientSocketConnection(Server server, Socket socket) {
-        isActive = true;
+        alive = true;
 
         this.socket = socket;
         this.server = server;
@@ -57,17 +55,17 @@ public class ClientSocketConnection {
         SerializedCommunication input = (SerializedCommunication) inputStream.readObject();
         if (input.communication != null) {
             Communication command = input.communication;
-            actionHandler(command);
+            server.actionHandler(command);
         } else if (input.action != null) {
             GameAction action = input.gameAction;
-            actionHandler(action);
+            server.actionHandler(action);
         }
     }
 
     /**
-     * This method ends the player's cnnection.
+     * This method ends the player's connection.
      */
-    public void end() {
+    public void disconnect() {
         server.removePlayer(ID);
         try {
             socket.close();
@@ -87,7 +85,7 @@ public class ClientSocketConnection {
             outputStream.writeObject(answer);
             outputStream.flush();
         } catch (IOException e) {
-            end();
+            disconnect();
         }
     }
 
@@ -97,7 +95,7 @@ public class ClientSocketConnection {
      */
     public void run() {
         try {
-            while (isActive) {
+            while (isAlive()) {
                 readStreamFromClient();
             }
         } catch(IOException e) {

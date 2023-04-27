@@ -42,6 +42,14 @@ public final class Utils {
      * Maximum number of columns and rows for the board.
      */
     public static final int MAXBOARDDIM = 9;
+    /**
+     * Delay time [s] between two pings to the clients.
+     */
+    public static final int SERVER_PING_DELAY = 2;
+    /**
+     * Delay time [s] between two pings. Activated from the server.
+     */
+    public static final int CLIENT_PING_DELAY = 2;
 
 
     /**
@@ -63,7 +71,7 @@ public final class Utils {
 
     /**
      * Convert file into a string. Note: the file must be in src/main/resources/
-     * @param fileName name of the file. If there are subdirectories, specifies them in the string
+     * @param fileName name of the file. If there are subdirectories, specifies them in the string. In case of subdirectories, don't add the initial "/"
      * @return String
      * @author Nicolo' Gandini
      */

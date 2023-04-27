@@ -27,9 +27,9 @@ public class SocketClass {
     /**
      * Class constructor.
      */
-    public SocketClass(){
-        this.numOfPort = Utils.getIPAddress();
-        this.numOfPort = Utils.getNumOfPort();
+    public SocketClass(String ipAddress, int numOfPort){
+        this.IPAddress = ipAddress;
+        this.numOfPort = numOfPort;
     }
 
 

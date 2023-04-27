@@ -1,6 +1,9 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.common.JSONParser;
+import it.polimi.ingsw.server.connection.CSConnection;
+import it.polimi.ingsw.server.utils.ServerPing;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
@@ -9,6 +12,8 @@ import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Server {
 
@@ -24,12 +29,8 @@ public class Server {
      */
     private final int socketPort;
     private JSONParser jsonParser;
-
-
     private GameHandler gameHandler;
-
     private int numOfPlayers;
-
     int currentPlayerID;
 
     /**
@@ -101,6 +102,19 @@ public class Server {
 
         Thread thread = new Thread(this::quitConnection);
         thread.start();
+
+        /*
+        Ping thread to check if clients are still alive
+        WARNING: remember to shut down the thread with exec.shutdownNow();
+         */
+        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+        exec.scheduleAtFixedRate(() -> {
+            for (Map.Entry<String, CSConnection> client : clients.entrySet()) {
+                if (client.getValue().isAlive()) {
+                    client.getValue().ping();
+                }
+            }
+        }, 1, Utils.SERVER_PING_DELAY, TimeUnit.SECONDS);
     }
 
     /**
@@ -197,23 +211,7 @@ public class Server {
                                        |___/""");
 
         System.out.print("Welcome to the server of MyShelfie!");
-        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Please type the port number of this Server Socket\n>");
-
-        int numOfPort = 0;
-        try {
-            numOfPort = scanner.nextInt();
-        } catch (InputMismatchException e) {
-            System.err.println("A number is required! Shutting down...");
-            System.exit(-1);
-        }
-        if (numOfPort < 0 || (numOfPort > 0 && numOfPort < 1024)) {
-            System.err.println("A port number between 1024 and 65535 is required! Please try again.");
-            main(null);
-        }
-
-        Utils.setPort(port);
 
         Server server = new Server();
     }
