@@ -13,44 +13,6 @@ import java.util.List;
  * Utilities class used to keep most used methods that don't have a specific class
  */
 public final class Utils {
-    public static final int MAXCARDS = 12;
-    /**
-     * Maximum numbers of rows in bookshelf.
-     */
-    public static final int MAXBOOKSHELFROW = 6;
-    /**
-     * Maximum number of columns in bookshelf.
-     */
-    public static final int MAXBOOKSHELFCOL = 5;
-    /**
-     * Maximum number of picked tiles from the player.
-     */
-    public static final int MAXPICKEDTILES = 3;
-    /**
-     * Maximum number of players during the game.
-     */
-    private static final int MAXPLAYERS = 4;
-    /**
-     * Maximum number of common goal cards during the game.
-     */
-    private static final int COMGOALCARDS = 2;
-    /**
-     * Maximum number for any tile's type.
-     */
-    public static final int MAXTILES = 22;
-    /**
-     * Maximum number of columns and rows for the board.
-     */
-    public static final int MAXBOARDDIM = 9;
-    /**
-     * Delay time [s] between two pings to the clients.
-     */
-    public static final int SERVER_PING_DELAY = 2;
-    /**
-     * Delay time [s] between two pings. Activated from the server.
-     */
-    public static final int CLIENT_PING_DELAY = 2;
-
 
     /**
      * Check if two lists are equal, based on the size and same elements
@@ -68,6 +30,7 @@ public final class Utils {
         }
         return true;
     }
+
 
     /**
      * Convert file into a string. Note: the file must be in src/main/resources/
@@ -91,6 +54,7 @@ public final class Utils {
         }
         return result;
     }
+
 
     /**
      * Create an empty grid, with all the Cells filled with BLANK tiles

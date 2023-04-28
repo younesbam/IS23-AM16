@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.server.rmi;
 
 import it.polimi.ingsw.client.IRMIClient;
 

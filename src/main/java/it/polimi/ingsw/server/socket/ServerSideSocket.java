@@ -1,4 +1,7 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.server.socket;
+
+import it.polimi.ingsw.server.Server;
+import it.polimi.ingsw.server.connection.SocketCSConnection;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -35,7 +38,7 @@ public class ServerSideSocket implements Runnable{
     public void newConnection(ServerSocket serverSocket) {
         while (isActive) {
             try {
-                ClientSocketConnection clientSocket = new ClientSocketConnection(server, serverSocket.accept());
+                SocketCSConnection clientSocket = new SocketCSConnection(server, serverSocket.accept());
                 executorService.submit(clientSocket);
             } catch (IOException e) {
                 System.err.println("An error has occurred while trying to establish a connection. Shutting down..." + e.getMessage());

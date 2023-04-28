@@ -2,13 +2,14 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.communications.serveranswers.Answer;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
+import it.polimi.ingsw.server.connection.SocketCSConnection;
 
 public class VirtualPlayer {
 
     public final String username;
     public final int ID;
     public final GameHandler gameHandler;
-    public final ClientSocketConnection clientSocketConnection;
+    public final SocketCSConnection socketCSConnection;
 
 
     /**
@@ -18,10 +19,10 @@ public class VirtualPlayer {
      * @param c
      * @param g
      */
-    public VirtualPlayer(String username, int ID, ClientSocketConnection c, GameHandler g){
+    public VirtualPlayer(String username, int ID, SocketCSConnection c, GameHandler g){
         this.username = username;
         this.ID = ID;
-        this.clientSocketConnection = c;
+        this.socketCSConnection = c;
         this.gameHandler = g;
     }
 
@@ -45,8 +46,8 @@ public class VirtualPlayer {
      * ClientSocketConnection getter.
      * @return
      */
-    public ClientSocketConnection getClientSocketConnection(){
-        return this.clientSocketConnection;
+    public SocketCSConnection getClientSocketConnection(){
+        return this.socketCSConnection;
     }
 
     /**
@@ -61,5 +62,5 @@ public class VirtualPlayer {
     public void send(Answer a){
         SerializedAnswer answer = new SerializedAnswer();
         answer.setAnswer(a);
-        clientSocketConnection.s
+        socketCSConnection.s
 }

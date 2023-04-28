@@ -3,6 +3,9 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.common.JSONParser;
 import it.polimi.ingsw.server.connection.CSConnection;
+import it.polimi.ingsw.server.connection.SocketCSConnection;
+import it.polimi.ingsw.server.rmi.RMIServerHandler;
+import it.polimi.ingsw.server.socket.ServerSideSocket;
 import it.polimi.ingsw.server.utils.ServerPing;
 
 import java.rmi.AlreadyBoundException;
@@ -14,8 +17,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Server {
+    /**
+     * Logger of the server.
+     */
+    public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 
     private ServerSideSocket serverSideSocket;
 
@@ -36,7 +45,7 @@ public class Server {
     /**
      * List of players waiting for game to start.
      */
-    private final List<ClientSocketConnection> playersWaitingList = new ArrayList<>();
+    private final List<SocketCSConnection> playersWaitingList = new ArrayList<>();
 
     /**
      * Player ID mapped to their username.
@@ -51,7 +60,7 @@ public class Server {
     /**
      * VirtualPlayer mapped to its connection.
      */
-    private final Map<VirtualPlayer, ClientSocketConnection> virtualPlayerToClientSocketConnection;
+    private final Map<VirtualPlayer, SocketCSConnection> virtualPlayerToClientSocketConnection;
 
     /**
      * Player ID mapped to VirtualPlayer.
@@ -78,7 +87,9 @@ public class Server {
         this.rmiPort = jsonParser.getServerRmiPort();
         this.socketPort = jsonParser.getServerSocketPort();
 
-
+        /*
+        Socket initialization
+         */
         try {
             socketInit(this);
         } catch (Exception e){
@@ -98,8 +109,6 @@ public class Server {
         }
         LOGGER.log(Level.INFO, "RMI setup complete");
 
-        new Thread(new ServerPing(clients)).start();
-
         Thread thread = new Thread(this::quitConnection);
         thread.start();
 
@@ -117,6 +126,7 @@ public class Server {
         }, 1, Utils.SERVER_PING_DELAY, TimeUnit.SECONDS);
     }
 
+
     /**
      * Initialize RMI communication.
      * @throws RemoteException
@@ -128,7 +138,6 @@ public class Server {
     }
 
 
-
     /**
      * Initialize Socket communication.
      * @throws Exception
@@ -138,6 +147,27 @@ public class Server {
 
         ExecutorService executor = Executors.newCachedThreadPool();
         executor.submit(server.serverSideSocket);
+    }
+
+
+    public void login(String nickname, CSConnection connection){
+        /*
+        Qui va gestito il giocatore, se il nickname è già esistente si fa qualcosa altrimenti si aggiunge alla lobby
+        Da verificare anche il controller (la lobby dovrebbe appartenere al controller)
+         */
+    }
+
+
+    /**
+     * Cut off the connection with a client
+     * @param connectionClientServer connection between a client and the server
+     */
+    public void onClientDisconnection(CSConnection connectionClientServer){
+        String nickname = "";  // Mettere qui il nome del player da ricavare dalla connessione.
+        clients.remove(nickname);
+        /*
+        qui il controller deve verificare in che stato era il player prima e agire di conseguenza.
+         */
     }
 
 
@@ -212,9 +242,9 @@ public class Server {
 
         System.out.print("Welcome to the server of MyShelfie!");
 
-
-        Server server = new Server();
+        /*
+        Start the server.
+         */
+        new Server();
     }
-
-
 }
