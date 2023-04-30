@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.Const;
 import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.common.JSONParser;
 import it.polimi.ingsw.server.connection.CSConnection;
@@ -60,7 +61,7 @@ public class Server {
     /**
      * VirtualPlayer mapped to its connection.
      */
-    private final Map<VirtualPlayer, SocketCSConnection> virtualPlayerToClientSocketConnection;
+    private final Map<VirtualPlayer, CSConnection> virtualPlayerToCSConnection;
 
     /**
      * Player ID mapped to VirtualPlayer.
@@ -81,8 +82,11 @@ public class Server {
         usernameMapID = new HashMap<>();
         IDMapUsername = new HashMap<>();
         IDMapVirtualPlayer = new HashMap<>();
-        virtualPlayerToClientSocketConnection = new HashMap<>();
+        virtualPlayerToCSConnection = new HashMap<>();
 
+        /*
+        Load parameters: socket and rmi port
+         */
         jsonParser = new JSONParser("json/network.json");
         this.rmiPort = jsonParser.getServerRmiPort();
         this.socketPort = jsonParser.getServerSocketPort();
@@ -109,6 +113,9 @@ public class Server {
         }
         LOGGER.log(Level.INFO, "RMI setup complete");
 
+        /*
+        Verificare questa roba, può essere inglobato nella ricezione di messaggi.
+         */
         Thread thread = new Thread(this::quitConnection);
         thread.start();
 
@@ -123,7 +130,7 @@ public class Server {
                     client.getValue().ping();
                 }
             }
-        }, 1, Utils.SERVER_PING_DELAY, TimeUnit.SECONDS);
+        }, 1, Const.SERVER_PING_DELAY, TimeUnit.SECONDS);
     }
 
 
@@ -165,6 +172,10 @@ public class Server {
     public void onClientDisconnection(CSConnection connectionClientServer){
         String nickname = "";  // Mettere qui il nome del player da ricavare dalla connessione.
         clients.remove(nickname);
+        /*
+        Metodo da modificare perchè deve chiamare il removePlayer definito qui.
+         */
+
         /*
         qui il controller deve verificare in che stato era il player prima e agire di conseguenza.
          */
@@ -220,10 +231,10 @@ public class Server {
         System.out.println("Removing player" + player.getUsername());
         IDMapVirtualPlayer.remove(ID);
         usernameMapID.remove(player.getUsername());
-        playersWaitingList.remove(virtualPlayerToClientSocketConnection.get(player));
+        playersWaitingList.remove(virtualPlayerToCSConnection.get(player));
         IDMapUsername.remove(player.getID());
-        virtualPlayerToClientSocketConnection.remove(player);
-        System.out.println("The player has been successfully removed from the game.");
+        virtualPlayerToCSConnection.remove(player);
+        LOGGER.log(Level.INFO,"The player has been successfully removed from the game.");
     }
 
 
@@ -232,14 +243,7 @@ public class Server {
      * @param args
      */
     public static void main(String[] args) {
-
-        System.out.println(""" __  __       ____  _          _  __ _      
-                               |  \/  |_   _/ ___|| |__   ___| |/ _(_) ___ 
-                               | |\/| | | | \___ \| '_ \ / _ \ | |_| |/ _ \
-                               | |  | | |_| |___) | | | |  __/ |  _| |  __/
-                               |_|  |_|\__, |____/|_| |_|\___|_|_| |_|\___|
-                                       |___/""");
-
+        Utils.printLogo();
         System.out.print("Welcome to the server of MyShelfie!");
 
         /*

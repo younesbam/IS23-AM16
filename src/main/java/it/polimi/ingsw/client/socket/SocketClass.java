@@ -1,5 +1,8 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.socket;
 
+import it.polimi.ingsw.client.ActionHandler;
+import it.polimi.ingsw.client.AnswerListener;
+import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.communications.clientmessages.UsernameSetup;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.Communication;

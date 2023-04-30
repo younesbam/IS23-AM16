@@ -1,6 +1,9 @@
 package it.polimi.ingsw.server.connection;
 
 import it.polimi.ingsw.client.IRMIClient;
+import it.polimi.ingsw.client.rmi.IRMIClient;
+import it.polimi.ingsw.communications.serveranswers.Answer;
+import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.server.Server;
 
 import java.rmi.RemoteException;
@@ -11,6 +14,9 @@ import java.util.logging.Level;
  * @author Nicolo' Gandini
  */
 public class RMICSConnection extends CSConnection {
+    /**
+     * Client reference.
+     */
     private final IRMIClient client;
 
     public RMICSConnection(Server server, IRMIClient client) {
@@ -33,6 +39,7 @@ public class RMICSConnection extends CSConnection {
         }
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -48,5 +55,13 @@ public class RMICSConnection extends CSConnection {
             }
             server.onClientDisconnection(this);
         }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void sendAnswerToClient(SerializedAnswer answer) throws RemoteException {
+        client.onServerAnswer(answer);
     }
 }

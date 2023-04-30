@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
 
 public class SocketCSConnection extends CSConnection {
 
@@ -19,24 +20,25 @@ public class SocketCSConnection extends CSConnection {
     private final Socket socket;
     private Integer ID;
 
+
     /**
      * Class constructor.
      * @param server
      * @param socket
      */
     public SocketCSConnection(Server server, Socket socket) {
-        alive = true;
-
         this.socket = socket;
         this.server = server;
         ID = -1;
         try {
             inputStream = new ObjectInputStream(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
+            alive = true;
         } catch (IOException e) {
             System.err.println("An error has occurred while initializing the client:" + e.getMessage());
         }
     }
+
 
     /**
      * Socket getter.
@@ -72,22 +74,25 @@ public class SocketCSConnection extends CSConnection {
         try {
             socket.close();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            Server.LOGGER.log(Level.SEVERE, e.getMessage());
         }
     }
 
 
     /**
      * Method that sends a message to the server.
-     * @param answer
+     * @param answer to the client
      */
-    public void sendMessage(SerializedAnswer answer) {
-        try {
-            outputStream.reset();
-            outputStream.writeObject(answer);
-            outputStream.flush();
-        } catch (IOException e) {
-            disconnect();
+    public void sendAnswerToClient(SerializedAnswer answer) {
+        if(alive){
+            try {
+                outputStream.reset();
+                outputStream.writeObject(answer);
+                outputStream.flush();
+            } catch (IOException e) {
+                Server.LOGGER.log(Level.SEVERE, "Failed to send message to the client: " + e.getMessage());
+                disconnect();
+            }
         }
     }
 

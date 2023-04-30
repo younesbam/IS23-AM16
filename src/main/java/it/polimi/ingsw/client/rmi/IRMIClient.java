@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.rmi;
 
+import it.polimi.ingsw.communications.serveranswers.Answer;
+import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -16,9 +19,17 @@ public interface IRMIClient extends Remote {
      */
     void ping() throws RemoteException;
 
+
     /**
      * Disconnect the current client from the server.
      * @throws RemoteException
      */
     void disconnectMe() throws RemoteException;
+
+
+    /**
+     * Client has received an answer from the server.
+     * @throws RemoteException
+     */
+    void onServerAnswer(SerializedAnswer answer) throws RemoteException;
 }

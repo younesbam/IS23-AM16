@@ -1,10 +1,13 @@
 package it.polimi.ingsw.client.rmi;
 
-import it.polimi.ingsw.Utils;
-import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.Const;
+import it.polimi.ingsw.client.ActionHandler;
+import it.polimi.ingsw.client.ModelView;
+import it.polimi.ingsw.client.common.ClientConnection;
 import it.polimi.ingsw.client.utils.PingClientTask;
 import it.polimi.ingsw.common.JSONParser;
 import it.polimi.ingsw.server.IRMIServer;
+import it.polimi.ingsw.server.rmi.IRMIServer;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -16,7 +19,7 @@ import java.util.Timer;
  * Client RMI handler.
  * @author Nicolo' Gandini
  */
-public class RMIClientHandler extends Client implements IRMIClient {
+public class RMIClientHandler extends ClientConnection implements IRMIClient {
     private IRMIServer server;
 
     /**
@@ -28,11 +31,11 @@ public class RMIClientHandler extends Client implements IRMIClient {
      *
      * @param address address of the server.
      * @param port port of the server.
-     * @param nickname nickname of the player
+     * @param username username of the player
      * @throws RemoteException
      */
-    public RMIClientHandler(String address, int port, String nickname) throws RemoteException {
-        super(address, port, nickname);
+    public RMIClientHandler(String address, int port, String username, ModelView modelView, ActionHandler actionHandler) throws RemoteException {
+        super(address, port, username, modelView, actionHandler);
         jsonParser = new JSONParser("json/network.json");
     }
 
@@ -43,7 +46,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
     public void connect() throws RemoteException, NotBoundException {
         Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
         server = (IRMIServer) registry.lookup(jsonParser.getServerName());
-        server.login(getNickname(), this);
+        server.login(getUsername(), this);
     }
 
     /**
@@ -62,7 +65,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
     public void ping() throws RemoteException {
         super.pingTimer.cancel();
         super.pingTimer = new Timer();
-        super.pingTimer.schedule(new PingClientTask(), Utils.CLIENT_PING_DELAY);
+        super.pingTimer.schedule(new PingClientTask(), Const.CLIENT_PING_DELAY);
     }
 
     /**
