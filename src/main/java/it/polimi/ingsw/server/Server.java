@@ -2,7 +2,11 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.Const;
 import it.polimi.ingsw.Utils;
+import it.polimi.ingsw.client.common.ClientConnection;
 import it.polimi.ingsw.common.JSONParser;
+import it.polimi.ingsw.communications.clientmessages.Communication;
+import it.polimi.ingsw.communications.clientmessages.UsernameSetup;
+import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.server.connection.CSConnection;
 import it.polimi.ingsw.server.connection.SocketCSConnection;
 import it.polimi.ingsw.server.rmi.RMIServerHandler;
@@ -157,21 +161,96 @@ public class Server {
     }
 
 
-    public void login(String nickname, CSConnection connection){
+    public void actionHandler(Communication message) {
+        if (message instanceof UsernameSetup) {
+            checkConnection((UsernameSetup) message);
+
+        }
+    }
+
+    public void checkConnection(UsernameSetup usernameChoice) {
+        try {
+            currentPlayerID = registerClient(usernameChoice.getUsername(),  usernameChoice.getConnectionType());
+            if (clientID == null) {
+                activeConnection = false;
+                return;
+            }
+            server.lobby(this);
+        } catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+            Thread.currentThread().interrupt();
+        }
+
+
         /*
         Qui va gestito il giocatore, se il nickname è già esistente si fa qualcosa altrimenti si aggiunge alla lobby
         Da verificare anche il controller (la lobby dovrebbe appartenere al controller)
          */
+        }
+
+
+    public synchronized Integer registerClient(String clientNickname, ClientConnection clientConnection) {
+        Integer clientID = usernameMapID.get(clientNickname);
+
+        //checks about nickname
+        if (clientID == null) {
+            if (playersWaitingList.isEmpty()) {
+                gameHandler = new GameHandler(this);
+            }
+            if (usernameMapID.keySet().stream().anyMatch(clientNickname::equalsIgnoreCase)) {
+                SerializedAnswer duplicateNicknameError = new SerializedAnswer();
+                duplicateNicknameError.setServerAnswer(new ServerError(ServerErrorTypes.DUPLICATENICKNAME));
+                socketClientConnection.sendServerMessage(duplicateNicknameError);
+                return null;
+            }
+
+            //checks about waiting list and available slot for the game
+            clientID = generateNewClientID();
+            gameHandler.addGamePlayer(clientNickname, clientID);
+            VirtualClientView virtualClientView = new VirtualClientView(clientID, clientNickname, socketClientConnection, gameHandler);
+            if (totalGamePlayers != 0 && playersWaitingList.size() >= totalGamePlayers) {
+                virtualClientView.sendAnswerToClient(new ServerError(ServerErrorTypes.FULLGAMESERVER));
+                return null;
+            }
+
+            idMapNickname.put(clientID, clientNickname);
+            usernameMapID.put(clientNickname, clientID);
+            idMapVirtualClient.put(clientID, virtualClientView);
+            virtualClientToClientConnection.put(virtualClientView, socketClientConnection);
+
+
+            System.out.println("Player " + virtualClientView.getClientNickname() + " has successfully connected with id " + virtualClientView.getClientID());
+            SerializedAnswer connectionCompleted = new SerializedAnswer();
+            connectionCompleted.setServerAnswer(new ConnectionResult("Congrats! You successfully connected with id " + virtualClientView.getClientID(), true));
+            socketClientConnection.sendServerMessage(connectionCompleted);
+
+
+            if (playersWaitingList.size() > 1) {
+                gameHandler.sendExcept(new PlayerJoinedNotification("Player " + virtualClientView.getClientNickname() + " has officially joined the game!"), clientID);
+            }
+        } else { //client già registrato con quel nickname (quindi ID != null)
+            VirtualClientView registeredClient = idMapVirtualClient.get(clientID);
+            if (registeredClient.getSocketClientConnection() != null) {
+                SerializedAnswer duplicateNicknameError = new SerializedAnswer();
+                duplicateNicknameError.setServerAnswer(new ServerError(ServerErrorTypes.DUPLICATENICKNAME));
+                socketClientConnection.sendServerMessage(duplicateNicknameError);
+                return null;
+            }
+        }
+
+        return clientID;
     }
 
 
+
+
     /**
-     * Cut off the connection with a client
-     * @param connectionClientServer connection between a client and the server
-     */
-    public void onClientDisconnection(CSConnection connectionClientServer){
-        String nickname = "";  // Mettere qui il nome del player da ricavare dalla connessione.
-        clients.remove(nickname);
+         * Cut off the connection with a client
+         * @param connectionClientServer connection between a client and the server
+         */
+        public void onClientDisconnection(CSConnection connectionClientServer){
+                String nickname = "";  // Mettere qui il nome del player da ricavare dalla connessione.
+                clients.remove(nickname);
         /*
         Metodo da modificare perchè deve chiamare il removePlayer definito qui.
          */
@@ -179,76 +258,72 @@ public class Server {
         /*
         qui il controller deve verificare in che stato era il player prima e agire di conseguenza.
          */
-    }
+        }
 
 
-    /**
-     * This method closes all the connections to the server.
-     */
-    public void quitConnection() {
-        //DA MODIFICARE E FARE IN MODO CHE CON "QUIT" DI CHIUDA ANCHE LA CONNESSIONE RMI (IF/ELSE)
-
-        //forse sto metodo è inutile e poteva essere gestito come un normale messaggio (?)
-        Scanner in = new Scanner(System.in);
-        while (true) {
-            if (in.next().equalsIgnoreCase("QUIT")) {
-                serverSideSocket.setIsActive(false);
-                System.exit(0);
-                break;
+        /**
+         * This method closes all the connections to the server.
+         */
+        public void quitConnection() {
+            //DA MODIFICARE E FARE IN MODO CHE CON "QUIT" DI CHIUDA ANCHE LA CONNESSIONE RMI (IF/ELSE)
+            //forse sto metodo è inutile e poteva essere gestito come un normale messaggio (?)
+            Scanner in = new Scanner(System.in);
+            while (true) {
+                if (in.next().equalsIgnoreCase("QUIT")) {
+                    serverSideSocket.setIsActive(false);
+                    System.exit(0);
+                    break;
+                }
             }
         }
-    }
 
 
-    /**
-     * This method returns the gameHandler belonging to the clientID parameter passed.
-     *
-     * @param ID
-     * @return
-     */
-    public GameHandler getGameHandlerByID(int ID) {
-        return IDMapVirtualPlayer.get(ID).getGameHandler();
-    }
+        /**
+         * This method returns the gameHandler belonging to the clientID parameter passed.
+         *
+         * @param ID
+         * @return
+         * */
+        public GameHandler getGameHandlerByID(int ID) {
+            return IDMapVirtualPlayer.get(ID).getGameHandler();
+        }
 
 
-    /**
-     * This method returns the VirtualPlayer instance corresponding to the passed ID.
-     * @param ID
-     * @return
-     */
-    public VirtualPlayer getVirtualPlayerByID(int ID) {
-        return IDMapVirtualPlayer.get(ID);
-    }
-
-
-    /**
-     * This method removes a player from the current server.
-     * @param ID
-     */
-    public synchronized void removePlayer(int ID){
-        getGameHandlerByID(ID).removePlayer(ID);
-        VirtualPlayer player = IDMapVirtualPlayer.get(ID);
-        System.out.println("Removing player" + player.getUsername());
-        IDMapVirtualPlayer.remove(ID);
-        usernameMapID.remove(player.getUsername());
-        playersWaitingList.remove(virtualPlayerToCSConnection.get(player));
-        IDMapUsername.remove(player.getID());
-        virtualPlayerToCSConnection.remove(player);
-        LOGGER.log(Level.INFO,"The player has been successfully removed from the game.");
-    }
-
-
-    /**
-     * Main class.
-     * @param args
-     */
-    public static void main(String[] args) {
-        Utils.printLogo();
-        System.out.print("Welcome to the server of MyShelfie!");
-
-        /*
-        Start the server.
+        /**
+         * This method returns the VirtualPlayer instance corresponding to the passed ID.
+         * @param ID
+         * @return
          */
-        new Server();
-    }
+        public VirtualPlayer getVirtualPlayerByID(int ID) {
+            return IDMapVirtualPlayer.get(ID);
+        }
+
+
+        /**
+         * This method removes a player from the current server.
+         * @param ID
+         */
+        public synchronized void removePlayer(int ID){
+            getGameHandlerByID(ID).removePlayer(ID);
+            VirtualPlayer player = IDMapVirtualPlayer.get(ID);
+            System.out.println("Removing player" + player.getUsername());
+            IDMapVirtualPlayer.remove(ID);
+            usernameMapID.remove(player.getUsername());
+            playersWaitingList.remove(virtualPlayerToCSConnection.get(player));
+            IDMapUsername.remove(player.getID());
+            virtualPlayerToCSConnection.remove(player);
+            LOGGER.log(Level.INFO,"The player has been successfully removed from the game.");
+        }
+
+
+        /**
+         * Main class of the server.
+         * @param args
+         */
+        public static void main(String[] args) {
+            Utils.printLogo();
+            System.out.print("Welcome to the server of MyShelfie!");
+
+            new Server();
+        }
 }

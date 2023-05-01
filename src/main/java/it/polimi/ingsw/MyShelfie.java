@@ -12,7 +12,6 @@ import java.util.Scanner;
  */
 public class MyShelfie {
     public static void main(String[] args) {
-        public static void main (String[]args){
             System.out.println("Welcome to MyShelfie!\nSelect one of the following:");
             System.out.println("0. SERVER\n1. CLI CLIENT\n2. GUI CLIENT");
             System.out.print(">");
