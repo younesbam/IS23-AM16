@@ -21,7 +21,7 @@ public class VirtualPlayer {
      * @param c
      * @param g
      */
-    public VirtualPlayer(String username, int ID, SocketCSConnection c, GameHandler g) {
+    public VirtualPlayer(String username, Integer ID, CSConnection c, GameHandler g) {
         this.username = username;
         this.ID = ID;
         this.connection = c;
@@ -64,10 +64,13 @@ public class VirtualPlayer {
         return this.gameHandler;
     }
 
-
+    /**
+     * This method is used to send the server's answer to the proper client.
+     * @param a
+     */
     public void send(Answer a) {
         SerializedAnswer answer = new SerializedAnswer();
         answer.setAnswer(a);
-        connection.s;
+        connection.sendAnswerToClient(answer);
     }
 }

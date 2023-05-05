@@ -1,9 +1,14 @@
 package it.polimi.ingsw.server.connection;
 
+import it.polimi.ingsw.communications.clientmessages.HowManyPlayersResponse;
+import it.polimi.ingsw.communications.clientmessages.UsernameSetup;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.Communication;
 import it.polimi.ingsw.communications.clientmessages.SerializedCommunication;
+import it.polimi.ingsw.communications.serveranswers.HowManyPlayersRequest;
+import it.polimi.ingsw.communications.serveranswers.PersonalizedAnswer;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
+import it.polimi.ingsw.exceptions.OutOfBoundException;
 import it.polimi.ingsw.server.GameHandler;
 import it.polimi.ingsw.server.Server;
 
@@ -13,7 +18,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 
-public class SocketCSConnection extends CSConnection {
+public class SocketCSConnection extends CSConnection implements Runnable{
 
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
@@ -56,12 +61,13 @@ public class SocketCSConnection extends CSConnection {
      */
     public synchronized void readStreamFromClient() throws IOException, ClassNotFoundException {
         SerializedCommunication input = (SerializedCommunication) inputStream.readObject();
+
         if (input.communication != null) {
             Communication command = input.communication;
-            server.actionHandler(command);
+            actionHandler(command);
         } else if (input.action != null) {
             GameAction action = input.gameAction;
-            server.actionHandler(action);
+            actionHandler(action);
         }
     }
 
@@ -93,6 +99,51 @@ public class SocketCSConnection extends CSConnection {
                 Server.LOGGER.log(Level.SEVERE, "Failed to send message to the client: " + e.getMessage());
                 disconnect();
             }
+        }
+    }
+
+    /**
+     * Override of superclass method, used to setup the number of players in the initial phase of the game.
+     * @param request
+     */
+    public void setupPlayers(HowManyPlayersRequest request) {
+
+        SerializedAnswer answer = new SerializedAnswer();
+        answer.setAnswer(request);
+        sendAnswerToClient(answer);
+
+        while(true) {
+            try {
+                SerializedCommunication input = (SerializedCommunication) inputStream.readObject();
+                Communication communicationFromClient = input.communication;
+                if(communicationFromClient instanceof HowManyPlayersResponse) {
+                    try {
+                        int numOfPlayers = ((HowManyPlayersResponse) communicationFromClient).getNumChoice();
+                        server.setNumOfPlayers(numOfPlayers);
+                        server.getGameHandlerByID(ID).setNumOfPlayers(numOfPlayers);
+                        server.getVirtualPlayerByID(ID).send(new PersonalizedAnswer(false, "The number of players for this match has been chosen: it's a " + numOfPlayers + " players match!"));
+                        break;
+                    } catch(OutOfBoundException e) {
+                        server.getVirtualPlayerByID(ID).send(new PersonalizedAnswer(true, "A number of players between 2 and 4 is required!"));
+                    }
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                disconnect();
+                System.err.println("Error occurred while setting-up the game mode: " + e.getMessage());
+            }
+        }
+    }
+
+
+    /**
+     * This method closes the socket connection with the client, removing the player from the server's list of players aswell.
+     */
+    public void disconnect(){
+        server.removePlayer(ID);
+        try{
+            socket.close();
+        } catch (IOException e){
+            System.out.println(e.getMessage());
         }
     }
 

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.common.ClientConnection;
+import it.polimi.ingsw.client.common.Connection;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -13,7 +13,7 @@ public class Dispatcher implements PropertyChangeListener {
 
     private final ModelView modelView;
     private final InputChecker inputChecker;
-    private final ClientConnection clientConnection;
+    private final Connection clientConnection;
 
 
     /**
@@ -21,7 +21,7 @@ public class Dispatcher implements PropertyChangeListener {
      * @param modelView
      * @param ClientConnection generic client connection.
      */
-    public Dispatcher(ModelView modelView, ClientConnection clientConnection) {
+    public Dispatcher(ModelView modelView, Connection clientConnection) {
         this.clientConnection = clientConnection;
         this.inputChecker = new InputChecker(getModelView().getCli(), modelView, clientConnection);
         this.modelView = modelView;

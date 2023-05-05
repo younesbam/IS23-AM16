@@ -1,9 +1,14 @@
 package it.polimi.ingsw.server.connection;
 
+import it.polimi.ingsw.communications.clientmessages.Communication;
+import it.polimi.ingsw.communications.clientmessages.SerializedCommunication;
+import it.polimi.ingsw.communications.clientmessages.UsernameSetup;
 import it.polimi.ingsw.communications.serveranswers.Answer;
+import it.polimi.ingsw.communications.serveranswers.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.server.Server;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 /**
@@ -16,12 +21,45 @@ public abstract class CSConnection {
      */
     protected boolean alive = false;  // False initialization to ensure successful connection in the subclasses.
 
+    protected Server server;
+    private Integer ID;
 
     /**
-     * Reference to the server.
+     * ID getter.
+     * @return
      */
-    protected Server server;
+    public Integer getID() {
+        return this.ID;
+    }
 
+    /**
+     * This method handles the possible messages that can arrive from client's side.
+     * @param message
+     */
+    public void actionHandler(Communication message) {
+        if (message instanceof UsernameSetup) {
+            checkConnection((UsernameSetup) message);
+
+        }
+    }
+
+    /**
+     * This method is used to check if the player trying to connect to the server
+     * @param usernameChoice
+     */
+    public void checkConnection(UsernameSetup usernameChoice) {
+        try {
+            ID = server.newClientRegistration(usernameChoice.getUsername(), this);
+            if (ID == null) {
+                setAlive(false);
+                return;
+            }
+            server.lobby(this);
+        } catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+            Thread.currentThread().interrupt();
+        }
+    }
 
     /**
      * Check if the connection is alive.
@@ -51,4 +89,18 @@ public abstract class CSConnection {
      * @param answer from the server
      */
     public abstract void sendAnswerToClient(SerializedAnswer answer) throws RemoteException;
+
+    /**
+     * Alive parameter setter.
+     * @param alive
+     */
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
+
+    /**
+     * This method is used to set up the players.
+     * @param request
+     */
+    public abstract void setupPlayers(HowManyPlayersRequest request);
 }

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.*;
-import it.polimi.ingsw.client.common.ClientConnection;
+import it.polimi.ingsw.client.common.Connection;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.common.ConnectionType;
 
@@ -127,7 +127,7 @@ public class CLI extends UI implements Runnable{
         try{
             connectToServer(connectionType, ipAddress, numOfPort, username);
         }catch (Exception e){
-            ClientConnection.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e.getMessage());
+            Connection.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e.getMessage());
             System.exit(-1);
         }
     }

@@ -62,6 +62,12 @@ public class Game {
     public ArrayList<Player> getPlayers() {return this.players;}
 
     public ArrayList<CommonGoalCard> getCommonGoalCards() {return this.commonGoalCards;}
+
+
+    /**
+     * Method used to set the current player.
+     * @param currentPlayer
+     */
     public void setCurrentPlayer(Player currentPlayer){
         this.currentPlayer = currentPlayer;
     }
@@ -92,4 +98,11 @@ public class Game {
         return null;
     }
 
+    /**
+     * This method returns the list of active players.
+     * @return
+     */
+    public ArrayList<Player> getActivePlayers() {
+        return activePlayers;
+    }
 }

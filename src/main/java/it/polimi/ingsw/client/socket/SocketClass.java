@@ -45,7 +45,7 @@ public class SocketClass {
      * @return
      * @throws TakenUsername
      */
-    public boolean setup(String nickname, ModelView modelView, ActionHandler actionHandler) throws TakenUsername{
+    public boolean setup(String username, ModelView modelView, ActionHandler actionHandler) throws TakenUsername{
         try {
             System.out.println("Establishing a connection...");
             Socket socket;
@@ -58,7 +58,7 @@ public class SocketClass {
             ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 
             while (true) {
-                if (readInput(nickname, input)) {
+                if (readInput(username, input)) {
                     break;
                 }
             }
@@ -79,14 +79,14 @@ public class SocketClass {
     /**
      * This method calls the sendToServer method to send the username choice to the server. The server will then write an answer on its stream based on the usarname choice.
      * Then the isUsernameFreeToUse() method is called to react to server's answer.
-     * @param nickname
+     * @param username
      * @param input
      * @return
      * @throws TakenUsername
      */
-    private boolean readInput(String nickname, ObjectInputStream input) throws TakenUsername{
+    private boolean readInput(String username, ObjectInputStream input) throws TakenUsername{
         try {
-            sendToServer(new UsernameSetup(nickname));
+            sendToServer(new UsernameSetup(username));
             if (isUsernameFreeToUse(input.readObject())) {
                 return true;
             }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.server.GameHandler;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
@@ -8,13 +9,15 @@ import java.util.List;
 public class Controller {
     private Game game;
     private final GameHandler gameHandler;
+    private Player currentPlayer;
 
 
     /**
      * Class constructor.
      */
-    public Controller() {
-        this.game = new Game();
+    public Controller(GameHandler gameHandler, Game game) {
+        this.gameHandler = gameHandler;
+        this.game = game;
     }
 
 
@@ -30,32 +33,40 @@ public class Controller {
     /**
      * Method used to set game parameters for the initial phase of the match.
      */
-    private void setup() {
-
-        //setting first player
-        int numOfPlayers = game.getNumOfPlayers();
-        int min = 0;
-        int randomNum = min + (int) (Math.random() * ((numOfPlayers –min)));
-        int i;
-
-        for (i = 0; i < numOfPlayers; i++) {
-            if (i != randomNum) {
-                game.getPlayers().get(i).setChair(false);
-            }
-            game.getPlayers().get(i).setChair(true);
-        }
+    public void setup() {
 
         //select 2 common goal cards
         game.getCommonGoalCards().add(game.getBag().pickCommonGoalCard());
         game.getCommonGoalCards().add(game.getBag().pickCommonGoalCard());
 
+        game.getCommonGoalCards().get(0).placePoints(game.getNumOfPlayers());
+        game.getCommonGoalCards().get(1).placePoints(game.getNumOfPlayers());
+
+
+        int i;
         //select a personal goal card for each player
-        for (i = 0; i < numOfPlayers; i++) {
+        for (i = 0; i < game.getNumOfPlayers(); i++) {
             game.getPlayers().get(i).setPersonalGoalCard(game.getBag().pickPersonalGoalCard());
+            game.getPlayers().get(i).setBookShelf(new BookShelf());
         }
 
-        //update the game board filling it with tiles
-        game.getBoard().updateBoard();
+        setCurrentPlayer(game.getCurrentPlayer());
+
+        //the game board should be already filled with tiles
+    }
+
+
+    /**
+     * Current player setter.
+     * @param player
+     */
+    public void setCurrentPlayer(Player player){
+        this.currentPlayer = player;
+    }
+
+
+    public void askTiles(){
+
     }
 
 
