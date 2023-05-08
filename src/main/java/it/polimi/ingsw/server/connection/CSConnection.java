@@ -32,34 +32,34 @@ public abstract class CSConnection {
         return this.ID;
     }
 
-    /**
-     * This method handles the possible messages that can arrive from client's side.
-     * @param message
-     */
-    public void actionHandler(Communication message) {
-        if (message instanceof UsernameSetup) {
-            checkConnection((UsernameSetup) message);
+//    /**
+//     * This method handles the possible messages that can arrive from client's side.
+//     * @param message
+//     */
+//    public void actionHandler(Communication message) {
+//        if (message instanceof UsernameSetup) {
+//            checkConnection((UsernameSetup) message);
+//
+//        }
+//    }
 
-        }
-    }
-
-    /**
-     * This method is used to check if the player trying to connect to the server
-     * @param usernameChoice
-     */
-    public void checkConnection(UsernameSetup usernameChoice) {
-        try {
-            ID = server.newClientRegistration(usernameChoice.getUsername(), this);
-            if (ID == null) {
-                setAlive(false);
-                return;
-            }
-            server.lobby(this);
-        } catch (InterruptedException e) {
-            System.err.println(e.getMessage());
-            Thread.currentThread().interrupt();
-        }
-    }
+//    /**
+//     * This method is used to check if the player trying to connect to the server
+//     * @param usernameChoice
+//     */
+//    public void checkConnection(UsernameSetup usernameChoice) {
+//        try {
+//            ID = server.newClientRegistration(usernameChoice.getUsername(), this);
+//            if (ID == null) {
+//                alive = false;
+//                return;
+//            }
+//            server.lobby(this);
+//        } catch (InterruptedException e) {
+//            System.err.println(e.getMessage());
+//            Thread.currentThread().interrupt();
+//        }
+//    }
 
     /**
      * Check if the connection is alive.
@@ -90,17 +90,10 @@ public abstract class CSConnection {
      */
     public abstract void sendAnswerToClient(SerializedAnswer answer) throws RemoteException;
 
-    /**
-     * Alive parameter setter.
-     * @param alive
-     */
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
 
-    /**
-     * This method is used to set up the players.
-     * @param request
-     */
-    public abstract void setupPlayers(HowManyPlayersRequest request);
+//    /**
+//     * This method is used to set up the players.
+//     * @param request
+//     */
+//    public abstract void setupPlayers(HowManyPlayersRequest request);
 }

@@ -1,29 +1,29 @@
 package it.polimi.ingsw.server.rmi;
 
-import it.polimi.ingsw.client.IRMIClient;
+import it.polimi.ingsw.client.rmi.IRMIClient;
 import it.polimi.ingsw.server.Server;
+import it.polimi.ingsw.server.connection.CSConnection;
 import it.polimi.ingsw.server.connection.RMICSConnection;
-import it.polimi.ingsw.server.rmi.IRMIServer;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class RMIServerHandler extends UnicastRemoteObject implements IRMIServer {
     private final Server server;
-    private RMICSConnection connection;
+    private CSConnection connection;
     public RMIServerHandler(Server server) throws RemoteException {
         this.server = server;
     }
 
     /**
      * Login with
-     * @param nickname username of the player
+     * @param username username of the player
      * @param client client which want to connect with the server.
      */
     @Override
-    public void login(String nickname, IRMIClient client) {
+    public void login(String username, IRMIClient client) {
         connection = new RMICSConnection(server, client);
-        server.login(nickname, connection);
+        server.newClientRegistration(username, connection);
     }
 
     /**

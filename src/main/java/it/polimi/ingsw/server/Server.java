@@ -129,10 +129,11 @@ public class Server {
          */
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
         exec.scheduleAtFixedRate(() -> {
+            /*
+            Each client registered in the server is pinged. If the client doesn't respond, the ping() method proceed itself to disconnect the client.
+             */
             for (Map.Entry<String, it.polimi.ingsw.server.connection.CSConnection> client : clients.entrySet()) {
-                if (client.getValue().isAlive()) {
-                    client.getValue().ping();
-                }
+                client.getValue().ping();
             }
         }, 1, Const.SERVER_PING_DELAY, TimeUnit.SECONDS);
     }
@@ -250,7 +251,80 @@ public class Server {
         else
             this.numOfPlayers = numOfPlayers;
     }
-    
+
+    // --------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // START COMMENTS
+    // --------------------------------------------------------------------------------------------------------------------------------------------------------------
+    /*
+    Io metterei qui i metodi (che ora sono commentati ma si trovano ancora in CSConnection.
+    Il metodo onMessage gestisce tutti i messaggi in arrivo dal client.
+     */
+
+    /**
+     * Server looking for new incoming messages from clients.
+     * @param messageFromClient
+     */
+    public void onMessage(Communication messageFromClient){
+        /*
+        Non penso abbia senso controllare la connessione e se esiste il player, non viene già fatto nel metodo sopra "newClientRegistration"?
+        Lì si setta l'username, è un doppio controllo questo oppure un refuso?
+         */
+        if (messageFromClient instanceof UsernameSetup)
+            checkConnection((UsernameSetup) messageFromClient);
+
+        /*
+        Qui andrei a gestire l'arrivo dei messaggi, in un modo simile a questo.
+        Il virtualPlayer ha già tutte le informazioni di cui ho bisogno il metodo per poter spedire il messaggio.
+         */
+        Answer answerToClient = gameHandler.interpretaIlMessaggio(messageFromClient);
+        sendAnswerToClient(virtualPlayer, answerToClient);
+    }
+
+
+    /*
+    Qui viene gestito l'invio di messaggi.
+    ATTENZIONE: lo stesso metodo è presente anche in CSConnection perchè ogni protocollo implemeterà l'invio di messaggi a modo suo!
+     */
+    public void sendAnswerToClient(VirtualPlayer virtualPlayer, SerializedAnswer answer){
+        CSConnection connection = virtualPlayer.getConnection();
+        try{
+            connection.sendAnswerToClient(answer);
+        } catch (RemoteException e){
+            LOGGER.log(Level.SEVERE, "Failed to send message to the client", e);
+        }
+    }
+
+
+
+    /*
+    HA SENSO QUESTO NOME? NON CONTROLLA LA CONNESSIONE MA L'USERNAME SE ESISTE GIA' (?).
+    Come detto sopra non penso abbia senso qui comunque.
+
+    E' più sensato un metodo ping (che è già dichiarato in CSConnection e già implementato a livello RMI) che pinga i client e setta alive=false se non rispondono.
+    Viene già avviato da server appena istanziato (vedi costruttore del server in fondo viene chiamato il ping su ogni client). Sarà poi il metodo ping ad occuparsi
+    di settare o no il bit di alive a 0 se il client non risponde.
+     */
+    /**
+     * This method is used to check if the player trying to connect to the server
+     * @param usernameChoice
+     */
+    private void checkConnection(UsernameSetup usernameChoice) {
+        try {
+            ID = newClientRegistration(usernameChoice.getUsername(), this);
+            if (ID == null) {
+                alive = false;
+                return;
+            }
+            server.lobby(this);
+        } catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    // --------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // END COMMENTS
+    // --------------------------------------------------------------------------------------------------------------------------------------------------------------
     
     /**
      * This method generates a new client ID.
@@ -345,6 +419,6 @@ public class Server {
     public static void main(String[] args) {
         Utils.printLogo();
         System.out.print("Welcome to the server of MyShelfie!");
-            new Server():
+        new Server();
     }
 }

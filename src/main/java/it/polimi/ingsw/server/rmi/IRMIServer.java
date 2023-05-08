@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.rmi;
 
-import it.polimi.ingsw.client.IRMIClient;
+import it.polimi.ingsw.client.rmi.IRMIClient;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -17,7 +17,7 @@ public interface IRMIServer extends Remote {
      * @param nickname name of the player.
      * @throws RemoteException
      */
-    public void login(String nickname, IRMIClient client) throws RemoteException;
+    public void login(String username, IRMIClient client) throws RemoteException;
 
     /**
      * Disconnect the client from the server.

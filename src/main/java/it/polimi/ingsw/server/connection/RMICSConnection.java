@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.connection;
 
-import it.polimi.ingsw.client.IRMIClient;
 import it.polimi.ingsw.client.rmi.IRMIClient;
 import it.polimi.ingsw.communications.serveranswers.Answer;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
@@ -34,7 +33,7 @@ public class RMICSConnection extends CSConnection {
         try {
             client.ping();
         }catch (RemoteException e){
-            Server.LOGGER.log(Level.WARNING, "Disconnect directive. No response", e);
+            Server.LOGGER.log(Level.WARNING, "Disconnect directive. No response from client", e);
             disconnect();
         }
     }
@@ -53,7 +52,7 @@ public class RMICSConnection extends CSConnection {
             }catch (RemoteException e){
                 Server.LOGGER.log(Level.WARNING, "Failed to disconnect the client", e);
             }
-            server.onClientDisconnection(this);
+            server.removePlayer(getID());
         }
     }
 
