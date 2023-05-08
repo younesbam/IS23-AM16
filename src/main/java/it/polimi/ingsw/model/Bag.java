@@ -65,6 +65,7 @@ public class Bag {
         persCards = new PriorityQueue<>(initPersSet);
     }
 
+
     /**
      * Pick from the deck a random common goal card
      * @param playerNum number of players in the actual game
@@ -78,6 +79,7 @@ public class Bag {
         comCard.placePoints(playerNum);
         return comCard;
     }
+
 
     /**
      * Pick from the deck a random personal goal card

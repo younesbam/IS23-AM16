@@ -6,6 +6,8 @@ import it.polimi.ingsw.common.exceptions.NotEmptyColumnException;
 import java.security.InvalidParameterException;
 import java.util.List;
 
+import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
 import static it.polimi.ingsw.Utils.*;
 
 
@@ -99,6 +101,19 @@ public class BookShelf {
             }
         }
         return true;
+    }
+
+
+    /**
+     * Method used to print the bookshelf.
+     */
+    public void printBookShelf(){
+        for (int i = 0; i < MAXBOOKSHELFCOL; i++) {
+            for (int j = 0; j < MAXBOOKSHELFROW; j++) {
+                System.out.print(grid[i][j] + " ");
+            }
+            System.out.println("\n");
+        }
     }
 
 }

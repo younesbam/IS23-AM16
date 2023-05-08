@@ -20,6 +20,9 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+
+//STA CLASSE è DIVENTATA INUTILE, è DA TOGLIERE!!! SI FA TUTTO IN SOCKETCLIENTHANDLER!
+
 public class SocketClass {
     private final int numOfPort;
     private final String IPAddress;
@@ -39,7 +42,7 @@ public class SocketClass {
     /**
      * This method instantiates a new socket on client's side, establishing a connection with the server.
      *
-     * @param nickname
+     * @param username
      * @param modelView
      * @param actionHandler
      * @return

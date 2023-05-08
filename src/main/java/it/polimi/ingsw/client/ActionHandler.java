@@ -3,6 +3,8 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.communications.serveranswers.Answer;
+import it.polimi.ingsw.communications.serveranswers.GameReplica;
+import it.polimi.ingsw.communications.serveranswers.RequestTiles;
 
 import java.beans.PropertyChangeSupport;
 
@@ -40,6 +42,13 @@ public class ActionHandler {
 
 
     public void answerManager(Answer a){
+
+        if(a instanceof RequestTiles){
+            view.firePropertyChange("RequestTiles");
+        }
+        if(a instanceof GameReplica){
+            modelView.updateGame(((GameReplica) a).getGameReplica());
+        }
 
 
 

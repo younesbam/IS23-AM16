@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.Tile;
 
 import java.util.*;
 
-import static it.polimi.ingsw.Utils.MAXBOARDDIM;
+import static it.polimi.ingsw.Const.MAXBOARDDIM;
 import static it.polimi.ingsw.Utils.MAXTILES;
 
 /**
@@ -140,4 +140,5 @@ public abstract class Board {
     private Tile insertTile() {
         return tiles.poll();
     }
+
 }

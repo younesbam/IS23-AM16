@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.communications.serveranswers.Answer;
+import it.polimi.ingsw.model.Game;
 
 
 /**
@@ -15,7 +16,8 @@ public class ModelView {
     private final CLI cli;
     private Answer answerFromServer;
     private boolean isYourTurn = false;
-    private String username;
+
+    private Game game;
     private boolean isConnected;
 
 
@@ -66,6 +68,24 @@ public class ModelView {
      */
     public CLI getCli(){
         return this.cli;
+    }
+
+
+    /**
+     * Game updater.
+     * @param game
+     */
+    public void updateGame(Game game) {
+        this.game. = game;
+    }
+
+
+    /**
+     * Game getter.
+     * @return
+     */
+    public Game getGame() {
+        return game;
     }
 
     /**

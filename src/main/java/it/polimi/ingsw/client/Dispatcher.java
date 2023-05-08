@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.common.Connection;
+import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -19,7 +20,7 @@ public class Dispatcher implements PropertyChangeListener {
     /**
      * Class constructor.
      * @param modelView
-     * @param ClientConnection generic client connection.
+     * @param clientConnection generic client connection.
      */
     public Dispatcher(ModelView modelView, Connection clientConnection) {
         this.clientConnection = clientConnection;
@@ -44,7 +45,18 @@ public class Dispatcher implements PropertyChangeListener {
      * @return
      */
     public synchronized boolean actionTaken(String value, String nameOfAction){
+        GameAction action;
 
+        String[] input = value.split(" ");
+
+        switch (nameOfAction.toUpperCase()){
+            case "PICKTILES" -> message = inputChecker.checkTiles(input);
+        }
+
+        if (message != null) {
+            clientConnection.sendToServer(message);
+            return true;
+        }
 
 
     }

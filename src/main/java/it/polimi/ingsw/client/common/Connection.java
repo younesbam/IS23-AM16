@@ -84,4 +84,6 @@ public abstract class Connection extends UnicastRemoteObject {
      */
     public abstract void disconnect() throws RemoteException;
 
+    public abstract void sendToServer()
+
 }

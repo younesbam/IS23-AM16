@@ -5,15 +5,17 @@ import it.polimi.ingsw.client.common.Connection;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.common.ConnectionType;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.util.Scanner;
 import java.util.logging.Level;
 
-public class CLI extends UI implements Runnable{
+public class CLI extends UI implements Runnable implements{
     /**
      * Input scanner.
      */
     private final Scanner input;
+
 
 
     /**
@@ -140,4 +142,30 @@ public class CLI extends UI implements Runnable{
         input.reset();
         pcs.firePropertyChange("action", null, input.nextLine());
     }
+
+
+    public void requestTiles(){
+
+        modelView.getGame().getCurrentPlayer().getBookShelf().printBookshelf();
+        modelView.getGame().getBoard().printBoard();
+
+        System.out.println("Now please select the tiles you want to pick from the board.\n");
+
+        System.out.println("In order to do it, please write firstly the number of tiles that you want to pick, followed by the coordinates of the tiles, like this: THREE row1 col1 row2 col2 row3 col3");
+
+        Scanner in = new Scanner(System.in);
+        String chosenTiles = input.nextLine();
+        pcs.firePropertyChange("PickTiles", null, chosenTiles);
+    }
+
+
+    public void propertyChange(PropertyChangeEvent event){
+        switch (event.getPropertyName()){
+            case "RequestTiles" -> requestTiles();
+            case "GameReplica" -> modelView.updateGame();
+        }
+    }
+
+
+
 }

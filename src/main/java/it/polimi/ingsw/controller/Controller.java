@@ -1,4 +1,7 @@
 package it.polimi.ingsw.controller;
+import it.polimi.ingsw.communications.serveranswers.GameReplica;
+import it.polimi.ingsw.communications.serveranswers.ItsYourTurn;
+import it.polimi.ingsw.communications.serveranswers.RequestTiles;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.server.GameHandler;
 
@@ -65,9 +68,22 @@ public class Controller {
     }
 
 
+    /**
+     * Current player getter.
+     * @return
+     */
+    public Player getCurrentPlayer(){
+        return this.currentPlayer;
+    }
+
+
     public void askTiles(){
+        gameHandler.sendToPlayer(new GameReplica(getGame()), getCurrentPlayer().getID());
+        gameHandler.sendToPlayer(new RequestTiles(), getCurrentPlayer().getID());
 
     }
+
+
 
 
     /**
@@ -76,7 +92,7 @@ public class Controller {
      * @param numOfTiles
      * @param coordinates
      */
-    public void pickTiles(int numOfTiles, int coordinates[3][2]) {
+    public void canPickTiles(int numOfTiles, int coordinates[3][2]) {
 
         //check if selected tiles can be picked up from the board
         int i;
@@ -89,11 +105,18 @@ public class Controller {
         }
 
         if (canPick) {
-            for (i = 0; i < numOfTiles; i++) {
-                game.getBoard().removeTile(coordinates[i][0], coordinates[i][1]);
-            }
+            removeTilesFromBoard(numOfTiles, coordinates);
         } else
         //MESSAGGIO CHE NON PUOI PRENDERE QUESTE TILES!
+    }
+
+
+    public void removeTilesFromBoard(int numOfTiles, int coordinates[3][2]){
+        int i;
+
+        for (i = 0; i < numOfTiles; i++) {
+            game.getBoard().removeTile(coordinates[i][0], coordinates[i][1]);
+        }
     }
 
 
