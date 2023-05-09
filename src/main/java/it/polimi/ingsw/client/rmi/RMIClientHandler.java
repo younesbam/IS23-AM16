@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.rmi;
 import it.polimi.ingsw.Const;
 import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.client.ModelView;
-import it.polimi.ingsw.client.common.Connection;
+import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.client.utils.PingClientTask;
 import it.polimi.ingsw.common.JSONParser;
 import it.polimi.ingsw.server.IRMIServer;
@@ -19,7 +19,7 @@ import java.util.Timer;
  * Client RMI handler.
  * @author Nicolo' Gandini
  */
-public class RMIClientHandler extends Connection implements IRMIClient {
+public class RMIClientHandler extends Client implements IRMIClient {
     private IRMIServer server;
 
     /**

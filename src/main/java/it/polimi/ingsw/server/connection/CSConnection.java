@@ -1,14 +1,12 @@
 package it.polimi.ingsw.server.connection;
 
-import it.polimi.ingsw.communications.clientmessages.Communication;
-import it.polimi.ingsw.communications.clientmessages.SerializedCommunication;
+import it.polimi.ingsw.communications.clientmessages.Message;
+import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.UsernameSetup;
-import it.polimi.ingsw.communications.serveranswers.Answer;
-import it.polimi.ingsw.communications.serveranswers.HowManyPlayersRequest;
+import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.server.Server;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 
 /**
@@ -32,34 +30,58 @@ public abstract class CSConnection {
         return this.ID;
     }
 
-//    /**
-//     * This method handles the possible messages that can arrive from client's side.
-//     * @param message
-//     */
-//    public void actionHandler(Communication message) {
-//        if (message instanceof UsernameSetup) {
-//            checkConnection((UsernameSetup) message);
-//
-//        }
-//    }
 
-//    /**
-//     * This method is used to check if the player trying to connect to the server
-//     * @param usernameChoice
-//     */
-//    public void checkConnection(UsernameSetup usernameChoice) {
-//        try {
-//            ID = server.newClientRegistration(usernameChoice.getUsername(), this);
-//            if (ID == null) {
-//                alive = false;
-//                return;
-//            }
-//            server.lobby(this);
-//        } catch (InterruptedException e) {
-//            System.err.println(e.getMessage());
-//            Thread.currentThread().interrupt();
-//        }
-//    }
+    /**
+     * Dispatch the message to the right action handler, based on the type of the serialized message.
+     * @param serializedMessage
+     */
+    public void onMessage(SerializedMessage serializedMessage) {
+        if (serializedMessage.message != null) {
+            actionHandler(serializedMessage.message);
+        } else if (serializedMessage.gameAction != null) {
+            actionHandler(serializedMessage.gameAction);
+        }
+    }
+
+
+    /**
+     * Handles the possible messages that can arrive from client's side.
+     * @param message message from client
+     */
+    private void actionHandler(Message message){
+        if (message instanceof UsernameSetup) {
+            checkConnection((UsernameSetup) message);
+
+        }
+    }
+
+
+    /**
+     * Handles the possible game action that can arrive from client's side.
+     * @param action game action from client
+     */
+    private void actionHandler(GameAction action){
+
+    }
+
+
+    /**
+     * This method is used to check if the player trying to connect to the server
+     * @param usernameChoice
+     */
+    private void checkConnection(UsernameSetup usernameChoice) {
+        try {
+            ID = server.newClientRegistration(usernameChoice.getUsername(), this);
+            if (ID == null) {
+                disconnect();
+                return;
+            }
+            server.lobby(this);
+        } catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+            Thread.currentThread().interrupt();
+        }
+    }
 
     /**
      * Check if the connection is alive.
@@ -91,9 +113,9 @@ public abstract class CSConnection {
     public abstract void sendAnswerToClient(SerializedAnswer answer) throws RemoteException;
 
 
-//    /**
-//     * This method is used to set up the players.
-//     * @param request
-//     */
-//    public abstract void setupPlayers(HowManyPlayersRequest request);
+    /**
+     * This method is used to set up the players.
+     * @param request
+     */
+    public abstract void setupPlayers(HowManyPlayersRequest request);
 }

@@ -8,11 +8,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Timer;
 import java.util.logging.Logger;
 
-public abstract class Connection extends UnicastRemoteObject {
+public abstract class Client extends UnicastRemoteObject {
     /**
      * Logger of the client.
      */
-    public static final Logger LOGGER = Logger.getLogger(Connection.class.getName());
+    public static final Logger LOGGER = Logger.getLogger(Client.class.getName());
 
     /**
      * Address of the client.
@@ -52,7 +52,7 @@ public abstract class Connection extends UnicastRemoteObject {
      * @param username of the user
      * @throws RemoteException
      */
-    public Connection(String address, int port, String username, ModelView modelView, ActionHandler actionHandler) throws RemoteException {
+    public Client(String address, int port, String username, ModelView modelView, ActionHandler actionHandler) throws RemoteException {
         this.address = address;
         this.port = port;
         this.username = username;

@@ -6,5 +6,5 @@ import java.io.Serializable;
  * This is the interface that defines the communication messages sent from client to server.
  */
 
-public interface Communication extends Serializable {
+public interface Message extends Serializable {
 }

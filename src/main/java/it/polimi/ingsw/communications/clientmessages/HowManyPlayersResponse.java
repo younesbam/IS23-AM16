@@ -1,6 +1,6 @@
 package it.polimi.ingsw.communications.clientmessages;
 
-public class HowManyPlayersResponse implements Communication{
+public class HowManyPlayersResponse implements Message {
 
     public final int numChoice;
 

@@ -2,9 +2,9 @@ package it.polimi.ingsw.client.socket;
 
 import it.polimi.ingsw.client.*;
 import it.polimi.ingsw.client.cli.CLI;
-import it.polimi.ingsw.client.common.Connection;
-import it.polimi.ingsw.communications.clientmessages.Communication;
-import it.polimi.ingsw.communications.clientmessages.SerializedCommunication;
+import it.polimi.ingsw.client.common.Client;
+import it.polimi.ingsw.communications.clientmessages.Message;
+import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.UsernameSetup;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.serveranswers.ConnectionOutcome;
@@ -22,7 +22,7 @@ import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 
-public class SocketClientHandler extends Connection {
+public class SocketClientHandler extends Client {
     SocketClass socketClass;
     AnswerListener answerListener;
     private ObjectOutputStream outputStream;
@@ -39,10 +39,10 @@ public class SocketClientHandler extends Connection {
     public void connect(){
         try {
             if(!setup(username, modelView, actionHandler)) {
-                Connection.LOGGER.log(Level.SEVERE, "The entered IP/port doesn't match any active server or the server is not running. Please try again!");
+                Client.LOGGER.log(Level.SEVERE, "The entered IP/port doesn't match any active server or the server is not running. Please try again!");
                 CLI.main(null);
             }
-            Connection.LOGGER.log(Level.INFO, "Connection established!");
+            Client.LOGGER.log(Level.INFO, "Connection established!");
         } catch (TakenUsername e) {
             CLI.main(null);
         }
@@ -143,8 +143,8 @@ public class SocketClientHandler extends Connection {
      * Method to put a client -> server communication on the socket output stream (and in doing so send it to the server).
      * @param c
      */
-    public void sendToServer(Communication c) {
-        SerializedCommunication userInput = new SerializedCommunication(c);
+    public void sendToServer(Message c) {
+        SerializedMessage userInput = new SerializedMessage(c);
         try {
             outputStream.reset();
             outputStream.writeObject(userInput);
@@ -161,7 +161,7 @@ public class SocketClientHandler extends Connection {
      * @param a
      */
     public void sendToServer(GameAction a) {
-        SerializedCommunication userInput = new SerializedCommunication(a);
+        SerializedMessage userInput = new SerializedMessage(a);
         try {
             outputStream.reset();
             outputStream.writeObject(userInput);

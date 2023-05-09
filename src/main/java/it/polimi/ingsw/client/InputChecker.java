@@ -1,8 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CLI;
-import it.polimi.ingsw.client.common.Connection;
-import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
+import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.communications.clientmessages.actions.PickTiles;
 
 import static it.polimi.ingsw.Const.MAXBOARDDIM;
@@ -14,19 +13,19 @@ public class InputChecker {
 
     private final CLI cli;
     private final ModelView modelView;
-    private final Connection clientConnection;
+    private final Client client;
 
 
     /**
      * Class constructor, only for CLI use.
      * @param cli
      * @param modelView
-     * @param clientConnection
+     * @param client
      */
-    public InputChecker(CLI cli, ModelView modelView, Connection clientConnection) {
+    public InputChecker(CLI cli, ModelView modelView, Client client) {
         this.cli = cli;
         this.modelView = modelView;
-        this.clientConnection = clientConnection;
+        this.client = client;
     }
 
 

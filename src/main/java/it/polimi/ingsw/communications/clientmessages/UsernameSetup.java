@@ -1,22 +1,22 @@
 package it.polimi.ingsw.communications.clientmessages;
 
-import it.polimi.ingsw.client.common.Connection;
+import it.polimi.ingsw.client.common.Client;
 
 /**
  * This class encapsulates player's username information in a communication object, reaady to be sent to the server.
  */
-public class UsernameSetup implements Communication {
+public class UsernameSetup implements Message {
     private final String username;
     //forse è inutile!!! avere un attributo connessione qui intendo.
-    private final Connection connectionType;
+    private final Client client;
 
     /**
      * Class constructor.
      * @param username
      */
-    public UsernameSetup(String username, Connection connectionType){
+    public UsernameSetup(String username, Client client){
         this.username = username;
-        this.connectionType = connectionType;
+        this.client = client;
     }
 
     /**
@@ -31,7 +31,7 @@ public class UsernameSetup implements Communication {
      * ConnectioType getter.
      * @return
      */
-    public Connection getConnectionType(){
-        return this.connectionType;
+    public Client getConnectionType(){
+        return this.client;
     }
 }

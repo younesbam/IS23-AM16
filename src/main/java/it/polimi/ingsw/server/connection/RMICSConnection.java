@@ -47,11 +47,11 @@ public class RMICSConnection extends CSConnection {
         if(this.alive){
             try {
                 client.disconnectMe();
-                this.alive = false;
                 Server.LOGGER.log(Level.INFO, "Client successfully disconnected");
             }catch (RemoteException e){
                 Server.LOGGER.log(Level.WARNING, "Failed to disconnect the client", e);
             }
+            this.alive = false;
             server.removePlayer(getID());
         }
     }

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.communications.clientmessages;
 
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
-import it.polimi.ingsw.communications.clientmessages.Communication;
 
 import java.io.Serializable;
 
@@ -10,19 +9,19 @@ import java.io.Serializable;
  * which is as well serializable.
  */
 
-public class SerializedCommunication implements Serializable {
+public class SerializedMessage implements Serializable {
 
-    public final Communication communication;
+    public final Message message;
     public final GameAction gameAction;
 
 
     /**
      * Class constructor with a communication.
-     * @param communication
+     * @param message
      */
-    public SerializedCommunication(Communication communication){
+    public SerializedMessage(Message message){
         this.gameAction = null;
-        this.communication = communication;
+        this.message = message;
     }
 
 
@@ -30,8 +29,8 @@ public class SerializedCommunication implements Serializable {
      * Class constructor with an action performed by the user.
      * @param a
      */
-    public SerializedCommunication(GameAction a){
+    public SerializedMessage(GameAction a){
         this.gameAction = a;
-        this.communication = null;
+        this.message = null;
     }
 }

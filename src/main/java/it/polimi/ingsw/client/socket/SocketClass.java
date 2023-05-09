@@ -5,8 +5,8 @@ import it.polimi.ingsw.client.AnswerListener;
 import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.communications.clientmessages.UsernameSetup;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
-import it.polimi.ingsw.communications.clientmessages.Communication;
-import it.polimi.ingsw.communications.clientmessages.SerializedCommunication;
+import it.polimi.ingsw.communications.clientmessages.Message;
+import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.serveranswers.ConnectionOutcome;
 import it.polimi.ingsw.communications.serveranswers.ErrorAnswer;
 import it.polimi.ingsw.communications.serveranswers.ErrorClassification;
@@ -131,8 +131,8 @@ public class SocketClass {
      * Method to put a client -> server communication on the socket output stream (and in doing so send it to the server).
      * @param c
      */
-    public void sendToServer(Communication c) {
-        SerializedCommunication userInput = new SerializedCommunication(c);
+    public void sendToServer(Message c) {
+        SerializedMessage userInput = new SerializedMessage(c);
         try {
             outputStream.reset();
             outputStream.writeObject(userInput);
@@ -149,7 +149,7 @@ public class SocketClass {
      * @param a
      */
     public void sendToServer(GameAction a) {
-        SerializedCommunication userInput = new SerializedCommunication(a);
+        SerializedMessage userInput = new SerializedMessage(a);
         try {
             outputStream.reset();
             outputStream.writeObject(userInput);

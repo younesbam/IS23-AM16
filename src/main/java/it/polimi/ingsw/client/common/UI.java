@@ -18,7 +18,7 @@ public abstract class UI implements PropertyChangeListener {
     /**
      * Generic client, RMI or socket.
      */
-    Connection client;
+    Client client;
 
     /**
      * Client's action handler.

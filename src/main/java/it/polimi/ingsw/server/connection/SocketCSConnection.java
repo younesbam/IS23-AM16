@@ -1,10 +1,8 @@
 package it.polimi.ingsw.server.connection;
 
 import it.polimi.ingsw.communications.clientmessages.HowManyPlayersResponse;
-import it.polimi.ingsw.communications.clientmessages.UsernameSetup;
-import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
-import it.polimi.ingsw.communications.clientmessages.Communication;
-import it.polimi.ingsw.communications.clientmessages.SerializedCommunication;
+import it.polimi.ingsw.communications.clientmessages.Message;
+import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.serveranswers.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.PersonalizedAnswer;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
@@ -60,15 +58,8 @@ public class SocketCSConnection extends CSConnection implements Runnable{
      * @throws ClassNotFoundException
      */
     public synchronized void readStreamFromClient() throws IOException, ClassNotFoundException {
-        SerializedCommunication input = (SerializedCommunication) inputStream.readObject();
-
-        if (input.communication != null) {
-            Communication command = input.communication;
-            actionHandler(command);
-        } else if (input.action != null) {
-            GameAction action = input.gameAction;
-            actionHandler(action);
-        }
+        SerializedMessage input = (SerializedMessage) inputStream.readObject();
+        onMessage(input);
     }
 
 
@@ -114,11 +105,11 @@ public class SocketCSConnection extends CSConnection implements Runnable{
 
         while(true) {
             try {
-                SerializedCommunication input = (SerializedCommunication) inputStream.readObject();
-                Communication communicationFromClient = input.communication;
-                if(communicationFromClient instanceof HowManyPlayersResponse) {
+                SerializedMessage input = (SerializedMessage) inputStream.readObject();
+                Message messageFromClient = input.message;
+                if(messageFromClient instanceof HowManyPlayersResponse) {
                     try {
-                        int numOfPlayers = ((HowManyPlayersResponse) communicationFromClient).getNumChoice();
+                        int numOfPlayers = ((HowManyPlayersResponse) messageFromClient).getNumChoice();
                         server.setNumOfPlayers(numOfPlayers);
                         server.getGameHandlerByID(ID).setNumOfPlayers(numOfPlayers);
                         server.getVirtualPlayerByID(ID).send(new PersonalizedAnswer(false, "The number of players for this match has been chosen: it's a " + numOfPlayers + " players match!"));
@@ -131,19 +122,6 @@ public class SocketCSConnection extends CSConnection implements Runnable{
                 disconnect();
                 System.err.println("Error occurred while setting-up the game mode: " + e.getMessage());
             }
-        }
-    }
-
-
-    /**
-     * This method closes the socket connection with the client, removing the player from the server's list of players aswell.
-     */
-    public void disconnect(){
-        server.removePlayer(ID);
-        try{
-            socket.close();
-        } catch (IOException e){
-            System.out.println(e.getMessage());
         }
     }
 

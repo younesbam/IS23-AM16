@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.rmi;
 
 import it.polimi.ingsw.client.rmi.IRMIClient;
+import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.connection.CSConnection;
 import it.polimi.ingsw.server.connection.RMICSConnection;
@@ -15,10 +16,9 @@ public class RMIServerHandler extends UnicastRemoteObject implements IRMIServer 
         this.server = server;
     }
 
+
     /**
-     * Login with
-     * @param username username of the player
-     * @param client client which want to connect with the server.
+     * {@inheritDoc}
      */
     @Override
     public void login(String username, IRMIClient client) {
@@ -26,11 +26,21 @@ public class RMIServerHandler extends UnicastRemoteObject implements IRMIServer 
         server.newClientRegistration(username, connection);
     }
 
+
     /**
-     * Cut off the communication client-server.
+     * {@inheritDoc}
      */
     @Override
     public void logout() {
         connection.disconnect();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void sendMessageToServer(SerializedMessage message) throws RemoteException {
+        connection.onMessage(message);
     }
 }
