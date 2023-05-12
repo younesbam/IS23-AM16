@@ -2,9 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.gui.GUI;
-import it.polimi.ingsw.communications.serveranswers.Answer;
-import it.polimi.ingsw.communications.serveranswers.GameReplica;
-import it.polimi.ingsw.communications.serveranswers.RequestTiles;
+import it.polimi.ingsw.communications.serveranswers.*;
 
 import java.beans.PropertyChangeSupport;
 
@@ -36,7 +34,7 @@ public class ActionHandler {
     public ActionHandler(GUI gui, ModelView modelView) {
         this.gui = gui;
         this.modelView = modelView;
-        view.addPropertyChangeListener(gui);
+        //view.addPropertyChangeListener(gui);
     }
 
 
@@ -44,14 +42,26 @@ public class ActionHandler {
     public void answerManager(Answer a){
 
         if(a instanceof RequestTiles){
-            view.firePropertyChange("RequestTiles");
+            view.firePropertyChange("RequestTiles", null, ((RequestTiles) a).getAnswer());
         }
         if(a instanceof GameReplica){
             modelView.updateGame(((GameReplica) a).getGameReplica());
         }
-
-
-
+        if(a instanceof PersonalizedAnswer){
+            view.firePropertyChange("PersonalizedAnswer", null, a.getAnswer());
+        }
+        if(a instanceof RequestWhereToPlaceTiles){
+            view.firePropertyChange("RequestToPlaceTiles", null, ((RequestWhereToPlaceTiles) a).getAnswer());
+        }
+        if(a instanceof RequestWhatToDo){
+            view.firePropertyChange("RequestWhatToDo", null, ((RequestWhatToDo) a).getAnswer());
+        }
+        if(a instanceof PlayerDisconnected){
+            if(gui != null) {
+            } else if(cli != null) {
+                cli.endGameMessage();
+            }
+        }
     }
 
 

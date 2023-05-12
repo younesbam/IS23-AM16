@@ -31,6 +31,7 @@ public class AnswerListener implements Runnable{
         this.actionHandler = actionHandler;
     }
 
+
     /**
      * This method ends the connection to the server.
      */

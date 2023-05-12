@@ -81,12 +81,6 @@ public final class Utils {
      * Print MyShelfie logo.
      */
     public static void printLogo(){
-        System.out.println(""" __  __       ____  _          _  __ _      
-                               |  \/  |_   _/ ___|| |__   ___| |/ _(_) ___ 
-                               | |\/| | | | \___ \| '_ \ / _ \ | |_| |/ _ \
-                               | |  | | |_| |___) | | | |  __/ |  _| |  __/
-                               |_|  |_|\__, |____/|_| |_|\___|_|_| |_|\___|
-                                       |___/\n
-                                       Made by """);
+        System.out.println();
     }
 }

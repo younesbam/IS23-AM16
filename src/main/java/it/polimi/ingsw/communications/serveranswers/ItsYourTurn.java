@@ -15,8 +15,8 @@ public class ItsYourTurn implements Answer{
      * TurnMessage getter.
      * @return
      */
-    public String getMessage(){
-        return this.turnMessage,
+    public String getAnswer(){
+        return this.turnMessage;
     }
 
 

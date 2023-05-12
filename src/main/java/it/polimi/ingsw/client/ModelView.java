@@ -76,7 +76,7 @@ public class ModelView {
      * @param game
      */
     public void updateGame(Game game) {
-        this.game. = game;
+        this.game = game;
     }
 
 

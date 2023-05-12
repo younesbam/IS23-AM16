@@ -6,6 +6,6 @@ package it.polimi.ingsw.exceptions;
 public class OutOfBoundException extends Exception{
 
     public String getMessage(){
-        return ("An error has occurred: ")
+        return ("An error has occurred: ");
     }
 }

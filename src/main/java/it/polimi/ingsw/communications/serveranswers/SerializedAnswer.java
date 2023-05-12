@@ -18,9 +18,8 @@ public class SerializedAnswer implements Serializable {
 
     /**
      * Answer getter.
-     * @param a
      */
-    public void getAnswer(Answer a) {
-        this.answer = a;
+    public Answer getAnswer() {
+        return this.answer;
     }
 }

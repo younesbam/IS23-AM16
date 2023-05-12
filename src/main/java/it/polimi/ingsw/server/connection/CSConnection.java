@@ -4,9 +4,12 @@ import it.polimi.ingsw.communications.clientmessages.Message;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.UsernameSetup;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
+import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
+import it.polimi.ingsw.communications.serveranswers.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.server.Server;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 /**
@@ -51,8 +54,8 @@ public abstract class CSConnection {
     private void actionHandler(Message message){
         if (message instanceof UsernameSetup) {
             checkConnection((UsernameSetup) message);
-
         }
+
     }
 
 
@@ -61,7 +64,9 @@ public abstract class CSConnection {
      * @param action game action from client
      */
     private void actionHandler(GameAction action){
-
+        if(action instanceof TilesPicked){
+            server.getGameHandlerByID(ID).dispatchActions(action);
+        }
     }
 
 
@@ -69,7 +74,7 @@ public abstract class CSConnection {
      * This method is used to check if the player trying to connect to the server
      * @param usernameChoice
      */
-    private void checkConnection(UsernameSetup usernameChoice) {
+    private void checkConnection(UsernameSetup usernameChoice){
         try {
             ID = server.newClientRegistration(usernameChoice.getUsername(), this);
             if (ID == null) {
@@ -110,7 +115,7 @@ public abstract class CSConnection {
      * Send an answer to the client.
      * @param answer from the server
      */
-    public abstract void sendAnswerToClient(SerializedAnswer answer) throws RemoteException;
+    public abstract void sendAnswerToClient(SerializedAnswer answer) throws IOException;
 
 
     /**

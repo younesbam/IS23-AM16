@@ -45,20 +45,24 @@ public class Dispatcher implements PropertyChangeListener {
      * @return
      */
     public synchronized boolean actionTaken(String value, String nameOfAction){
-        GameAction action;
+        GameAction messageToServer = null;
 
         String[] input = value.split(" ");
 
         switch (nameOfAction.toUpperCase()){
-            case "PICKTILES" -> message = inputChecker.checkTiles(input);
+            case "PICKTILES" -> messageToServer = inputChecker.checkTiles(input);
         }
 
-        if (message != null) {
-            client.sendToServer(message);
+
+
+
+
+        if (messageToServer != null) {
+            client.sendToServer(messageToServer);
             return true;
         }
-
-
+        else
+            return false;
     }
 
 

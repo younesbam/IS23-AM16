@@ -6,7 +6,6 @@ import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.client.utils.PingClientTask;
 import it.polimi.ingsw.common.JSONParser;
-import it.polimi.ingsw.server.IRMIServer;
 import it.polimi.ingsw.server.rmi.IRMIServer;
 
 import java.rmi.NotBoundException;

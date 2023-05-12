@@ -2,6 +2,8 @@ package it.polimi.ingsw.client.common;
 
 import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.client.ModelView;
+import it.polimi.ingsw.communications.clientmessages.Message;
+import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -84,6 +86,8 @@ public abstract class Client extends UnicastRemoteObject {
      */
     public abstract void disconnect() throws RemoteException;
 
-    public abstract void sendToServer()
+    public abstract void sendToServer(Message message);
+
+    public abstract void sendToServer(GameAction gameAction);
 
 }

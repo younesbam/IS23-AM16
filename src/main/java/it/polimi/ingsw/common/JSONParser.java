@@ -11,7 +11,9 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
 
-import static it.polimi.ingsw.Utils.MAXBOARDDIM;
+import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
+import static it.polimi.ingsw.Const.MAXBOARDDIM;
 
 /**
  * Easily get what's inside the json file

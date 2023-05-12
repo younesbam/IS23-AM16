@@ -8,8 +8,8 @@ import it.polimi.ingsw.exceptions.OutOfBoundException;
 import it.polimi.ingsw.server.connection.CSConnection;
 import it.polimi.ingsw.server.rmi.RMIServerHandler;
 import it.polimi.ingsw.server.socket.ServerSideSocket;
-import it.polimi.ingsw.server.utils.ServerPing;
 
+import java.io.IOException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -159,7 +159,7 @@ public class Server {
     /**
      * This method is the one that registers the new client to the match. It also checks if the username chosen by the player is not already taken.
      */
-    public synchronized Integer newClientRegistration(String username, CSConnection clientConnection) {
+    public synchronized Integer newClientRegistration(String username, CSConnection clientConnection) throws IOException{
         Integer clientID = usernameMapID.get(username);
 
         //checks about nickname
@@ -198,10 +198,10 @@ public class Server {
         } else { //username già in uso!
             VirtualPlayer registeredClient = IDMapVirtualPlayer.get(clientID);
             if (registeredClient.getConnection() != null) {
-                SerializedAnswer duplicateNicknameError = new SerializedAnswer();
-                duplicateNicknameError.setAnswer(new ErrorAnswer(ErrorClassification.TAKENUSERNAME));
-                clientConnection.sendAnswerToClient(duplicateNicknameError);
-                return null;
+                    SerializedAnswer duplicateNicknameError = new SerializedAnswer();
+                    duplicateNicknameError.setAnswer(new ErrorAnswer(ErrorClassification.TAKENUSERNAME));
+                    clientConnection.sendAnswerToClient(duplicateNicknameError);
+                    return null;
             }
         }
 
@@ -226,7 +226,7 @@ public class Server {
                 TimeUnit.MILLISECONDS.sleep(1000);
             }
 
-            gameHandler.initialSetup();
+            gameHandler.startGame();
 
         } else {
             gameHandler.sendToEveryone(new PersonalizedAnswer(false, "There are " + (numOfPlayers - playersWaitingList.size()) + " slots left!"));

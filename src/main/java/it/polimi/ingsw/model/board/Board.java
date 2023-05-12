@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.Tile;
 import java.util.*;
 
 import static it.polimi.ingsw.Const.MAXBOARDDIM;
-import static it.polimi.ingsw.Utils.MAXTILES;
+import static it.polimi.ingsw.Const.MAXTILES;
 
 /**
  * This class represents the game's board.
@@ -139,6 +139,30 @@ public abstract class Board {
      */
     private Tile insertTile() {
         return tiles.poll();
+    }
+
+
+    /**
+     * This method returns the tile at the requested coordinates.
+     * @param x
+     * @param y
+     * @return
+     */
+    public Tile getTile(int x, int y){
+        return grid[x][y].getTile();
+    }
+
+
+    /**
+     * Method used to print the board.
+     */
+    public void printBoard(){
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                System.out.print(grid[i][j].getTile().name() + " ");
+            }
+            System.out.println();
+        }
     }
 
 }

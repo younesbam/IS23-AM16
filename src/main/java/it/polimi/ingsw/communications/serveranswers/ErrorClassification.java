@@ -5,6 +5,7 @@ public enum ErrorClassification {
     TAKENUSERNAME,
     INPUTINVALID,
     MAXPLAYERSREACHED,
+    SERVERISDOWN
 
 
 

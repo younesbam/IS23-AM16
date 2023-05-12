@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.connection;
 
 import it.polimi.ingsw.client.rmi.IRMIClient;
 import it.polimi.ingsw.communications.serveranswers.Answer;
+import it.polimi.ingsw.communications.serveranswers.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.server.Server;
 
@@ -62,5 +63,10 @@ public class RMICSConnection extends CSConnection {
      */
     public void sendAnswerToClient(SerializedAnswer answer) throws RemoteException {
         client.onServerAnswer(answer);
+    }
+
+    @Override
+    public void setupPlayers(HowManyPlayersRequest request) {
+
     }
 }

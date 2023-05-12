@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller;
-import it.polimi.ingsw.communications.serveranswers.GameReplica;
-import it.polimi.ingsw.communications.serveranswers.ItsYourTurn;
-import it.polimi.ingsw.communications.serveranswers.RequestTiles;
+import it.polimi.ingsw.common.exceptions.NotEmptyColumnException;
+import it.polimi.ingsw.communications.serveranswers.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.server.GameHandler;
 
@@ -39,8 +38,8 @@ public class Controller {
     public void setup() {
 
         //select 2 common goal cards
-        game.getCommonGoalCards().add(game.getBag().pickCommonGoalCard());
-        game.getCommonGoalCards().add(game.getBag().pickCommonGoalCard());
+        game.getCommonGoalCards().add(game.getBag().pickCommonGoalCard(game.getNumOfPlayers()));
+        game.getCommonGoalCards().add(game.getBag().pickCommonGoalCard(game.getNumOfPlayers()));
 
         game.getCommonGoalCards().get(0).placePoints(game.getNumOfPlayers());
         game.getCommonGoalCards().get(1).placePoints(game.getNumOfPlayers());
@@ -55,16 +54,8 @@ public class Controller {
 
         setCurrentPlayer(game.getCurrentPlayer());
 
+        askWhatToDo();
         //the game board should be already filled with tiles
-    }
-
-
-    /**
-     * Current player setter.
-     * @param player
-     */
-    public void setCurrentPlayer(Player player){
-        this.currentPlayer = player;
     }
 
 
@@ -77,48 +68,71 @@ public class Controller {
     }
 
 
-    public void askTiles(){
-        gameHandler.sendToPlayer(new GameReplica(getGame()), getCurrentPlayer().getID());
-        gameHandler.sendToPlayer(new RequestTiles(), getCurrentPlayer().getID());
-
+    /**
+     * Method used to ask the player what he wants to do at the start of his turn.
+     */
+    public void askWhatToDo(){
+        gameHandler.sendToPlayer(new RequestWhatToDo(), currentPlayer.getID());
     }
 
 
+    /**
+     * Method that asks the current player which tiles he wants to pick from the board.
+     */
+    public void askTiles(){
+        gameHandler.sendToPlayer(new GameReplica(getGame()), getCurrentPlayer().getID());
+        gameHandler.sendToPlayer(new RequestTiles(), getCurrentPlayer().getID());
+    }
 
 
     /**
      * Method to check if the tiles selected by the player are actually pickable. If so, they are removed from the board.
      *
-     * @param numOfTiles
      * @param coordinates
      */
-    public void canPickTiles(int numOfTiles, int coordinates[3][2]) {
+    public void canPickTiles(int coordinates[][]){
 
         //check if selected tiles can be picked up from the board
         int i;
         boolean canPick = true;
 
-        for (i = 0; i < numOfTiles; i++) {
+        for (i = 0; coordinates[i][0] != null; i++) {
             if (!game.getBoard().isPickable(coordinates[i][0], coordinates[i][1])) {
                 canPick = false;
             }
         }
 
         if (canPick) {
-            removeTilesFromBoard(numOfTiles, coordinates);
-        } else
-        //MESSAGGIO CHE NON PUOI PRENDERE QUESTE TILES!
-    }
-
-
-    public void removeTilesFromBoard(int numOfTiles, int coordinates[3][2]){
-        int i;
-
-        for (i = 0; i < numOfTiles; i++) {
-            game.getBoard().removeTile(coordinates[i][0], coordinates[i][1]);
+            removeTilesFromBoard(coordinates);
+        } else{
+            System.out.println("You can't pick the tiles here! Please select other tiles!");
+            askTiles();
         }
+
     }
 
+
+    /**
+     * Method used to remove tiles from the player board.
+     * @param coordinates
+     */
+    public void removeTilesFromBoard(int coordinates[][]){
+        int i;
+        ArrayList<Tile> tiles = new ArrayList<>();
+
+        for (i = 0;  coordinates[i][0] != null; i++) {
+            tiles.add(game.getBoard().getTile(coordinates[i][0], coordinates[i][1]));
+            game.getBoard().removeTile(coordinates[i][0], coordinates[i][1]);
+            gameHandler.sendToPlayer(new PersonalizedAnswer(false, "You picked the following tile:" + game.getBoard().getTile(coordinates[i][0], coordinates[i][1]).name()), currentPlayer.getID());
+        }
+
+        askToPlaceTiles(tiles);
+    }
+
+
+    public void askToPlaceTiles(ArrayList<Tile> tiles){
+        gameHandler.sendToPlayer(new RequestWhereToPlaceTiles(tiles), getCurrentPlayer().getID());
+    }
 
     /**
      * Method used to place the selected tiles in the current player's Bookshelf. It also checks if the selected column has enough free spaces.
@@ -127,12 +141,12 @@ public class Controller {
      * @param numOfTiles
      * @param list
      */
-    public void placeTiles(int column, int numOfTiles, List<Tile> list) {
+    public void placeTiles(int column, int numOfTiles, List<Tile> list) throws NotEmptyColumnException {
 
         if (game.getCurrentPlayer().getBookShelf().checkColumn(column, numOfTiles)) {
             game.getCurrentPlayer().getBookShelf().placeTiles(column, list);
-        } else
-        //MESSAGGIO CHE LA COLONNA NON HA ABBASTANZA SPAZIO!
+        }
+        //else MESSAGGIO CHE LA COLONNA NON HA ABBASTANZA SPAZIO!
     }
 
 
@@ -196,15 +210,16 @@ public class Controller {
      */
     public void setCurrentPlayer(Player player) {
         game.setCurrentPlayer(player);
+        this.currentPlayer = player;
     }
 
 
-    /**
-     * Method that switches the current player to the next one.
-     */
-    public void nextPlayer() {
-        game.nextPlayer();
-    }
+//    /**
+//     * Method that switches the current player to the next one.
+//     */
+//    public void nextPlayer() {
+//        game.nextPlayer();
+//    }
 
     public void endGame() {
 
@@ -212,6 +227,9 @@ public class Controller {
 
 
     public void propertyChange(PropertyChangeEvent evt) {
+        switch (evt.getPropertyName().toUpperCase()){
+            case "PICKTILES" -> canPickTiles(evt.getNewValue());
+        }
 
     }
 }

@@ -4,13 +4,15 @@ import it.polimi.ingsw.client.*;
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.common.ConnectionType;
+import it.polimi.ingsw.communications.serveranswers.RequestTiles;
+import it.polimi.ingsw.communications.serveranswers.RequestWhereToPlaceTiles;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.util.Scanner;
 import java.util.logging.Level;
 
-public class CLI extends UI implements Runnable implements{
+public class CLI extends UI implements Runnable{
     /**
      * Input scanner.
      */
@@ -144,25 +146,100 @@ public class CLI extends UI implements Runnable implements{
     }
 
 
-    public void requestTiles(){
+    public void askWhatToDo(String request){
 
-        modelView.getGame().getCurrentPlayer().getBookShelf().printBookshelf();
-        modelView.getGame().getBoard().printBoard();
+        if(tmp == 0){
+            modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
+            modelView.getGame().getBoard().printBoard();
+        }
 
-        System.out.println("Now please select the tiles you want to pick from the board.\n");
-
-        System.out.println("In order to do it, please write firstly the number of tiles that you want to pick, followed by the coordinates of the tiles, like this: THREE row1 col1 row2 col2 row3 col3");
+        System.out.println(request);
 
         Scanner in = new Scanner(System.in);
-        String chosenTiles = input.nextLine();
+        String action = in.nextLine();
+
+
+        switch (Integer.parseInt(action)){
+            case 1 -> {
+                requestTiles(new RequestTiles().getAnswer());
+                tmp = 0;
+            }
+            case 2 -> {
+                printPersonalGoalCard();
+                tmp = 1;
+            }
+            case 3 -> {
+                printCommonGoalCard();
+                tmp = 1;
+            }
+        }
+        //pcs.firePropertyChange("ActionToPerform", null, action);
+
+    }
+
+
+    public void printPersonalGoalCard(){
+        //print the card
+    }
+
+
+    public void printCommonGoalCard(){
+        //print the card
+
+    }
+
+
+    /**
+     * Method used to request the tiles to the player.
+     */
+    public void requestTiles(String request){
+
+        System.out.println(request);
+
+        System.out.println("In order to do it, please write firstly the number of tiles that you want to pick in capital letters, followed by the coordinates of the each tile, just like this: THREE row1 col1 row2 col2 row3 col3");
+
+        Scanner in = new Scanner(System.in);
+        String chosenTiles = in.nextLine();
         pcs.firePropertyChange("PickTiles", null, chosenTiles);
+    }
+
+
+    public void requestWhereToPlaceTiles(String request){
+        System.out.println(request);
+
+        modelView.getGame().getCurrentPlayer().getBookShelf().printBookshelf();
+
+        System.out.println("Please type the coordinates");
+
+    }
+
+
+    /**
+     * Message shown when a game ends.
+     */
+    public void endGameMessage() {
+        System.out.println("Thanks for playing MyShelfie! Shutting down...");
+        System.exit(0);
+    }
+
+
+    /**
+     * Method used to print a personalized answer sent by the server.
+     * @param answer
+     */
+    public void printAnswer(String answer){
+        System.out.println(answer);
     }
 
 
     public void propertyChange(PropertyChangeEvent event){
         switch (event.getPropertyName()){
-            case "RequestTiles" -> requestTiles();
-            case "GameReplica" -> modelView.updateGame();
+            case "PersonalizedAnswer" -> printAnswer((String) event.getNewValue());
+            case "RequestWhatToDo" -> askWhatToDo((String) event.getNewValue());
+            case "RequestTiles" -> requestTiles((String) event.getNewValue());
+            case "RequestToPlaceTiles" -> requestWhereToPlaceTiles((String) event.getNewValue());
+
+
         }
     }
 

@@ -1,7 +1,10 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
+import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
 import it.polimi.ingsw.communications.serveranswers.Answer;
 import it.polimi.ingsw.communications.serveranswers.PersonalizedAnswer;
+import it.polimi.ingsw.communications.serveranswers.PlayerDisconnected;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
@@ -59,6 +62,7 @@ public class GameHandler {
         game.setNumOfPlayers(numOfPlayers);
     }
 
+
     /**
      * This method is used to send a message to every player.
      * @param answer
@@ -96,15 +100,25 @@ public class GameHandler {
 
 
     /**
+     * Method used to start the actual game.
+     */
+    public void startGame(){
+        sendToEveryone(new PersonalizedAnswer(false, "The game is now starting!"));
+        setIsStarted(true);
+
+        initialSetup();
+    }
+
+
+    /**
      * This method selects the first player and sets up the game parameters for a new match.
      */
     public void initialSetup(){
-
         sendToEveryone(new PersonalizedAnswer(false, "Now the first player to play is being randomly selected, be ready, it could be you!"));
 
-        int firstPlayer;
+        int firstPlayer = 0;
         int min = 0;
-        int randomNum = min + (int) (Math.random() * ((numOfPlayers – min)));
+        int randomNum = (int) Math.floor(Math.random() *(numOfPlayers - min + 1) + min);
         int i;
 
         for (i = 0; i < numOfPlayers; i++) {
@@ -126,16 +140,36 @@ public class GameHandler {
     /**
      * This method ends the current match for all the players, after a player disconnection.
      */
-    public void endMatch(String playerLeaving){
-        address
+    public void endMatch(String playerDisconnected) {
+        sendToEveryone(new PersonalizedAnswer(false, "Player " + playerDisconnected + " has disconnected :( Game will finish without a winner! Thanks to have played MyShelfie! Hope to see you soon ;)"));
+        sendToEveryone(new PlayerDisconnected());
+        for(Player p  : game.getActivePlayers()) {
+            server.getVirtualPlayerByID(p.getID()).getConnection().disconnect();
+        }
     }
 
 
     /**
-     * isAlreadyStarted getter.
+     * alreadyStarted setter.
+     * @param bool
+     */
+    public void setIsStarted(boolean bool){
+        this.alreadyStarted = bool;
+    }
+
+
+    /**
+     * alreadyStarted getter.
      */
     public boolean isAlreadyStarted(){
         return this.alreadyStarted;
+    }
+
+
+    public void dispatchActions(GameAction action){
+        if (action instanceof TilesPicked){
+            gameHandlerListener.firePropertyChange("TilesPicked", null, ((TilesPicked) action).getTiles());
+        }
     }
 
 }

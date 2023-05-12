@@ -2,7 +2,9 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.common.Client;
-import it.polimi.ingsw.communications.clientmessages.actions.PickTiles;
+import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
+import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
+import it.polimi.ingsw.communications.serveranswers.RequestTiles;
 
 import static it.polimi.ingsw.Const.MAXBOARDDIM;
 
@@ -29,17 +31,23 @@ public class InputChecker {
     }
 
 
-    public PickTiles checkTiles(String[] tiles){
+    public TilesPicked checkTiles(String[] tiles){
         try{
             String numOfTiles = tiles[0];
+
+            GameAction messageToServer = null;
 
             switch(numOfTiles){
                 case "ONE" -> {
                     int row1 = Integer.parseInt(tiles[1]);
                     int col1 = Integer.parseInt(tiles[2]);
 
-                    if(row1 > MAXBOARDDIM || col1 > MAXBOARDDIM || row1 < 0 || col1 < 0 ||)
+                    if(row1 > MAXBOARDDIM || col1 > MAXBOARDDIM || row1 < 0 || col1 < 0){
                         System.err.println("You selected an invalid row/col, please try again");
+                        cli.requestTiles(new RequestTiles().getAnswer());
+                    }
+                    else
+                        messageToServer = new TilesPicked(row1, col1);
                 }
                 case "TWO" -> {
                     int row1 = Integer.parseInt(tiles[1]);
@@ -48,8 +56,12 @@ public class InputChecker {
                     int col2 = Integer.parseInt(tiles[4]);
 
                     if(row1 > MAXBOARDDIM || col1 > MAXBOARDDIM || row1 < 0 || col1 < 0 ||
-                            row2 > MAXBOARDDIM || col2 > MAXBOARDDIM || row2 < 0 || col2 < 0 ||)
+                            row2 > MAXBOARDDIM || col2 > MAXBOARDDIM || row2 < 0 || col2 < 0){
                         System.err.println("You selected an invalid row/col, please try again");
+                        cli.requestTiles(new RequestTiles().getAnswer());
+                    }
+                    else
+                        messageToServer = new TilesPicked(row1, col1, row2, col2);
                 }
                 case "THREE" -> {
                     int row1 = Integer.parseInt(tiles[1]);
@@ -63,18 +75,22 @@ public class InputChecker {
                             row2 > MAXBOARDDIM || col2 > MAXBOARDDIM || row2 < 0 || col2 < 0 ||
                             row3 > MAXBOARDDIM || col3 > MAXBOARDDIM || row3 < 0 || col3 < 0){
                         System.err.println("You selected an invalid row/col, please try again");
-                }
+                        cli.requestTiles(new RequestTiles().getAnswer());
+                    }
+                    else
+                        messageToServer = new TilesPicked(row1, col1, row2, col2, row3, col3);
             }
             default -> {
                     System.out.println("Input error, please try again!");
                     return null;
             }
         }
+            return (TilesPicked) messageToServer;
+
         } catch (NumberFormatException e) {
             System.out.println("Input error, please try again!");
             return null;
         }
-
     }
 
 }

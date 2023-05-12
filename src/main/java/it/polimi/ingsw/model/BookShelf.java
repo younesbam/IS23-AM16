@@ -6,8 +6,7 @@ import it.polimi.ingsw.common.exceptions.NotEmptyColumnException;
 import java.security.InvalidParameterException;
 import java.util.List;
 
-import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
-import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
+import static it.polimi.ingsw.Const.*;
 import static it.polimi.ingsw.Utils.*;
 
 
@@ -37,7 +36,7 @@ public class BookShelf {
      * @return true if the tiles can be inserted.
      * @throws InvalidParameterException if the number of the column of the tiles are invalid.
      */
-    public void checkColumn(int n, int nTiles) throws InvalidParameterException, NotEmptyColumnException {
+    public boolean checkColumn(int n, int nTiles) throws InvalidParameterException, NotEmptyColumnException {
 
         /*
          * This attribute counts the number of available cells in the column.
@@ -110,9 +109,9 @@ public class BookShelf {
     public void printBookShelf(){
         for (int i = 0; i < MAXBOOKSHELFCOL; i++) {
             for (int j = 0; j < MAXBOOKSHELFROW; j++) {
-                System.out.print(grid[i][j] + " ");
+                System.out.print(grid[i][j].getTile().name() + " ");
             }
-            System.out.println("\n");
+            System.out.println();
         }
     }
 

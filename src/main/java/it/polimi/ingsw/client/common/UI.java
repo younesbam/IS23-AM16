@@ -34,6 +34,7 @@ public abstract class UI implements PropertyChangeListener {
      * Property change support.
      */
     protected PropertyChangeSupport pcs;
+    protected int tmp = 0;
 
 
     /**

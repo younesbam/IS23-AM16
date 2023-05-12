@@ -5,10 +5,10 @@ public class RequestTiles implements Answer{
     private String request;
 
     public RequestTiles(){
-        this.request = "Please select from the board how many tiles you want to pick."
+        this.request = "Please select from the board how many tiles you want to pick.";
     }
 
-    public String getRequest() {
+    public String getAnswer() {
         return this.request;
     }
 }

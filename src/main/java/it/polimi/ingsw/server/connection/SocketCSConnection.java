@@ -1,11 +1,10 @@
 package it.polimi.ingsw.server.connection;
 
+import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.communications.clientmessages.HowManyPlayersResponse;
 import it.polimi.ingsw.communications.clientmessages.Message;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
-import it.polimi.ingsw.communications.serveranswers.HowManyPlayersRequest;
-import it.polimi.ingsw.communications.serveranswers.PersonalizedAnswer;
-import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
+import it.polimi.ingsw.communications.serveranswers.*;
 import it.polimi.ingsw.exceptions.OutOfBoundException;
 import it.polimi.ingsw.server.GameHandler;
 import it.polimi.ingsw.server.Server;
@@ -136,17 +135,17 @@ public class SocketCSConnection extends CSConnection implements Runnable{
             }
         } catch(IOException e) {
             GameHandler game = server.getGameHandlerByID(ID);
-            String player = server.getVirtualPlayerByID(ID);
+            String username = server.getUsernameByID(ID);
             server.removePlayer(ID);
             if (game.isAlreadyStarted()) {
-                game.endPlayerGame(player);
+                game.endMatch(username);
             }
         } catch(ClassNotFoundException e) {
             e.printStackTrace();
         }
-        SerializedAnswer serverOut = new SerializedAnswer();
-        serverOut.setServerAnswer(new ServerError(ServerErrorTypes.SERVEROUT));
-        sendServerMessage(serverOut);
+        SerializedAnswer serverDown = new SerializedAnswer();
+        serverDown.setAnswer(new ErrorAnswer(ErrorClassification.SERVERISDOWN));
+        sendAnswerToClient(serverDown);
     }
 
 }
