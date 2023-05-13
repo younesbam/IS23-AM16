@@ -2,12 +2,15 @@ package it.polimi.ingsw.server.rmi;
 
 import it.polimi.ingsw.client.rmi.IRMIClient;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
+import it.polimi.ingsw.communications.clientmessages.UsernameSetup;
 import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.connection.CSConnection;
 import it.polimi.ingsw.server.connection.RMICSConnection;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.logging.Level;
 
 public class RMIServerHandler extends UnicastRemoteObject implements IRMIServer {
     private final Server server;
@@ -23,7 +26,13 @@ public class RMIServerHandler extends UnicastRemoteObject implements IRMIServer 
     @Override
     public void login(String username, IRMIClient client) {
         connection = new RMICSConnection(server, client);
-        server.newClientRegistration(username, connection);
+        Server.LOGGER.log(Level.INFO, "Connection with " + username + " established");
+        try{
+            server.newClientRegistration(username, connection);
+            Server.LOGGER.log(Level.INFO, username + " has successfully registered in the server");
+        }catch (IOException e){
+            Server.LOGGER.log(Level.SEVERE, "RMI: failed to login", e);
+        }
     }
 
 

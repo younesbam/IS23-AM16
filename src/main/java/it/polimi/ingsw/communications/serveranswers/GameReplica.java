@@ -16,11 +16,8 @@ public class GameReplica implements Answer{
     }
 
 
-    /**
-     * Game replica getter.
-     * @return
-     */
-    public Game getGameReplica() {
+    @Override
+    public Game getAnswer() {
         return gameReplica;
     }
 }

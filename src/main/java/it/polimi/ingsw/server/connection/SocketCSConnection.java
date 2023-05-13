@@ -126,6 +126,15 @@ public class SocketCSConnection extends CSConnection implements Runnable{
 
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void ping() {
+        System.out.println("PING DA IMPLEMENTARE LATO SOCKET!!!!");
+    }
+
+
+    /**
      * This method constantly calls the readStreamFromClient() method to read client's messages.
      */
     public void run() {

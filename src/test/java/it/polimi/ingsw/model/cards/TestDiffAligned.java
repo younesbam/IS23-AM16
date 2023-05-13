@@ -11,7 +11,7 @@ public class TestDiffAligned {
          * With 1 player. Card number 1.
          */
         BookShelf bookshelf = new BookShelf();
-        Player player = new Player("CiccioPanza");
+        Player player = new Player("CiccioPanza", 20);
         CommonGoalCard commonCard = new DiffAligned(1);
 
 

@@ -11,6 +11,7 @@ import it.polimi.ingsw.server.Server;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.logging.Level;
 
 /**
  * Represent a generic connection client-server
@@ -82,8 +83,8 @@ public abstract class CSConnection {
                 return;
             }
             server.lobby(this);
-        } catch (InterruptedException e) {
-            System.err.println(e.getMessage());
+        } catch (IOException | InterruptedException e) {
+            Server.LOGGER.log(Level.SEVERE, "Failed to register the new client", e);
             Thread.currentThread().interrupt();
         }
     }

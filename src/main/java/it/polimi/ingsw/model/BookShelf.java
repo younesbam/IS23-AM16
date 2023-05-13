@@ -36,7 +36,7 @@ public class BookShelf {
      * @return true if the tiles can be inserted.
      * @throws InvalidParameterException if the number of the column of the tiles are invalid.
      */
-    public boolean checkColumn(int n, int nTiles) throws InvalidParameterException, NotEmptyColumnException {
+    public void checkColumn(int n, int nTiles) throws InvalidParameterException, NotEmptyColumnException {
 
         /*
          * This attribute counts the number of available cells in the column.

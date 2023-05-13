@@ -9,7 +9,9 @@ import it.polimi.ingsw.common.ConnectionType;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.logging.Level;
 
 /**
  * Manage the game. Listen for messages also.
@@ -46,7 +48,7 @@ public abstract class UI implements PropertyChangeListener {
      * @param disconnectionListener
      * @throws Exception
      */
-    public void connectToServer(ConnectionType connectionType, String address, int port, String username) throws Exception {
+    public void connectToServer(ConnectionType connectionType, String address, int port, String username) throws RemoteException, NotBoundException {
         /*
         Connect to server based on tpye of connection.
          */
@@ -77,7 +79,7 @@ public abstract class UI implements PropertyChangeListener {
             client.disconnect();
         }catch (RemoteException e){
             // Fai qualcosa
+            Client.LOGGER.log(Level.SEVERE, "Failed to stop the connection to the server", e);
         }
-
     }
 }

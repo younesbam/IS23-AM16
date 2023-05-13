@@ -1,6 +1,6 @@
 {
-  "RmiPort": "1099",
+  "RmiPort": "1098",
   "SocketPort": "2345",
   "IP": "127.0.0.1",
-  "ServerName": "MyShelfie",
+  "ServerName": "MyShelfie"
 }

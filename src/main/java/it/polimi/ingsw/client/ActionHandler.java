@@ -45,7 +45,7 @@ public class ActionHandler {
             view.firePropertyChange("RequestTiles", null, ((RequestTiles) a).getAnswer());
         }
         if(a instanceof GameReplica){
-            modelView.updateGame(((GameReplica) a).getGameReplica());
+            modelView.updateGame(((GameReplica) a).getAnswer());
         }
         if(a instanceof PersonalizedAnswer){
             view.firePropertyChange("PersonalizedAnswer", null, a.getAnswer());

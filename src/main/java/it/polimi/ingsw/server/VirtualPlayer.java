@@ -5,6 +5,9 @@ import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.server.connection.CSConnection;
 import it.polimi.ingsw.server.connection.SocketCSConnection;
 
+import java.io.IOException;
+import java.util.logging.Level;
+
 public class VirtualPlayer {
 
     public final String username;
@@ -71,6 +74,10 @@ public class VirtualPlayer {
     public void send(Answer a) {
         SerializedAnswer answer = new SerializedAnswer();
         answer.setAnswer(a);
-        connection.sendAnswerToClient(answer);
+        try{
+            connection.sendAnswerToClient(answer);
+        } catch (IOException e){
+            Server.LOGGER.log(Level.SEVERE, "Failed to send the answer to the client" + username, e);
+        }
     }
 }

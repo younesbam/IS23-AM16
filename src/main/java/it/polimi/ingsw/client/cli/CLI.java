@@ -9,6 +9,8 @@ import it.polimi.ingsw.communications.serveranswers.RequestWhereToPlaceTiles;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.Scanner;
 import java.util.logging.Level;
 
@@ -56,20 +58,20 @@ public class CLI extends UI implements Runnable{
         String username = null;
         boolean nameChosen = false;
         while (!nameChosen) {
-            do {
-                System.out.println("Choose your username:");
-                System.out.println(">");
-                username = input.nextLine();
-            } while (username == null);
+//            do {
+//                System.out.println("Choose your username:");
+//                System.out.println(">");
+//                username = input.nextLine();
+//            } while (username == null);
+            System.out.println("Choose your username:");
+            System.out.println(">");
+            username = input.nextLine();
             System.out.println("You username choice is: " + username);
             System.out.println("Are you happy with your choice? [yes/no] ");
             System.out.println(">");
 
-            if (input.nextLine().equalsIgnoreCase("yes")) {
+            if (input.nextLine().equalsIgnoreCase("yes"))
                 nameChosen = true;
-            } else {
-                username = null;
-            }
         }
         return username;
     }
@@ -130,8 +132,8 @@ public class CLI extends UI implements Runnable{
          */
         try{
             connectToServer(connectionType, ipAddress, numOfPort, username);
-        }catch (Exception e){
-            Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e.getMessage());
+        }catch (RemoteException | NotBoundException e){
+            Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e);
             System.exit(-1);
         }
     }
@@ -207,7 +209,7 @@ public class CLI extends UI implements Runnable{
     public void requestWhereToPlaceTiles(String request){
         System.out.println(request);
 
-        modelView.getGame().getCurrentPlayer().getBookShelf().printBookshelf();
+        modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
 
         System.out.println("Please type the coordinates");
 

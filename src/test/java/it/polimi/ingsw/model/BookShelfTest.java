@@ -6,13 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
+import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
+
+import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
 
 class BookShelfTest {
     BookShelf bookShelf;

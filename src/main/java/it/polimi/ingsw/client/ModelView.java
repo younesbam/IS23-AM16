@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.Game;
 
 public class ModelView {
 
+    private String username;
     private final GUI gui;
     private final CLI cli;
     private Answer answerFromServer;
@@ -44,7 +45,7 @@ public class ModelView {
      * @param username
      */
     public void setUsername(String username) {
-        this.username= username;
+        this.username  = username;
     }
 
     /**

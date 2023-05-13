@@ -23,7 +23,7 @@ import java.rmi.RemoteException;
 import java.util.logging.Level;
 
 public class SocketClientHandler extends Client {
-    SocketClass socketClass;
+//    SocketClass socketClass;
     AnswerListener answerListener;
     private ObjectOutputStream outputStream;
 
@@ -46,6 +46,15 @@ public class SocketClientHandler extends Client {
         } catch (TakenUsername e) {
             CLI.main(null);
         }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void disconnect() throws RemoteException {
+        answerListener.endConnection();
     }
 
 
@@ -122,7 +131,7 @@ public class SocketClientHandler extends Client {
         SerializedAnswer answer = (SerializedAnswer) answerToUsername;
 
         if (answer.getAnswer() instanceof ConnectionOutcome
-                && ((ConnectionOutcome) answer.getAnswer()).isConnected() == 0) {
+                && !((ConnectionOutcome) answer.getAnswer()).isConnected()) {
             return true;
         } else if (answer.getAnswer() instanceof ErrorAnswer) {
             if (((ErrorAnswer) answer.getAnswer()).getError().equals(ErrorClassification.TAKENUSERNAME)) {

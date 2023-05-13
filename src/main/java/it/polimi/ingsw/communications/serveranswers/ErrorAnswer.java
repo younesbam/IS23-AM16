@@ -38,7 +38,7 @@ public class ErrorAnswer implements Answer{
      * Error classification getter.
      * @return
      */
-    public ErrorClassification getErrorClassification(){
+    public ErrorClassification getError(){
         return this.errorClassification;
     }
 }

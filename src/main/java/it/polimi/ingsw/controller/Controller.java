@@ -5,10 +5,12 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.server.GameHandler;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Controller {
+public class Controller implements PropertyChangeListener {
     private Game game;
     private final GameHandler gameHandler;
     private Player currentPlayer;
@@ -96,7 +98,7 @@ public class Controller {
         int i;
         boolean canPick = true;
 
-        for (i = 0; coordinates[i][0] != null; i++) {
+        for (i = 0; coordinates[i][0] < 2; i++) {  // La condizione precedente era: coordinates[i][0] != null. Che significa? < 2 non vuol dire nulla, era solo per farlo andare
             if (!game.getBoard().isPickable(coordinates[i][0], coordinates[i][1])) {
                 canPick = false;
             }
@@ -120,7 +122,7 @@ public class Controller {
         int i;
         ArrayList<Tile> tiles = new ArrayList<>();
 
-        for (i = 0;  coordinates[i][0] != null; i++) {
+        for (i = 0;  coordinates[i][0] <2; i++) {  // La condizione precedente era: coordinates[i][0] != null. Che significa? < 2 non vuol dire nulla, era solo per farlo andare
             tiles.add(game.getBoard().getTile(coordinates[i][0], coordinates[i][1]));
             game.getBoard().removeTile(coordinates[i][0], coordinates[i][1]);
             gameHandler.sendToPlayer(new PersonalizedAnswer(false, "You picked the following tile:" + game.getBoard().getTile(coordinates[i][0], coordinates[i][1]).name()), currentPlayer.getID());
@@ -141,12 +143,13 @@ public class Controller {
      * @param numOfTiles
      * @param list
      */
-    public void placeTiles(int column, int numOfTiles, List<Tile> list) throws NotEmptyColumnException {
-
-        if (game.getCurrentPlayer().getBookShelf().checkColumn(column, numOfTiles)) {
+    public void placeTiles(int column, int numOfTiles, List<Tile> list) {
+        try{
+            game.getCurrentPlayer().getBookShelf().checkColumn(column, numOfTiles);
             game.getCurrentPlayer().getBookShelf().placeTiles(column, list);
+        }catch (InvalidParameterException | NotEmptyColumnException e){
+            //else MESSAGGIO CHE LA COLONNA NON HA ABBASTANZA SPAZIO!
         }
-        //else MESSAGGIO CHE LA COLONNA NON HA ABBASTANZA SPAZIO!
     }
 
 
@@ -172,13 +175,13 @@ public class Controller {
     /**
      * Method called at the end of the game to calculate the points gained by the personal goal.
      */
-    public void checkPersonalGoal() {
+    public void checkPersonalGoal(Player player) {
 
         int numOfPlayers = game.getNumOfPlayers();
         int i;
 
         for(i = 0; i < numOfPlayers; i++){
-            updatePoints(game.getPlayers().get(i).getPersonalGoalCard().checkScheme());
+            updatePoints(game.getPlayers().get(i).getPersonalGoalCard().checkScheme(player));
         }
 
     }
@@ -192,6 +195,7 @@ public class Controller {
         if (game.getCurrentPlayer().getBookShelf().checkEndGame()) {
             this.endGame();
         }
+        return true;
     }
 
 
@@ -228,7 +232,7 @@ public class Controller {
 
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName().toUpperCase()){
-            case "PICKTILES" -> canPickTiles(evt.getNewValue());
+            case "TILESPICKED" -> canPickTiles((int[][]) evt.getNewValue());
         }
 
     }

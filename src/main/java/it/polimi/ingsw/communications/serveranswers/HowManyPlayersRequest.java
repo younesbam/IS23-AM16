@@ -9,7 +9,7 @@ public class HowManyPlayersRequest implements Answer{
     }
 
     @Override
-    public String getMessage() {
+    public String getAnswer()  {
         return playersNumber;
     }
 }

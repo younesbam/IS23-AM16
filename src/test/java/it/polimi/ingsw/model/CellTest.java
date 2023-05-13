@@ -7,25 +7,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CellTest {
 
+    Cell cell = new Cell();
     Tile testTile;
-    int testX;
-    int testY;
+    final int testX = 3;
+    final int testY = 4;
 
 
 
     @BeforeEach
     void init() {
-        testX = 3;
-        testY = 4;
+        cell.setTile(Tile.PINK);
     }
 
     @Test
-    void getTile() {
-        assertEquals(getTile(); Tile testTile = Tile.PINK;);
-    }
-
-    @Test
-    void setTile(){
-        this.testTile = Tile.PINK; 
+    void tileTest(){
+        assertEquals(Tile.PINK, cell.getTile());
     }
 }

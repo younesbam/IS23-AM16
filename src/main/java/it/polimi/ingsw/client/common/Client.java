@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.communications.clientmessages.Message;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Timer;
@@ -78,7 +79,7 @@ public abstract class Client extends UnicastRemoteObject {
      * Connect to the server
      * @throws Exception
      */
-    public abstract void connect() throws Exception;
+    public abstract void connect() throws RemoteException, NotBoundException;
 
     /**
      * Disconnect from the server.

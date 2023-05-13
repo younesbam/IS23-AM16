@@ -1,0 +1,6581 @@
+{
+  "cardTests": [
+    {
+      "ID": 1,
+      "descr": "tests for common card 1",
+      "test": [
+        {
+          "descr": "n.1 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            }
+          ]
+        },
+        {
+          "descr": "n.2 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            }
+          ]
+        },
+        {
+          "descr": "n.3 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            }
+          ]
+        },
+        {
+          "descr": "n.4 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.5 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            }
+          ]
+        },
+        {
+          "descr": "n.6 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ID": 2,
+      "descr": "tests for common card 2",
+      "test": [
+        {
+          "descr": "n.1 valid scheme",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.2 invalid scheme",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            }
+          ]
+        },
+        {
+          "descr": "n.3 valid scheme",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.4 invalid scheme",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            }
+          ]
+        },
+        {
+          "descr": "n.5 invalid scheme",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            }
+          ]
+        },
+        {
+          "descr": "n.6 invalid scheme",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            }
+          ]
+        },
+        {
+          "descr": "n.7 valid scheme",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ID": 3,
+      "descr": "tests for common card 3",
+      "test": [
+        {
+          "descr": "n.1 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            }
+          ]
+        },
+        {
+          "descr": "n.2 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.3 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            }
+          ]
+        },
+        {
+          "descr": "n.4 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            }
+          ]
+        },
+        {
+          "descr": "n.5 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.6 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ID": 4,
+      "descr": "tests for common card 4",
+      "test": [
+        {
+          "descr": "n.1 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            }
+          ]
+        },
+        {
+          "descr": "n.2 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            }
+          ]
+        },
+        {
+          "descr": "n.3 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            }
+          ]
+        },
+        {
+          "descr": "n.4 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.5 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.6 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ID": 5,
+      "descr": "tests for common card 5",
+      "test": [
+        {
+          "descr": "n.1 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            }
+          ]
+        },
+        {
+          "descr": "n.2 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.3 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            }
+          ]
+        },
+        {
+          "descr": "n.4 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.5 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            }
+          ]
+        },
+        {
+          "descr": "n.6 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ID": 6,
+      "descr": "tests for common card 6",
+      "test": [
+        {
+          "descr": "n.1 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.2 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            }
+          ]
+        },
+        {
+          "descr": "n.3 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            }
+          ]
+        },
+        {
+          "descr": "n.4 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            }
+          ]
+        },
+        {
+          "descr": "n.5 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.6 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ID": 7,
+      "descr": "tests for common card 7",
+      "test": [
+        {
+          "descr": "n.1 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN•"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            }
+          ]
+        },
+        {
+          "descr": "n.2 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.3 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.4 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.5 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            }
+          ]
+        },
+        {
+          "descr": "n.6 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ID": 8,
+      "descr": "tests for common card 8",
+      "test": [
+        {
+          "descr": "n.1 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },{
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            }
+
+          ]
+        },
+        {
+          "descr": "n.2 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            }
+          ]
+        },
+        {
+          "descr": "n.3 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.4 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },{
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            }
+          ]
+        },
+        {
+          "descr": "n.5 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            }
+          ]
+        },
+        {
+          "descr": "n.6 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ID": 9,
+      "descr": "tests for common card 9",
+      "test": [
+        {
+          "descr": "n.1 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            }
+          ]
+        },
+        {
+          "descr": "n.2 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.3 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            }
+          ]
+        },
+        {
+          "descr": "n.4 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            }
+          ]
+        },
+        {
+          "descr": "n.5 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 5,
+              "type": "PINK"
+            }
+          ]
+        },
+        {
+          "descr": "n.6 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ID": 10,
+      "descr": "tests for common card 10",
+      "test": [
+        {
+          "descr": "n.1 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            }
+          ]
+        },
+        {
+          "descr": "n.2 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            }
+          ]
+        },
+        {
+          "descr": "n.3 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.4 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            }
+          ]
+        },
+        {
+          "descr": "n.5 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            }
+          ]
+        },
+        {
+          "descr": "n.6 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ID": 11,
+      "descr": "tests for common card 11",
+      "test": [
+        {
+          "descr": "n.1 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.2 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            }
+          ]
+        },
+        {
+          "descr": "n.3 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },{
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            }
+
+          ]
+        },
+        {
+          "descr": "n.4 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.5 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            }
+          ]
+        },
+        {
+          "descr": "n.6 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ID": 12,
+      "descr": "tests for common card 12",
+      "test": [
+        {
+          "descr": "n.1 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            }
+          ]
+        },
+        {
+          "descr": "n.2 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            }
+          ]
+        },
+        {
+          "descr": "n.3 valid test",
+          "valid": 1,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.4 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            }
+          ]
+        },
+        {
+          "descr": "n.5 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.6 invalid test",
+          "valid": 0,
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
