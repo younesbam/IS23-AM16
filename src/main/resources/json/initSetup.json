@@ -162,7 +162,7 @@
           "points": 12
         }
       ],
-      "coordinate": [
+      "coordinates": [
         {
           "y": 1,
           "x": 0,
@@ -227,7 +227,7 @@
           "points": 12
         }
       ],
-      "coordinate": [
+      "coordinates": [
         {
           "y": 0,
           "x": 4,
@@ -292,7 +292,7 @@
           "points": 12
         }
       ],
-      "coordinate": [
+      "coordinates": [
         {
           "y": 1,
           "x": 1,
@@ -357,7 +357,7 @@
           "points": 12
         }
       ],
-      "coordinate": [
+      "coordinates": [
         {
           "y": 0,
           "x": 2,
@@ -422,7 +422,7 @@
           "points": 12
         }
       ],
-      "coordinate": [
+      "coordinates": [
         {
           "y": 0,
           "x": 0,
@@ -487,7 +487,7 @@
           "points": 12
         }
       ],
-      "coordinate": [
+      "coordinates": [
         {
           "y": 0,
           "x": 4,
@@ -552,7 +552,7 @@
           "points": 12
         }
       ],
-      "coordinate": [
+      "coordinates": [
         {
           "y": 0,
           "x": 2,
@@ -617,7 +617,7 @@
           "points": 12
         }
       ],
-      "coordinate": [
+      "coordinates": [
         {
           "y": 0,
           "x": 4,
@@ -682,7 +682,7 @@
           "points": 12
         }
       ],
-      "coordinate": [
+      "coordinates": [
         {
           "y": 0,
           "x": 2,
@@ -747,7 +747,7 @@
           "points": 12
         }
       ],
-      "coordinate": [
+      "coordinates": [
         {
           "y": 0,
           "x": 2,

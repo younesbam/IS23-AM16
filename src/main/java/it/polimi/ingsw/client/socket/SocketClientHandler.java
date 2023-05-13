@@ -109,7 +109,7 @@ public class SocketClientHandler extends Client {
      */
     private boolean readInput(String username, ObjectInputStream input) throws TakenUsername{
         try {
-            sendToServer(new UsernameSetup(username, this));
+            sendToServer(new UsernameSetup(username));
             if (isUsernameFreeToUse(input.readObject())) {
                 return true;
             }
@@ -131,17 +131,17 @@ public class SocketClientHandler extends Client {
         SerializedAnswer answer = (SerializedAnswer) answerToUsername;
 
         if (answer.getAnswer() instanceof ConnectionOutcome
-                && !((ConnectionOutcome) answer.getAnswer()).isConnected()) {
+                && ((ConnectionOutcome) answer.getAnswer()).isConnected()) {
             return true;
         } else if (answer.getAnswer() instanceof ErrorAnswer) {
             if (((ErrorAnswer) answer.getAnswer()).getError().equals(ErrorClassification.TAKENUSERNAME)) {
                 System.err.println("This nickname is already in use! Please choose one other.");
                 throw new TakenUsername();
+            } else if (((ErrorAnswer) answer.getAnswer()).getError().equals(ErrorClassification.MAXPLAYERSREACHED)) {
+                System.err.println(
+                        "This match is already full, please try again later!\nApplication will now close...");
+                System.exit(0);
             }
-        } else if (((ErrorAnswer) answer.getAnswer()).getError().equals(ErrorClassification.MAXPLAYERSREACHED)) {
-            System.err.println(
-                    "This match is already full, please try again later!\nApplication will now close...");
-            System.exit(0);
         }
 
         return false;

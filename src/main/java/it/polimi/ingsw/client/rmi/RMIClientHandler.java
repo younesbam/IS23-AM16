@@ -8,6 +8,7 @@ import it.polimi.ingsw.client.utils.PingClientTask;
 import it.polimi.ingsw.common.JSONParser;
 import it.polimi.ingsw.communications.clientmessages.Message;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
+import it.polimi.ingsw.communications.clientmessages.UsernameSetup;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.server.rmi.IRMIServer;

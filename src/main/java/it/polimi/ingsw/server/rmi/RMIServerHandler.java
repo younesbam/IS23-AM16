@@ -26,9 +26,11 @@ public class RMIServerHandler extends UnicastRemoteObject implements IRMIServer 
     @Override
     public void login(String username, IRMIClient client) {
         connection = new RMICSConnection(server, client);
+        SerializedMessage serializedMessage = new SerializedMessage(new UsernameSetup(username));
         Server.LOGGER.log(Level.INFO, "Connection with " + username + " established");
         try{
-            server.newClientRegistration(username, connection);
+            sendMessageToServer(serializedMessage);
+            //server.newClientRegistration(username, connection);
             Server.LOGGER.log(Level.INFO, username + " has successfully registered in the server");
         }catch (IOException e){
             Server.LOGGER.log(Level.SEVERE, "RMI: failed to login", e);

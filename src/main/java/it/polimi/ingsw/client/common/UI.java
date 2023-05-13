@@ -36,6 +36,11 @@ public abstract class UI implements PropertyChangeListener {
      * Property change support.
      */
     protected PropertyChangeSupport pcs;
+
+    /**
+     *
+     */
+    protected boolean activeGame;
     protected int tmp = 0;
 
 
@@ -77,6 +82,7 @@ public abstract class UI implements PropertyChangeListener {
     public void disconnectFromServer() {
         try{
             client.disconnect();
+            Client.LOGGER.log(Level.INFO, "Successfully disconnected from server");
         }catch (RemoteException e){
             // Fai qualcosa
             Client.LOGGER.log(Level.SEVERE, "Failed to stop the connection to the server", e);

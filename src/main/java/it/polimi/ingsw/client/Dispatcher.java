@@ -24,8 +24,8 @@ public class Dispatcher implements PropertyChangeListener {
      */
     public Dispatcher(ModelView modelView, Client client) {
         this.client = client;
-        this.inputChecker = new InputChecker(getModelView().getCli(), modelView, client);
         this.modelView = modelView;
+        this.inputChecker = new InputChecker(getModelView().getCli(), modelView, client);
     }
 
     /**

@@ -8,15 +8,15 @@ import it.polimi.ingsw.client.common.Client;
 public class UsernameSetup implements Message {
     private final String username;
     //forse è inutile!!! avere un attributo connessione qui intendo.
-    private final Client client;
+    // private final Client client;
 
     /**
      * Class constructor.
      * @param username
      */
-    public UsernameSetup(String username, Client client){
+    public UsernameSetup(String username){
         this.username = username;
-        this.client = client;
+        //this.client = client;
     }
 
     /**
@@ -25,13 +25,5 @@ public class UsernameSetup implements Message {
      */
     public String getUsername(){
         return this.username;
-    }
-
-    /**
-     * ConnectioType getter.
-     * @return
-     */
-    public Client getConnectionType(){
-        return this.client;
     }
 }

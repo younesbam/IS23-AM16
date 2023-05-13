@@ -188,7 +188,7 @@ public class Server {
             virtualPlayerToCSConnection.put(virtualPlayer, clientConnection);
 
 
-            System.out.println(virtualPlayer.getUsername() + "is now connected, his ID is" + virtualPlayer.getID());
+            System.out.println(virtualPlayer.getUsername() + "is now connected, his ID is " + virtualPlayer.getID());
             SerializedAnswer nowConnected = new SerializedAnswer();
             nowConnected.setAnswer(new ConnectionOutcome(true, "Welcome! You have been associated with the following ID" + virtualPlayer.getID()));
             clientConnection.sendAnswerToClient(nowConnected);

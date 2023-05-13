@@ -27,11 +27,13 @@ public class Game {
 
         this.bag = new Bag();
 
-        /**
+        /*
          * Factory method to create the board based on the number of players.
-         */
-        this.creationFactory = new CreationFactory();
-        this.board = creationFactory.createBoard(numOfPlayers);
+        */
+
+         // TODO: da istanziare la board nel controller durante il setup iniziale
+//        this.creationFactory = new CreationFactory();
+//        this.board = creationFactory.createBoard(numOfPlayers);
     }
 
     /**

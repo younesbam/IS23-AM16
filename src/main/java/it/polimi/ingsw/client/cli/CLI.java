@@ -45,8 +45,17 @@ public class CLI extends UI implements Runnable{
 
     @Override
     public void run() {
+        // TODO: manca una condizione per poter eseguire sempre il loop, ovvero il client deve sempre essere connesso al server, altrimenti esce.
         connect();
-        loop();
+        this.activeGame = true;
+        while(this.activeGame){
+            loop();
+        }
+
+        /*
+        Disconnect from server when the game is ended.
+         */
+        disconnectFromServer();
     }
 
 
@@ -117,10 +126,10 @@ public class CLI extends UI implements Runnable{
         /*
         Set port, IP address, username.
          */
-        ConnectionType connectionType = askConnectionType();
-        String ipAddress = askIpAddress();
-        int numOfPort = askPort();
-        String username = askUsername();
+        ConnectionType connectionType = ConnectionType.SOCKET;  //askConnectionType();
+        String ipAddress = "127.0.0.1";  //askIpAddress();
+        int numOfPort = 2345;  //askPort();
+        String username = "Ciccio";  //askUsername();
 
         /*
         Model view handler
@@ -132,6 +141,7 @@ public class CLI extends UI implements Runnable{
          */
         try{
             connectToServer(connectionType, ipAddress, numOfPort, username);
+            Client.LOGGER.log(Level.INFO, "Client successfully connected");
         }catch (RemoteException | NotBoundException e){
             Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e);
             System.exit(-1);
