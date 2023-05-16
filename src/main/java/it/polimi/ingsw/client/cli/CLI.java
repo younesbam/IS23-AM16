@@ -45,7 +45,7 @@ public class CLI extends UI implements Runnable{
 
     @Override
     public void run() {
-        // TODO: manca una condizione per poter eseguire sempre il loop, ovvero il client deve sempre essere connesso al server, altrimenti esce.
+        // TODO: bisogna gestire questo bit di activeGame. Va messo a FALSE da qualcuno che sa quando il gioco è finito
         connect();
         this.activeGame = true;
         while(this.activeGame){
@@ -126,10 +126,10 @@ public class CLI extends UI implements Runnable{
         /*
         Set port, IP address, username.
          */
-        ConnectionType connectionType = ConnectionType.SOCKET;  //askConnectionType();
-        String ipAddress = "127.0.0.1";  //askIpAddress();
-        int numOfPort = 2345;  //askPort();
-        String username = "Ciccio";  //askUsername();
+        ConnectionType connectionType = ConnectionType.RMI;   // askConnectionType();
+        String ipAddress = "127.0.0.1";    //askIpAddress();
+        int numOfPort = 1098;    //askPort();
+        String username = "Ciccio"; //askUsername();
 
         /*
         Model view handler

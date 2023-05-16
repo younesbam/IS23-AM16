@@ -75,7 +75,7 @@ public class Dispatcher implements PropertyChangeListener {
      */
     public void propertyChange(PropertyChangeEvent evt) {
         if (!modelView.getIsYourTurn()) {
-            System.out.println("Unable to complete the action, wait for your turn!");
+            System.out.println("Unable to complete the action, wait for your turn! \u001B[0m");
         } else {
             if (!actionTaken(evt.getNewValue().toString(), evt.getPropertyName())) {
                 modelView.setIsYourTurn(true);
