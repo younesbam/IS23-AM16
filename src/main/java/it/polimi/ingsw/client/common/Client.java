@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.common;
 
 import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.client.ModelView;
-import it.polimi.ingsw.communications.clientmessages.Message;
+import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 
 import java.rmi.NotBoundException;

@@ -114,7 +114,7 @@ public class Server {
         LOGGER.log(Level.INFO, "RMI setup complete");
 
         /*
-        Verificare questa roba, può essere inglobato nella ricezione di messaggi.
+        TODO: Verificare questa roba, può essere inglobato nella ricezione di messaggi.
          */
         Thread thread = new Thread(this::quitConnection);
         thread.start();
@@ -220,7 +220,10 @@ public class Server {
         playersWaitingList.add(connection); //new connected player
 
         if(playersWaitingList.size() == 1) { //if it's the first player
-            connection.setupPlayers(new HowManyPlayersRequest("Hi " + IDMapVirtualPlayer.get(connection.getID()).getUsername() + " you are now the host of this lobby.\nPlease choose the number of player you want to play with [2, 3, 4]:"));
+            SerializedAnswer answer = new SerializedAnswer();
+            answer.setAnswer(new HowManyPlayersRequest("Hi " + IDMapVirtualPlayer.get(connection.getID()).getUsername() + " you are now the host of this lobby.\nPlease choose the number of player you want to play with [2, 3, 4]:"));
+            connection.sendAnswerToClient(answer);
+            //connection.setupPlayers(new HowManyPlayersRequest("Hi " + IDMapVirtualPlayer.get(connection.getID()).getUsername() + " you are now the host of this lobby.\nPlease choose the number of player you want to play with [2, 3, 4]:"));
         } else if(playersWaitingList.size() == numOfPlayers) {
             System.out.println(numOfPlayers + " players are now ready to play. Game is starting...");
             for(int i = 3; i > 0; i--) {
@@ -241,11 +244,18 @@ public class Server {
      * @param numOfPlayers
      * @throws OutOfBoundException
      */
-    public void setNumOfPlayers(int numOfPlayers) throws OutOfBoundException{
+    public void setNumOfPlayers(CSConnection connection, int numOfPlayers) throws OutOfBoundException{
+        /*
+        Check if the players are in the right range.
+         */
         if(numOfPlayers > 4 || numOfPlayers < 2)
             throw new OutOfBoundException();
-        else
-            this.numOfPlayers = numOfPlayers;
+        /*
+        Set number of players (also in GameHandler)
+         */
+        this.numOfPlayers = numOfPlayers;
+        getGameHandlerByID(connection.getID()).setNumOfPlayers(numOfPlayers);
+        getVirtualPlayerByID(connection.getID()).send(new SetupCompleted("The number of players for this match has been chosen: it's a " + numOfPlayers + " players match!"));
     }
 
     
@@ -331,7 +341,7 @@ public class Server {
         playersWaitingList.remove(virtualPlayerToCSConnection.get(player));
         IDMapUsername.remove(player.getID());
         virtualPlayerToCSConnection.remove(player);
-        LOGGER.log(Level.INFO,"The player has been successfully removed from the game.");
+        LOGGER.log(Level.INFO,"Player with ID " + ID + " has been successfully removed from the game.");
     }
 
 

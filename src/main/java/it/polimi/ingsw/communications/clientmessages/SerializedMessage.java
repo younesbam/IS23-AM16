@@ -1,6 +1,7 @@
 package it.polimi.ingsw.communications.clientmessages;
 
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
+import it.polimi.ingsw.communications.clientmessages.messages.Message;
 
 import java.io.Serializable;
 

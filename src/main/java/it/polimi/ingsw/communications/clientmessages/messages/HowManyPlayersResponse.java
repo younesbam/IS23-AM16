@@ -1,4 +1,4 @@
-package it.polimi.ingsw.communications.clientmessages;
+package it.polimi.ingsw.communications.clientmessages.messages;
 
 public class HowManyPlayersResponse implements Message {
 

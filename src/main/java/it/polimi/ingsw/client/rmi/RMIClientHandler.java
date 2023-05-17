@@ -6,9 +6,8 @@ import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.client.utils.PingClientTask;
 import it.polimi.ingsw.common.JSONParser;
-import it.polimi.ingsw.communications.clientmessages.Message;
+import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
-import it.polimi.ingsw.communications.clientmessages.UsernameSetup;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.server.rmi.IRMIServer;
@@ -25,12 +24,16 @@ import java.util.logging.Level;
  * @author Nicolo' Gandini
  */
 public class RMIClientHandler extends Client implements IRMIClient {
+    /**
+     * Server interface.
+     */
     private IRMIServer server;
 
     /**
      * Parameters from JSON file.
      */
     private final JSONParser jsonParser;
+
 
     /**
      *
@@ -53,6 +56,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
         Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
         server = (IRMIServer) registry.lookup(jsonParser.getServerName());
         server.login(getUsername(), this);
+        modelView.setConnected(true);
     }
 
 
@@ -99,6 +103,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
      */
     @Override
     public void ping() throws RemoteException {
+        Client.LOGGER.log(Level.INFO, "Richiesta di ping dal server");
         super.pingTimer.cancel();
         super.pingTimer = new Timer();
         super.pingTimer.schedule(new PingClientTask(), Const.CLIENT_PING_DELAY);
@@ -113,6 +118,10 @@ public class RMIClientHandler extends Client implements IRMIClient {
         server = null;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onServerAnswer(SerializedAnswer answer) throws RemoteException {
         modelView.setAnswerFromServer(answer.getAnswer());

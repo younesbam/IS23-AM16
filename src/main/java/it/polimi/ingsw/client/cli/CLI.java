@@ -5,7 +5,6 @@ import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.common.ConnectionType;
 import it.polimi.ingsw.communications.serveranswers.RequestTiles;
-import it.polimi.ingsw.communications.serveranswers.RequestWhereToPlaceTiles;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
@@ -26,10 +25,12 @@ public class CLI extends UI implements Runnable{
      * CLI constructor.
      */
     public CLI() {
-        this.pcs = new PropertyChangeSupport(this);
+        this.pcsDispatcher = new PropertyChangeSupport(this);
         this.input = new Scanner(System.in);
         this.modelView = new ModelView(this);
         this.actionHandler = new ActionHandler(this, this.modelView);
+        setActiveGame(true);
+//        setSetupMode(true);
     }
 
 
@@ -47,15 +48,26 @@ public class CLI extends UI implements Runnable{
     public void run() {
         // TODO: bisogna gestire questo bit di activeGame. Va messo a FALSE da qualcuno che sa quando il gioco è finito
         connect();
-        this.activeGame = true;
-        while(this.activeGame){
-            loop();
+
+        while(isActiveGame()){
+            if(!isSetupMode())
+                loop();
         }
 
         /*
         Disconnect from server when the game is ended.
          */
         disconnectFromServer();
+    }
+
+
+    /**
+     * Loop the CLI waiting for new ACTION command
+     */
+    private void loop(){
+        System.out.println("SONO NEL LOOOOOOOOPPPPPPP");
+        input.reset();
+        pcsDispatcher.firePropertyChange("action", null, input.nextLine());
     }
 
 
@@ -67,19 +79,14 @@ public class CLI extends UI implements Runnable{
         String username = null;
         boolean nameChosen = false;
         while (!nameChosen) {
-//            do {
-//                System.out.println("Choose your username:");
-//                System.out.println(">");
-//                username = input.nextLine();
-//            } while (username == null);
             System.out.println("Choose your username:");
             System.out.println(">");
             username = input.nextLine();
             System.out.println("You username choice is: " + username);
-            System.out.println("Are you happy with your choice? [yes/no] ");
+            System.out.println("Are you happy with your choice? [y/n] ");
             System.out.println(">");
 
-            if (input.nextLine().equalsIgnoreCase("yes"))
+            if (input.nextLine().equalsIgnoreCase("y"))
                 nameChosen = true;
         }
         return username;
@@ -129,7 +136,7 @@ public class CLI extends UI implements Runnable{
         ConnectionType connectionType = ConnectionType.RMI;   // askConnectionType();
         String ipAddress = "127.0.0.1";    //askIpAddress();
         int numOfPort = 1098;    //askPort();
-        String username = "Ciccio"; //askUsername();
+        String username = askUsername();
 
         /*
         Model view handler
@@ -150,15 +157,42 @@ public class CLI extends UI implements Runnable{
 
 
     /**
-     * Loop the CLI.
+     * Server asks for total number of players
+     * @param s
      */
-    private void loop(){
-        input.reset();
-        pcs.firePropertyChange("action", null, input.nextLine());
+     private void howManyPlayerRequest(String s){
+         System.out.println(s);
+
+         updateTurn(true);
+         setSetupMode(true);
+
+         pcsDispatcher.firePropertyChange("playerResponse", null, input.nextLine());
+
+         updateTurn(false);
+     }
+
+
+    /**
+     * Server tells the client that setup of players has been completed. Now the client can listen for commands from the player.
+     * @param s
+     */
+    private void setupCompleted(String s){
+         System.out.println(s);
+         setSetupMode(false);
+     }
+
+
+    /**
+     * Update turn
+     * @param yourTurn
+     */
+    private void updateTurn(Boolean yourTurn) {
+        modelView.setIsYourTurn(yourTurn);
+        if(yourTurn)
+            System.out.print(">");
     }
 
-
-    public void askWhatToDo(String request){
+    private void askWhatToDo(String request){
 
         if(tmp == 0){
             modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
@@ -190,12 +224,12 @@ public class CLI extends UI implements Runnable{
     }
 
 
-    public void printPersonalGoalCard(){
+    private void printPersonalGoalCard(){
         //print the card
     }
 
 
-    public void printCommonGoalCard(){
+    private void printCommonGoalCard(){
         //print the card
 
     }
@@ -212,7 +246,7 @@ public class CLI extends UI implements Runnable{
 
         Scanner in = new Scanner(System.in);
         String chosenTiles = in.nextLine();
-        pcs.firePropertyChange("PickTiles", null, chosenTiles);
+        pcsDispatcher.firePropertyChange("PickTiles", null, chosenTiles);
     }
 
 
@@ -239,13 +273,16 @@ public class CLI extends UI implements Runnable{
      * Method used to print a personalized answer sent by the server.
      * @param answer
      */
-    public void printAnswer(String answer){
+    private void printAnswer(String answer){
         System.out.println(answer);
     }
 
 
     public void propertyChange(PropertyChangeEvent event){
         switch (event.getPropertyName()){
+            case "HowManyPlayersRequest" -> howManyPlayerRequest((String) event.getNewValue());
+            case "SetupCompleted" -> setupCompleted((String) event.getNewValue());
+            case "UpdateTurn" -> updateTurn((Boolean) event.getNewValue());
             case "PersonalizedAnswer" -> printAnswer((String) event.getNewValue());
             case "RequestWhatToDo" -> askWhatToDo((String) event.getNewValue());
             case "RequestTiles" -> requestTiles((String) event.getNewValue());
@@ -254,7 +291,4 @@ public class CLI extends UI implements Runnable{
 
         }
     }
-
-
-
 }

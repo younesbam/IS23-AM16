@@ -11,13 +11,16 @@ import it.polimi.ingsw.model.Player;
 
 import java.beans.PropertyChangeSupport;
 
+/**
+ * Handles the match, controller and game
+ */
 public class GameHandler {
 
     private static Game game;
     private final Server server;
     private final Controller controller;
     private int numOfPlayers;
-    private final PropertyChangeSupport gameHandlerListener = new PropertyChangeSupport(this);
+    private final PropertyChangeSupport pcsController = new PropertyChangeSupport(this);
     private int playerID;
     private boolean alreadyStarted;
 
@@ -31,7 +34,7 @@ public class GameHandler {
         this.game = new Game();
         this.controller = new Controller( this, game);
 
-        gameHandlerListener.addPropertyChangeListener(controller);
+        pcsController.addPropertyChangeListener(controller);
     }
 
     /**
@@ -168,7 +171,7 @@ public class GameHandler {
 
     public void dispatchActions(GameAction action){
         if (action instanceof TilesPicked){
-            gameHandlerListener.firePropertyChange("TilesPicked", null, ((TilesPicked) action).getTiles());
+            pcsController.firePropertyChange("TilesPicked", null, ((TilesPicked) action).getTiles());
         }
     }
 

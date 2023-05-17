@@ -6,6 +6,9 @@ import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
 import it.polimi.ingsw.communications.serveranswers.RequestTiles;
 
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+
 import static it.polimi.ingsw.Const.MAXBOARDDIM;
 
 /**
@@ -93,4 +96,11 @@ public class InputChecker {
         }
     }
 
+
+    /**
+     * Quit game command.
+     */
+    public void exitGame(){
+        cli.disconnectFromServer();
+    }
 }

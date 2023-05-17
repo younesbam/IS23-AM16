@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.common.Client;
+import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
+import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 
 import java.beans.PropertyChangeEvent;
@@ -28,6 +30,7 @@ public class Dispatcher implements PropertyChangeListener {
         this.inputChecker = new InputChecker(getModelView().getCli(), modelView, client);
     }
 
+
     /**
      * ModelView getter.
      * @return
@@ -41,31 +44,53 @@ public class Dispatcher implements PropertyChangeListener {
      * This method is being called by the PropertyChange method, and it handles the dispatch of the action taken by the user, by calling the right methods
      * in order to do so. It also makes a check if the user can actually perform that action by calling the InputChecker.
      * @param value
-     * @param nameOfAction
+     * @param propertyName
      * @return
      */
-    public synchronized boolean actionTaken(String value, String nameOfAction){
-        GameAction messageToServer = null;
+    public synchronized boolean dispatchAction(String value, String propertyName){
+        SerializedMessage messageToServer = null;
 
         String[] input = value.split(" ");
 
-        switch (nameOfAction.toUpperCase()){
-            case "PICKTILES" -> messageToServer = inputChecker.checkTiles(input);
+        /*
+        ACTION
+         */
+        if("action".equals(propertyName)){
+            switch (value.toUpperCase()){
+                case "PICKTILES" -> messageToServer = new SerializedMessage(inputChecker.checkTiles(input));
+                case "EXIT" -> inputChecker.exitGame();
+                default -> System.out.println("Incomprehensible input. Please try again");
+            }
+
+            // Send game action to server
+            if (messageToServer != null) {
+                client.sendToServer(messageToServer.gameAction);
+                return true;
+            }
         }
 
+        /*
+        MESSAGE: player response
+         */
+        if("playerResponse".equals(propertyName)){
+            int playersValue;
+            try {
+                playersValue = Integer.parseInt(value);
+            } catch (NumberFormatException e){
+                playersValue = 0;
+            }
+            messageToServer = new SerializedMessage(new HowManyPlayersResponse(playersValue));
 
 
-
-
-        if (messageToServer != null) {
-            client.sendToServer(messageToServer);
-            return true;
+            // Send message to server
+            if (messageToServer != null) {
+                client.sendToServer(messageToServer.message);
+                return true;
+            }
         }
-        else
-            return false;
+
+        return false;
     }
-
-
 
 
     /**
@@ -75,13 +100,11 @@ public class Dispatcher implements PropertyChangeListener {
      */
     public void propertyChange(PropertyChangeEvent evt) {
         if (!modelView.getIsYourTurn()) {
-            System.out.println("Unable to complete the action, wait for your turn! \u001B[0m");
+            System.out.println("Unable to complete the action, wait for your turn!");
         } else {
-            if (!actionTaken(evt.getNewValue().toString(), evt.getPropertyName())) {
+            if (!dispatchAction(evt.getNewValue().toString(), evt.getPropertyName())) {
                 modelView.setIsYourTurn(true);
             }
         }
     }
-
-
 }

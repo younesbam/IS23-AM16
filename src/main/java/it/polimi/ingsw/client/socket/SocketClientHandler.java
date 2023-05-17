@@ -3,9 +3,9 @@ package it.polimi.ingsw.client.socket;
 import it.polimi.ingsw.client.*;
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.common.Client;
-import it.polimi.ingsw.communications.clientmessages.Message;
+import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
-import it.polimi.ingsw.communications.clientmessages.UsernameSetup;
+import it.polimi.ingsw.communications.clientmessages.messages.UsernameSetup;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.serveranswers.ConnectionOutcome;
 import it.polimi.ingsw.communications.serveranswers.ErrorAnswer;
@@ -110,6 +110,11 @@ public class SocketClientHandler extends Client {
     private boolean readInput(String username, ObjectInputStream input) throws TakenUsername{
         try {
             sendToServer(new UsernameSetup(username));
+            /*
+            TODO:
+             Qui il client si blocca, secondo me perchè aspetta una risposta dal server troppo velocemente.
+             Da risolvere.
+             */
             if (isUsernameFreeToUse(input.readObject())) {
                 return true;
             }

@@ -61,12 +61,33 @@ public class RMICSConnection extends CSConnection {
     /**
      * {@inheritDoc}
      */
-    public void sendAnswerToClient(SerializedAnswer answer) throws RemoteException {
-        client.onServerAnswer(answer);
+    public void sendAnswerToClient(SerializedAnswer answer) {
+        try{
+            client.onServerAnswer(answer);
+        } catch (RemoteException e) {
+            Server.LOGGER.log(Level.SEVERE, "Failed to send message to the client: ", e);
+            disconnect();
+        }
     }
 
-    @Override
-    public void setupPlayers(HowManyPlayersRequest request) {
-
-    }
+//    @Override
+//    public void setupPlayers(HowManyPlayersRequest request) {
+//        SerializedAnswer answer = new SerializedAnswer();
+//        answer.setAnswer(request);
+//        /*
+//        Send the answer to the client
+//         */
+//        try{
+//            sendAnswerToClient(answer);
+//        } catch (RemoteException e){
+//            Server.LOGGER.log(Level.SEVERE, "Failed to request the client the number of players in the game", e);
+//            disconnect();
+//        }
+//
+//        /*
+//        Wait for the client response. The server must have the numbers of players.
+//         */
+//
+//
+//    }
 }

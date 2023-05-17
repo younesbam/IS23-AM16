@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.rmi;
 
 import it.polimi.ingsw.client.rmi.IRMIClient;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
-import it.polimi.ingsw.communications.clientmessages.UsernameSetup;
+import it.polimi.ingsw.communications.clientmessages.messages.UsernameSetup;
 import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.connection.CSConnection;
 import it.polimi.ingsw.server.connection.RMICSConnection;
@@ -52,6 +52,6 @@ public class RMIServerHandler extends UnicastRemoteObject implements IRMIServer 
      */
     @Override
     public void sendMessageToServer(SerializedMessage message) throws RemoteException {
-        connection.onMessage(message);
+        connection.onClientMessage(message);
     }
 }

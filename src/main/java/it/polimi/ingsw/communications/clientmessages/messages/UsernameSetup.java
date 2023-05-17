@@ -1,6 +1,4 @@
-package it.polimi.ingsw.communications.clientmessages;
-
-import it.polimi.ingsw.client.common.Client;
+package it.polimi.ingsw.communications.clientmessages.messages;
 
 /**
  * This class encapsulates player's username information in a communication object, reaady to be sent to the server.

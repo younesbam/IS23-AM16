@@ -1,5 +1,7 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.socket;
 
+import it.polimi.ingsw.client.ActionHandler;
+import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 
 import java.io.IOException;

@@ -74,10 +74,6 @@ public class VirtualPlayer {
     public void send(Answer a) {
         SerializedAnswer answer = new SerializedAnswer();
         answer.setAnswer(a);
-        try{
-            connection.sendAnswerToClient(answer);
-        } catch (IOException e){
-            Server.LOGGER.log(Level.SEVERE, "Failed to send the answer to the client" + username, e);
-        }
+        connection.sendAnswerToClient(answer);
     }
 }

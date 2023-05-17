@@ -1,16 +1,17 @@
 package it.polimi.ingsw.server.connection;
 
-import it.polimi.ingsw.communications.clientmessages.Message;
+import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
+import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
-import it.polimi.ingsw.communications.clientmessages.UsernameSetup;
+import it.polimi.ingsw.communications.clientmessages.messages.UsernameSetup;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
 import it.polimi.ingsw.communications.serveranswers.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
+import it.polimi.ingsw.exceptions.OutOfBoundException;
 import it.polimi.ingsw.server.Server;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.logging.Level;
 
 /**
@@ -39,7 +40,7 @@ public abstract class CSConnection {
      * Dispatch the message to the right action handler, based on the type of the serialized message.
      * @param serializedMessage
      */
-    public void onMessage(SerializedMessage serializedMessage) {
+    public void onClientMessage(SerializedMessage serializedMessage) {
         if (serializedMessage.message != null) {
             actionHandler(serializedMessage.message);
         } else if (serializedMessage.gameAction != null) {
@@ -55,6 +56,19 @@ public abstract class CSConnection {
     private void actionHandler(Message message){
         if (message instanceof UsernameSetup) {
             checkConnection((UsernameSetup) message);
+            return;
+        }
+
+        if(message instanceof HowManyPlayersResponse){
+            try{
+                server.setNumOfPlayers(this, ((HowManyPlayersResponse) message).getNumChoice());
+            } catch (OutOfBoundException e) {
+                Server.LOGGER.log(Level.WARNING, "Wrong number of player received from client");
+                SerializedAnswer answer = new SerializedAnswer();
+                answer.setAnswer(new HowManyPlayersRequest("Wrong number of players. Please choose the number of player you want to play with [2, 3, 4]:"));
+                sendAnswerToClient(answer);
+            }
+
         }
 
     }
@@ -116,12 +130,12 @@ public abstract class CSConnection {
      * Send an answer to the client.
      * @param answer from the server
      */
-    public abstract void sendAnswerToClient(SerializedAnswer answer) throws IOException;
+    public abstract void sendAnswerToClient(SerializedAnswer answer);
 
 
-    /**
-     * This method is used to set up the players.
-     * @param request
-     */
-    public abstract void setupPlayers(HowManyPlayersRequest request);
+//    /**
+//     * This method is used to set up the players.
+//     * @param request
+//     */
+//    public abstract void setupPlayers(HowManyPlayersRequest request);
 }

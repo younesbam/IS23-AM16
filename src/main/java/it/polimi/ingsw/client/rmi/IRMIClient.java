@@ -28,7 +28,7 @@ public interface IRMIClient extends Remote {
 
 
     /**
-     * Client has received an answer from the server.
+     * Handle the answer from the server.
      * @throws RemoteException
      */
     void onServerAnswer(SerializedAnswer answer) throws RemoteException;

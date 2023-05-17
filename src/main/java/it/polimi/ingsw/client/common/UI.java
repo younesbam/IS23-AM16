@@ -35,12 +35,17 @@ public abstract class UI implements PropertyChangeListener {
     /**
      * Property change support.
      */
-    protected PropertyChangeSupport pcs;
+    protected PropertyChangeSupport pcsDispatcher;
 
     /**
-     *
+     * Game active
      */
-    protected boolean activeGame;
+    private boolean activeGame;
+
+    /**
+     * Setup mode. Represent the initial game phase. This allows the CLI to respond to the server without sending him commands.
+     */
+    private boolean setupMode;
     protected int tmp = 0;
 
 
@@ -62,17 +67,17 @@ public abstract class UI implements PropertyChangeListener {
         } else {
             client = new RMIClientHandler(address, port, username, modelView, actionHandler);
         }
-        client.connect();
+
 
         /*
         Add the property change listener. Create a new dispatcher of the user command, NOT based on the type of connection.
+        WARNING: it's mandatory to start the listener before calling the connect method. That method triggers an action in the server that
+        send a message to the client (number of max player, only for the first player). the client has to response, and then loop the input, waiting for new messages.
+        See "lobby" method in server for more information
          */
-        pcs.addPropertyChangeListener(new Dispatcher(modelView, client));
+        pcsDispatcher.addPropertyChangeListener(new Dispatcher(modelView, client));
 
-        /*
-        Qui bisogna far partire il listener del client per notificare dell'arrivo di messaggi.
-        Forse viene fatto già dal metodo sopra.
-         */
+        client.connect();
     }
 
 
@@ -80,12 +85,32 @@ public abstract class UI implements PropertyChangeListener {
      * Disconnect from server.
      */
     public void disconnectFromServer() {
-        try{
+        int status;
+        try {
             client.disconnect();
-            Client.LOGGER.log(Level.INFO, "Successfully disconnected from server");
-        }catch (RemoteException e){
-            // Fai qualcosa
-            Client.LOGGER.log(Level.SEVERE, "Failed to stop the connection to the server", e);
+            Client.LOGGER.log(Level.INFO, "Client successfully disconnected from the server");
+            status = 0;
+        } catch (RemoteException e) {
+            Client.LOGGER.log(Level.WARNING, "Error while properly disconnect the server. Client will be shut down in any case");
+            status = -1;
         }
+        System.exit(status);
+    }
+
+
+    public synchronized boolean isActiveGame() {
+        return activeGame;
+    }
+
+    public synchronized void setActiveGame(boolean activeGame) {
+        this.activeGame = activeGame;
+    }
+
+    public synchronized boolean isSetupMode() {
+        return setupMode;
+    }
+
+    public synchronized void setSetupMode(boolean setupMode) {
+        this.setupMode = setupMode;
     }
 }
