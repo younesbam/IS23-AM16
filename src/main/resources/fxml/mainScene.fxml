@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane layoutX="504.0" layoutY="64.0" prefHeight="389.0" prefWidth="352.0">
+         <children>
+            <GridPane alignment="CENTER" layoutX="40.0" layoutY="25.0" prefHeight="320.0" prefWidth="274.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.60003662109375" minWidth="10.0" prefWidth="57.800012207031244" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.19997558593751" minWidth="10.0" prefWidth="56.99998779296875" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.20001220703125" minWidth="10.0" prefWidth="57.19999999999999" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.20001220703125" minWidth="10.0" prefWidth="56.800024414062506" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.39990234375" minWidth="10.0" prefWidth="57.59997558593753" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="70.80000152587891" minHeight="10.0" prefHeight="52.40000610351562" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="71.79999542236328" minHeight="10.0" prefHeight="49.20001220703125" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="78.59998168945313" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="102.40000610351561" minHeight="10.0" prefHeight="51.800012207031244" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="90.4000305175781" minHeight="10.0" prefHeight="51.99999389648437" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="65.60001220703123" minHeight="10.0" prefHeight="47.20000610351562" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <GridPane.margin>
+                        <Insets left="3.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets left="3.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="123.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="177.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="13.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="3.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="69.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="123.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="177.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="232.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="13.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="3.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="69.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="123.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="177.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="232.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="13.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets left="3.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="68.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="123.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="177.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="232.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="13.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets left="3.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="68.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="123.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="177.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="232.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets left="3.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets left="2.0" top="2.0" />
+                     </GridPane.margin>
+                  </ImageView>
+               </children>
+            </GridPane>
+            <ImageView fitHeight="390.0" fitWidth="352.0" pickOnBounds="true">
+               <image>
+                  <Image url="@graphics/boards/bookshelf_orth.png" />
+               </image>
+            </ImageView>
+         </children></AnchorPane>
+      <AnchorPane layoutX="101.0" layoutY="64.0" prefHeight="390.0" prefWidth="385.0">
+         <children>
+            <ImageView fitHeight="390.0" fitWidth="386.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@graphics/boards/livingroom.png" />
+               </image>
+            </ImageView>
+            <GridPane layoutX="14.0" layoutY="15.0" prefHeight="355.0" prefWidth="352.0">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="101.0" layoutY="470.0" prefHeight="56.0" prefWidth="758.0">
+         <children>
+            <Button layoutY="7.0" mnemonicParsing="false" text="GOAL CARDS">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="145.0" layoutY="7.0" mnemonicParsing="false" text="BOOKSHELFS">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="288.0" layoutY="7.0" mnemonicParsing="false" text="UPDATE POINTS">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="674.0" layoutY="8.0" mnemonicParsing="false" text="CHAT">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="100.0" layoutY="14.0" prefHeight="40.0" prefWidth="732.0">
+         <children>
+            <Label layoutX="8.0" layoutY="4.0" text="Username">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="205.0" layoutY="4.0" text="Points: ">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="270.0" layoutY="4.0" prefHeight="30.0" prefWidth="42.0" text="0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="463.0" layoutY="6.0" text="YOUR TURN!">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button layoutX="578.0" layoutY="1.0" mnemonicParsing="false" text="CONFIRM MOVE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
