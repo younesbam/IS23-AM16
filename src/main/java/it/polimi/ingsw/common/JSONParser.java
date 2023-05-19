@@ -22,13 +22,15 @@ import static it.polimi.ingsw.Const.MAXBOARDDIM;
 public class JSONParser {
     private final String fileName;
 
+
     /**
-     *
+     * Constructor
      * @param fileName name of the file. If there are subdirectories, specifies them in the string. In case of subdirectories, don't add the initial "/"
      */
     public JSONParser(String fileName) {
         this.fileName = new String(fileName);
     }
+
 
     /**
      * Get all the personal goal card stored in the json file.
@@ -81,6 +83,7 @@ public class JSONParser {
         return set;
     }
 
+
     /**
      * Get the board based on the number of players
      * @param numOfPlayers number of players
@@ -129,11 +132,13 @@ public class JSONParser {
      */
     public int getServerRmiPort(){ return getJSONObject().getInt("RmiPort"); }
 
+
     /**
      * Get port of the server with socket.
      * @return server port
      */
     public int getServerSocketPort(){ return getJSONObject().getInt("SocketPort"); }
+
 
     /**
      * Get port of the server.
@@ -141,11 +146,13 @@ public class JSONParser {
      */
     public String getServerIP(){ return getJSONObject().getString("IP"); }
 
+
     /**
      * Get server name.
      * @return server name
      */
     public String getServerName(){ return getJSONObject().getString("ServerName"); }
+
 
     /**
      * Get timeout valure to close connection
@@ -154,6 +161,7 @@ public class JSONParser {
      public int getTimeout(){
          return getJSONObject().getInt("timeout");
      }
+
 
     /**
      * Get the initial JSONObject, that start with the first {}
