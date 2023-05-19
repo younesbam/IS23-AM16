@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane layoutX="99.0" layoutY="75.0" prefHeight="389.0" prefWidth="352.0">
+         <children>
+            <GridPane alignment="CENTER" layoutX="40.0" layoutY="25.0" prefHeight="320.0" prefWidth="274.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.60003662109375" minWidth="10.0" prefWidth="57.800012207031244" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.19997558593751" minWidth="10.0" prefWidth="56.99998779296875" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.20001220703125" minWidth="10.0" prefWidth="57.19999999999999" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.20001220703125" minWidth="10.0" prefWidth="56.800024414062506" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.39990234375" minWidth="10.0" prefWidth="57.59997558593753" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="70.80000152587891" minHeight="10.0" prefHeight="52.40000610351562" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="71.79999542236328" minHeight="10.0" prefHeight="49.20001220703125" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="78.59998168945313" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="102.40000610351561" minHeight="10.0" prefHeight="51.800012207031244" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="90.4000305175781" minHeight="10.0" prefHeight="51.99999389648437" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="65.60001220703123" minHeight="10.0" prefHeight="47.20000610351562" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+            <ImageView fitHeight="390.0" fitWidth="352.0" pickOnBounds="true">
+               <image>
+                  <Image url="@graphics/boards/bookshelf_orth.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <Label layoutX="178.0" layoutY="33.0" text="Username1's Bookshelf">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <AnchorPane layoutX="522.0" layoutY="75.0" prefHeight="389.0" prefWidth="352.0">
+         <children>
+            <GridPane alignment="CENTER" layoutX="40.0" layoutY="25.0" prefHeight="320.0" prefWidth="274.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.60003662109375" minWidth="10.0" prefWidth="57.800012207031244" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.19997558593751" minWidth="10.0" prefWidth="56.99998779296875" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.20001220703125" minWidth="10.0" prefWidth="57.19999999999999" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.20001220703125" minWidth="10.0" prefWidth="56.800024414062506" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.39990234375" minWidth="10.0" prefWidth="57.59997558593753" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="70.80000152587891" minHeight="10.0" prefHeight="52.40000610351562" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="71.79999542236328" minHeight="10.0" prefHeight="49.20001220703125" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="78.59998168945313" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="102.40000610351561" minHeight="10.0" prefHeight="51.800012207031244" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="90.4000305175781" minHeight="10.0" prefHeight="51.99999389648437" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="65.60001220703123" minHeight="10.0" prefHeight="47.20000610351562" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+            <ImageView fitHeight="390.0" fitWidth="352.0" pickOnBounds="true">
+               <image>
+                  <Image url="@graphics/boards/bookshelf_orth.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <Label layoutX="601.0" layoutY="33.0" text="Username2's Bookshelf">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Button layoutX="383.0" layoutY="479.0" mnemonicParsing="false" text="BACK TO THE GAME">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
