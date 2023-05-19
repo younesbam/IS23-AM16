@@ -13,6 +13,7 @@ public class Bag {
 
 
     private Set<CommonGoalCard> initCommSet;
+    private List<CommonGoalCard> initCommList;
     private Set<PersonalGoalCard> initPersSet;
 
     /**
@@ -34,22 +35,24 @@ public class Bag {
         initCommSet = new HashSet<>();
         initPersSet = new HashSet<>();
 
+        initCommList = new ArrayList<>();
+
         /*
         Common card initialization
          */
         // Add common cards in the Set
-        initCommSet.add(new EqualCross(1));
-        initCommSet.add(new EqualCross(10));
-        initCommSet.add(new DiffAligned(2));
-        initCommSet.add(new DiffAligned(6));
-        initCommSet.add(new EqualInCol(3));
-        initCommSet.add(new EqualInCol(4));
-        initCommSet.add(new MaxDiffGroup(5));
-        initCommSet.add(new MaxDiffGroup(7));
-        initCommSet.add(new EqualCorners(8));
-        initCommSet.add(new EqualRand(9));
-        initCommSet.add(new EqualDiag(11));
-        initCommSet.add(new SubMatrix(12));
+        initCommList.add(new EqualCross(1));
+        initCommList.add(new EqualCross(10));
+        initCommList.add(new DiffAligned(2));
+        initCommList.add(new DiffAligned(6));
+        initCommList.add(new EqualInCol(3));
+        initCommList.add(new EqualInCol(4));
+        initCommList.add(new MaxDiffGroup(5));
+        initCommList.add(new MaxDiffGroup(7));
+        initCommList.add(new EqualCorners(8));
+        initCommList.add(new EqualRand(9));
+        initCommList.add(new EqualDiag(11));
+        initCommList.add(new SubMatrix(12));
 
         /*
         Personal card read from json
@@ -61,9 +64,11 @@ public class Bag {
         Final operations
          */
         // Transform the Set into priority queue. Useful to poll the first element.
-        commCards = new PriorityQueue<>(initCommSet);
-        persCards = new PriorityQueue<>(initPersSet);
+        // TODO: dà errore quando trasformo il set in una queue perchè rompe qualcosa di Comparable. Non va manco la lista.
+        commCards = new PriorityQueue<>();
+        persCards = new PriorityQueue<>();
     }
+
 
     /**
      * Pick from the deck a random common goal card
@@ -78,6 +83,7 @@ public class Bag {
         comCard.placePoints(playerNum);
         return comCard;
     }
+
 
     /**
      * Pick from the deck a random personal goal card

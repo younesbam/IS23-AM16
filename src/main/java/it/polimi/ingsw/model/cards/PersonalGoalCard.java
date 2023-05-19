@@ -4,8 +4,8 @@ import it.polimi.ingsw.model.*;
 
 import java.util.Hashtable;
 
-import static it.polimi.ingsw.Utils.MAXBOOKSHELFCOL;
-import static it.polimi.ingsw.Utils.MAXBOOKSHELFROW;
+import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
 
 /**
  * Personal goal card

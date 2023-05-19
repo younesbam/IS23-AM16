@@ -21,10 +21,12 @@ public class Cell {
      */
     private int y;
 
+
+    /**
+     * Constructor for the cell.
+     */
     public Cell(){
-        x=0;
-        y=0;
-        tile=Tile.BLANK;
+        tile = Tile.BLANK;
     }
 
     /**

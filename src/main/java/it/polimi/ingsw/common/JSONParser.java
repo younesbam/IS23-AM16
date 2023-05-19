@@ -11,9 +11,9 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
 
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFCOL;
-import static it.polimi.ingsw.model.BookShelf.MAXBOOKSHELFROW;
-import static it.polimi.ingsw.model.board.Board.MAXBOARDDIM;
+import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
+import static it.polimi.ingsw.Const.MAXBOARDDIM;
 
 /**
  * Easily get what's inside the json file
@@ -22,9 +22,15 @@ import static it.polimi.ingsw.model.board.Board.MAXBOARDDIM;
 public class JSONParser {
     private final String fileName;
 
+
+    /**
+     * Constructor
+     * @param fileName name of the file. If there are subdirectories, specifies them in the string. In case of subdirectories, don't add the initial "/"
+     */
     public JSONParser(String fileName) {
         this.fileName = new String(fileName);
     }
+
 
     /**
      * Get all the personal goal card stored in the json file.
@@ -77,6 +83,7 @@ public class JSONParser {
         return set;
     }
 
+
     /**
      * Get the board based on the number of players
      * @param numOfPlayers number of players
@@ -116,5 +123,53 @@ public class JSONParser {
             board[y][x].setTile(tile);
         }
         return board;
+    }
+
+
+    /**
+     * Get port of the server with RMI.
+     * @return server port
+     */
+    public int getServerRmiPort(){ return getJSONObject().getInt("RmiPort"); }
+
+
+    /**
+     * Get port of the server with socket.
+     * @return server port
+     */
+    public int getServerSocketPort(){ return getJSONObject().getInt("SocketPort"); }
+
+
+    /**
+     * Get port of the server.
+     * @return server IP
+     */
+    public String getServerIP(){ return getJSONObject().getString("IP"); }
+
+
+    /**
+     * Get server name.
+     * @return server name
+     */
+    public String getServerName(){ return getJSONObject().getString("ServerName"); }
+
+
+    /**
+     * Get timeout valure to close connection
+     * @return timeout value [ms]
+     */
+     public int getTimeout(){
+         return getJSONObject().getInt("timeout");
+     }
+
+
+    /**
+     * Get the initial JSONObject, that start with the first {}
+     * @return initial json object
+     */
+    private JSONObject getJSONObject() {
+        String jsonString = Utils.convertFileIntoString(fileName);
+        // Get the json object from the string
+        return new JSONObject(jsonString);
     }
 }

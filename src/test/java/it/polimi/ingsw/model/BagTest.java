@@ -6,11 +6,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BagTest {
 
-    @Test
-    void pickCommonGoalCard() {
-    }
+    Bag b = new Bag();
 
+    /*
+    Testing that methods don't return a null pointer.
+     */
     @Test
-    void pickPersonalGoalCard() {
+    void bagTest() {
+        assertNotEquals(b.pickCommonGoalCard(3), null);
+        assertNotEquals(b.pickPersonalGoalCard(), null);
     }
 }

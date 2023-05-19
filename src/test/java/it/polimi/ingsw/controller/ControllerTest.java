@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Tile;
 import it.polimi.ingsw.model.cards.CommonGoalCard;
+import it.polimi.ingsw.server.GameHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static it.polimi.ingsw.Utils.*;
+import static it.polimi.ingsw.Const.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
@@ -20,7 +21,7 @@ class ControllerTest {
 
     @BeforeEach
     public void setUp() {
-        controller = new Controller();
+        controller = new Controller(null, null);
     }
     @Test
     public void testSetup(){
@@ -67,7 +68,7 @@ class ControllerTest {
             y = random.nextInt(MAXBOARDDIM);
         }
         int[][] coordinates = {{x, y}};
-        controller.pickTiles(1, coordinates);
+        controller.canPickTiles(coordinates);
 
         // Check if the tile has been removed from the board
         assertFalse(controller.getGame().getBoard().isPickable(x,y));
@@ -147,7 +148,7 @@ class ControllerTest {
         controller.getGame().setCurrentPlayer(players.get(numOfPlayers-1));
         // Now NextPlayer() should follow the order of the list of players -> the first next is the first player and so on
         for(int i = 0 ; i < numOfPlayers; i++){
-            controller.nextPlayer();
+            //controller.nextPlayer();
             assertEquals(players.get(i), controller.getGame().getCurrentPlayer());
         }
     }

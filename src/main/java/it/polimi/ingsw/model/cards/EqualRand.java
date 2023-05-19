@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static it.polimi.ingsw.Utils.MAXBOOKSHELFCOL;
-import static it.polimi.ingsw.Utils.MAXBOOKSHELFROW;
+import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
 
 /**
  * <p>

@@ -16,10 +16,10 @@ public class Game {
     private Board board;
     private CreationFactory creationFactory;
     private final ArrayList<Player> players = new ArrayList<>();
+    private final ArrayList<Player> activePlayers = new ArrayList<>();
     private Player currentPlayer;
     private int numOfPlayers;
     private final ArrayList<CommonGoalCard> commonGoalCards = new ArrayList<>();
-
     private final Bag bag;
 
 
@@ -27,11 +27,13 @@ public class Game {
 
         this.bag = new Bag();
 
-        /**
+        /*
          * Factory method to create the board based on the number of players.
-         */
-        this.creationFactory = new CreationFactory();
-        this.board = creationFactory.createBoard(numOfPlayers);
+        */
+
+         // TODO: da istanziare la board nel controller durante il setup iniziale
+//        this.creationFactory = new CreationFactory();
+//        this.board = creationFactory.createBoard(numOfPlayers);
     }
 
     /**
@@ -62,6 +64,12 @@ public class Game {
     public ArrayList<Player> getPlayers() {return this.players;}
 
     public ArrayList<CommonGoalCard> getCommonGoalCards() {return this.commonGoalCards;}
+
+
+    /**
+     * Method used to set the current player.
+     * @param currentPlayer
+     */
     public void setCurrentPlayer(Player currentPlayer){
         this.currentPlayer = currentPlayer;
     }
@@ -78,5 +86,25 @@ public class Game {
         return this.bag;
     }
 
+    /**
+     * This method returns the ID corresponding player.
+     * @param id
+     * @return
+     */
+    public Player getPlayerByID(int id) {
+        for (Player player : activePlayers) {
+            if (player.getID() == id) {
+                return player;
+            }
+        }
+        return null;
+    }
 
+    /**
+     * This method returns the list of active players.
+     * @return
+     */
+    public ArrayList<Player> getActivePlayers() {
+        return activePlayers;
+    }
 }

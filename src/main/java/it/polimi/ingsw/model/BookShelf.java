@@ -6,6 +6,7 @@ import it.polimi.ingsw.common.exceptions.NotEmptyColumnException;
 import java.security.InvalidParameterException;
 import java.util.List;
 
+import static it.polimi.ingsw.Const.*;
 import static it.polimi.ingsw.Utils.*;
 
 
@@ -65,6 +66,7 @@ public class BookShelf {
      * @param list list of tile(s) selected by the player.
      */
     public void placeTiles(int y, List<Tile> list){
+        //TODO: le celle vengono riempite dall'alto! Bisogna partire dal basso a riempire la bookshelf!
         int i=0;
         while (grid[y][i].getTile() != Tile.BLANK)
             i++;
@@ -99,6 +101,19 @@ public class BookShelf {
             }
         }
         return true;
+    }
+
+
+    /**
+     * Method used to print the bookshelf.
+     */
+    public void printBookShelf(){
+        for (int i = 0; i < MAXBOOKSHELFCOL; i++) {
+            for (int j = 0; j < MAXBOOKSHELFROW; j++) {
+                System.out.print(grid[i][j].getTile().name() + " ");
+            }
+            System.out.println();
+        }
     }
 
 }

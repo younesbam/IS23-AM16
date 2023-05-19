@@ -2,8 +2,8 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 
-import static it.polimi.ingsw.Utils.MAXBOOKSHELFCOL;
-import static it.polimi.ingsw.Utils.MAXBOOKSHELFROW;
+import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
 
 /**
  * <p>

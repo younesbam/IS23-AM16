@@ -28,6 +28,7 @@ public abstract class CommonGoalCard extends Card {
         return score.poll();
     }
 
+
     /**
      * Add score based on the number of players.
      * <p>
@@ -57,6 +58,7 @@ public abstract class CommonGoalCard extends Card {
                 score.add(2);
         }
     }
+
 
     /**
      * Check the scheme to observe in order to get points.

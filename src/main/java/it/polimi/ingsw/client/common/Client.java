@@ -1,0 +1,94 @@
+package it.polimi.ingsw.client.common;
+
+import it.polimi.ingsw.client.ActionHandler;
+import it.polimi.ingsw.client.ModelView;
+import it.polimi.ingsw.communications.clientmessages.messages.Message;
+import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
+
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.Timer;
+import java.util.logging.Logger;
+
+public abstract class Client extends UnicastRemoteObject {
+    /**
+     * Logger of the client.
+     */
+    public static final Logger LOGGER = Logger.getLogger(Client.class.getName());
+
+    /**
+     * Address of the client.
+     */
+    private final String address;
+
+    /**
+     * Port of the client.
+     */
+    private final int port;
+
+    /**
+     * Username of the current player.
+     */
+    protected final String username;
+
+    /**
+     * Ping timer. Used to start a timer
+     */
+    protected Timer pingTimer;
+
+    /**
+     * Client's action handler.
+     */
+    protected ActionHandler actionHandler;
+
+    /**
+     * Client's model view.
+     */
+    protected ModelView modelView;
+
+
+    /**
+     * Constructor.
+     * @param address of the client
+     * @param port of the client
+     * @param username of the user
+     * @throws RemoteException
+     */
+    public Client(String address, int port, String username, ModelView modelView, ActionHandler actionHandler) throws RemoteException {
+        this.address = address;
+        this.port = port;
+        this.username = username;
+        this.modelView = modelView;
+        this.actionHandler = actionHandler;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * Connect to the server
+     * @throws Exception
+     */
+    public abstract void connect() throws RemoteException, NotBoundException;
+
+    /**
+     * Disconnect from the server.
+     * @throws RemoteException
+     */
+    public abstract void disconnect() throws RemoteException;
+
+    public abstract void sendToServer(Message message);
+
+    public abstract void sendToServer(GameAction gameAction);
+
+}
