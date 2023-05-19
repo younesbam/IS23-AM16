@@ -66,6 +66,7 @@ public class BookShelf {
      * @param list list of tile(s) selected by the player.
      */
     public void placeTiles(int y, List<Tile> list){
+        //TODO: le celle vengono riempite dall'alto! Bisogna partire dal basso a riempire la bookshelf!
         int i=0;
         while (grid[y][i].getTile() != Tile.BLANK)
             i++;
