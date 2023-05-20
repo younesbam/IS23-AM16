@@ -72,8 +72,6 @@ public class ServerSideSocket implements Runnable{
     public void run() {
         try {
             ServerSocket serverSocket = new ServerSocket(numOfPort);
-            System.out.println("Selected port accepted, server side socket now initializing...");
-            System.out.println("Type EXIT to end connection.");
             newConnection(serverSocket);
 
         } catch(IOException e) {

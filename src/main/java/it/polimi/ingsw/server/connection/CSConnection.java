@@ -63,9 +63,9 @@ public abstract class CSConnection {
             try{
                 server.setNumOfPlayers(this, ((HowManyPlayersResponse) message).getNumChoice());
             } catch (OutOfBoundException e) {
-                Server.LOGGER.log(Level.WARNING, "Wrong number of player received from client");
+                Server.LOGGER.log(Level.WARNING, "Wrong number of players received from client");
                 SerializedAnswer answer = new SerializedAnswer();
-                answer.setAnswer(new HowManyPlayersRequest("Wrong number of players. Please choose the number of player you want to play with [2, 3, 4]:"));
+                answer.setAnswer(new HowManyPlayersRequest("Wrong number of players. Please choose the number of players you want to play with [2, 3, 4]:"));
                 sendAnswerToClient(answer);
             }
 

@@ -42,6 +42,7 @@ public class Game {
      */
     public void createPlayer(Player player){
         this.players.add(player);
+        this.activePlayers.add(player);
     }
 
     /**

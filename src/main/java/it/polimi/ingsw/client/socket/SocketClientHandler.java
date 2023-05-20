@@ -42,7 +42,7 @@ public class SocketClientHandler extends Client {
                 Client.LOGGER.log(Level.SEVERE, "The entered IP/port doesn't match any active server or the server is not running. Please try again!");
                 CLI.main(null);
             }
-            Client.LOGGER.log(Level.INFO, "Connection established!");
+            //Client.LOGGER.log(Level.INFO, "Connection established!");
         } catch (TakenUsername e) {
             CLI.main(null);
         }
@@ -69,7 +69,7 @@ public class SocketClientHandler extends Client {
      */
     public boolean setup(String username, ModelView modelView, ActionHandler actionHandler) throws TakenUsername{
         try {
-            System.out.println("Establishing a connection...");
+            System.out.println("Establishing a connection...\n");
             Socket socket;
             try {
                 socket = new Socket(getAddress(), getPort());

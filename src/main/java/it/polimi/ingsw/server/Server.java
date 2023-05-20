@@ -113,6 +113,8 @@ public class Server {
         }
         LOGGER.log(Level.INFO, "RMI setup complete");
 
+        System.out.println("Type EXIT to end connection.");
+
         /*
         TODO: Verificare questa roba, può essere inglobato nella ricezione di messaggi.
          */
@@ -221,7 +223,7 @@ public class Server {
 
         if(playersWaitingList.size() == 1) { //if it's the first player
             SerializedAnswer answer = new SerializedAnswer();
-            answer.setAnswer(new HowManyPlayersRequest("Hi " + IDMapVirtualPlayer.get(connection.getID()).getUsername() + " you are now the host of this lobby.\nPlease choose the number of player you want to play with [2, 3, 4]:"));
+            answer.setAnswer(new HowManyPlayersRequest("Hi " + IDMapVirtualPlayer.get(connection.getID()).getUsername() + ", you are now the host of this lobby.\nPlease choose the number of players you want to play with [2, 3, 4]:"));
             connection.sendAnswerToClient(answer);
             //connection.setupPlayers(new HowManyPlayersRequest("Hi " + IDMapVirtualPlayer.get(connection.getID()).getUsername() + " you are now the host of this lobby.\nPlease choose the number of player you want to play with [2, 3, 4]:"));
         } else if(playersWaitingList.size() == numOfPlayers) {
@@ -234,6 +236,7 @@ public class Server {
             gameHandler.startGame();
 
         } else {
+            getVirtualPlayerByID(connection.getID()).send(new SetupCompleted("You're now connected\n"));
             gameHandler.sendToEveryone(new PersonalizedAnswer(false, "There are " + (numOfPlayers - playersWaitingList.size()) + " slots left!"));
         }
     }
@@ -351,7 +354,7 @@ public class Server {
      */
     public static void main(String[] args) {
         Utils.printLogo();
-        System.out.print("Welcome to the server of MyShelfie!");
+        System.out.print("Welcome to the server of MyShelfie!\n");
         new Server();
     }
 }

@@ -30,7 +30,7 @@ public class CLI extends UI implements Runnable{
         this.modelView = new ModelView(this);
         this.actionHandler = new ActionHandler(this, this.modelView);
         setActiveGame(true);
-//        setSetupMode(true);
+//      setSetupMode(true);
     }
 
 
@@ -133,9 +133,9 @@ public class CLI extends UI implements Runnable{
         /*
         Set port, IP address, username.
          */
-        ConnectionType connectionType = ConnectionType.RMI;   // askConnectionType();
+        ConnectionType connectionType = ConnectionType.SOCKET;   // askConnectionType();
         String ipAddress = "127.0.0.1";    //askIpAddress();
-        int numOfPort = 1098;    //askPort();
+        int numOfPort = 2345;    //askPort();
         String username = askUsername();
 
         /*
@@ -148,7 +148,8 @@ public class CLI extends UI implements Runnable{
          */
         try{
             connectToServer(connectionType, ipAddress, numOfPort, username);
-            Client.LOGGER.log(Level.INFO, "Client successfully connected");
+            setSetupMode(true);
+            //Client.LOGGER.log(Level.INFO, "Client successfully connected");
         }catch (RemoteException | NotBoundException e){
             Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e);
             System.exit(-1);
@@ -164,7 +165,9 @@ public class CLI extends UI implements Runnable{
          System.out.println(s);
 
          updateTurn(true);
-         setSetupMode(true);
+         // setSetupMode(true);
+         // l'ho spostato nel metodo connect(), perchè senza i messaggi di LOGGER, non faceva in tempo ad arrivare il messaggio dal server di richiesta del numero
+         // di player, quindi la setup mode non andava a true e partiva il loop prima di chiedere il numero di giocatori
 
          pcsDispatcher.firePropertyChange("playerResponse", null, input.nextLine());
 
