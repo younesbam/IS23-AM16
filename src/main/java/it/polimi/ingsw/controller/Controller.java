@@ -56,6 +56,8 @@ public class Controller implements PropertyChangeListener {
 
         setCurrentPlayer(game.getCurrentPlayer());
 
+        gameHandler.sendToEveryone(new GameReplica(game));
+
         askWhatToDo();
         //the game board should be already filled with tiles
     }

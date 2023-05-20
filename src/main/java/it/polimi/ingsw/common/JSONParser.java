@@ -7,9 +7,7 @@ import it.polimi.ingsw.model.cards.PersonalGoalCard;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Set;
+import java.util.*;
 
 import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
 import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
@@ -36,8 +34,8 @@ public class JSONParser {
      * Get all the personal goal card stored in the json file.
      * @return Set of PersonalGoalCard
      */
-    public Set<PersonalGoalCard> getPersonalGoalCards(){
-        Set<PersonalGoalCard> set = new HashSet<>();
+    public LinkedList<PersonalGoalCard> getPersonalGoalCards(){
+        LinkedList<PersonalGoalCard> list = new LinkedList<>();
         Hashtable<Integer, Integer> persCardPoints = new Hashtable<>();
         String jsonString = Utils.convertFileIntoString(fileName);
         // Get the json object from the string
@@ -78,9 +76,9 @@ public class JSONParser {
                 personalCardGrid[y][x].setTile(tile);
             }
             // Save all the retrieved information into the card
-            set.add(new PersonalGoalCard(descr, persCardPoints, personalCardGrid));
+            list.add(new PersonalGoalCard(descr, persCardPoints, personalCardGrid));
         }
-        return set;
+        return list;
     }
 
 
