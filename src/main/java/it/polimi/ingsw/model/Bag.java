@@ -5,26 +5,17 @@ import it.polimi.ingsw.model.cards.*;
 
 import java.util.*;
 
+import static java.util.Collections.shuffle;
+
 /**
  * Represent the black bag with all the shuffled cards inside.
  * @author Nicolo' Gandini
  */
 public class Bag {
 
+    private LinkedList<CommonGoalCard> initCommList;
+    private LinkedList<PersonalGoalCard> initPersList;
 
-    private Set<CommonGoalCard> initCommSet;
-    private List<CommonGoalCard> initCommList;
-    private Set<PersonalGoalCard> initPersSet;
-
-    /**
-     * Queue used to represent common goal cards
-     */
-    private Queue<CommonGoalCard> commCards;
-
-    /**
-     * Queue used to represent the personal goal cards
-     */
-    private Queue<PersonalGoalCard> persCards;
 
     /**
      * Initialize all the tiles inside the bag into a Set, in order to have an unordered collection.
@@ -32,10 +23,11 @@ public class Bag {
      */
     public Bag() {
         // Create Sets to insert random cards.
-        initCommSet = new HashSet<>();
-        initPersSet = new HashSet<>();
+        //initCommSet = new HashSet<>();
+        //initPersSet = new HashSet<>();
 
-        initCommList = new ArrayList<>();
+        initCommList = new LinkedList<>();
+        initPersList = new LinkedList<>();
 
         /*
         Common card initialization
@@ -58,15 +50,17 @@ public class Bag {
         Personal card read from json
          */
         JSONParser jsonParser = new JSONParser("json/initSetup.json");
-        initPersSet = jsonParser.getPersonalGoalCards();
+        initPersList = jsonParser.getPersonalGoalCards();
+
+        shuffle(initCommList);
+        shuffle(initPersList);
+
 
         /*
         Final operations
          */
         // Transform the Set into priority queue. Useful to poll the first element.
         // TODO: dà errore quando trasformo il set in una queue perchè rompe qualcosa di Comparable. Non va manco la lista.
-        commCards = new PriorityQueue<>();
-        persCards = new PriorityQueue<>();
     }
 
 
@@ -78,7 +72,7 @@ public class Bag {
      */
     public CommonGoalCard pickCommonGoalCard(int playerNum) throws NullPointerException {
         CommonGoalCard comCard;
-        comCard = commCards.poll();
+        comCard = initCommList.poll();
         if(comCard == null) throw new NullPointerException("Common card's deck is empty");
         comCard.placePoints(playerNum);
         return comCard;
@@ -92,7 +86,7 @@ public class Bag {
      */
     public PersonalGoalCard pickPersonalGoalCard() throws NullPointerException {
         PersonalGoalCard persCard;
-        persCard = persCards.poll();
+        persCard = initPersList.poll();
         if(persCard == null) throw new NullPointerException("Personal card's deck is empty");
         return persCard;
     }

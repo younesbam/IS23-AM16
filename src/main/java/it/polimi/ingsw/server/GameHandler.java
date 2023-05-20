@@ -106,7 +106,7 @@ public class GameHandler {
      * Method used to start the actual game.
      */
     public void startGame(){
-        sendToEveryone(new PersonalizedAnswer(false, "The game is now starting!"));
+        sendToEveryone(new PersonalizedAnswer(false, "The game is on!\n"));
         setIsStarted(true);
 
         initialSetup();
