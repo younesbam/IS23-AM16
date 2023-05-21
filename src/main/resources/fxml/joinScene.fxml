@@ -10,9 +10,9 @@
 
 <AnchorPane prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextField layoutX="481.0" layoutY="166.0" promptText="Username" />
-      <TextField layoutX="481.0" layoutY="208.0" promptText="IP Address" />
-      <TextField layoutX="481.0" layoutY="250.0" promptText="Server Port" />
+      <TextField fx:id="username" layoutX="481.0" layoutY="166.0" promptText="Username" />
+      <TextField fx:id="ipaddress" layoutX="481.0" layoutY="208.0" promptText="IP Address" />
+      <TextField fx:id="serverport" layoutX="481.0" layoutY="250.0" promptText="Server Port" />
       <Button layoutX="406.0" layoutY="310.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="150.0" text="JOIN">
          <font>
             <Font size="21.0" />
