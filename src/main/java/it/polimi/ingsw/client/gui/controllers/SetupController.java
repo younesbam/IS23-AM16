@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui.controllers;
 
+import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.client.common.UI;
@@ -49,23 +50,60 @@ public class SetupController extends UI implements GUIController{
             try {
                 connectToServer(connectionType, ipaddress.getText(), parseInt(serverport.getText()), username.getText());
                 Client.LOGGER.log(Level.INFO, "Client successfully connected");
-                message.setText("Client successfully connected");
             } catch (RemoteException | NotBoundException e) {
                 Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e);
                 System.exit(-1);
             }
+            /*try {
+                //gui.changeStage("loadingScene.fxml");
+                //LoadingController loadingController = (LoadingController) gui.getControllerFromName("loadingScene.fxml");
+
+
+
+
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Duplicate nickname");
+                alert.setHeaderText("Duplicate nickname!");
+                alert.setContentText("This nickname is already in use! Please choose another one.");
+                alert.showAndWait();
+                gui.changeStage("joinScene.fxml");
+            } /*catch (InvalidNicknameException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid character nickname");
+                alert.setHeaderText("Special character contained in nickname!");
+                alert.setContentText(
+                        "Nickname can't contain - special character! Please choose another one");
+                alert.showAndWait();
+                gui.changeStage("joinScene.fxml");
+            }*/
 
         }
     }
 
     public void setGui(GUI gui) {
         this.gui = gui;
-        this.pcsDispatcher = new PropertyChangeSupport(this);
+        this.pcsDispatcher = new PropertyChangeSupport(gui);
         this.modelView = new ModelView(gui);
+        this.actionHandler = new ActionHandler(gui, gui.getModelView());
+        setActiveGame(true);
     }
+    private void howManyPlayerRequest(String s){
+        message.setText(s);
 
+        //updateTurn(true);
+        //setSetupMode(true);
+
+        //pcsDispatcher.firePropertyChange("playerResponse", null, input.nextLine());
+
+        //updateTurn(false);
+    }
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void propertyChange(PropertyChangeEvent event) {
+        message.setText("Property change");
+        switch (event.getPropertyName()) {
+            case "HowManyPlayersRequest" -> howManyPlayerRequest((String) event.getNewValue());
 
+        }
     }
 }
