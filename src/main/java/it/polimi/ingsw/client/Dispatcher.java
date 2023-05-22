@@ -15,7 +15,7 @@ import java.beans.PropertyChangeListener;
 public class Dispatcher implements PropertyChangeListener {
 
     private final ModelView modelView;
-    private final InputChecker inputChecker;
+    //private final InputChecker inputChecker;
     private final Client client;
 
 
@@ -27,7 +27,7 @@ public class Dispatcher implements PropertyChangeListener {
     public Dispatcher(ModelView modelView, Client client) {
         this.client = client;
         this.modelView = modelView;
-        this.inputChecker = new InputChecker(getModelView().getCli(), modelView, client);
+        //this.inputChecker = new InputChecker(getModelView().getCli(), modelView, client);
     }
 
 
@@ -57,8 +57,8 @@ public class Dispatcher implements PropertyChangeListener {
          */
         if("action".equals(propertyName)){
             switch (value.toUpperCase()){
-                case "PICKTILES" -> messageToServer = new SerializedMessage(inputChecker.checkTiles(input));
-                case "EXIT" -> inputChecker.exitGame();
+                //case "PICKTILES" -> messageToServer = new SerializedMessage(inputChecker.checkTiles(input));
+                //case "EXIT" -> inputChecker.exitGame();
                 default -> System.out.println("Incomprehensible input. Please try again");
             }
 
