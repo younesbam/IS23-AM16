@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.gluonhq.charm.glisten.control.ProgressBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -9,7 +8,6 @@
 
 <AnchorPane prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.LoadingController">
    <children>
-      <ProgressBar layoutX="380.0" layoutY="308.0" prefWidth="200.0" />
       <ImageView fitHeight="99.0" fitWidth="322.0" layoutX="319.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@graphics/Title.png" />
@@ -18,6 +16,11 @@
       <Label layoutX="436.0" layoutY="270.0" text="LOADING...">
          <font>
             <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="message" layoutX="362.0" layoutY="226.0" text="Connected successfully to server!">
+         <font>
+            <Font size="16.0" />
          </font>
       </Label>
    </children>

@@ -28,7 +28,6 @@
             <Image url="@graphics/Title.png" />
          </image>
       </ImageView>
-      <Label fx:id="message" layoutX="464.0" layoutY="406.0" text="LABEL" />
       <Label layoutX="329.0" layoutY="296.0" text="Select Connection" />
       <RadioButton fx:id="rmiRadioBtn" layoutX="489.0" layoutY="296.0" mnemonicParsing="false" selected="true" text="RMI">
          <toggleGroup>
@@ -36,5 +35,6 @@
          </toggleGroup>
       </RadioButton>
       <RadioButton fx:id="socketRadioBtn" layoutX="556.0" layoutY="296.0" mnemonicParsing="false" text="Socket" toggleGroup="$ConnectionTG" />
+      <Label fx:id="message" layoutX="467.0" layoutY="430.0" textFill="RED" />
    </children>
 </AnchorPane>
