@@ -71,6 +71,13 @@ public class ModelView {
         return this.cli;
     }
 
+    /**
+     * GUI getter.
+     * @return
+     */
+    public GUI getGui(){
+        return this.gui;
+    }
 
     /**
      * Game updater.
