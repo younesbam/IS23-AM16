@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
+
 /**
  * This class represents the cell.
  * The cell is used from both the board and the bookshelf.
  * @author Francesca Rosa Diz
  */
-public class Cell {
+public class Cell implements Serializable {
     /**
      * This attribute represents the object tile contained in the cell.
      */

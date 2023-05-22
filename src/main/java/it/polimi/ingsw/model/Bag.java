@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.common.JSONParser;
 import it.polimi.ingsw.model.cards.*;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static java.util.Collections.shuffle;
@@ -11,7 +12,7 @@ import static java.util.Collections.shuffle;
  * Represent the black bag with all the shuffled cards inside.
  * @author Nicolo' Gandini
  */
-public class Bag {
+public class Bag implements Serializable {
 
     private LinkedList<CommonGoalCard> initCommList;
     private LinkedList<PersonalGoalCard> initPersList;

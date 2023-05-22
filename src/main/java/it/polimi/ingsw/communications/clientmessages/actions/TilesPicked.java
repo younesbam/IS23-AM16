@@ -18,6 +18,8 @@ public class TilesPicked implements GameAction{
         coordinates[0][1] = col1;
         coordinates[1][0] = row2;
         coordinates[1][1] = col2;
+
+        System.out.println(coordinates[0][0] + coordinates[0][1]);
     }
 
     public TilesPicked(int row1, int col1, int row2, int col2, int row3, int col3){

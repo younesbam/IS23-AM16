@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
-public enum Direction {
+import java.io.Serializable;
+
+public enum Direction implements Serializable {
     N,
     E,
     S,

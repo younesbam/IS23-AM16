@@ -59,4 +59,14 @@ public final class Const {
      * Delay time [s] between two pings. Activated from the server.
      */
     public static final int CLIENT_PING_DELAY = 2;
+
+    public static final String RESET = "\033[0m";
+    public static final String BLACKCOLOR = "\033[40m";
+    public static final String REDCOLOR = "\033[41m";
+    public static final String GREENCOLOR = "\033[42m";
+    public static final String YELLOWCOLOR = "\033[43m";
+    public static final String BLUECOLOR = "\033[44m";
+    public static final String PURPLECOLOR = "\033[45m";
+    public static final String CYANCOLOR = "\033[46m";
+    public static final String WHITECOLOR = "\033[47m";
 }

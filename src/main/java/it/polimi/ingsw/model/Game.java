@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.board.*;
 import it.polimi.ingsw.model.cards.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * the common and personal goal cards.
  */
 
-public class Game {
+public class Game implements Serializable {
     private Board board;
     private CreationFactory creationFactory;
     private final ArrayList<Player> players = new ArrayList<>();
@@ -107,5 +108,11 @@ public class Game {
      */
     public ArrayList<Player> getActivePlayers() {
         return activePlayers;
+    }
+
+
+    public void createBoard(){
+        this.creationFactory = new CreationFactory();
+        this.board = creationFactory.createBoard(numOfPlayers);
     }
 }

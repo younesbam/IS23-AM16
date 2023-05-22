@@ -51,7 +51,7 @@ public class CLI extends UI implements Runnable{
 
         while(isActiveGame()){
             if(!isSetupMode())
-                loop();
+                    loop();
         }
 
         /*
@@ -196,13 +196,18 @@ public class CLI extends UI implements Runnable{
     }
 
     private void askWhatToDo(String request){
+        modelView.setIsYourTurn(true);
 
         if(tmp == 0){
+            System.out.println("\n\nHere is your Bookshelf:\n");
             modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
+
+            System.out.println("\n\nAnd here is the game board:\n");
+
             modelView.getGame().getBoard().printBoard();
         }
 
-        System.out.println(request);
+        System.out.println("\n\n" + request);
 
         Scanner in = new Scanner(System.in);
         String action = in.nextLine();
@@ -254,7 +259,7 @@ public class CLI extends UI implements Runnable{
 
 
     public void requestWhereToPlaceTiles(String request){
-        System.out.println(request);
+        System.out.println("\n\n" + request + "\n");
 
         modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
 
@@ -281,6 +286,11 @@ public class CLI extends UI implements Runnable{
     }
 
 
+    public void wrongNum(String s){
+        howManyPlayerRequest(s);
+    }
+
+
     public void propertyChange(PropertyChangeEvent event){
         switch (event.getPropertyName()){
             case "HowManyPlayersRequest" -> howManyPlayerRequest((String) event.getNewValue());
@@ -290,7 +300,7 @@ public class CLI extends UI implements Runnable{
             case "RequestWhatToDo" -> askWhatToDo((String) event.getNewValue());
             case "RequestTiles" -> requestTiles((String) event.getNewValue());
             case "RequestToPlaceTiles" -> requestWhereToPlaceTiles((String) event.getNewValue());
-
+            case "WrongNum" -> wrongNum((String) event.getNewValue());
 
         }
     }

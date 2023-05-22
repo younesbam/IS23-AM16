@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.GameHandler;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.security.InvalidParameterException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +55,8 @@ public class Controller implements PropertyChangeListener {
             game.getPlayers().get(i).setBookShelf(new BookShelf());
         }
 
+        game.createBoard();
+        game.getBoard().updateBoard();
         setCurrentPlayer(game.getCurrentPlayer());
 
         gameHandler.sendToEveryone(new GameReplica(game));
@@ -94,13 +97,15 @@ public class Controller implements PropertyChangeListener {
      *
      * @param coordinates
      */
-    public void canPickTiles(int coordinates[][]){
+    public void canPickTiles(int[][] coordinates){
 
         //check if selected tiles can be picked up from the board
         int i;
         boolean canPick = true;
 
-        for (i = 0; coordinates[i][0] < 2; i++) {  // La condizione precedente era: coordinates[i][0] != null. Che significa? < 2 non vuol dire nulla, era solo per farlo andare
+        // La condizione precedente era: coordinates[i][0] != null. Che significa? < 2 non vuol dire nulla, era solo per farlo andare
+        for (i = 0; i < coordinates.length; i++) {
+            System.out.println(coordinates[i][0] + " " + coordinates[i][1]);
             if (!game.getBoard().isPickable(coordinates[i][0], coordinates[i][1])) {
                 canPick = false;
             }
@@ -120,14 +125,14 @@ public class Controller implements PropertyChangeListener {
      * Method used to remove tiles from the player board.
      * @param coordinates
      */
-    public void removeTilesFromBoard(int coordinates[][]){
+    public void removeTilesFromBoard(int[][] coordinates){
         int i;
         ArrayList<Tile> tiles = new ArrayList<>();
 
-        for (i = 0;  coordinates[i][0] <2; i++) {  // La condizione precedente era: coordinates[i][0] != null. Che significa? < 2 non vuol dire nulla, era solo per farlo andare
+        for (i = 0;  i < coordinates.length; i++) {  // La condizione precedente era: coordinates[i][0] != null. Che significa? < 2 non vuol dire nulla, era solo per farlo andare
             tiles.add(game.getBoard().getTile(coordinates[i][0], coordinates[i][1]));
+            gameHandler.sendToPlayer(new PersonalizedAnswer(false, "\nYou picked the following tile:" + game.getBoard().getTile(coordinates[i][0], coordinates[i][1]).name()), currentPlayer.getID());
             game.getBoard().removeTile(coordinates[i][0], coordinates[i][1]);
-            gameHandler.sendToPlayer(new PersonalizedAnswer(false, "You picked the following tile:" + game.getBoard().getTile(coordinates[i][0], coordinates[i][1]).name()), currentPlayer.getID());
         }
 
         askToPlaceTiles(tiles);
