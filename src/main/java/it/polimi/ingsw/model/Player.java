@@ -2,11 +2,13 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.*;
 
+import java.io.Serializable;
+
 /**
  * This class represent the PLAYER model.
  * @author Younes Bamhaoud
  */
-public class Player {
+public class Player implements Serializable {
     private String username;
     private int ID;
     private int points;

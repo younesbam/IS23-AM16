@@ -225,6 +225,7 @@ public class Server {
             SerializedAnswer answer = new SerializedAnswer();
             answer.setAnswer(new HowManyPlayersRequest("Hi " + IDMapVirtualPlayer.get(connection.getID()).getUsername() + ", you are now the host of this lobby.\nPlease choose the number of players you want to play with [2, 3, 4]:"));
             connection.sendAnswerToClient(answer);
+            System.out.println("waaaaaa");
             //connection.setupPlayers(new HowManyPlayersRequest("Hi " + IDMapVirtualPlayer.get(connection.getID()).getUsername() + " you are now the host of this lobby.\nPlease choose the number of player you want to play with [2, 3, 4]:"));
         } else if(playersWaitingList.size() == numOfPlayers) {
             System.out.println(numOfPlayers + " players are now ready to play. Game is starting...");
@@ -251,14 +252,22 @@ public class Server {
         /*
         Check if the players are in the right range.
          */
-        if(numOfPlayers > 4 || numOfPlayers < 2)
-            throw new OutOfBoundException();
+        if(numOfPlayers > 4 || numOfPlayers < 2){
+            getVirtualPlayerByID(connection.getID()).send(new WrongNum());
+        }
+        else{
+            this.numOfPlayers = numOfPlayers;
+            getGameHandlerByID(connection.getID()).setNumOfPlayers(numOfPlayers);
+            getVirtualPlayerByID(connection.getID()).send(new SetupCompleted("The number of players for this match has been chosen: it's a " + numOfPlayers + " players match!"));
+
+        }
+            //throw new OutOfBoundException();
         /*
         Set number of players (also in GameHandler)
          */
-        this.numOfPlayers = numOfPlayers;
-        getGameHandlerByID(connection.getID()).setNumOfPlayers(numOfPlayers);
-        getVirtualPlayerByID(connection.getID()).send(new SetupCompleted("The number of players for this match has been chosen: it's a " + numOfPlayers + " players match!"));
+        //this.numOfPlayers = numOfPlayers;
+        //   getGameHandlerByID(connection.getID()).setNumOfPlayers(numOfPlayers);
+        //getVirtualPlayerByID(connection.getID()).send(new SetupCompleted("The number of players for this match has been chosen: it's a " + numOfPlayers + " players match!"));
     }
 
     

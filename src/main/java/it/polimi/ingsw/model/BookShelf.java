@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.common.exceptions.NotEmptyColumnException;
 
+import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import static it.polimi.ingsw.Utils.*;
  * This class represents the player's bookshelf.
  * @author Francesca Rosa Diz
  */
-public class BookShelf {
+public class BookShelf implements Serializable {
 
     /**
      * This attribute specifies the grid's dimensions.
@@ -93,8 +94,8 @@ public class BookShelf {
      * @return true if the bookshelf is full.
      */
     public boolean checkEndGame() {
-        for (int i=0; i<MAXBOOKSHELFCOL; i++) {
-            for (int j=0; j<MAXBOOKSHELFROW; j++) {
+        for (int i=0; i<MAXBOOKSHELFROW; i++) {
+            for (int j=0; j<MAXBOOKSHELFCOL; j++) {
                 if (grid[i][j].getTile() == Tile.BLANK) {
                     return false;
                 }
@@ -108,12 +109,25 @@ public class BookShelf {
      * Method used to print the bookshelf.
      */
     public void printBookShelf(){
-        for (int i = 0; i < MAXBOOKSHELFCOL; i++) {
-            for (int j = 0; j < MAXBOOKSHELFROW; j++) {
-                System.out.print(grid[i][j].getTile().name() + " ");
+        for (int i = 0; i < MAXBOOKSHELFROW; i++) {
+            System.out.print("[  ");
+            for (int j = 0; j < MAXBOOKSHELFCOL; j++) {
+                switch (grid[i][j].getTile().name()) {
+                    case "BLANK" -> System.out.print(BLACKCOLOR + " " + RESET + "  ");
+                    case "WHITE" -> System.out.print(WHITECOLOR + " " + RESET + "  ");
+                    case "LIGHTBLUE" -> System.out.print(CYANCOLOR + " " + RESET + "  ");
+                    case "BLUE" -> System.out.print(BLUECOLOR + " " + RESET + "  ");
+                    case "YELLOW" -> System.out.print(YELLOWCOLOR + " " + RESET + "  ");
+                    case "GREEN" -> System.out.print(GREENCOLOR + " " + RESET + "  ");
+                    case "PINK" -> System.out.print(PURPLECOLOR + " " + RESET + "  ");
+                    case "RED" -> System.out.print(REDCOLOR + " " + RESET + "  ");
+                    case "UNAVAILABLE" -> System.out.print("x  ");
+                }
             }
+            System.out.print("]");
             System.out.println();
+            }
         }
     }
 
-}
+

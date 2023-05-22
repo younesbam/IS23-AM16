@@ -2,7 +2,7 @@ package it.polimi.ingsw.communications.serveranswers;
 
 import it.polimi.ingsw.model.Game;
 
-public class GameReplica implements Answer{
+public class GameReplica implements Answer {
 
     private Game gameReplica;
 

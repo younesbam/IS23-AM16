@@ -57,6 +57,11 @@ public class ActionHandler {
             return;
         }
 
+        if(a instanceof WrongNum){
+            pcsView.firePropertyChange("WrongNum", null, a.getAnswer());
+            return;
+        }
+
         if(a instanceof UpdateTurn){
             // modelView.setIsYourTurn(((UpdateTurn) a).getInputEnabled());  Non so se va qui o nella cli
             pcsView.firePropertyChange("UpdateTurn", null, ((UpdateTurn) a).isYourTurn());

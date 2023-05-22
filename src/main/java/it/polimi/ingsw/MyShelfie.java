@@ -7,6 +7,9 @@ import it.polimi.ingsw.server.Server;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import static it.polimi.ingsw.Const.RESET;
+import static it.polimi.ingsw.Const.WHITECOLOR;
+
 /**
  * This is the main class, which permits the player to start a new game, or to join an already existing one.
  */
@@ -14,7 +17,8 @@ public class MyShelfie {
     public static void main(String[] args) {
             System.out.println("Welcome to MyShelfie!\nSelect one of the following:");
             System.out.println("0. SERVER\n1. CLI CLIENT\n2. GUI CLIENT");
-            System.out.print(">");
+            System.out.print(">\n");
+
             Scanner scanner = new Scanner(System.in);
             int choice = 0;
             try {

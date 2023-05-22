@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
+import it.polimi.ingsw.communications.clientmessages.messages.Message;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -52,11 +53,8 @@ public class Dispatcher implements PropertyChangeListener {
 
         String[] input = value.split(" ");
 
-        /*
-        ACTION
-         */
-        if("action".equals(propertyName)){
-            switch (value.toUpperCase()){
+            switch (propertyName.toUpperCase()){
+                case "PLAYERRESPONSE" -> messageToServer =  new SerializedMessage(numOfPlayersChosen(value));
                 case "PICKTILES" -> messageToServer = new SerializedMessage(inputChecker.checkTiles(input));
                 case "EXIT" -> inputChecker.exitGame();
                 default -> System.out.println("Incomprehensible input. Please try again");
@@ -64,33 +62,28 @@ public class Dispatcher implements PropertyChangeListener {
 
             // Send game action to server
             if (messageToServer != null) {
-                client.sendToServer(messageToServer.gameAction);
+                if(messageToServer.message != null)
+                    client.sendToServer(messageToServer.message);
+                else if (messageToServer.gameAction != null)
+                    client.sendToServer(messageToServer.gameAction);
                 return true;
             }
+            return false;
         }
 
-        /*
-        MESSAGE: player response
-         */
-        if("playerResponse".equals(propertyName)){
+
+        public HowManyPlayersResponse numOfPlayersChosen(String value){
+
             int playersValue;
             try {
                 playersValue = Integer.parseInt(value);
             } catch (NumberFormatException e){
                 playersValue = 0;
             }
-            messageToServer = new SerializedMessage(new HowManyPlayersResponse(playersValue));
+            Message messageToServer = new HowManyPlayersResponse(playersValue);
 
-
-            // Send message to server
-            if (messageToServer != null) {
-                client.sendToServer(messageToServer.message);
-                return true;
-            }
+            return (HowManyPlayersResponse) messageToServer;
         }
-
-        return false;
-    }
 
 
     /**

@@ -1,15 +1,17 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Board2Players;
 import it.polimi.ingsw.model.board.Board3Players;
 import it.polimi.ingsw.model.board.Board4Players;
 
+import java.io.Serializable;
+
 /**
  * This class is used to apply the factory pattern.
  * @author Francesca Rosa Diz
  */
-public class CreationFactory {
+public class CreationFactory implements Serializable {
 
     /**
      * This method instantiates the board based on the number of players.
