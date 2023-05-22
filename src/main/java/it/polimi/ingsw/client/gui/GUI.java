@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 public class GUI extends Application {
     public static final String END_OF_THE_GAME = "End of the game";
     private static final String MAIN_GUI = "mainScene.fxml";
-    private static final String LOADER = "loading.fxml";
+    private static final String LOADER = "loadingScene.fxml";
     private static final String GOALS = "goalCardScene.fxml";
     private static final String SETUP = "joinScene.fxml";
     private static final String CHAT = "chatScene.fxml";
@@ -151,7 +151,17 @@ public class GUI extends Application {
         errorDialog.setContentText(error);
         errorDialog.showAndWait();
     }
-
+    /**
+     * Method setupHandler handles the setup game phase
+     *
+     */
+    /*public void setupHandler() {
+        Platform.runLater(() -> {
+                LoaderController controller = (LoaderController) getControllerFromName(LOADER);
+                controller.requestPlayerNumber(((RequestPlayersNumber) modelView.getServerAnswer()).getMessage());
+            });
+        }
+    }*/
 
 
 
