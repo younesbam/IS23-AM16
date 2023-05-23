@@ -6,6 +6,7 @@ import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.common.ConnectionType;
+import it.polimi.ingsw.server.connection.CSConnection;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -54,10 +55,13 @@ public class SetupController extends UI implements GUIController{
                 Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e);
                 System.exit(-1);
             }
-            /*try {
-                //gui.changeStage("loadingScene.fxml");
-                //LoadingController loadingController = (LoadingController) gui.getControllerFromName("loadingScene.fxml");
+            try {
+                gui.changeStage("loadingScene.fxml");
+                LoadingController loadingController = (LoadingController) gui.getControllerFromName("loadingScene.fxml");
 
+                /*gui.getListeners()
+                        .addPropertyChangeListener(
+                                "action", new ActionParser(connection, gui.getModelView()));*/
 
 
 

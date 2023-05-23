@@ -7,6 +7,8 @@ import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.client.gui.controllers.GUIController;
+import it.polimi.ingsw.server.connection.CSConnection;
+import it.polimi.ingsw.server.connection.RMICSConnection;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +34,7 @@ public class GUI extends Application {
     private static final String GOALS = "goalCardScene.fxml";
     private static final String SETUP = "joinScene.fxml";
     private static final String CHAT = "chatScene.fxml";
+    private CSConnection csConnection = null;
     private final PropertyChangeSupport listeners = new PropertyChangeSupport(this);
     private final ModelView modelView;
     private final ActionHandler actionHandler;
@@ -139,6 +142,25 @@ public class GUI extends Application {
         return nameMapController.get(name);
     }
 
+    /**
+     * Method getCSConnection returns the connection of this GUI object.
+     *
+     * @return the connection of this GUI object.
+     */
+    public CSConnection getCSConnection() {
+        return csConnection;
+    }
+
+    /**
+     * Method setCSConnection sets the connection of this GUI object.
+     *
+     * @param csConnection the connection of this GUI object.
+     */
+    public void setCSConnection(CSConnection csConnection) {
+        if (this.csConnection == null) {
+            this.csConnection = csConnection;
+        }
+    }
     /**
      * Method errorDialog displays a generic error.
      *
