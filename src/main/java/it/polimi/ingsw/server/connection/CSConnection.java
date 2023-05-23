@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.connection;
 
+import it.polimi.ingsw.communications.clientmessages.actions.TilesPlaced;
 import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
 import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
@@ -80,6 +81,9 @@ public abstract class CSConnection {
      */
     private void actionHandler(GameAction action){
         if(action instanceof TilesPicked){
+            server.getGameHandlerByID(ID).dispatchActions(action);
+        }
+        else if(action instanceof TilesPlaced){
             server.getGameHandlerByID(ID).dispatchActions(action);
         }
     }

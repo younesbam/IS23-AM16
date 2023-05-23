@@ -3,7 +3,6 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
-import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.messages.Message;
 
 import java.beans.PropertyChangeEvent;
@@ -55,7 +54,8 @@ public class Dispatcher implements PropertyChangeListener {
 
             switch (propertyName.toUpperCase()){
                 case "PLAYERRESPONSE" -> messageToServer =  new SerializedMessage(numOfPlayersChosen(value));
-                case "PICKTILES" -> messageToServer = new SerializedMessage(inputChecker.checkTiles(input));
+                case "PICKTILES" -> messageToServer = new SerializedMessage(inputChecker.checkTilesPicked(input));
+                case "PLACETILES" -> messageToServer = new SerializedMessage(inputChecker.checkTilesPlaced(input));
                 case "EXIT" -> inputChecker.exitGame();
                 default -> System.out.println("Incomprehensible input. Please try again");
             }

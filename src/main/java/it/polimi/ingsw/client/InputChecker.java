@@ -4,12 +4,11 @@ import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
+import it.polimi.ingsw.communications.clientmessages.actions.TilesPlaced;
 import it.polimi.ingsw.communications.serveranswers.RequestTiles;
+import it.polimi.ingsw.communications.serveranswers.RequestWhereToPlaceTiles;
 
-import java.rmi.RemoteException;
-import java.util.logging.Level;
-
-import static it.polimi.ingsw.Const.MAXBOARDDIM;
+import static it.polimi.ingsw.Const.*;
 
 /**
  * This class is used to check if the action performed by the user is actually feasible and, if so, returns the action to the dispatcher.
@@ -34,16 +33,23 @@ public class InputChecker {
     }
 
 
-    public TilesPicked checkTiles(String[] tiles){
+    /**
+     * Method used to check if the input of the tiles requested makes sense.
+     * @param tiles
+     * @return
+     */
+    public TilesPicked checkTilesPicked(String[] tiles){
         try{
+
+            //TODO da aggiungere un check per vedere se il numero di tiles prese possono essere posizionate in almeno una colonna. Se ad esempio un giocatore ha solo uno spazio libero nella sua bookshelf, non potrà ovviamente pescare 3 tiles, ed è da gestire questa cosa.
             String numOfTiles = tiles[0];
 
             GameAction messageToServer = null;
 
             switch(numOfTiles){
                 case "ONE" -> {
-                    int row1 = Integer.parseInt(tiles[1]);
-                    int col1 = Integer.parseInt(tiles[2]);
+                    int row1 = Integer.parseInt(tiles[1]) - 1;
+                    int col1 = Integer.parseInt(tiles[2]) - 1;
 
 
                     if(row1 > MAXBOARDDIM || col1 > MAXBOARDDIM || row1 < 0 || col1 < 0){
@@ -54,10 +60,10 @@ public class InputChecker {
                         messageToServer = new TilesPicked(row1, col1);
                 }
                 case "TWO" -> {
-                    int row1 = Integer.parseInt(tiles[1]);
-                    int col1 = Integer.parseInt(tiles[2]);
-                    int row2 = Integer.parseInt(tiles[3]);
-                    int col2 = Integer.parseInt(tiles[4]);
+                    int row1 = Integer.parseInt(tiles[1]) - 1;
+                    int col1 = Integer.parseInt(tiles[2]) - 1;
+                    int row2 = Integer.parseInt(tiles[3]) - 1;
+                    int col2 = Integer.parseInt(tiles[4]) - 1;
 
                     int diffRows = Math.abs(row1 - row2);
                     int diffCol = Math.abs(col1 - col2);
@@ -80,12 +86,12 @@ public class InputChecker {
                         messageToServer = new TilesPicked(row1, col1, row2, col2);
                 }
                 case "THREE" -> {
-                    int row1 = Integer.parseInt(tiles[1]);
-                    int col1 = Integer.parseInt(tiles[2]);
-                    int row2 = Integer.parseInt(tiles[3]);
-                    int col2 = Integer.parseInt(tiles[4]);
-                    int row3 = Integer.parseInt(tiles[5]);
-                    int col3 = Integer.parseInt(tiles[6]);
+                    int row1 = Integer.parseInt(tiles[1]) - 1;
+                    int col1 = Integer.parseInt(tiles[2]) - 1;
+                    int row2 = Integer.parseInt(tiles[3]) - 1;
+                    int col2 = Integer.parseInt(tiles[4]) - 1;
+                    int row3 = Integer.parseInt(tiles[5]) - 1;
+                    int col3 = Integer.parseInt(tiles[6]) - 1;
 
                     int diffRows12 = Math.abs(row1 - row2);
                     int diffCol12 = Math.abs(col1 - col2);
@@ -120,6 +126,87 @@ public class InputChecker {
             }
         }
             return (TilesPicked) messageToServer;
+
+        } catch (NumberFormatException e) {
+            System.out.println("Input error, please try again!");
+            return null;
+        }
+    }
+
+    /**
+     * Method used to check if the coordinates chosen where to place the tiles actually make sense.
+     * @param coordinates
+     * @return
+     */
+    public TilesPlaced checkTilesPlaced(String[] coordinates) {
+        try{
+
+            GameAction messageToServer = null;
+
+            for(int i = 0; i < coordinates.length -1; i++){
+                if(!(coordinates[i] instanceof String)){
+                    System.out.println("Invalid input!");
+                    cli.requestWhereToPlaceTiles(new RequestWhereToPlaceTiles().getAnswer());
+                }
+            }
+
+            if(coordinates.length > 4){
+                System.out.println("Invalid input!");
+                cli.requestWhereToPlaceTiles(new RequestWhereToPlaceTiles().getAnswer());
+            }
+
+            messageToServer = new TilesPlaced(coordinates);
+
+//            switch (numOfTiles) {
+//                case "ONE" -> {
+//                    int row1 = Integer.parseInt(coordinates[1]) - 1;
+//                    int col1 = Integer.parseInt(coordinates[2]) - 1;
+//
+//                    if (row1 < 0 || col1 < 0 || row1 > MAXBOOKSHELFROW || col1 > MAXBOOKSHELFCOL) {
+//                        System.out.println("The selected coordinates are out of the Bookshelf space! Please select new coordinates!\n");
+//                        cli.requestWhereToPlaceTiles(new RequestWhereToPlaceTiles().getAnswer());
+//                    } else
+//                        messageToServer = new TilesPlaced(row1, col1);
+//                }
+//                case "TWO" -> {
+//                    int row1 = Integer.parseInt(coordinates[1]) - 1;
+//                    int col1 = Integer.parseInt(coordinates[2]) - 1;
+//                    int row2 = Integer.parseInt(coordinates[3]) - 1;
+//                    int col2 = Integer.parseInt(coordinates[4]) - 1;
+//
+//                    if (row1 < 0 || col1 < 0 || row1 > MAXBOOKSHELFROW || col1 > MAXBOOKSHELFCOL || row2 < 0 || col2 < 0 || row2 > MAXBOOKSHELFROW || col2 > MAXBOOKSHELFCOL) {
+//                        System.out.println("The selected coordinates are out of the Bookshelf space! Please select new coordinates!\n");
+//                        cli.requestWhereToPlaceTiles(new RequestWhereToPlaceTiles().getAnswer());
+//                    } else if (row1 != row2) {
+//                        System.out.println("You have to place the tiles on the same column! Please select new coordinates!\n");
+//                        cli.requestWhereToPlaceTiles(new RequestWhereToPlaceTiles().getAnswer());
+//                    } else
+//                        messageToServer = new TilesPlaced(row1, col1, row2, col2);
+//                }
+//                case "THREE" -> {
+//                    int row1 = Integer.parseInt(coordinates[1]) - 1;
+//                    int col1 = Integer.parseInt(coordinates[2]) - 1;
+//                    int row2 = Integer.parseInt(coordinates[3]) - 1;
+//                    int col2 = Integer.parseInt(coordinates[4]) - 1;
+//                    int row3 = Integer.parseInt(coordinates[1]) - 1;
+//                    int col3 = Integer.parseInt(coordinates[2]) - 1;
+//
+//
+//                    if (row1 < 0 || col1 < 0 || row1 > MAXBOOKSHELFROW || col1 > MAXBOOKSHELFCOL || row2 < 0 || col2 < 0 || row2 > MAXBOOKSHELFROW || col2 > MAXBOOKSHELFCOL || row3 < 0 || col3 < 0 || row3 > MAXBOOKSHELFROW || col3 > MAXBOOKSHELFCOL) {
+//                        System.out.println("The selected coordinates are out of the Bookshelf space! Please select new coordinates!\n");
+//                        cli.requestWhereToPlaceTiles(new RequestWhereToPlaceTiles().getAnswer());
+//                    } else if (row1 != row2 || row1 != row3 || row2 != row3) {
+//                        System.out.println("You have to place the tiles on the same column! Please select new coordinates!\n");
+//                        cli.requestWhereToPlaceTiles(new RequestWhereToPlaceTiles().getAnswer());
+//                    } else
+//                        messageToServer = new TilesPlaced(row1, col1, row2, col2, row3, col3);
+//                }
+//                default -> {
+//                    System.out.println("Input error, please try again!");
+//                    return null;
+//                }
+//            }
+            return (TilesPlaced) messageToServer;
 
         } catch (NumberFormatException e) {
             System.out.println("Input error, please try again!");
