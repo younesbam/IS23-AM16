@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.cards.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * This class represent the PLAYER model.

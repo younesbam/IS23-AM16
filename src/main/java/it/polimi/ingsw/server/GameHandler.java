@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
+import it.polimi.ingsw.communications.clientmessages.actions.TilesPlaced;
 import it.polimi.ingsw.communications.serveranswers.Answer;
 import it.polimi.ingsw.communications.serveranswers.PersonalizedAnswer;
 import it.polimi.ingsw.communications.serveranswers.PlayerDisconnected;
@@ -172,6 +173,9 @@ public class GameHandler {
     public void dispatchActions(GameAction action){
         if (action instanceof TilesPicked){
             pcsController.firePropertyChange("TilesPicked", null, ((TilesPicked) action).getTiles());
+        }
+        else if(action instanceof TilesPlaced){
+            pcsController.firePropertyChange("TilesPlaced", null, ((TilesPlaced) action).getCoordinates());
         }
     }
 

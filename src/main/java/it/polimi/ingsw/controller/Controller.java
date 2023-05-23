@@ -7,14 +7,13 @@ import it.polimi.ingsw.server.GameHandler;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.security.InvalidParameterException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Controller implements PropertyChangeListener {
     private Game game;
     private final GameHandler gameHandler;
     private Player currentPlayer;
+    private ArrayList<Tile> currentTiles = new ArrayList<>();
 
 
     /**
@@ -103,9 +102,7 @@ public class Controller implements PropertyChangeListener {
         int i;
         boolean canPick = true;
 
-        // La condizione precedente era: coordinates[i][0] != null. Che significa? < 2 non vuol dire nulla, era solo per farlo andare
         for (i = 0; i < coordinates.length; i++) {
-            System.out.println(coordinates[i][0] + " " + coordinates[i][1]);
             if (!game.getBoard().isPickable(coordinates[i][0], coordinates[i][1])) {
                 canPick = false;
             }
@@ -127,35 +124,83 @@ public class Controller implements PropertyChangeListener {
      */
     public void removeTilesFromBoard(int[][] coordinates){
         int i;
-        ArrayList<Tile> tiles = new ArrayList<>();
+        //ArrayList<Tile> tiles = new ArrayList<>();
 
-        for (i = 0;  i < coordinates.length; i++) {  // La condizione precedente era: coordinates[i][0] != null. Che significa? < 2 non vuol dire nulla, era solo per farlo andare
-            tiles.add(game.getBoard().getTile(coordinates[i][0], coordinates[i][1]));
+        for (i = 0;  i < coordinates.length; i++) {
+            //tiles.add(game.getBoard().getTile(coordinates[i][0], coordinates[i][1]));
+            currentTiles.add(game.getBoard().getTile(coordinates[i][0], coordinates[i][1]));
             gameHandler.sendToPlayer(new PersonalizedAnswer(false, "\nYou picked the following tile:" + game.getBoard().getTile(coordinates[i][0], coordinates[i][1]).name()), currentPlayer.getID());
             game.getBoard().removeTile(coordinates[i][0], coordinates[i][1]);
         }
 
-        askToPlaceTiles(tiles);
+        askToPlaceTiles();
     }
 
 
-    public void askToPlaceTiles(ArrayList<Tile> tiles){
-        gameHandler.sendToPlayer(new RequestWhereToPlaceTiles(tiles), getCurrentPlayer().getID());
+    public void askToPlaceTiles(){
+        gameHandler.sendToPlayer(new RequestWhereToPlaceTiles(), getCurrentPlayer().getID());
     }
 
     /**
      * Method used to place the selected tiles in the current player's Bookshelf. It also checks if the selected column has enough free spaces.
      *
-     * @param column
-     * @param numOfTiles
-     * @param list
+     * @param coordinates it contains the coordinates of the bookshelf on where to place the tiles.
      */
-    public void placeTiles(int column, int numOfTiles, List<Tile> list) {
+    public void placeTiles(String[] coordinates) {
         try{
-            game.getCurrentPlayer().getBookShelf().checkColumn(column, numOfTiles);
-            game.getCurrentPlayer().getBookShelf().placeTiles(column, list);
-        }catch (InvalidParameterException | NotEmptyColumnException e){
-            //else MESSAGGIO CHE LA COLONNA NON HA ABBASTANZA SPAZIO!
+
+            ArrayList<Tile> rightOrderTiles = new ArrayList<>();
+            int column = 0;
+
+            switch (coordinates.length) {
+                case 2 -> {
+                    if (!currentTiles.get(0).name().equals(coordinates[0])) {
+                        gameHandler.sendToPlayer(new PersonalizedAnswer(false, "Wrong tiles selected, please try again!"), currentPlayer.getID());
+                        askToPlaceTiles();
+                    }
+                    else{
+                        rightOrderTiles.add(Tile.valueOf(coordinates[0]));
+                        column = Integer.parseInt(coordinates[1]);
+                    }
+                }
+                case 3 -> {
+                    if (!(currentTiles.get(0).name().equals(coordinates[0]) || (currentTiles.get(0).name().equals(coordinates[0])) && ((currentTiles.get(1).name().equals(coordinates[1]) || (currentTiles.get(1).name().equals(coordinates[1])))))) {
+                        gameHandler.sendToPlayer(new PersonalizedAnswer(false, "Wrong tiles selected, please try again!"), currentPlayer.getID());
+                        askToPlaceTiles();
+                    }
+                    else {
+                        rightOrderTiles.add(Tile.valueOf(coordinates[0]));
+                        rightOrderTiles.add(Tile.valueOf(coordinates[1]));
+                        column = Integer.parseInt(coordinates[2]);
+                    }
+                }
+                case 4 -> {
+                    if (!(currentTiles.get(0).name().equals(coordinates[0]) || (currentTiles.get(0).name().equals(coordinates[0])) && ((currentTiles.get(1).name().equals(coordinates[1]) || (currentTiles.get(1).name().equals(coordinates[1])))) && ((currentTiles.get(2).name().equals(coordinates[2]) || (currentTiles.get(2).name().equals(coordinates[2])))))) {
+                        gameHandler.sendToPlayer(new PersonalizedAnswer(false, "Wrong tiles selected, please try again!"), currentPlayer.getID());
+                        askToPlaceTiles();
+                    }
+                    else {
+                        rightOrderTiles.add(Tile.valueOf(coordinates[0]));
+                        rightOrderTiles.add(Tile.valueOf(coordinates[1]));
+                        rightOrderTiles.add(Tile.valueOf(coordinates[2]));
+                        column = Integer.parseInt(coordinates[3]);
+                    }
+                }
+            }
+
+            game.getCurrentPlayer().getBookShelf().checkColumn(column - 1, coordinates.length - 1);
+            game.getCurrentPlayer().getBookShelf().placeTiles(column - 1, rightOrderTiles);
+
+            gameHandler.sendToEveryone(new GameReplica(game));
+            gameHandler.sendToPlayer(new BookShelfFilledWithTiles(), currentPlayer.getID());
+
+        }
+        catch (InvalidParameterException e){
+            System.out.println("Invalid parameters!");
+        }
+        catch (NotEmptyColumnException e){
+            gameHandler.sendToPlayer(new PersonalizedAnswer(false, "Not enough space in this column! Please select another one!"), currentPlayer.getID());
+            askToPlaceTiles();
         }
     }
 
@@ -240,6 +285,7 @@ public class Controller implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName().toUpperCase()){
             case "TILESPICKED" -> canPickTiles((int[][]) evt.getNewValue());
+            case "TILESPLACED" -> placeTiles((String[]) evt.getNewValue());
         }
 
     }

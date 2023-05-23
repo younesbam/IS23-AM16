@@ -9,15 +9,17 @@ public class RequestWhereToPlaceTiles implements Answer{
     private String request;
 
 
-    public RequestWhereToPlaceTiles(ArrayList<Tile> tiles){
-        String string = new String();
-        for(Tile t : tiles){
-            string = string + " " + t.name();
-        }
-        this.request = "Please now place your tiles in your Bookshelf!" + "\nYou have to place the following tiles: " + string;
+    /**
+     * Class constructor.
+     */
+    public RequestWhereToPlaceTiles(){
+        this.request = "Please now place your tiles in your Bookshelf!";
     }
 
-
+    /**
+     * Answer getter.
+     * @return
+     */
     public String getAnswer() {
         return request;
     }

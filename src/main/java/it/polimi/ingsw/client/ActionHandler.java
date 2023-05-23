@@ -93,6 +93,11 @@ public class ActionHandler {
             return;
         }
 
+        if(a instanceof BookShelfFilledWithTiles){
+            pcsView.firePropertyChange("BookShelfFilledWithTiles", null, ((BookShelfFilledWithTiles) a).getAnswer());
+            return;
+        }
+
         if(a instanceof PlayerDisconnected){
             if(gui != null) {
             } else if(cli != null) {

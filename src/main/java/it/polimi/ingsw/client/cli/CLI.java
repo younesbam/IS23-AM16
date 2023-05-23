@@ -263,8 +263,19 @@ public class CLI extends UI implements Runnable{
 
         modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
 
-        System.out.println("Please type the coordinates");
+        System.out.println("Please type the name of the tiles that you want to place in capital letters followed by the column of your Bookshelf in which you want to place them.\nPlease write the tiles in the exact order in which you want to place them in the column\n>");
 
+        Scanner in = new Scanner(System.in);
+        String chosenCoordinates = in.nextLine();
+        pcsDispatcher.firePropertyChange("PlaceTiles", null, chosenCoordinates);
+    }
+
+
+    private void tilesPlaced(String string) {
+        System.out.println(string);
+
+        System.out.println("\n\nHere is your new Bookshelf:\n");
+        modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
     }
 
 
@@ -301,7 +312,9 @@ public class CLI extends UI implements Runnable{
             case "RequestTiles" -> requestTiles((String) event.getNewValue());
             case "RequestToPlaceTiles" -> requestWhereToPlaceTiles((String) event.getNewValue());
             case "WrongNum" -> wrongNum((String) event.getNewValue());
+            case "BookShelfFilledWithTiles" -> tilesPlaced((String) event.getNewValue());
 
         }
     }
+
 }

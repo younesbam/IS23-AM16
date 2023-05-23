@@ -50,7 +50,7 @@ public class BookShelf implements Serializable {
         if (n>MAXBOOKSHELFCOL || n<0 || nTiles<0 || nTiles>MAXPICKEDTILES) throw new InvalidParameterException();
 
         for (int i=0; i<MAXBOOKSHELFCOL; i++) {
-            if(grid[n][i].getTile() == Tile.BLANK)
+            if(grid[i][n].getTile() == Tile.BLANK)
                 available++;
         }
 
@@ -63,18 +63,20 @@ public class BookShelf implements Serializable {
     /**
      * This method adds the tile(s) the player selects in the desired column if the column has enough free
      * spaces (checked by checkColumn()).
-     * @param y number of the desired column.
+     * @param column number of the desired column.
      * @param list list of tile(s) selected by the player.
      */
-    public void placeTiles(int y, List<Tile> list){
+    public void placeTiles(int column, List<Tile> list){
         //TODO: le celle vengono riempite dall'alto! Bisogna partire dal basso a riempire la bookshelf!
         int i=0;
-        while (grid[y][i].getTile() != Tile.BLANK)
+        while (i <6 && grid[i][column].getTile() == Tile.BLANK)
             i++;
 
+        i--;
+
         for (Tile tile : list) {
-            grid[y][i].setTile(tile);
-            i++;
+            grid[i][column].setTile(tile);
+            i--;
         }
     }
 
