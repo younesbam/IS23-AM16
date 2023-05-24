@@ -4,7 +4,7 @@ import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
 import it.polimi.ingsw.communications.clientmessages.actions.TilesPlaced;
 import it.polimi.ingsw.communications.serveranswers.Answer;
-import it.polimi.ingsw.communications.serveranswers.PersonalizedAnswer;
+import it.polimi.ingsw.communications.serveranswers.CustomAnswer;
 import it.polimi.ingsw.communications.serveranswers.PlayerDisconnected;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Game;
@@ -107,7 +107,7 @@ public class GameHandler {
      * Method used to start the actual game.
      */
     public void startGame(){
-        sendToEveryone(new PersonalizedAnswer(false, "The game is on!\n"));
+        sendToEveryone(new CustomAnswer(false, "The game is on!\n"));
         setIsStarted(true);
 
         initialSetup();
@@ -118,7 +118,7 @@ public class GameHandler {
      * This method selects the first player and sets up the game parameters for a new match.
      */
     public void initialSetup(){
-        sendToEveryone(new PersonalizedAnswer(false, "Now the first player to play is being randomly selected, be ready, it could be you!"));
+        sendToEveryone(new CustomAnswer(false, "Now the first player to play is being randomly selected, be ready, it could be you!"));
 
         int firstPlayer = 0;
         int min = 0;
@@ -134,8 +134,8 @@ public class GameHandler {
             firstPlayer = game.getPlayers().get(i).getID();
         }
 
-        sendToEveryoneExcept(new PersonalizedAnswer(false, "The first player is: " + server.getUsernameByID(firstPlayer) + "!"), firstPlayer);
-        sendToPlayer(new PersonalizedAnswer(false, "You are the first player! Here's your chair!"), firstPlayer);
+        sendToEveryoneExcept(new CustomAnswer(false, "The first player is: " + server.getUsernameByID(firstPlayer) + "!"), firstPlayer);
+        sendToPlayer(new CustomAnswer(false, "You are the first player! Here's your chair!"), firstPlayer);
 
         controller.setup();
     }
@@ -145,7 +145,7 @@ public class GameHandler {
      * This method ends the current match for all the players, after a player disconnection.
      */
     public void endMatch(String playerDisconnected) {
-        sendToEveryone(new PersonalizedAnswer(false, "Player " + playerDisconnected + " has disconnected :( Game will finish without a winner! Thanks to have played MyShelfie! Hope to see you soon ;)"));
+        sendToEveryone(new CustomAnswer(false, "Player " + playerDisconnected + " has disconnected :( Game will finish without a winner! Thanks to have played MyShelfie! Hope to see you soon ;)"));
         sendToEveryone(new PlayerDisconnected());
         for(Player p  : game.getActivePlayers()) {
             server.getVirtualPlayerByID(p.getID()).getConnection().disconnect();

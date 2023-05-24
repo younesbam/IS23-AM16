@@ -79,11 +79,13 @@ public class SocketClientHandler extends Client {
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 
-            while (true) {
-                if (readInput(username, input)) {
-                    break;
-                }
-            }
+            // TODO: Perchè aspettare qui che l'username sia libero? Il controllo viene già fatto nel server. Invio direttamente al server il messaggio che gli interessa di UsernameSetup
+            sendToServer(new UsernameSetup(username));
+//            while (true) {
+//                if (readInput(username, input)) {
+//                    break;
+//                }
+//            }
 
             modelView.setConnected(true);
             answerListener = new AnswerListener(socket, modelView, input, actionHandler);
@@ -110,11 +112,6 @@ public class SocketClientHandler extends Client {
     private boolean readInput(String username, ObjectInputStream input) throws TakenUsername{
         try {
             sendToServer(new UsernameSetup(username));
-            /*
-            TODO:
-             Qui il client si blocca, secondo me perchè aspetta una risposta dal server troppo velocemente.
-             Da risolvere.
-             */
             if (isUsernameFreeToUse(input.readObject())) {
                 return true;
             }
@@ -158,7 +155,7 @@ public class SocketClientHandler extends Client {
      * @param c
      */
     public void sendToServer(Message c) {
-        SerializedMessage userInput = new SerializedMessage(c);
+        SerializedMessage userInput = new SerializedMessage(getID(), c);
         try {
             outputStream.reset();
             outputStream.writeObject(userInput);
@@ -175,7 +172,7 @@ public class SocketClientHandler extends Client {
      * @param a
      */
     public void sendToServer(GameAction a) {
-        SerializedMessage userInput = new SerializedMessage(a);
+        SerializedMessage userInput = new SerializedMessage(getID(), a);
         try {
             outputStream.reset();
             outputStream.writeObject(userInput);

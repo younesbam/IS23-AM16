@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
 import it.polimi.ingsw.communications.clientmessages.actions.TilesPlaced;
+import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
 import it.polimi.ingsw.communications.serveranswers.RequestTiles;
 import it.polimi.ingsw.communications.serveranswers.RequestWhereToPlaceTiles;
 
@@ -13,7 +14,7 @@ import static it.polimi.ingsw.Const.*;
 /**
  * This class is used to check if the action performed by the user is actually feasible and, if so, returns the action to the dispatcher.
  */
-public class InputChecker {
+public class InputValidator {
 
     private final CLI cli;
     private final ModelView modelView;
@@ -26,11 +27,65 @@ public class InputChecker {
      * @param modelView
      * @param client
      */
-    public InputChecker(CLI cli, ModelView modelView, Client client) {
+    public InputValidator(CLI cli, ModelView modelView, Client client) {
         this.cli = cli;
         this.modelView = modelView;
         this.client = client;
     }
+
+
+    /**
+     * Check if the maximum number of players written is a number
+     * @param s
+     * @return
+     */
+    public HowManyPlayersResponse players(String[] s){
+        int numOfPlayers;
+        try{
+            numOfPlayers = Integer.parseInt(s[1]);
+        } catch (NumberFormatException e){
+            numOfPlayers = 0;
+        }
+
+        return new HowManyPlayersResponse(numOfPlayers);
+    }
+
+    public TilesPicked pickTiles(String [] s){
+        String numOfTiles = s[0];
+
+        switch (numOfTiles){
+            case "ONE" -> {
+                // one
+            }
+            case "TWO" -> {
+                // two
+            }
+            case "THREE" -> {
+                // three
+            }
+            default -> // default
+
+        }
+
+        /*
+        Io qui andrei ad impacchettare direttamente l'input per evitare che il server debba lavorarci ancora. Prende quello che gli è stato inviato e lo manda al controller, come già fa.
+
+        Non andrei ad appesantire ancora con i controlli di MAXDIM ecc... perchè tanto li fa il controller (e se non li fa male!). Se vede che non vanno bene, deve essere il server a restituire il messaggio
+        al client "guarda che hai pescato delle tiles sbagliate, scrivi di nuovo cosa vuoi prendere".
+
+        Non mi sembra proprio giusto da qui andare a chiamare nuovamente la cli con "requestTiles" visto che andrebbe a bloccare di nuovo la cli.
+
+        Io proporrei quindi:
+        - Il giocatore scrive PICKTILES ONE 1 2 3 4 ecc...
+        - Qui impacchetto quello che ha scritto per mandarlo e renderlo subito leggibile al server, pronti via
+        - il server manda quello che ha letto al controller (già fa così mi pare).
+        - il controller risponde con va bene/non va bene.
+        - il server agisce di conseguenza e manda un messaggio al client "ok hai pescato x, y ora dimmi dove vuoi piazzarle" oppure "hai sbagliato coordinate, ripesca".
+
+         Tutto questo senza chiamare input.nextLine da nessuna parte perchè tanto il loop fa già il suo lavoro
+         */
+    }
+
 
 
     /**
@@ -214,6 +269,21 @@ public class InputChecker {
         }
     }
 
+
+    /**
+     * Shows user manual. List all the possible commands.
+     */
+    public void manual(){
+        String man = """
+                Here all the possible commands:
+                PLAYERS <num_of_players> : use this command when the server asks for the number of players you want to play with.
+                PICKTILES : under construction, content will be available soon.
+                PLACETILES : under construction, content will be available soon.
+                EXIT : to close the game.
+                MAN : here we go; again.
+                """;
+        System.out.println(BLUE_BOLD_COLOR + man + RESET_COLOR);
+    }
 
     /**
      * Quit game command.

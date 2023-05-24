@@ -3,15 +3,10 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.communications.serveranswers.Answer;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.server.connection.CSConnection;
-import it.polimi.ingsw.server.connection.SocketCSConnection;
-
-import java.io.IOException;
-import java.util.logging.Level;
 
 public class VirtualPlayer {
 
     public final String username;
-    public final int ID;
     public final GameHandler gameHandler;
     public final CSConnection connection;
 
@@ -24,9 +19,8 @@ public class VirtualPlayer {
      * @param c
      * @param g
      */
-    public VirtualPlayer(String username, Integer ID, CSConnection c, GameHandler g) {
+    public VirtualPlayer(String username, CSConnection c, GameHandler g) {
         this.username = username;
-        this.ID = ID;
         this.connection = c;
         this.gameHandler = g;
     }
@@ -37,7 +31,7 @@ public class VirtualPlayer {
      * @return
      */
     public int getID() {
-        return this.ID;
+        return connection.getID();
     }
 
     /**

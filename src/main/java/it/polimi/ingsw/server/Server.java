@@ -1,8 +1,13 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.Const;
 import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.common.JSONParser;
+import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
+import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
+import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
+import it.polimi.ingsw.communications.clientmessages.actions.TilesPlaced;
+import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
+import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.serveranswers.*;
 import it.polimi.ingsw.exceptions.OutOfBoundException;
 import it.polimi.ingsw.server.connection.CSConnection;
@@ -17,10 +22,11 @@ import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static it.polimi.ingsw.Const.*;
 
 public class Server {
     /**
@@ -39,43 +45,42 @@ public class Server {
      * Socket port, read from json file
      */
     private final int socketPort;
-    private JSONParser jsonParser;
+
+    /**
+     * Easily get what's inside the json file
+     */
+    private final JSONParser jsonParser;
+
+    /**
+     * Game handler.
+     */
     private GameHandler gameHandler;
+
     /**
      * Number of players for this match, chosen by the host in the initial phase of the game.
      */
     private int numOfPlayers;
-    int currentPlayerID;
+
+    /**
+     * Current player ID, progressive order.
+     */
+    private int currentPlayerID;
 
     /**
      * List of players waiting for game to start.
      */
-    private final List<CSConnection> playersWaitingList = new ArrayList<>();
+    private final List<VirtualPlayer> playersWaitingList = new ArrayList<>();
 
     /**
-     * Player ID mapped to their username.
+     * List of connected players. Used to do some tasks, for instance ping all the connected clients.
      */
-    private final Map<Integer, String> IDMapUsername;
+    private final List<VirtualPlayer> playersConnectedList = new ArrayList<>();
 
     /**
-     * Username of players mapped to their ID.
+     * Represent that the first player doesn't answer to the number of players question.
+     * During this mode, new players can't connect, until the server knows the maximum number of players.
      */
-    private final Map<String, Integer> usernameMapID;
-
-    /**
-     * VirtualPlayer mapped to its connection.
-     */
-    private final Map<VirtualPlayer, CSConnection> virtualPlayerToCSConnection;
-
-    /**
-     * Player ID mapped to VirtualPlayer.
-     */
-    private final Map<Integer, VirtualPlayer> IDMapVirtualPlayer;
-
-    /**
-     * List of clients represented by nickname and connection
-     */
-    private Map<String, CSConnection> clients;
+    private boolean setupMode;
 
 
     /**
@@ -83,10 +88,6 @@ public class Server {
      */
     public Server() {
         numOfPlayers = 0;
-        usernameMapID = new HashMap<>();
-        IDMapUsername = new HashMap<>();
-        IDMapVirtualPlayer = new HashMap<>();
-        virtualPlayerToCSConnection = new HashMap<>();
 
         /*
         Load parameters: socket and rmi port
@@ -115,25 +116,23 @@ public class Server {
 
         System.out.println("Type EXIT to end connection.");
 
-        /*
-        TODO: Verificare questa roba, può essere inglobato nella ricezione di messaggi.
-         */
-        Thread thread = new Thread(this::quitConnection);
+
+        Thread thread = new Thread(this::exit);
         thread.start();
 
         /*
         Ping thread to check if clients are still alive
         WARNING: remember to shut down the thread with exec.shutdownNow();
          */
-        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate(() -> {
-            /*
-            Each client registered in the server is pinged. If the client doesn't respond, the ping() method proceed itself to disconnect the client.
-             */
-            for (Map.Entry<String, it.polimi.ingsw.server.connection.CSConnection> client : clients.entrySet()) {
-                client.getValue().ping();
-            }
-        }, 1, Const.SERVER_PING_DELAY, TimeUnit.SECONDS);
+//        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+//        exec.scheduleAtFixedRate(() -> {
+//            /*
+//            Each client registered in the server is pinged. If the client doesn't respond, the ping() method proceed itself to disconnect the client.
+//             */
+//            for (VirtualPlayer p : playersConnectedList) {
+//                p.getConnection().ping();
+//            }
+//        }, 1, Const.SERVER_PING_DELAY, TimeUnit.SECONDS);
     }
 
 
@@ -158,54 +157,123 @@ public class Server {
         ExecutorService executor = Executors.newCachedThreadPool();
         executor.submit(server.serverSideSocket);
     }
-    
-    
+
+
+    /**
+     * Dispatch the message to the right action handler, based on the type of the serialized message.
+     * @param serializedMessage
+     */
+    public void onClientMessage(SerializedMessage serializedMessage) {
+        VirtualPlayer currentPlayer = getVirtualPlayerByID(serializedMessage.playerID);
+        if (serializedMessage.message != null) {
+            actionHandler(currentPlayer, serializedMessage.message);
+        } else if (serializedMessage.gameAction != null) {
+            actionHandler(currentPlayer, serializedMessage.gameAction);
+        }
+    }
+
+    /**
+     * Handles the possible messages that can arrive from client's side.
+     * @param message message from client
+     */
+    private void actionHandler(VirtualPlayer currentPlayer, Message message){
+        if(message instanceof HowManyPlayersResponse){
+            try{
+                setNumOfPlayers(currentPlayer, ((HowManyPlayersResponse) message).getNumChoice());
+            } catch (OutOfBoundException e) {
+                Server.LOGGER.log(Level.INFO, "Wrong number of players received from client");
+                SerializedAnswer answer = new SerializedAnswer();
+                answer.setAnswer(new HowManyPlayersRequest("Wrong number of players. Please choose the number of players you want to play with.\n Type MAN if you dont' know the syntax!"));
+                currentPlayer.send(answer.getAnswer());
+            }
+
+        }
+
+    }
+
+    /**
+     * Handles the possible game action that can arrive from client's side.
+     * @param action game action from client
+     */
+    private void actionHandler(VirtualPlayer currentPlayer, GameAction action){
+        if(action instanceof TilesPicked || action instanceof TilesPlaced){
+            getGameHandlerByID(currentPlayer.getID()).dispatchActions(action);
+        }
+    }
+
+
+    /**
+     * Try to connect the client to the server and add it to the lobby
+     * <p></p>
+     * Method used by RMI and Socket when a client is trying to connect for the first time
+     * @param usernameChoice Chosen username
+     * @param connection Already created connection between client-server
+     */
+    public void tryToConnect(String usernameChoice, CSConnection connection){
+        try {
+            connection.setID(newClientRegistration(usernameChoice, connection));
+            if (connection.getID() == null) {
+                connection.disconnect();
+                return;
+            }
+            lobby(connection);
+        } catch (IOException | InterruptedException e) {
+            Server.LOGGER.log(Level.SEVERE, "Failed to register the new client", e);
+        }
+    }
+
+
     /**
      * This method is the one that registers the new client to the match. It also checks if the username chosen by the player is not already taken.
      */
-    public synchronized Integer newClientRegistration(String username, CSConnection clientConnection) throws IOException{
-        Integer clientID = usernameMapID.get(username);
+    private synchronized Integer newClientRegistration(String username, CSConnection clientConnection) throws IOException{
+        SerializedAnswer errorAnswer = new SerializedAnswer();
+        // Check if the server is in a setup mode. If true it returns null and disconnect the client immediately.
+        if(setupMode){
+            errorAnswer.setAnswer(new LobbyNotReady());
+            clientConnection.sendAnswerToClient(errorAnswer);
+            return null;
+        }
+
+        //Checks about waiting list and available slot for the game
+        if (numOfPlayers != 0 && (playersWaitingList.size() >= numOfPlayers || playersConnectedList.size() >= numOfPlayers)) {
+            errorAnswer.setAnswer(new ErrorAnswer(ErrorClassification.MAXPLAYERSREACHED));
+            clientConnection.sendAnswerToClient(errorAnswer);
+            return null;
+        }
+
+        // Try to register a new client.
+        Integer clientID = getIDByUsername(username);
 
         //checks about nickname
-        if (clientID == null) {//l'username scelto va bene, non è già in uso da un altro player.
-            if (playersWaitingList.isEmpty()) {
+        if (clientID == null) {  // Username not used by another player
+            if (playersConnectedList.isEmpty()) {
                 gameHandler = new GameHandler(this);
             }
 
-            //ho tolto una parte del metodo che sembrava ricontrollare di nuovo se ci fosse un  utente già collegato con lo stesso nome.
-
-            //checks about waiting list and available slot for the game
+            // Create a new player.
             clientID = newClientID();
             gameHandler.createPlayer(username, clientID);
-            VirtualPlayer virtualPlayer = new VirtualPlayer(username, clientID, clientConnection, gameHandler);
+            clientConnection.setID(clientID);
+            VirtualPlayer newPlayer = new VirtualPlayer(username, clientConnection, gameHandler);
+            playersConnectedList.add(newPlayer);
 
-            if (numOfPlayers != 0 && playersWaitingList.size() >= numOfPlayers) {
-                virtualPlayer.send(new ErrorAnswer(ErrorClassification.MAXPLAYERSREACHED));
-                return null;
-            }
-
-            IDMapUsername.put(clientID, username);
-            usernameMapID.put(username, clientID);
-            IDMapVirtualPlayer.put(clientID, virtualPlayer);
-            virtualPlayerToCSConnection.put(virtualPlayer, clientConnection);
-
-
-            System.out.println(virtualPlayer.getUsername() + " is now connected, his ID is " + virtualPlayer.getID());
+            System.out.println(newPlayer.getUsername() + " is now connected, his ID is " + newPlayer.getID());
             SerializedAnswer nowConnected = new SerializedAnswer();
-            nowConnected.setAnswer(new ConnectionOutcome(true, "Welcome! You have been associated with the following ID" + virtualPlayer.getID()));
+            nowConnected.setAnswer(new ConnectionOutcome(true, newPlayer.getID(), "Welcome! You have been associated with the following ID " + newPlayer.getID()));
             clientConnection.sendAnswerToClient(nowConnected);
 
-            if (playersWaitingList.size() > 1) {
-                gameHandler.sendToEveryoneExcept(new NewPlayerHasJoined("We have a new mate! Please call him: " + virtualPlayer.getUsername() + " :)"), clientID);
+            if (playersConnectedList.size() > 1) {
+                gameHandler.sendToEveryoneExcept(new NewPlayerHasJoined("We have a new mate! Please call him: " + newPlayer.getUsername() + " :)"), clientID);
             }
 
-        } else { //username già in uso!
-            VirtualPlayer registeredClient = IDMapVirtualPlayer.get(clientID);
+        } else {  // Username already in use.
+            VirtualPlayer registeredClient = getVirtualPlayerByID(clientID);
             if (registeredClient.getConnection() != null) {
-                    SerializedAnswer duplicateNicknameError = new SerializedAnswer();
-                    duplicateNicknameError.setAnswer(new ErrorAnswer(ErrorClassification.TAKENUSERNAME));
-                    clientConnection.sendAnswerToClient(duplicateNicknameError);
-                    return null;
+                SerializedAnswer duplicateNicknameError = new SerializedAnswer();
+                duplicateNicknameError.setAnswer(new ErrorAnswer(ErrorClassification.TAKENUSERNAME));
+                clientConnection.sendAnswerToClient(duplicateNicknameError);
+                return null;
             }
         }
 
@@ -218,27 +286,32 @@ public class Server {
      * @param connection
      * @throws InterruptedException
      */
-    public synchronized void lobby(CSConnection connection) throws InterruptedException {
-        playersWaitingList.add(connection); //new connected player
+    private synchronized void lobby(CSConnection connection) throws InterruptedException {
+        SerializedAnswer answer = new SerializedAnswer();
 
+        answer.setAnswer(new CustomAnswer(false, BLUE_BOLD_COLOR + "\nType MAN to know all the valid commands\n" + RESET_COLOR));
+        connection.sendAnswerToClient(answer);
+
+        playersWaitingList.add(getVirtualPlayerByID(connection.getID()));
         if(playersWaitingList.size() == 1) { //if it's the first player
-            SerializedAnswer answer = new SerializedAnswer();
-            answer.setAnswer(new HowManyPlayersRequest("Hi " + IDMapVirtualPlayer.get(connection.getID()).getUsername() + ", you are now the host of this lobby.\nPlease choose the number of players you want to play with [2, 3, 4]:"));
+            setupMode = true;  // Start the setup mode.
+            System.out.println(RED_COLOR + "Setup mode started. Clients are not welcome. Wait for the lobby host to choose the number of players" + RESET_COLOR);
+            answer.setAnswer(new HowManyPlayersRequest("Hi " + getWaitingPlayerByID(connection.getID()).getUsername() + ", you are now the host of this lobby.\nPlease choose the number of players you want to play with:"));
             connection.sendAnswerToClient(answer);
-            System.out.println("waaaaaa");
-            //connection.setupPlayers(new HowManyPlayersRequest("Hi " + IDMapVirtualPlayer.get(connection.getID()).getUsername() + " you are now the host of this lobby.\nPlease choose the number of player you want to play with [2, 3, 4]:"));
-        } else if(playersWaitingList.size() == numOfPlayers) {
+        } else if(playersWaitingList.size() == numOfPlayers) {  // Game has reached the right number of players. Game is starting
             System.out.println(numOfPlayers + " players are now ready to play. Game is starting...");
             for(int i = 3; i > 0; i--) {
-                gameHandler.sendToEveryone(new PersonalizedAnswer(false, "Game will start in" + i));
+                gameHandler.sendToEveryone(new CustomAnswer(false, "Game will start in " + i));
                 TimeUnit.MILLISECONDS.sleep(1000);
             }
 
+            // Start the game.
             gameHandler.startGame();
+            playersWaitingList.clear();
 
         } else {
-            getVirtualPlayerByID(connection.getID()).send(new SetupCompleted("You're now connected\n"));
-            gameHandler.sendToEveryone(new PersonalizedAnswer(false, "There are " + (numOfPlayers - playersWaitingList.size()) + " slots left!"));
+            getWaitingPlayerByID(connection.getID()).send(new CustomAnswer(false, "You're now connected\n"));
+            gameHandler.sendToEveryone(new CustomAnswer(false, "There are " + (numOfPlayers - playersWaitingList.size()) + " slots left!"));
         }
     }
 
@@ -248,26 +321,20 @@ public class Server {
      * @param numOfPlayers
      * @throws OutOfBoundException
      */
-    public void setNumOfPlayers(CSConnection connection, int numOfPlayers) throws OutOfBoundException{
+    private void setNumOfPlayers(VirtualPlayer player, int numOfPlayers) throws OutOfBoundException{
         /*
         Check if the players are in the right range.
          */
-        if(numOfPlayers > 4 || numOfPlayers < 2){
-            getVirtualPlayerByID(connection.getID()).send(new WrongNum());
-        }
-        else{
-            this.numOfPlayers = numOfPlayers;
-            getGameHandlerByID(connection.getID()).setNumOfPlayers(numOfPlayers);
-            getVirtualPlayerByID(connection.getID()).send(new SetupCompleted("The number of players for this match has been chosen: it's a " + numOfPlayers + " players match!"));
-
-        }
-            //throw new OutOfBoundException();
+        if(numOfPlayers > 4 || numOfPlayers < 2)
+            throw new OutOfBoundException();
         /*
         Set number of players (also in GameHandler)
          */
-        //this.numOfPlayers = numOfPlayers;
-        //   getGameHandlerByID(connection.getID()).setNumOfPlayers(numOfPlayers);
-        //getVirtualPlayerByID(connection.getID()).send(new SetupCompleted("The number of players for this match has been chosen: it's a " + numOfPlayers + " players match!"));
+        this.numOfPlayers = numOfPlayers;
+        player.getGameHandler().setNumOfPlayers(numOfPlayers);
+        player.send(new CustomAnswer(false, "The number of players for this match has been chosen: it's a " + numOfPlayers + " players match!"));
+        setupMode = false;  // Stop the setup mode. Now the server can accept new players.
+        System.out.println(GREEN_COLOR + "Setup mode ended. Clients are now welcome!" + RESET_COLOR);
     }
 
     
@@ -279,19 +346,20 @@ public class Server {
         int newID = currentPlayerID;
         currentPlayerID++;
         return newID;
-
     }
 
     /**
      * This method closes all the connections to the server.
      * */
-    public void quitConnection() {
+    public void exit() {
         //DA MODIFICARE E FARE IN MODO CHE CON "QUIT" DI CHIUDA ANCHE LA CONNESSIONE RMI (IF/ELSE)
-        //forse sto metodo è inutile e poteva essere gestito come un normale messaggio (?)
         Scanner in = new Scanner(System.in);
         while (true) {
-            if (in.next().equalsIgnoreCase("QUIT")) {
+            if (in.next().equalsIgnoreCase("EXIT")) {
                 serverSideSocket.setIsActive(false);
+                for(VirtualPlayer p : playersConnectedList){
+                    p.send(new PlayerDisconnected());
+                }
                 System.exit(0);
                 break;
             }
@@ -305,8 +373,14 @@ public class Server {
      * @param ID
      * @return
      * */
-    public GameHandler getGameHandlerByID(int ID) {
-            return IDMapVirtualPlayer.get(ID).getGameHandler();
+    public synchronized GameHandler getGameHandlerByID(int ID) {
+        List<VirtualPlayer> list = List.copyOf(playersConnectedList);
+        for(VirtualPlayer p : list){
+            if(ID == p.getID()){
+                return p.getGameHandler();
+            }
+        }
+            return null;
     }
 
     /**
@@ -314,46 +388,79 @@ public class Server {
      * @param ID
      * @return
      */
-    public VirtualPlayer getVirtualPlayerByID(int ID) {
-        return IDMapVirtualPlayer.get(ID);
+    public synchronized VirtualPlayer getVirtualPlayerByID(int ID) {
+        List<VirtualPlayer> list = List.copyOf(playersConnectedList);
+        for(VirtualPlayer p : list){
+            if(ID == p.getID()){
+                return p;
+            }
+        }
+        return null;
     }
-
 
     /**
      * This method returns the corresponding ID of the player with that username.
      * @param username
      * @return
      */
-    public int getIDByUsername(String username){
-        return usernameMapID.get(username);
+    public synchronized Integer getIDByUsername(String username) {
+        List<VirtualPlayer> list = List.copyOf(playersConnectedList);
+        for(VirtualPlayer p : list){
+            if(username.equals(p.getUsername())){
+                return p.getID();
+            }
+        }
+        return null;
     }
-
 
     /**
      * This method returns the corresponding username of the player with that ID.
      * @param ID
      * @return
      */
-    public String getUsernameByID(int ID){
-        return IDMapUsername.get(ID);
+    public synchronized String getUsernameByID(int ID) {
+        List<VirtualPlayer> list = List.copyOf(playersConnectedList);
+        for(VirtualPlayer p : list){
+            if(ID == p.getID()){
+                return p.getUsername();
+            }
+        }
+        return null;
     }
 
+    /**
+     * Get a waiting player by ID
+     * @param ID
+     * @return
+     */
+    public synchronized VirtualPlayer getWaitingPlayerByID(int ID) {
+        List<VirtualPlayer> list = List.copyOf(playersWaitingList);
+        for(VirtualPlayer p : list){
+            if(ID == p.getID()){
+                return p;
+            }
+        }
+        return null;
+    }
 
 
     /**
      * This method removes a player from the current server.
      * @param ID
      */
-    public synchronized void removePlayer(int ID){
-        getGameHandlerByID(ID).removePlayer(ID);
-        VirtualPlayer player = IDMapVirtualPlayer.get(ID);
-        System.out.println("Removing player" + player.getUsername());
-        IDMapVirtualPlayer.remove(ID);
-        usernameMapID.remove(player.getUsername());
-        playersWaitingList.remove(virtualPlayerToCSConnection.get(player));
-        IDMapUsername.remove(player.getID());
-        virtualPlayerToCSConnection.remove(player);
-        LOGGER.log(Level.INFO,"Player with ID " + ID + " has been successfully removed from the game.");
+    public synchronized void removePlayer(int ID) {
+        System.out.println("Removing player " + getUsernameByID(ID));
+        try{
+            playersConnectedList.remove(getVirtualPlayerByID(ID));
+        }catch (NullPointerException e){
+            //
+        }
+
+        try{
+            playersWaitingList.remove(getWaitingPlayerByID(ID));
+        }catch (NullPointerException e){
+            //
+        }
     }
 
 

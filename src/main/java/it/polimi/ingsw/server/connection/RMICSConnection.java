@@ -1,8 +1,6 @@
 package it.polimi.ingsw.server.connection;
 
 import it.polimi.ingsw.client.rmi.IRMIClient;
-import it.polimi.ingsw.communications.serveranswers.Answer;
-import it.polimi.ingsw.communications.serveranswers.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.server.Server;
 
@@ -46,14 +44,19 @@ public class RMICSConnection extends CSConnection {
     @Override
     public void disconnect() {
         if(this.alive){
+            this.alive = false;
             try {
                 client.disconnectMe();
                 Server.LOGGER.log(Level.INFO, "Client successfully disconnected");
             }catch (RemoteException e){
                 Server.LOGGER.log(Level.WARNING, "Failed to disconnect the client", e);
             }
-            this.alive = false;
-            server.removePlayer(getID());
+
+            if(getID() != null){
+                server.removePlayer(getID());
+                return;
+            }
+            Server.LOGGER.log(Level.WARNING, "Client never registered in the server");
         }
     }
 
@@ -69,25 +72,4 @@ public class RMICSConnection extends CSConnection {
             disconnect();
         }
     }
-
-//    @Override
-//    public void setupPlayers(HowManyPlayersRequest request) {
-//        SerializedAnswer answer = new SerializedAnswer();
-//        answer.setAnswer(request);
-//        /*
-//        Send the answer to the client
-//         */
-//        try{
-//            sendAnswerToClient(answer);
-//        } catch (RemoteException e){
-//            Server.LOGGER.log(Level.SEVERE, "Failed to request the client the number of players in the game", e);
-//            disconnect();
-//        }
-//
-//        /*
-//        Wait for the client response. The server must have the numbers of players.
-//         */
-//
-//
-//    }
 }

@@ -37,7 +37,7 @@ public class ActionHandler {
     public ActionHandler(GUI gui, ModelView modelView) {
         this.gui = gui;
         this.modelView = modelView;
-        //view.addPropertyChangeListener(gui);
+        //pcsView.addPropertyChangeListener(gui);
     }
 
 
@@ -47,13 +47,13 @@ public class ActionHandler {
      */
     public void answerManager(Answer a){
 
-        if(a instanceof HowManyPlayersRequest){
-            pcsView.firePropertyChange("HowManyPlayersRequest", null, a.getAnswer());
+        if(a instanceof ConnectionOutcome){
+            pcsView.firePropertyChange("ConnectionOutcome", null, a);
             return;
         }
 
-        if(a instanceof SetupCompleted){
-            pcsView.firePropertyChange("SetupCompleted", null, a.getAnswer());
+        if(a instanceof HowManyPlayersRequest){
+            pcsView.firePropertyChange("HowManyPlayersRequest", null, a.getAnswer());
             return;
         }
 
@@ -78,8 +78,8 @@ public class ActionHandler {
             return;
         }
 
-        if(a instanceof PersonalizedAnswer){
-            pcsView.firePropertyChange("PersonalizedAnswer", null, a.getAnswer());
+        if(a instanceof CustomAnswer){
+            pcsView.firePropertyChange("CustomAnswer", null, a.getAnswer());
             return;
         }
 
@@ -98,7 +98,7 @@ public class ActionHandler {
             return;
         }
 
-        if(a instanceof PlayerDisconnected){
+        if(a instanceof PlayerDisconnected || a instanceof LobbyNotReady){
             if(gui != null) {
             } else if(cli != null) {
                 cli.endGameMessage();

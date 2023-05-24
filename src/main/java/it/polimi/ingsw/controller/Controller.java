@@ -129,7 +129,7 @@ public class Controller implements PropertyChangeListener {
         for (i = 0;  i < coordinates.length; i++) {
             //tiles.add(game.getBoard().getTile(coordinates[i][0], coordinates[i][1]));
             currentTiles.add(game.getBoard().getTile(coordinates[i][0], coordinates[i][1]));
-            gameHandler.sendToPlayer(new PersonalizedAnswer(false, "\nYou picked the following tile:" + game.getBoard().getTile(coordinates[i][0], coordinates[i][1]).name()), currentPlayer.getID());
+            gameHandler.sendToPlayer(new CustomAnswer(false, "\nYou picked the following tile:" + game.getBoard().getTile(coordinates[i][0], coordinates[i][1]).name()), currentPlayer.getID());
             game.getBoard().removeTile(coordinates[i][0], coordinates[i][1]);
         }
 
@@ -155,7 +155,7 @@ public class Controller implements PropertyChangeListener {
             switch (coordinates.length) {
                 case 2 -> {
                     if (!currentTiles.get(0).name().equals(coordinates[0])) {
-                        gameHandler.sendToPlayer(new PersonalizedAnswer(false, "Wrong tiles selected, please try again!"), currentPlayer.getID());
+                        gameHandler.sendToPlayer(new CustomAnswer(false, "Wrong tiles selected, please try again!"), currentPlayer.getID());
                         askToPlaceTiles();
                     }
                     else{
@@ -165,7 +165,7 @@ public class Controller implements PropertyChangeListener {
                 }
                 case 3 -> {
                     if (!(currentTiles.get(0).name().equals(coordinates[0]) || (currentTiles.get(0).name().equals(coordinates[0])) && ((currentTiles.get(1).name().equals(coordinates[1]) || (currentTiles.get(1).name().equals(coordinates[1])))))) {
-                        gameHandler.sendToPlayer(new PersonalizedAnswer(false, "Wrong tiles selected, please try again!"), currentPlayer.getID());
+                        gameHandler.sendToPlayer(new CustomAnswer(false, "Wrong tiles selected, please try again!"), currentPlayer.getID());
                         askToPlaceTiles();
                     }
                     else {
@@ -176,7 +176,7 @@ public class Controller implements PropertyChangeListener {
                 }
                 case 4 -> {
                     if (!(currentTiles.get(0).name().equals(coordinates[0]) || (currentTiles.get(0).name().equals(coordinates[0])) && ((currentTiles.get(1).name().equals(coordinates[1]) || (currentTiles.get(1).name().equals(coordinates[1])))) && ((currentTiles.get(2).name().equals(coordinates[2]) || (currentTiles.get(2).name().equals(coordinates[2])))))) {
-                        gameHandler.sendToPlayer(new PersonalizedAnswer(false, "Wrong tiles selected, please try again!"), currentPlayer.getID());
+                        gameHandler.sendToPlayer(new CustomAnswer(false, "Wrong tiles selected, please try again!"), currentPlayer.getID());
                         askToPlaceTiles();
                     }
                     else {
@@ -199,7 +199,7 @@ public class Controller implements PropertyChangeListener {
             System.out.println("Invalid parameters!");
         }
         catch (NotEmptyColumnException e){
-            gameHandler.sendToPlayer(new PersonalizedAnswer(false, "Not enough space in this column! Please select another one!"), currentPlayer.getID());
+            gameHandler.sendToPlayer(new CustomAnswer(false, "Not enough space in this column! Please select another one!"), currentPlayer.getID());
             askToPlaceTiles();
         }
     }

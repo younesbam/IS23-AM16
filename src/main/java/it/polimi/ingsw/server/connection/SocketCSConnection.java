@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.connection;
 
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
+import it.polimi.ingsw.communications.clientmessages.messages.UsernameSetup;
 import it.polimi.ingsw.communications.serveranswers.*;
 import it.polimi.ingsw.server.GameHandler;
 import it.polimi.ingsw.server.Server;
@@ -54,7 +55,11 @@ public class SocketCSConnection extends CSConnection implements Runnable{
      */
     public synchronized void readStreamFromClient() throws IOException, ClassNotFoundException {
         SerializedMessage input = (SerializedMessage) inputStream.readObject();
-        onClientMessage(input);
+        if(input.message instanceof UsernameSetup){
+            server.tryToConnect(((UsernameSetup) input.message).getUsername(), this);
+        } else {
+            server.onClientMessage(input);
+        }
     }
 
 
@@ -88,38 +93,6 @@ public class SocketCSConnection extends CSConnection implements Runnable{
         }
     }
 
-//    /**
-//     * Override of superclass method, used to setup the number of players in the initial phase of the game.
-//     * @param request
-//     */
-//    public void setupPlayers(HowManyPlayersRequest request) {
-//
-//        SerializedAnswer answer = new SerializedAnswer();
-//        answer.setAnswer(request);
-//        sendAnswerToClient(answer);
-//
-//        while(true) {
-//            try {
-//                SerializedMessage input = (SerializedMessage) inputStream.readObject();
-//                Message messageFromClient = input.message;
-//                if(messageFromClient instanceof HowManyPlayersResponse) {
-//                    try {
-//                        int numOfPlayers = ((HowManyPlayersResponse) messageFromClient).getNumChoice();
-//                        server.setNumOfPlayers(numOfPlayers);
-//                        server.getGameHandlerByID(ID).setNumOfPlayers(numOfPlayers);
-//                        server.getVirtualPlayerByID(ID).send(new PersonalizedAnswer(false, "The number of players for this match has been chosen: it's a " + numOfPlayers + " players match!"));
-//                        break;
-//                    } catch(OutOfBoundException e) {
-//                        server.getVirtualPlayerByID(ID).send(new PersonalizedAnswer(true, "A number of players between 2 and 4 is required!"));
-//                    }
-//                }
-//            } catch (IOException | ClassNotFoundException e) {
-//                disconnect();
-//                System.err.println("Error occurred while setting-up the game mode: " + e.getMessage());
-//            }
-//        }
-//    }
-
 
     /**
      * {@inheritDoc}
@@ -139,12 +112,13 @@ public class SocketCSConnection extends CSConnection implements Runnable{
                 readStreamFromClient();
             }
         } catch(IOException e) {
-            GameHandler game = server.getGameHandlerByID(ID);
-            String username = server.getUsernameByID(ID);
-            server.removePlayer(ID);
-            if (game.isAlreadyStarted()) {
-                game.endMatch(username);
-            }
+            //TODO: A cosa servono questi metodi qui? Il server deve fare queste cose non le singole connessioni
+//            GameHandler game = server.getGameHandlerByID(ID);
+//            String username = server.getUsernameByID(ID);
+//            server.removePlayerFromWaitingList(ID);
+//            if (game.isAlreadyStarted()) {
+//                game.endMatch(username);
+//            }
         } catch(ClassNotFoundException e) {
             e.printStackTrace();
         }

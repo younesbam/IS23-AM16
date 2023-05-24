@@ -25,87 +25,18 @@ public abstract class CSConnection {
      */
     protected boolean alive = false;  // False initialization to ensure successful connection in the subclasses.
 
+    /**
+     * Server reference.
+     */
     protected Server server;
+
+    /**
+     * Unique ID that represent the connection client-server.
+     * <p></p>
+     * Note: The associated client must have the same ID.
+     */
     private Integer ID;
 
-    /**
-     * ID getter.
-     * @return
-     */
-    public Integer getID() {
-        return this.ID;
-    }
-
-
-    /**
-     * Dispatch the message to the right action handler, based on the type of the serialized message.
-     * @param serializedMessage
-     */
-    public void onClientMessage(SerializedMessage serializedMessage) {
-        if (serializedMessage.message != null) {
-            actionHandler(serializedMessage.message);
-        } else if (serializedMessage.gameAction != null) {
-            actionHandler(serializedMessage.gameAction);
-        }
-    }
-
-
-    /**
-     * Handles the possible messages that can arrive from client's side.
-     * @param message message from client
-     */
-    private void actionHandler(Message message){
-        if (message instanceof UsernameSetup) {
-            checkConnection((UsernameSetup) message);
-            return;
-        }
-
-        if(message instanceof HowManyPlayersResponse){
-            try{
-                server.setNumOfPlayers(this, ((HowManyPlayersResponse) message).getNumChoice());
-            } catch (OutOfBoundException e) {
-                Server.LOGGER.log(Level.WARNING, "Wrong number of players received from client");
-                SerializedAnswer answer = new SerializedAnswer();
-                answer.setAnswer(new HowManyPlayersRequest("Wrong number of players. Please choose the number of players you want to play with [2, 3, 4]:"));
-                sendAnswerToClient(answer);
-            }
-
-        }
-
-    }
-
-
-    /**
-     * Handles the possible game action that can arrive from client's side.
-     * @param action game action from client
-     */
-    private void actionHandler(GameAction action){
-        if(action instanceof TilesPicked){
-            server.getGameHandlerByID(ID).dispatchActions(action);
-        }
-        else if(action instanceof TilesPlaced){
-            server.getGameHandlerByID(ID).dispatchActions(action);
-        }
-    }
-
-
-    /**
-     * This method is used to check if the player trying to connect to the server
-     * @param usernameChoice
-     */
-    private void checkConnection(UsernameSetup usernameChoice){
-        try {
-            ID = server.newClientRegistration(usernameChoice.getUsername(), this);
-            if (ID == null) {
-                disconnect();
-                return;
-            }
-            server.lobby(this);
-        } catch (IOException | InterruptedException e) {
-            Server.LOGGER.log(Level.SEVERE, "Failed to register the new client", e);
-            Thread.currentThread().interrupt();
-        }
-    }
 
     /**
      * Check if the connection is alive.
@@ -113,6 +44,22 @@ public abstract class CSConnection {
      */
     public boolean isAlive() {
         return alive;
+    }
+
+    /**
+     * ID setter
+     * @param ID
+     */
+    public void setID(Integer ID){
+        this.ID = ID;
+    }
+
+    /**
+     * ID getter.
+     * @return
+     */
+    public Integer getID() {
+        return this.ID;
     }
 
 
@@ -136,10 +83,4 @@ public abstract class CSConnection {
      */
     public abstract void sendAnswerToClient(SerializedAnswer answer);
 
-
-//    /**
-//     * This method is used to set up the players.
-//     * @param request
-//     */
-//    public abstract void setupPlayers(HowManyPlayersRequest request);
 }

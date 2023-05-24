@@ -20,7 +20,7 @@ public abstract class UI implements PropertyChangeListener {
     /**
      * Generic client, RMI or socket.
      */
-    Client client;
+    protected Client client;
 
     /**
      * Client's action handler.
@@ -42,10 +42,6 @@ public abstract class UI implements PropertyChangeListener {
      */
     private boolean activeGame;
 
-    /**
-     * Setup mode. Represent the initial game phase. This allows the CLI to respond to the server without sending him commands.
-     */
-    private boolean setupMode;
     protected int tmp = 0;
 
 
@@ -60,7 +56,7 @@ public abstract class UI implements PropertyChangeListener {
      */
     public void connectToServer(ConnectionType connectionType, String address, int port, String username) throws RemoteException, NotBoundException {
         /*
-        Connect to server based on tpye of connection.
+        Connect to server based on type of connection.
          */
         if (connectionType == ConnectionType.SOCKET) {
             client = new SocketClientHandler(address, port, username, modelView, actionHandler);
@@ -106,11 +102,4 @@ public abstract class UI implements PropertyChangeListener {
         this.activeGame = activeGame;
     }
 
-    public synchronized boolean isSetupMode() {
-        return setupMode;
-    }
-
-    public synchronized void setSetupMode(boolean setupMode) {
-        this.setupMode = setupMode;
-    }
 }
