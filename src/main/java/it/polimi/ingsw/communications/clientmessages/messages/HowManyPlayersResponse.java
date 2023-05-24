@@ -1,5 +1,8 @@
 package it.polimi.ingsw.communications.clientmessages.messages;
 
+/**
+ * Number of maximum players in the game. Used by the first connected client.
+ */
 public class HowManyPlayersResponse implements Message {
 
     public final int numChoice;

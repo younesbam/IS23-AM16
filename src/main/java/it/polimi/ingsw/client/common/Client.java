@@ -33,6 +33,11 @@ public abstract class Client extends UnicastRemoteObject {
     protected final String username;
 
     /**
+     * Unique ID of the client. It is assigned by the server when the connection is done.
+     */
+    protected Integer ID;
+
+    /**
      * Ping timer. Used to start a timer
      */
     protected Timer pingTimer;
@@ -59,6 +64,7 @@ public abstract class Client extends UnicastRemoteObject {
         this.address = address;
         this.port = port;
         this.username = username;
+        this.ID = null;
         this.modelView = modelView;
         this.actionHandler = actionHandler;
     }
@@ -73,6 +79,14 @@ public abstract class Client extends UnicastRemoteObject {
 
     public String getUsername() {
         return username;
+    }
+
+    public Integer getID() {
+        return ID;
+    }
+
+    public void setID(Integer ID) {
+        this.ID = ID;
     }
 
     /**

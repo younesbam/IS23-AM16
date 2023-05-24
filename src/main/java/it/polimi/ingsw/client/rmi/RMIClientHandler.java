@@ -75,7 +75,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
      */
     @Override
     public void sendToServer(Message message) {
-        SerializedMessage serializedMessage = new SerializedMessage(message);
+        SerializedMessage serializedMessage = new SerializedMessage(getID() ,message);
         try{
             server.sendMessageToServer(serializedMessage);
         } catch (RemoteException e){
@@ -89,7 +89,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
      */
     @Override
     public void sendToServer(GameAction gameAction) {
-        SerializedMessage serializedMessage = new SerializedMessage(gameAction);
+        SerializedMessage serializedMessage = new SerializedMessage(getID(), gameAction);
         try{
             server.sendMessageToServer(serializedMessage);
         } catch (RemoteException e){
@@ -103,7 +103,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
      */
     @Override
     public void ping() throws RemoteException {
-        Client.LOGGER.log(Level.INFO, "Richiesta di ping dal server");
+        //Client.LOGGER.log(Level.INFO, "Richiesta di ping dal server");
         super.pingTimer.cancel();
         super.pingTimer = new Timer();
         super.pingTimer.schedule(new PingClientTask(), Const.CLIENT_PING_DELAY);

@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.*;
 
 import static it.polimi.ingsw.Const.*;
-import static it.polimi.ingsw.Const.RESET;
+import static it.polimi.ingsw.Const.RESET_COLOR;
 import static java.util.Collections.shuffle;
 
 /**
@@ -176,14 +176,14 @@ public abstract class Board implements Serializable {
             System.out.print("[  ");
             for (int j = 0; j < MAXBOARDDIM; j++) {
                 switch (grid[i][j].getTile().name()) {
-                    case "BLANK" -> System.out.print(BLACKCOLOR + " " + RESET + "  ");
-                    case "WHITE" -> System.out.print(WHITECOLOR + " " + RESET + "  ");
-                    case "LIGHTBLUE" -> System.out.print(CYANCOLOR + " " + RESET + "  ");
-                    case "BLUE" -> System.out.print(BLUECOLOR + " " + RESET + "  ");
-                    case "YELLOW" -> System.out.print(YELLOWCOLOR + " " + RESET + "  ");
-                    case "GREEN" -> System.out.print(GREENCOLOR + " " + RESET + "  ");
-                    case "PINK" -> System.out.print(PURPLECOLOR + " " + RESET + "  ");
-                    case "RED" -> System.out.print(REDCOLOR + " " + RESET + "  ");
+                    case "BLANK" -> System.out.print(BLACK_COLOR + " " + RESET_COLOR + "  ");
+                    case "WHITE" -> System.out.print(WHITE_COLOR + " " + RESET_COLOR + "  ");
+                    case "LIGHTBLUE" -> System.out.print(CYAN_COLOR + " " + RESET_COLOR + "  ");
+                    case "BLUE" -> System.out.print(BLUE_COLOR + " " + RESET_COLOR + "  ");
+                    case "YELLOW" -> System.out.print(YELLOW_COLOR + " " + RESET_COLOR + "  ");
+                    case "GREEN" -> System.out.print(GREEN_COLOR + " " + RESET_COLOR + "  ");
+                    case "PINK" -> System.out.print(PURPLE_COLOR + " " + RESET_COLOR + "  ");
+                    case "RED" -> System.out.print(RED_COLOR + " " + RESET_COLOR + "  ");
                     case "UNAVAILABLE" -> System.out.print("x  ");
                 }
             }

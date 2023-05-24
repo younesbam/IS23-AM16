@@ -11,16 +11,28 @@ import java.io.Serializable;
  */
 
 public class SerializedMessage implements Serializable {
-
+    /**
+     * Message to the server.
+     */
     public final Message message;
+
+    /**
+     * Game action performed by the user.
+     */
     public final GameAction gameAction;
+
+    /**
+     * Unique ID that represent the client.
+     */
+    public final Integer playerID;
 
 
     /**
-     * Class constructor with a communication.
+     * Class constructor with a message to the server.
      * @param message
      */
-    public SerializedMessage(Message message){
+    public SerializedMessage(Integer playerID, Message message){
+        this.playerID = playerID;
         this.gameAction = null;
         this.message = message;
     }
@@ -30,7 +42,8 @@ public class SerializedMessage implements Serializable {
      * Class constructor with an action performed by the user.
      * @param a
      */
-    public SerializedMessage(GameAction a){
+    public SerializedMessage(Integer playerID, GameAction a){
+        this.playerID = playerID;
         this.gameAction = a;
         this.message = null;
     }

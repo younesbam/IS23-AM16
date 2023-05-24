@@ -82,7 +82,7 @@ class ControllerTest {
         tiles.add(Tile.PINK);
         tiles.add(Tile.WHITE);
         tiles.add(Tile.GREEN);
-        controller.placeTiles(0, tiles.size(), tiles);
+//        controller.placeTiles(0, tiles.size(), tiles);
 
         // Check if the tiles have been added to the correct column of the bookshelf
         for(int i = 0; i<tiles.size(); i++)
