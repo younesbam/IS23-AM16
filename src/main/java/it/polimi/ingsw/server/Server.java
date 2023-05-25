@@ -332,7 +332,7 @@ public class Server {
          */
         this.numOfPlayers = numOfPlayers;
         player.getGameHandler().setNumOfPlayers(numOfPlayers);
-        player.send(new CustomAnswer(false, "The number of players for this match has been chosen: it's a " + numOfPlayers + " players match!"));
+        player.send(new PlayerNumberChosen(numOfPlayers));
         setupMode = false;  // Stop the setup mode. Now the server can accept new players.
         System.out.println(GREEN_COLOR + "Setup mode ended. Clients are now welcome!" + RESET_COLOR);
     }

@@ -9,6 +9,8 @@ import java.beans.PropertyChangeListener;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.Const.MAXBOARDDIM;
+
 public class Controller implements PropertyChangeListener {
     private Game game;
     private final GameHandler gameHandler;
@@ -82,13 +84,13 @@ public class Controller implements PropertyChangeListener {
     }
 
 
-    /**
-     * Method that asks the current player which tiles he wants to pick from the board.
-     */
-    public void askTiles(){
-        gameHandler.sendToPlayer(new GameReplica(getGame()), getCurrentPlayer().getID());
-        gameHandler.sendToPlayer(new RequestTiles(), getCurrentPlayer().getID());
-    }
+//    /**
+//     * Method that asks the current player which tiles he wants to pick from the board.
+//     */
+//    public void askTiles(){
+//        gameHandler.sendToPlayer(new GameReplica(getGame()), getCurrentPlayer().getID());
+//        gameHandler.sendToPlayer(new RequestTiles(), getCurrentPlayer().getID());
+//    }
 
 
     /**
@@ -96,25 +98,95 @@ public class Controller implements PropertyChangeListener {
      *
      * @param coordinates
      */
-    public void canPickTiles(int[][] coordinates){
+    public void canPickTiles(int[][] coordinates) {
 
-        //check if selected tiles can be picked up from the board
         int i;
         boolean canPick = true;
 
-        for (i = 0; i < coordinates.length; i++) {
-            if (!game.getBoard().isPickable(coordinates[i][0], coordinates[i][1])) {
-                canPick = false;
+        if(coordinates.length > currentPlayer.getBookShelf().getFreeSpaces()){
+            canPick = false;
+            gameHandler.sendToPlayer(new CustomAnswer(false, "You don't have enough spaces in your bookshelf to select these many tiles!"), currentPlayer.getID());
+        }
+
+
+        switch (coordinates.length) {
+            case 1 -> {
+                int row1 = coordinates[0][0];
+                int col1 = coordinates[0][1];
+
+                if (row1 > MAXBOARDDIM || col1 > MAXBOARDDIM || row1 < 0 || col1 < 0) {
+                    canPick = false;
+                    gameHandler.sendToPlayer(new CustomAnswer(false, "You selected an invalid row/col, please try again"), currentPlayer.getID());
+                }
+            }
+            case 2 -> {
+                int row1 = coordinates[0][0];
+                int col1 = coordinates[0][1];
+                int row2 = coordinates[1][0];
+                int col2 = coordinates[1][1];
+
+                int diffRows = Math.abs(row1 - row2);
+                int diffCol = Math.abs(col1 - col2);
+
+                if (row1 > MAXBOARDDIM || col1 > MAXBOARDDIM || row1 < 0 || col1 < 0 ||
+                        row2 > MAXBOARDDIM || col2 > MAXBOARDDIM || row2 < 0 || col2 < 0) {
+                    canPick = false;
+                    gameHandler.sendToPlayer(new CustomAnswer(false, "You selected an invalid row/col, please try again"), currentPlayer.getID());
+
+                } else if (col1 != col2 && row1 != row2) {
+                    canPick = false;
+                    gameHandler.sendToPlayer(new CustomAnswer(false, "You have to select tiles that lie on the board in a straight line!"), currentPlayer.getID());
+
+                } else if (!((diffRows == 1 && diffCol == 0) || (diffRows == 0 && diffCol == 1))) {
+                    canPick = false;
+                    gameHandler.sendToPlayer(new CustomAnswer(false, "The tiles have to be adjacent!"), currentPlayer.getID());
+                }
+            }
+            case 3 -> {
+                int row1 = coordinates[0][0];
+                int col1 = coordinates[0][1];
+                int row2 = coordinates[1][0];
+                int col2 = coordinates[1][1];
+                int row3 = coordinates[2][0];
+                int col3 = coordinates[2][1];
+
+                int diffRows12 = Math.abs(row1 - row2);
+                int diffCol12 = Math.abs(col1 - col2);
+                int diffRows13 = Math.abs(row1 - row3);
+                int diffCol13 = Math.abs(col1 - col3);
+                int diffRows23 = Math.abs(row2 - row3);
+                int diffCol23 = Math.abs(col2 - col3);
+
+                if (row1 > MAXBOARDDIM || col1 > MAXBOARDDIM || row1 < 0 || col1 < 0 ||
+                        row2 > MAXBOARDDIM || col2 > MAXBOARDDIM || row2 < 0 || col2 < 0 ||
+                        row3 > MAXBOARDDIM || col3 > MAXBOARDDIM || row3 < 0 || col3 < 0) {
+                    canPick = false;
+                    gameHandler.sendToPlayer(new CustomAnswer(false, "You selected an invalid row/col, please try again"), currentPlayer.getID());
+
+                } else if (col1 != col2 && col2 != col3 && col1 != col3 && row1 != row2 && row2 != row3 && row1 != row3) {
+                    canPick = false;
+                    gameHandler.sendToPlayer(new CustomAnswer(false, "You have to select tiles that lie on the board in a straight line!"), currentPlayer.getID());
+
+                } else if (!((((diffRows12 == 1 && diffCol12 == 0) || (diffRows12 == 0 && diffCol12 == 1)) && (((diffRows13 == 1 && diffCol13 == 0) || (diffRows13 == 0 && diffCol13 == 1)) || ((diffRows23 == 1 && diffCol23 == 0) || (diffRows23 == 0 && diffCol23 == 1))))
+                        || (((diffRows13 == 1 && diffCol13 == 0) || (diffRows13 == 0 && diffCol13 == 1)) && ((diffRows12 == 1 && diffCol12 == 0) || (diffRows12 == 0 && diffCol12 == 1)) || ((diffRows23 == 1 && diffCol23 == 0) || (diffRows23 == 0 && diffCol23 == 1))))) {
+                    canPick = false;
+                    gameHandler.sendToPlayer(new CustomAnswer(false, "The tiles have to be adjacent!"), currentPlayer.getID());
+                }
             }
         }
-
-        if (canPick) {
-            removeTilesFromBoard(coordinates);
-        } else{
-            System.out.println("You can't pick the tiles here! Please select other tiles!");
-            askTiles();
+        if(canPick) {
+            for (i = 0; i < coordinates.length; i++) {
+                if (!game.getBoard().isPickable(coordinates[i][0], coordinates[i][1])) {
+                    canPick = false;
+                }
+            }
         }
-
+        if(canPick){
+            removeTilesFromBoard(coordinates);
+        }
+        else {
+            gameHandler.sendToPlayer(new CustomAnswer(false, "You can't pick the tiles here! Please select other tiles!"), currentPlayer.getID());
+        }
     }
 
 
@@ -141,6 +213,7 @@ public class Controller implements PropertyChangeListener {
         gameHandler.sendToPlayer(new RequestWhereToPlaceTiles(), getCurrentPlayer().getID());
     }
 
+
     /**
      * Method used to place the selected tiles in the current player's Bookshelf. It also checks if the selected column has enough free spaces.
      *
@@ -156,7 +229,6 @@ public class Controller implements PropertyChangeListener {
                 case 2 -> {
                     if (!currentTiles.get(0).name().equals(coordinates[0])) {
                         gameHandler.sendToPlayer(new CustomAnswer(false, "Wrong tiles selected, please try again!"), currentPlayer.getID());
-                        askToPlaceTiles();
                     }
                     else{
                         rightOrderTiles.add(Tile.valueOf(coordinates[0]));
@@ -166,7 +238,6 @@ public class Controller implements PropertyChangeListener {
                 case 3 -> {
                     if (!(currentTiles.get(0).name().equals(coordinates[0]) || (currentTiles.get(0).name().equals(coordinates[0])) && ((currentTiles.get(1).name().equals(coordinates[1]) || (currentTiles.get(1).name().equals(coordinates[1])))))) {
                         gameHandler.sendToPlayer(new CustomAnswer(false, "Wrong tiles selected, please try again!"), currentPlayer.getID());
-                        askToPlaceTiles();
                     }
                     else {
                         rightOrderTiles.add(Tile.valueOf(coordinates[0]));
@@ -177,7 +248,6 @@ public class Controller implements PropertyChangeListener {
                 case 4 -> {
                     if (!(currentTiles.get(0).name().equals(coordinates[0]) || (currentTiles.get(0).name().equals(coordinates[0])) && ((currentTiles.get(1).name().equals(coordinates[1]) || (currentTiles.get(1).name().equals(coordinates[1])))) && ((currentTiles.get(2).name().equals(coordinates[2]) || (currentTiles.get(2).name().equals(coordinates[2])))))) {
                         gameHandler.sendToPlayer(new CustomAnswer(false, "Wrong tiles selected, please try again!"), currentPlayer.getID());
-                        askToPlaceTiles();
                     }
                     else {
                         rightOrderTiles.add(Tile.valueOf(coordinates[0]));
@@ -194,13 +264,20 @@ public class Controller implements PropertyChangeListener {
             gameHandler.sendToEveryone(new GameReplica(game));
             gameHandler.sendToPlayer(new BookShelfFilledWithTiles(), currentPlayer.getID());
 
+            checkPersonalGoal(currentPlayer);
+            checkCommonGoal();
+
+            if(!checkEndGame()){
+                nextPlayer();
+            }
+            gameHandler.sendToEveryone(new GameReplica(game));
+            askWhatToDo();
         }
         catch (InvalidParameterException e){
-            System.out.println("Invalid parameters!");
+            gameHandler.sendToPlayer(new CustomAnswer(false, "Invalid parameters!"), currentPlayer.getID());
         }
         catch (NotEmptyColumnException e){
             gameHandler.sendToPlayer(new CustomAnswer(false, "Not enough space in this column! Please select another one!"), currentPlayer.getID());
-            askToPlaceTiles();
         }
     }
 
@@ -235,7 +312,14 @@ public class Controller implements PropertyChangeListener {
         for(i = 0; i < numOfPlayers; i++){
             updatePoints(game.getPlayers().get(i).getPersonalGoalCard().checkScheme(player));
         }
+    }
 
+
+    public void nextPlayer(){
+        gameHandler.sendToPlayer(new EndOfYourTurn(), currentPlayer.getID());
+        game.nextPlayer();
+        this.currentPlayer = game.getCurrentPlayer();
+        gameHandler.sendToPlayer(new ItsYourTurn(), currentPlayer.getID());
     }
 
 
@@ -245,9 +329,10 @@ public class Controller implements PropertyChangeListener {
      */
     public boolean checkEndGame() {
         if (game.getCurrentPlayer().getBookShelf().checkEndGame()) {
-            this.endGame();
+            return true;
         }
-        return true;
+        else
+            return false;
     }
 
 

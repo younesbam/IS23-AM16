@@ -13,7 +13,7 @@ public class RequestWhereToPlaceTiles implements Answer{
      * Class constructor.
      */
     public RequestWhereToPlaceTiles(){
-        this.request = "Please now place your tiles in your Bookshelf!";
+        this.request = "Please now place the tiles in your Bookshelf!";
     }
 
     /**

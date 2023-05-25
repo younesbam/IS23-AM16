@@ -19,6 +19,7 @@ public class Game implements Serializable {
     private final ArrayList<Player> players = new ArrayList<>();
     private final ArrayList<Player> activePlayers = new ArrayList<>();
     private Player currentPlayer;
+    private int currentPlayerID;
     private int numOfPlayers;
     private final ArrayList<CommonGoalCard> commonGoalCards = new ArrayList<>();
     private final Bag bag;
@@ -111,6 +112,18 @@ public class Game implements Serializable {
     }
 
 
+    /**
+     * Method used to switch to the next player.
+     */
+    public void nextPlayer() {
+        currentPlayerID = (currentPlayer.getID() == activePlayers.size() - 1) ? 0 : currentPlayerID + 1;
+        setCurrentPlayer(activePlayers.get(currentPlayerID));
+    }
+
+
+    /**
+     * Board creation method.
+     */
     public void createBoard(){
         this.creationFactory = new CreationFactory();
         this.board = creationFactory.createBoard(numOfPlayers);

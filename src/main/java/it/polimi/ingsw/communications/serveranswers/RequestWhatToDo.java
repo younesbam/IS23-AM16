@@ -5,7 +5,7 @@ public class RequestWhatToDo implements Answer{
     public String request;
 
     public RequestWhatToDo(){
-        this.request = "What do you want to do?\n1. Pick tiles from the board.\n2. See your personal goal card.\n3. See the common goal card.\n\nPlease enter the number corresponding to the action that you want to perform.\n>\n";
+        this.request = "It's your turn now! Follow the blue friendly message instructions to know what you can do. Remember that it's the phase of the turn in which you should pick your tiles!";
     }
 
 

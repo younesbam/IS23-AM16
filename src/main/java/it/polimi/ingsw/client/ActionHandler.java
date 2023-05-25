@@ -47,6 +47,12 @@ public class ActionHandler {
      */
     public void answerManager(Answer a){
 
+
+        if(a instanceof PlayerNumberChosen){
+            pcsView.firePropertyChange("PlayerNumberChosen", null, a.getAnswer());
+            return;
+        }
+
         if(a instanceof ConnectionOutcome){
             pcsView.firePropertyChange("ConnectionOutcome", null, a);
             return;
@@ -68,8 +74,13 @@ public class ActionHandler {
             return;
         }
 
-        if(a instanceof RequestTiles){
-            pcsView.firePropertyChange("RequestTiles", null, ((RequestTiles) a).getAnswer());
+        if(a instanceof ItsYourTurn){
+            pcsView.firePropertyChange("ItsYourTurn", null, a.getAnswer());
+            return;
+        }
+
+        if(a instanceof EndOfYourTurn){
+            pcsView.firePropertyChange("EndOfYourTurn", null, a.getAnswer());
             return;
         }
 

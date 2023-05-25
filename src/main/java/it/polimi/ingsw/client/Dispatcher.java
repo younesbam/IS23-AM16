@@ -51,9 +51,6 @@ public class Dispatcher implements PropertyChangeListener {
         String[] splitInput = value.split(" ");
         String cmd = splitInput[0];
 
-        /*
-        ACTION
-         */
         if("action".equals(propertyName)){
             switch (cmd.toUpperCase()){
                 case "PLAYERS" -> messageToServer = new SerializedMessage(client.getID(), inputValidator.players(splitInput));
