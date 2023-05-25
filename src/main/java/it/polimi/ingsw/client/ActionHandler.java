@@ -37,7 +37,7 @@ public class ActionHandler {
     public ActionHandler(GUI gui, ModelView modelView) {
         this.gui = gui;
         this.modelView = modelView;
-        //pcsView.addPropertyChangeListener(gui);
+        pcsView.addPropertyChangeListener(gui.getGuiManager());
     }
 
 
