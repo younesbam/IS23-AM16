@@ -5,7 +5,9 @@ import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
 import it.polimi.ingsw.communications.clientmessages.actions.TilesPlaced;
+import it.polimi.ingsw.communications.clientmessages.messages.ExitFromGame;
 import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
+import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.serveranswers.RequestWhereToPlaceTiles;
 
 import static it.polimi.ingsw.Const.*;
@@ -216,6 +218,8 @@ public class InputValidator {
      * Quit game command.
      */
     public void exitGame(){
-        cli.disconnectFromServer();
+        System.err.println("Disconnected from the server.");
+        System.exit(0);
+        //cli.disconnectFromServer();
     }
 }

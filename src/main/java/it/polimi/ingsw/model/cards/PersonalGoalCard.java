@@ -17,7 +17,7 @@ public class PersonalGoalCard extends Card {
      */
     private Cell[][] grid;
     /**
-     * Hashtable of Integer type used to transform the number of matches into points
+     * Hashtable of Integer type used to transform the number of matches into points.
      */
     private Hashtable<Integer, Integer> points;
 
@@ -40,6 +40,7 @@ public class PersonalGoalCard extends Card {
     public Tile getTile(int x, int y){
         return grid[x][y].getTile();
     }
+
 
     /**
      * Check the scheme to observe in order to get points.

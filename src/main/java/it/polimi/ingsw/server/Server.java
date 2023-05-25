@@ -6,6 +6,7 @@ import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
 import it.polimi.ingsw.communications.clientmessages.actions.TilesPlaced;
+import it.polimi.ingsw.communications.clientmessages.messages.ExitFromGame;
 import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
 import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.serveranswers.*;
@@ -186,7 +187,11 @@ public class Server {
                 answer.setAnswer(new HowManyPlayersRequest("Wrong number of players. Please choose the number of players you want to play with.\n Type MAN if you dont' know the syntax!"));
                 currentPlayer.send(answer.getAnswer());
             }
-
+        }
+        else if(message instanceof ExitFromGame){
+            getGameHandlerByID(currentPlayer.getID()).sendToEveryoneExcept(new CustomAnswer(false, "Player " + getUsernameByID(currentPlayer.getID()) + " has disconnected from the game!"), currentPlayer.getID());
+            getGameHandlerByID(currentPlayer.getID()).endMatch(getUsernameByID(currentPlayer.getID()));
+            getVirtualPlayerByID(currentPlayer.getID()).getConnection().disconnect();
         }
 
     }
@@ -348,6 +353,7 @@ public class Server {
         return newID;
     }
 
+
     /**
      * This method closes all the connections to the server.
      * */
@@ -450,6 +456,7 @@ public class Server {
      */
     public synchronized void removePlayer(int ID) {
         System.out.println("Removing player " + getUsernameByID(ID));
+        getGameHandlerByID(ID).removePlayer(ID);
         try{
             playersConnectedList.remove(getVirtualPlayerByID(ID));
         }catch (NullPointerException e){

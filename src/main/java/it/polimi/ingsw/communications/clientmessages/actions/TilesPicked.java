@@ -28,8 +28,8 @@ public class TilesPicked implements GameAction{
         coordinates[0][1] = col1;
         coordinates[1][0] = row2;
         coordinates[1][1] = col2;
-        coordinates[2][0] = row2;
-        coordinates[2][1] = col2;
+        coordinates[2][0] = row3;
+        coordinates[2][1] = col3;
     }
 
 

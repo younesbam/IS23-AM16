@@ -35,7 +35,7 @@ public abstract class CSConnection {
      * <p></p>
      * Note: The associated client must have the same ID.
      */
-    private Integer ID;
+    protected Integer ID;
 
 
     /**

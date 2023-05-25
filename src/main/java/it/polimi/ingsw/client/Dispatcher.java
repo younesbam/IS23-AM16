@@ -2,6 +2,8 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
+import it.polimi.ingsw.communications.clientmessages.messages.ExitFromGame;
+import it.polimi.ingsw.communications.clientmessages.messages.Message;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -58,7 +60,7 @@ public class Dispatcher implements PropertyChangeListener {
                 case "PLACETILES" -> messageToServer = new SerializedMessage(client.getID(), inputValidator.checkTilesPlaced(splitInput));
 
                 case "MAN" -> inputValidator.manual();
-                case "EXIT" -> inputValidator.exitGame();
+                case "EXIT" -> exitGame();
                 default -> System.out.println("Incomprehensible input. Please try again");
             }
 
@@ -72,6 +74,18 @@ public class Dispatcher implements PropertyChangeListener {
             }
         }
         return false;
+    }
+
+
+    /**
+     * Quit game command.
+     */
+    public void exitGame(){
+        Message message = new ExitFromGame();
+        client.sendToServer(message);
+        System.err.println("Disconnected from the server.");
+        //System.exit(0);
+        //cli.disconnectFromServer();
     }
 
 

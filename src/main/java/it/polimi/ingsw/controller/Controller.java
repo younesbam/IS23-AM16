@@ -236,7 +236,7 @@ public class Controller implements PropertyChangeListener {
                     }
                 }
                 case 3 -> {
-                    if (!(currentTiles.get(0).name().equals(coordinates[0]) || (currentTiles.get(0).name().equals(coordinates[0])) && ((currentTiles.get(1).name().equals(coordinates[1]) || (currentTiles.get(1).name().equals(coordinates[1])))))) {
+                    if (!(((currentTiles.get(0).name().equals(coordinates[0]) || currentTiles.get(1).name().equals(coordinates[0]))) && ((currentTiles.get(0).name().equals(coordinates[1]) || currentTiles.get(1).name().equals(coordinates[1]))))) {
                         gameHandler.sendToPlayer(new CustomAnswer(false, "Wrong tiles selected, please try again!"), currentPlayer.getID());
                     }
                     else {
@@ -246,7 +246,7 @@ public class Controller implements PropertyChangeListener {
                     }
                 }
                 case 4 -> {
-                    if (!(currentTiles.get(0).name().equals(coordinates[0]) || (currentTiles.get(0).name().equals(coordinates[0])) && ((currentTiles.get(1).name().equals(coordinates[1]) || (currentTiles.get(1).name().equals(coordinates[1])))) && ((currentTiles.get(2).name().equals(coordinates[2]) || (currentTiles.get(2).name().equals(coordinates[2])))))) {
+                    if (!(((currentTiles.get(0).name().equals(coordinates[0]) || currentTiles.get(0).name().equals(coordinates[0]))) && ((currentTiles.get(1).name().equals(coordinates[1]) || currentTiles.get(1).name().equals(coordinates[1]))) && ((currentTiles.get(2).name().equals(coordinates[2]) || currentTiles.get(2).name().equals(coordinates[2]))))) {
                         gameHandler.sendToPlayer(new CustomAnswer(false, "Wrong tiles selected, please try again!"), currentPlayer.getID());
                     }
                     else {
@@ -320,6 +320,7 @@ public class Controller implements PropertyChangeListener {
         game.nextPlayer();
         this.currentPlayer = game.getCurrentPlayer();
         gameHandler.sendToPlayer(new ItsYourTurn(), currentPlayer.getID());
+        currentTiles.clear();
     }
 
 
