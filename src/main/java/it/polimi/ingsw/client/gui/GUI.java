@@ -7,6 +7,7 @@ import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.client.gui.controllers.GUIController;
+import it.polimi.ingsw.client.gui.controllers.GUIManager;
 import it.polimi.ingsw.server.connection.CSConnection;
 import it.polimi.ingsw.server.connection.RMICSConnection;
 import javafx.application.Application;
@@ -28,13 +29,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GUI extends Application {
-    public static final String END_OF_THE_GAME = "End of the game";
     private static final String MAIN_GUI = "mainScene.fxml";
     private static final String LOADER = "loadingScene.fxml";
     private static final String GOALS = "goalCardScene.fxml";
     private static final String SETUP = "joinScene.fxml";
     private static final String CHAT = "chatScene.fxml";
-    private CSConnection csConnection = null;
     private final PropertyChangeSupport listeners = new PropertyChangeSupport(this);
     private final ModelView modelView;
     private final ActionHandler actionHandler;
@@ -52,6 +51,7 @@ public class GUI extends Application {
     private Scene currentScene;
     private Stage stage;
     private boolean[] actionCheckers;
+    private GUIManager guiManager;
 
     /**
      * Constructor GUI
@@ -59,6 +59,7 @@ public class GUI extends Application {
     public GUI() {
         this.modelView = new ModelView(this);
         actionHandler = new ActionHandler(this, modelView);
+        guiManager = new GUIManager(this);
         activeGame = true;
 
     }
@@ -70,7 +71,7 @@ public class GUI extends Application {
                 FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/fxml/" + path));
                 nameMapScene.put(path, new Scene(loader.load()));
                 GUIController controller = loader.getController();
-                controller.setGui(this);
+                //controller.setGui(this);
                 nameMapController.put(path, controller);
             }
         } catch (IOException e) {
@@ -78,9 +79,12 @@ public class GUI extends Application {
         }
         currentScene = nameMapScene.get(SETUP);
     }
+    public void setCurrentScene(Scene currentScene){
+        this.currentScene = currentScene;
+    }
     @Override
     public void start(Stage stage) throws IOException {
-        setup();
+        guiManager.setup();
         this.stage = stage;
         run();
 
@@ -104,16 +108,13 @@ public class GUI extends Application {
         return listeners;
     }
 
-    /**
-     * Method changeStage changes the stage scene based on the ones declared during setup phase.
-     * On method call the actual stage scene is replaced from the parameter one.
-     *
-     * @param newScene of type String - the scene displayed.
-     */
-    public void changeStage(String newScene) {
-        currentScene = nameMapScene.get(newScene);
-        stage.setScene(currentScene);
-        stage.show();
+
+    public Stage getStage() {
+        return this.stage;
+    }
+
+    public Scene getCurrentScene(){
+        return currentScene;
     }
     /**
      * Method getModelView returns the modelView of this GUI object.
@@ -123,7 +124,9 @@ public class GUI extends Application {
     public ModelView getModelView() {
         return modelView;
     }
-
+    public GUIManager getGuiManager(){
+        return this.guiManager;
+    }
     /**
      * Method getActionHandler returns the actionHandler of this GUI object.
      *
@@ -142,48 +145,8 @@ public class GUI extends Application {
         return nameMapController.get(name);
     }
 
-    /**
-     * Method getCSConnection returns the connection of this GUI object.
-     *
-     * @return the connection of this GUI object.
-     */
-    public CSConnection getCSConnection() {
-        return csConnection;
-    }
 
-    /**
-     * Method setCSConnection sets the connection of this GUI object.
-     *
-     * @param csConnection the connection of this GUI object.
-     */
-    public void setCSConnection(CSConnection csConnection) {
-        if (this.csConnection == null) {
-            this.csConnection = csConnection;
-        }
-    }
-    /**
-     * Method errorDialog displays a generic error.
-     *
-     * @param error of type String - the error displayed.
-     */
-    private void errorDialog(String error) {
-        Alert errorDialog = new Alert(Alert.AlertType.ERROR);
-        errorDialog.setTitle("Game Error");
-        errorDialog.setHeaderText("Error!");
-        errorDialog.setContentText(error);
-        errorDialog.showAndWait();
-    }
-    /**
-     * Method setupHandler handles the setup game phase
-     *
-     */
-    /*public void setupHandler() {
-        Platform.runLater(() -> {
-                LoaderController controller = (LoaderController) getControllerFromName(LOADER);
-                controller.requestPlayerNumber(((RequestPlayersNumber) modelView.getServerAnswer()).getMessage());
-            });
-        }
-    }*/
+
 
 
 
