@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.common.Client;
+import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
 import it.polimi.ingsw.communications.clientmessages.actions.TilesPlaced;
@@ -15,7 +16,8 @@ import static it.polimi.ingsw.Const.*;
  */
 public class InputValidator {
 
-    private final CLI cli;
+    private CLI cli;
+    private GUI gui;
     private final ModelView modelView;
     private final Client client;
 
@@ -28,6 +30,17 @@ public class InputValidator {
      */
     public InputValidator(CLI cli, ModelView modelView, Client client) {
         this.cli = cli;
+        this.modelView = modelView;
+        this.client = client;
+    }
+    /**
+     * Class constructor, only for GUI use.
+     * @param gui
+     * @param modelView
+     * @param client
+     */
+    public InputValidator(GUI gui, ModelView modelView, Client client) {
+        this.gui = gui;
         this.modelView = modelView;
         this.client = client;
     }
