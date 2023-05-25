@@ -31,7 +31,7 @@ public class LoadingController extends UI implements GUIController{
         message.setText(s);
 
 
-        setSetupMode(true);
+        //setSetupMode(true);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Lobby capacity");
         alert.setHeaderText("Choose the number of players.");
