@@ -52,7 +52,7 @@ public class Game implements Serializable {
      * @param player
      */
     public void removePlayer(Player player){
-        this.players.remove(player);
+        this.activePlayers.remove(player);
     }
 
     public void setNumOfPlayers(int numOfPlayers){

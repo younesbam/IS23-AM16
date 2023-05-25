@@ -9,6 +9,7 @@ import it.polimi.ingsw.server.Server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.IDN;
 import java.net.Socket;
 import java.util.logging.Level;
 
@@ -17,7 +18,6 @@ public class SocketCSConnection extends CSConnection implements Runnable{
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
     private final Socket socket;
-    private Integer ID;
 
 
     /**
@@ -122,9 +122,9 @@ public class SocketCSConnection extends CSConnection implements Runnable{
         } catch(ClassNotFoundException e) {
             e.printStackTrace();
         }
-        SerializedAnswer serverDown = new SerializedAnswer();
-        serverDown.setAnswer(new ErrorAnswer(ErrorClassification.SERVERISDOWN));
-        sendAnswerToClient(serverDown);
+//        SerializedAnswer serverDown = new SerializedAnswer();
+//        serverDown.setAnswer(new ErrorAnswer(ErrorClassification.SERVERISDOWN));
+//        sendAnswerToClient(serverDown);
     }
 
 }
