@@ -8,8 +8,6 @@ public class TilesPlaced implements GameAction{
         this.coordinates = coordinates;
     }
 
-
-
     /**
      * Tiles getter.
      */

@@ -5,7 +5,6 @@ import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.common.ConnectionType;
 import it.polimi.ingsw.communications.serveranswers.ConnectionOutcome;
-import it.polimi.ingsw.communications.serveranswers.RequestTiles;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
@@ -13,6 +12,9 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 import java.util.logging.Level;
+
+import static it.polimi.ingsw.Const.BLUE_BOLD_COLOR;
+import static it.polimi.ingsw.Const.RESET_COLOR;
 
 public class CLI extends UI implements Runnable{
     /**
@@ -132,9 +134,9 @@ public class CLI extends UI implements Runnable{
         /*
         Set port, IP address, username.
          */
-        ConnectionType connectionType = ConnectionType.RMI;   // askConnectionType();
+        ConnectionType connectionType = ConnectionType.SOCKET;   // askConnectionType();
         String ipAddress = "127.0.0.1";    //askIpAddress();
-        int numOfPort = 1098;    //askPort();
+        int numOfPort = 2345;    //askPort();
         String username = askUsername();
 
         /*
@@ -164,60 +166,53 @@ public class CLI extends UI implements Runnable{
         client.setID(a.getID());
     }
 
+
     /**
      * Server asks for total number of players
      * @param s
      */
      private void howManyPlayerRequest(String s){
          System.out.println(s);
-         updateTurn(true);
+         modelView.setIsYourTurn(true);
          // TODO: qui viene settato a true ma non viene mai messo a FALSE. Bisogna gestire questo, per evitare che il client mandi messaggi al server
      }
+
 
     /**
      * Update turn
      * @param yourTurn
      */
     private void updateTurn(Boolean yourTurn) {
+        if(yourTurn){
+            System.out.println("\nIt's now your turn!");
+        }
+        else
+            System.out.println("\nWait for your next turn now!");
         modelView.setIsYourTurn(yourTurn);
+
         if(yourTurn)
             System.out.print(">");
     }
 
-    private void askWhatToDo(String request){
+
+    /**
+     * Method that prints the messages for the initial phase of a player's turn. It also asks him to place his tiles.
+     * @param request
+     */
+    private void initialPhaseOfTheTurn(String request){
         modelView.setIsYourTurn(true);
 
-        if(tmp == 0){
-            System.out.println("\n\nHere is your Bookshelf:\n");
-            modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
 
-            System.out.println("\n\nAnd here is the game board:\n");
+        System.out.println("\n\nHere is your Bookshelf:\n");
+        modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
 
-            modelView.getGame().getBoard().printBoard();
-        }
+        System.out.println("\n\nAnd here is the game board:\n");
 
-        System.out.println("\n\n" + request);
+        modelView.getGame().getBoard().printBoard();
+        System.out.println("\n");
 
-        Scanner in = new Scanner(System.in);
-        String action = in.nextLine();
-
-
-        switch (Integer.parseInt(action)){
-            case 1 -> {
-                requestTiles(new RequestTiles().getAnswer());
-                tmp = 0;
-            }
-            case 2 -> {
-                printPersonalGoalCard();
-                tmp = 1;
-            }
-            case 3 -> {
-                printCommonGoalCard();
-                tmp = 1;
-            }
-        }
-        //pcs.firePropertyChange("ActionToPerform", null, action);
-
+        printMAN();
+        System.out.println(request + "\n>");
     }
 
 
@@ -232,31 +227,14 @@ public class CLI extends UI implements Runnable{
     }
 
 
-    /**
-     * Method used to request the tiles to the player.
-     */
-    public void requestTiles(String request){
-
-        System.out.println(request);
-
-        System.out.println("In order to do it, please write firstly the number of tiles that you want to pick in capital letters, followed by the coordinates of the each tile, just like this: THREE row1 col1 row2 col2 row3 col3");
-
-        Scanner in = new Scanner(System.in);
-        String chosenTiles = in.nextLine();
-        pcsDispatcher.firePropertyChange("PickTiles", null, chosenTiles);
-    }
-
-
     public void requestWhereToPlaceTiles(String request){
-        System.out.println("\n\n" + request + "\n");
 
         modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
+        System.out.println("\n");
+        printMAN();
 
-        System.out.println("Please type the name of the tiles that you want to place in capital letters followed by the column of your Bookshelf in which you want to place them.\nPlease write the tiles in the exact order in which you want to place them in the column\n>");
+        System.out.println("\n" + request + "\n");
 
-        Scanner in = new Scanner(System.in);
-        String chosenCoordinates = in.nextLine();
-        pcsDispatcher.firePropertyChange("PlaceTiles", null, chosenCoordinates);
     }
 
 
@@ -267,6 +245,12 @@ public class CLI extends UI implements Runnable{
         modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
     }
 
+
+    public void playerNumberChosen(String s){
+        System.out.println(s);
+
+        updateTurn(false);
+    }
 
     /**
      * Message shown when a game ends.
@@ -286,6 +270,13 @@ public class CLI extends UI implements Runnable{
     }
 
 
+    /**
+     * Method used to print the MAN.
+     */
+    public void printMAN(){
+        System.out.println(BLUE_BOLD_COLOR + "\nType MAN to know all the valid commands\n" + RESET_COLOR);
+    }
+
     public void wrongNum(String s){
         howManyPlayerRequest(s);
     }
@@ -297,11 +288,13 @@ public class CLI extends UI implements Runnable{
             case "HowManyPlayersRequest" -> howManyPlayerRequest((String) event.getNewValue());
             case "UpdateTurn" -> updateTurn((Boolean) event.getNewValue());
             case "CustomAnswer" -> customAnswer((String) event.getNewValue());
-            case "RequestWhatToDo" -> askWhatToDo((String) event.getNewValue());
-            case "RequestTiles" -> requestTiles((String) event.getNewValue());
+            case "RequestWhatToDo" -> initialPhaseOfTheTurn((String) event.getNewValue());
             case "RequestToPlaceTiles" -> requestWhereToPlaceTiles((String) event.getNewValue());
             case "WrongNum" -> wrongNum((String) event.getNewValue());
             case "BookShelfFilledWithTiles" -> tilesPlaced((String) event.getNewValue());
+            case "ItsYourTurn" -> updateTurn(true);
+            case "EndOfYourTurn" -> updateTurn(false);
+            case "PlayerNumberChosen" -> playerNumberChosen((String) event.getNewValue());
 
         }
     }

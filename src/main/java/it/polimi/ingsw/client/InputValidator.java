@@ -6,7 +6,6 @@ import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
 import it.polimi.ingsw.communications.clientmessages.actions.TilesPlaced;
 import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
-import it.polimi.ingsw.communications.serveranswers.RequestTiles;
 import it.polimi.ingsw.communications.serveranswers.RequestWhereToPlaceTiles;
 
 import static it.polimi.ingsw.Const.*;
@@ -50,22 +49,6 @@ public class InputValidator {
         return new HowManyPlayersResponse(numOfPlayers);
     }
 
-    public TilesPicked pickTiles(String [] s){
-        String numOfTiles = s[0];
-
-        switch (numOfTiles){
-            case "ONE" -> {
-                // one
-            }
-            case "TWO" -> {
-                // two
-            }
-            case "THREE" -> {
-                // three
-            }
-            default -> // default
-
-        }
 
         /*
         Io qui andrei ad impacchettare direttamente l'input per evitare che il server debba lavorarci ancora. Prende quello che gli è stato inviato e lo manda al controller, come già fa.
@@ -84,7 +67,7 @@ public class InputValidator {
 
          Tutto questo senza chiamare input.nextLine da nessuna parte perchè tanto il loop fa già il suo lavoro
          */
-    }
+
 
 
 
@@ -95,85 +78,36 @@ public class InputValidator {
      */
     public TilesPicked checkTilesPicked(String[] tiles){
         try{
-
             //TODO da aggiungere un check per vedere se il numero di tiles prese possono essere posizionate in almeno una colonna. Se ad esempio un giocatore ha solo uno spazio libero nella sua bookshelf, non potrà ovviamente pescare 3 tiles, ed è da gestire questa cosa.
-            String numOfTiles = tiles[0];
+            String numOfTiles = tiles[1];
 
             GameAction messageToServer = null;
 
-            switch(numOfTiles){
+            switch(numOfTiles.toUpperCase()){
                 case "ONE" -> {
-                    int row1 = Integer.parseInt(tiles[1]) - 1;
-                    int col1 = Integer.parseInt(tiles[2]) - 1;
+                    int row1 = Integer.parseInt(tiles[2]) - 1;
+                    int col1 = Integer.parseInt(tiles[3]) - 1;
 
-
-                    if(row1 > MAXBOARDDIM || col1 > MAXBOARDDIM || row1 < 0 || col1 < 0){
-                        System.out.println("You selected an invalid row/col, please try again");
-                        cli.requestTiles(new RequestTiles().getAnswer());
-                    }
-                    else
-                        messageToServer = new TilesPicked(row1, col1);
+                    messageToServer = new TilesPicked(row1, col1);
                 }
                 case "TWO" -> {
-                    int row1 = Integer.parseInt(tiles[1]) - 1;
-                    int col1 = Integer.parseInt(tiles[2]) - 1;
-                    int row2 = Integer.parseInt(tiles[3]) - 1;
-                    int col2 = Integer.parseInt(tiles[4]) - 1;
+                    int row1 = Integer.parseInt(tiles[2]) - 1;
+                    int col1 = Integer.parseInt(tiles[3]) - 1;
+                    int row2 = Integer.parseInt(tiles[4]) - 1;
+                    int col2 = Integer.parseInt(tiles[5]) - 1;
 
-                    int diffRows = Math.abs(row1 - row2);
-                    int diffCol = Math.abs(col1 - col2);
-
-
-                    if(row1 > MAXBOARDDIM || col1 > MAXBOARDDIM || row1 < 0 || col1 < 0 ||
-                            row2 > MAXBOARDDIM || col2 > MAXBOARDDIM || row2 < 0 || col2 < 0){
-                        System.out.println("You selected an invalid row/col, please try again");
-                        cli.requestTiles(new RequestTiles().getAnswer());
-                    }
-                    else if(col1 != col2 && row1 != row2){
-                        System.out.println("You have to select tiles that lie on the board in a straight line!");
-                        cli.requestTiles(new RequestTiles().getAnswer());
-                    }
-                    else if(!((diffRows == 1 && diffCol == 0) || (diffRows == 0 && diffCol == 1))) {
-                        System.out.println("The tiles have to be adjacent!");
-                        cli.requestTiles(new RequestTiles().getAnswer());
-                    }
-                    else
-                        messageToServer = new TilesPicked(row1, col1, row2, col2);
+                    messageToServer = new TilesPicked(row1, col1, row2, col2);
                 }
                 case "THREE" -> {
-                    int row1 = Integer.parseInt(tiles[1]) - 1;
-                    int col1 = Integer.parseInt(tiles[2]) - 1;
-                    int row2 = Integer.parseInt(tiles[3]) - 1;
-                    int col2 = Integer.parseInt(tiles[4]) - 1;
-                    int row3 = Integer.parseInt(tiles[5]) - 1;
-                    int col3 = Integer.parseInt(tiles[6]) - 1;
+                    int row1 = Integer.parseInt(tiles[2]) - 1;
+                    int col1 = Integer.parseInt(tiles[3]) - 1;
+                    int row2 = Integer.parseInt(tiles[4]) - 1;
+                    int col2 = Integer.parseInt(tiles[5]) - 1;
+                    int row3 = Integer.parseInt(tiles[6]) - 1;
+                    int col3 = Integer.parseInt(tiles[7]) - 1;
 
-                    int diffRows12 = Math.abs(row1 - row2);
-                    int diffCol12 = Math.abs(col1 - col2);
-                    int diffRows13 = Math.abs(row1 - row3);
-                    int diffCol13 = Math.abs(col1 - col3);
-                    int diffRows23 = Math.abs(row2 - row3);
-                    int diffCol23 = Math.abs(col2 - col3);
+                    messageToServer = new TilesPicked(row1, col1, row2, col2, row3, col3);
 
-                    System.out.println(tiles[1] + tiles[2] + tiles[3] + tiles[4] + tiles[5] + tiles[6]);
-
-                    if(row1 > MAXBOARDDIM || col1 > MAXBOARDDIM || row1 < 0 || col1 < 0 ||
-                            row2 > MAXBOARDDIM || col2 > MAXBOARDDIM || row2 < 0 || col2 < 0 ||
-                            row3 > MAXBOARDDIM || col3 > MAXBOARDDIM || row3 < 0 || col3 < 0){
-                        System.out.println("You selected an invalid row/col, please try again");
-                        cli.requestTiles(new RequestTiles().getAnswer());
-                    }
-                    else if(col1 != col2 && col2 != col3 && col1 != col3 && row1 != row2 && row2 != row3 && row1 != row3){
-                        System.out.println("You have to select tiles that lie on the board in a straight line!");
-                        cli.requestTiles(new RequestTiles().getAnswer());
-                    }
-                    else if(!((((diffRows12 == 1 && diffCol12 == 0) ||  (diffRows12 == 0 && diffCol12 == 1)) && (((diffRows13 == 1 && diffCol13 == 0) ||  (diffRows13 == 0 && diffCol13 == 1)) || ((diffRows23 == 1 && diffCol23 == 0) ||  (diffRows23 == 0 && diffCol23 == 1))))
-                            || (((diffRows13 == 1 && diffCol13 == 0) ||  (diffRows13 == 0 && diffCol13 == 1)) && ((diffRows12 == 1 && diffCol12 == 0) ||  (diffRows12 == 0 && diffCol12 == 1)) || ((diffRows23 == 1 && diffCol23 == 0) ||  (diffRows23 == 0 && diffCol23 == 1))))) {
-                        System.out.println("The tiles have to be adjacent!");
-                        cli.requestTiles(new RequestTiles().getAnswer());
-                    }
-                    else
-                        messageToServer = new TilesPicked(row1, col1, row2, col2, row3, col3);
             }
             default -> {
                     System.out.println("Input error, please try again!");
@@ -188,29 +122,21 @@ public class InputValidator {
         }
     }
 
+
     /**
      * Method used to check if the coordinates chosen where to place the tiles actually make sense.
-     * @param coordinates
+     * @param input
      * @return
      */
-    public TilesPlaced checkTilesPlaced(String[] coordinates) {
-        try{
+    public TilesPlaced checkTilesPlaced(String[] input) {
 
-            GameAction messageToServer = null;
+        String[] tiles = new String[input.length - 1];
 
-            for(int i = 0; i < coordinates.length -1; i++){
-                if(!(coordinates[i] instanceof String)){
-                    System.out.println("Invalid input!");
-                    cli.requestWhereToPlaceTiles(new RequestWhereToPlaceTiles().getAnswer());
-                }
-            }
+        for(int i = 1; i < input.length; i++){
+            tiles[i - 1] = input[i];
+        }
 
-            if(coordinates.length > 4){
-                System.out.println("Invalid input!");
-                cli.requestWhereToPlaceTiles(new RequestWhereToPlaceTiles().getAnswer());
-            }
-
-            messageToServer = new TilesPlaced(coordinates);
+        GameAction messageToServer = new TilesPlaced(tiles);
 
 //            switch (numOfTiles) {
 //                case "ONE" -> {
@@ -263,10 +189,10 @@ public class InputValidator {
 //            }
             return (TilesPlaced) messageToServer;
 
-        } catch (NumberFormatException e) {
-            System.out.println("Input error, please try again!");
-            return null;
-        }
+//        } catch (NumberFormatException e) {
+//            System.out.println("Input error, please try again!");
+//            return null;
+//        }
     }
 
 
@@ -277,12 +203,13 @@ public class InputValidator {
         String man = """
                 Here all the possible commands:
                 PLAYERS <num_of_players> : use this command when the server asks for the number of players you want to play with.
-                PICKTILES : under construction, content will be available soon.
-                PLACETILES : under construction, content will be available soon.
-                EXIT : to close the game.
-                MAN : here we go; again.
+                PICKTILES <num_of_tiles> <row1> <col1> <row2> <col2> <row3> <col3>: use this command in order to pick tiles from the board. Note that "<row2> <col2> <row3> <col3>" are optional inputs.
+                PLACETILES <Tile1> <Tile2> <Tile3> <column>: use this command in order to place the tiles in your bookshelf. Note that "<Tile2> <Tile3>" are optional inputs.
+                EXIT : in order to close the game.
+                MAN : here we go again.
                 """;
         System.out.println(BLUE_BOLD_COLOR + man + RESET_COLOR);
+        System.out.println(">");
     }
 
     /**
