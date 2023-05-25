@@ -1,6 +1,8 @@
-package it.polimi.ingsw.communications.serveranswers;
+package it.polimi.ingsw.communications.serveranswers.requests;
 
-public class HowManyPlayersRequest implements Answer{
+import it.polimi.ingsw.communications.serveranswers.Answer;
+
+public class HowManyPlayersRequest implements Answer {
 
     private String playersNumber;
 

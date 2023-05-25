@@ -1,10 +1,8 @@
-package it.polimi.ingsw.communications.serveranswers;
+package it.polimi.ingsw.communications.serveranswers.requests;
 
-import it.polimi.ingsw.model.Tile;
+import it.polimi.ingsw.communications.serveranswers.Answer;
 
-import java.util.ArrayList;
-
-public class RequestWhereToPlaceTiles implements Answer{
+public class PlaceTilesRequest implements Answer {
 
     private String request;
 
@@ -12,7 +10,7 @@ public class RequestWhereToPlaceTiles implements Answer{
     /**
      * Class constructor.
      */
-    public RequestWhereToPlaceTiles(){
+    public PlaceTilesRequest(){
         this.request = "Please now place the tiles in your Bookshelf!";
     }
 

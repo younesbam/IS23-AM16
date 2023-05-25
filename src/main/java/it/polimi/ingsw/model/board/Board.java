@@ -173,7 +173,8 @@ public abstract class Board implements Serializable {
      */
     public void printBoard() {
         for (int i = 0; i < MAXBOARDDIM; i++) {
-            System.out.print("[  ");
+            System.out.print(CYAN_BOLD_COLOR + i + RESET_COLOR);
+            System.out.print(" [  ");
             for (int j = 0; j < MAXBOARDDIM; j++) {
                 switch (grid[i][j].getTile().name()) {
                     case "BLANK" -> System.out.print(BLACK_COLOR + " " + RESET_COLOR + "  ");
@@ -190,6 +191,14 @@ public abstract class Board implements Serializable {
             System.out.print("]");
             System.out.println();
         }
+
+        // Print column numbers
+        System.out.print("     ");
+        for (int k = 0; k < MAXBOARDDIM; k++) {
+            System.out.print(CYAN_BOLD_COLOR + k + RESET_COLOR);
+            System.out.print("  ");
+        }
+        System.out.println();
     }
 }
 

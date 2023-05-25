@@ -4,7 +4,8 @@ import it.polimi.ingsw.client.*;
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.common.ConnectionType;
-import it.polimi.ingsw.communications.serveranswers.ConnectionOutcome;
+import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
+import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
@@ -13,8 +14,7 @@ import java.rmi.RemoteException;
 import java.util.Scanner;
 import java.util.logging.Level;
 
-import static it.polimi.ingsw.Const.BLUE_BOLD_COLOR;
-import static it.polimi.ingsw.Const.RESET_COLOR;
+import static it.polimi.ingsw.Const.*;
 
 public class CLI extends UI implements Runnable{
     /**
@@ -134,9 +134,9 @@ public class CLI extends UI implements Runnable{
         /*
         Set port, IP address, username.
          */
-        ConnectionType connectionType = ConnectionType.SOCKET;   // askConnectionType();
+        ConnectionType connectionType = ConnectionType.RMI;   // askConnectionType();
         String ipAddress = "127.0.0.1";    //askIpAddress();
-        int numOfPort = 2345;    //askPort();
+        int numOfPort = 1098;    //askPort();
         String username = askUsername();
 
         /*
@@ -277,10 +277,17 @@ public class CLI extends UI implements Runnable{
         System.out.println(BLUE_BOLD_COLOR + "\nType MAN to know all the valid commands\n" + RESET_COLOR);
     }
 
-    public void wrongNum(String s){
-        howManyPlayerRequest(s);
-    }
 
+    /**
+     * Errors from server.
+     * @param a
+     */
+    private void errorAnswer(ErrorAnswer a){
+        System.out.println(RED_COLOR + a.getAnswer() + RESET_COLOR);
+        switch (a.getError()){
+            case LOBBY_NOT_READY, MAX_PLAYERS_REACHED, TAKEN_USERNAME -> endGameMessage();
+        }
+    }
 
     public void propertyChange(PropertyChangeEvent event){
         switch (event.getPropertyName()){
@@ -288,14 +295,14 @@ public class CLI extends UI implements Runnable{
             case "HowManyPlayersRequest" -> howManyPlayerRequest((String) event.getNewValue());
             case "UpdateTurn" -> updateTurn((Boolean) event.getNewValue());
             case "CustomAnswer" -> customAnswer((String) event.getNewValue());
-            case "RequestWhatToDo" -> initialPhaseOfTheTurn((String) event.getNewValue());
+            case "PickTilesRequest" -> initialPhaseOfTheTurn((String) event.getNewValue());
             case "RequestToPlaceTiles" -> requestWhereToPlaceTiles((String) event.getNewValue());
-            case "WrongNum" -> wrongNum((String) event.getNewValue());
             case "BookShelfFilledWithTiles" -> tilesPlaced((String) event.getNewValue());
             case "ItsYourTurn" -> updateTurn(true);
             case "EndOfYourTurn" -> updateTurn(false);
             case "PlayerNumberChosen" -> playerNumberChosen((String) event.getNewValue());
 
+            case "ErrorAnswer" -> errorAnswer((ErrorAnswer) event.getNewValue());
         }
     }
 

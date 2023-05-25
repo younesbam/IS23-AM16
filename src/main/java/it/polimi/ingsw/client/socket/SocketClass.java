@@ -7,9 +7,9 @@
 //import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 //import it.polimi.ingsw.communications.clientmessages.messages.Message;
 //import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
-//import it.polimi.ingsw.communications.serveranswers.ConnectionOutcome;
-//import it.polimi.ingsw.communications.serveranswers.ErrorAnswer;
-//import it.polimi.ingsw.communications.serveranswers.ErrorClassification;
+//import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
+//import it.polimi.ingsw.communications.serveranswers.error.ErrorAnswer;
+//import it.polimi.ingsw.communications.serveranswers.error.ErrorClassification;
 //import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 //import it.polimi.ingsw.exceptions.TakenUsername;
 //

@@ -3,7 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.cards.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represent the PLAYER model.
@@ -11,13 +12,30 @@ import java.util.ArrayList;
  */
 public class Player implements Serializable {
     private String username;
-    private int ID;
-    private int points;
+    private final int ID;
+    private int totalPoints;
     private BookShelf bookShelf;
     private PersonalGoalCard personalGoalCard;
-    private boolean chair; /* specify if the player is the FIRST of the round in all the game */
-    private int[] commonGoalReached = new int[2]; /* array that contains the points for reaching zero, one or two common goals */
-    private int numOfTurns; /* saves number of turns played. Useful to save the state of the game.*/
+
+    /**
+     * Specify if the player is the FIRST of the round in all the game
+     */
+    private boolean chair;
+
+    /**
+     * Map that contains the points earned during the game from the related common card.
+     */
+    private final Map<CommonGoalCard, Integer> commonCardPointsEarned;
+
+    /**
+     * Points earned during the game from the related personal card.
+     */
+    private int personalGoalCardPointsEarned = 0;
+
+    /**
+     * Saves number of turns played. Useful to save the state of the game.
+     */
+    private int numOfTurns;
 
 
 
@@ -29,6 +47,7 @@ public class Player implements Serializable {
     public Player(String username, Integer ID){
         this.username = username;
         this.ID = ID;
+        this.commonCardPointsEarned = new HashMap<>();
     }
 
     /**
@@ -47,21 +66,6 @@ public class Player implements Serializable {
         this.username = nickname;
     }
 
-    /**
-     * Player points getter.
-     * @return
-     */
-    public int getPoints() {
-        return points;
-    }
-
-    /**
-     * Method used to set player's points
-     * @param points
-     */
-    public void setPoints(int points) {
-        this.points = points;
-    }
 
     /**
      * This method returns the boolean value representing if a player has the first player chair or not.
@@ -111,12 +115,65 @@ public class Player implements Serializable {
     }
 
     /**
-     * This method returns the array containing the boolean values that represent if the player has reached the common goals.
+     * Player points getter.
      * @return
      */
-    public int[] getCommonGoalReached() {
-        return this.commonGoalReached;
+    public int getTotalPoints() {
+        return totalPoints;
     }
+
+    /**
+     * Updates total points based on points earned from personal and common cards.
+     */
+    public void updateTotalPoints() {
+        int total=0;
+        for(CommonGoalCard card : commonCardPointsEarned.keySet()){
+            total += commonCardPointsEarned.get(card);
+        }
+        total += personalGoalCardPointsEarned;
+        this.totalPoints = total;
+    }
+
+
+    /**
+     * Get points earned form the common goal card.
+     * @return points earned from that common goal card.
+     */
+    public int getCommonCardPointsEarned(CommonGoalCard card) {
+        return this.commonCardPointsEarned.get(card);
+    }
+
+
+    /**
+     * Set points earned form the common goal card.
+     * @param card you scored from
+     * @param value points earned from that common goal card.
+     */
+    public void setCommonCardPointsEarned(CommonGoalCard card, int value) {
+        if(this.commonCardPointsEarned.get(card) != null)
+            this.commonCardPointsEarned.replace(card, value);
+    }
+
+
+    /**
+     * Add the common goal card to the map. Easily get earned point based on the common goal card picked.
+     * <p></p>
+     * Note: use this method only when the game set the common goal card.
+     * @param card
+     */
+    public void addCommonGoalCard(CommonGoalCard card){
+        this.commonCardPointsEarned.put(card, 0);
+    }
+
+
+    /**
+     * Check personal goal card scheme and automatically update points.
+     */
+    public void checkPersonalGoalCardScheme(){
+        if(personalGoalCardPointsEarned <= 0)
+            personalGoalCardPointsEarned = personalGoalCard.checkScheme(this);
+    }
+
 
     /**
      * Personal goal card getter.
@@ -126,13 +183,6 @@ public class Player implements Serializable {
         return this.personalGoalCard;
     }
 
-    /**
-     * Personal goal card setter.
-     * @param personalGoalCard
-     */
-    public void setPersonalGoalCard(PersonalGoalCard personalGoalCard) {
-        this.personalGoalCard = personalGoalCard;
-    }
 
     /**
      * ID getter.

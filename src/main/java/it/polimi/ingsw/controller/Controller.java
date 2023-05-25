@@ -1,7 +1,10 @@
 package it.polimi.ingsw.controller;
 import it.polimi.ingsw.common.exceptions.NotEmptyColumnException;
 import it.polimi.ingsw.communications.serveranswers.*;
+import it.polimi.ingsw.communications.serveranswers.requests.PickTilesRequest;
+import it.polimi.ingsw.communications.serveranswers.requests.PlaceTilesRequest;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.cards.CommonGoalCard;
 import it.polimi.ingsw.server.GameHandler;
 
 import java.beans.PropertyChangeEvent;
@@ -80,7 +83,7 @@ public class Controller implements PropertyChangeListener {
      * Method used to ask the player what he wants to do at the start of his turn.
      */
     public void askWhatToDo(){
-        gameHandler.sendToPlayer(new RequestWhatToDo(), currentPlayer.getID());
+        gameHandler.sendToPlayer(new PickTilesRequest(), currentPlayer.getID());
     }
 
 
@@ -94,11 +97,129 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
+     * Method used to remove tiles from the player board.
+     * @param coordinates
+     */
+    public void removeTilesFromBoard(int[][] coordinates){
+        //ArrayList<Tile> tiles = new ArrayList<>();
+
+        for (int i = 0;  i < coordinates.length; i++) {
+            //tiles.add(game.getBoard().getTile(coordinates[i][0], coordinates[i][1]));
+            currentTiles.add(game.getBoard().getTile(coordinates[i][0], coordinates[i][1]));
+            gameHandler.sendToPlayer(new CustomAnswer(false, "\nYou picked the following tile:" + game.getBoard().getTile(coordinates[i][0], coordinates[i][1]).name()), currentPlayer.getID());
+            game.getBoard().removeTile(coordinates[i][0], coordinates[i][1]);
+        }
+
+        askToPlaceTiles();
+    }
+
+
+    public void askToPlaceTiles(){
+        gameHandler.sendToPlayer(new PlaceTilesRequest(), getCurrentPlayer().getID());
+    }
+
+
+    /**
+     * Method called after every turn, it checks if the current player has reached any common goal in this turn.
+     */
+    public void checkCommonGoal() {
+        int points = 0;
+        /*
+        Iterate all the common cards in the game and check the related scheme.
+        If respected, add points to the current player.
+         */
+        for(CommonGoalCard card : game.getCommonGoalCards()){
+            points = currentPlayer.getCommonCardPointsEarned(card);
+            if(points <= 0){
+                currentPlayer.setCommonCardPointsEarned(card, card.checkScheme(currentPlayer));
+            }
+        }
+
+//        for (int i = 0; i < 2; i++) {
+//            if (game.getCurrentPlayer().getCommonCardPointsEarned()[i] < 0) {
+//
+//                game.getCommonGoalCards().get(i).checkScheme(game.getCurrentPlayer());
+//
+//                if (game.getCurrentPlayer().getCommonCardPointsEarned()[i] > 0) {
+//                    updateTotalPoints(game.getCurrentPlayer().getCommonCardPointsEarned()[i]);
+//                }
+//            }
+//        }
+    }
+
+
+    /**
+     * Method called at the end of the game to calculate the points gained by the personal goal.
+     */
+    public void checkPersonalGoal() {
+        currentPlayer.checkPersonalGoalCardScheme();
+//        int numOfPlayers = game.getNumOfPlayers();
+//
+//        for(int i = 0; i < numOfPlayers; i++){
+//            updateTotalPoints(game.getPlayers().get(i).getPersonalGoalCard().checkScheme(player));
+//        }
+    }
+
+
+    public void nextPlayer(){
+        gameHandler.sendToPlayer(new EndOfYourTurn(), currentPlayer.getID());
+        game.nextPlayer();
+        this.currentPlayer = game.getCurrentPlayer();
+        gameHandler.sendToPlayer(new ItsYourTurn(), currentPlayer.getID());
+        currentTiles.clear();
+    }
+
+
+    /**
+     * Method that after every player's turn checks if he has completely filled its Bookshelf, and so the game has reached an end.
+     * @return
+     */
+    public boolean checkEndGame() {
+        if (game.getCurrentPlayer().getBookShelf().checkEndGame()) {
+            return true;
+        }
+        else
+            return false;
+    }
+
+
+    /**
+     * Method that updates current player's points.
+     * @param points
+     */
+    public void updateTotalPoints() {
+        game.getCurrentPlayer().updateTotalPoints();
+    }
+
+
+    /**
+     * Method used to set the current player.
+     * @param player
+     */
+    public void setCurrentPlayer(Player player) {
+        game.setCurrentPlayer(player);
+        this.currentPlayer = player;
+    }
+
+
+//    /**
+//     * Method that switches the current player to the next one.
+//     */
+//    public void nextPlayer() {
+//        game.nextPlayer();
+//    }
+
+    public void endGame() {
+
+    }
+
+
+    /**
      * Method to check if the tiles selected by the player are actually pickable. If so, they are removed from the board.
      *
      * @param coordinates
      */
-    public void canPickTiles(int[][] coordinates) {
+    public void pickTilesAction(int[][] coordinates) {
 
         int i;
         boolean canPick = true;
@@ -191,35 +312,11 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
-     * Method used to remove tiles from the player board.
-     * @param coordinates
-     */
-    public void removeTilesFromBoard(int[][] coordinates){
-        int i;
-        //ArrayList<Tile> tiles = new ArrayList<>();
-
-        for (i = 0;  i < coordinates.length; i++) {
-            //tiles.add(game.getBoard().getTile(coordinates[i][0], coordinates[i][1]));
-            currentTiles.add(game.getBoard().getTile(coordinates[i][0], coordinates[i][1]));
-            gameHandler.sendToPlayer(new CustomAnswer(false, "\nYou picked the following tile:" + game.getBoard().getTile(coordinates[i][0], coordinates[i][1]).name()), currentPlayer.getID());
-            game.getBoard().removeTile(coordinates[i][0], coordinates[i][1]);
-        }
-
-        askToPlaceTiles();
-    }
-
-
-    public void askToPlaceTiles(){
-        gameHandler.sendToPlayer(new RequestWhereToPlaceTiles(), getCurrentPlayer().getID());
-    }
-
-
-    /**
      * Method used to place the selected tiles in the current player's Bookshelf. It also checks if the selected column has enough free spaces.
      *
      * @param coordinates it contains the coordinates of the bookshelf on where to place the tiles.
      */
-    public void placeTiles(String[] coordinates) {
+    public void placeTilesAction(String[] coordinates) {
         try{
 
             ArrayList<Tile> rightOrderTiles = new ArrayList<>();
@@ -282,96 +379,17 @@ public class Controller implements PropertyChangeListener {
     }
 
 
-    /**
-     * Method called after every turn, it checks if the current player has reached any common goal in this turn.
-     */
-    public void checkCommonGoal() {
-
-        int i;
-        for (i = 0; i < 2; i++) {
-            if (game.getCurrentPlayer().getCommonGoalReached()[i] < 0) {
-
-                game.getCommonGoalCards().get(i).checkScheme(game.getCurrentPlayer());
-
-                if (game.getCurrentPlayer().getCommonGoalReached()[i] > 0) {
-                    updatePoints(game.getCurrentPlayer().getCommonGoalReached()[i]);
-                }
-            }
-        }
+    public void checkSchemeAction(String[] s){
+        checkCommonGoal();
+        checkPersonalGoal();
+        updateTotalPoints();
     }
-
-
-    /**
-     * Method called at the end of the game to calculate the points gained by the personal goal.
-     */
-    public void checkPersonalGoal(Player player) {
-
-        int numOfPlayers = game.getNumOfPlayers();
-        int i;
-
-        for(i = 0; i < numOfPlayers; i++){
-            updatePoints(game.getPlayers().get(i).getPersonalGoalCard().checkScheme(player));
-        }
-    }
-
-
-    public void nextPlayer(){
-        gameHandler.sendToPlayer(new EndOfYourTurn(), currentPlayer.getID());
-        game.nextPlayer();
-        this.currentPlayer = game.getCurrentPlayer();
-        gameHandler.sendToPlayer(new ItsYourTurn(), currentPlayer.getID());
-        currentTiles.clear();
-    }
-
-
-    /**
-     * Method that after every player's turn checks if he has completely filled its Bookshelf, and so the game has reached an end.
-     * @return
-     */
-    public boolean checkEndGame() {
-        if (game.getCurrentPlayer().getBookShelf().checkEndGame()) {
-            return true;
-        }
-        else
-            return false;
-    }
-
-
-    /**
-     * Method that updates current player's points.
-     * @param points
-     */
-    public void updatePoints(int points) {
-        game.getCurrentPlayer().setPoints(points);
-    }
-
-
-    /**
-     * Method used to set the current player.
-     * @param player
-     */
-    public void setCurrentPlayer(Player player) {
-        game.setCurrentPlayer(player);
-        this.currentPlayer = player;
-    }
-
-
-//    /**
-//     * Method that switches the current player to the next one.
-//     */
-//    public void nextPlayer() {
-//        game.nextPlayer();
-//    }
-
-    public void endGame() {
-
-    }
-
 
     public void propertyChange(PropertyChangeEvent evt) {
-        switch (evt.getPropertyName().toUpperCase()){
-            case "TILESPICKED" -> canPickTiles((int[][]) evt.getNewValue());
-            case "TILESPLACED" -> placeTiles((String[]) evt.getNewValue());
+        switch (evt.getPropertyName()){
+            case "PickTilesAction" -> pickTilesAction((int[][]) evt.getNewValue());
+            case "PlaceTilesAction" -> placeTilesAction((String[]) evt.getNewValue());
+            case "CheckSchemeAction" -> checkSchemeAction((String[]) evt.getNewValue());
         }
 
     }

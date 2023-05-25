@@ -24,7 +24,7 @@ public abstract class CommonGoalCard extends Card {
      * Get score points based on the number of players.
      * @return score points
      */
-    public Integer getScore(){
+    protected Integer getScore(){
         return score.poll();
     }
 

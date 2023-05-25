@@ -2,8 +2,13 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.gui.GUI;
-import it.polimi.ingsw.client.gui.controllers.GUIManager;
 import it.polimi.ingsw.communications.serveranswers.*;
+import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
+import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
+import it.polimi.ingsw.communications.serveranswers.info.PlayerNumberChosen;
+import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
+import it.polimi.ingsw.communications.serveranswers.requests.PickTilesRequest;
+import it.polimi.ingsw.communications.serveranswers.requests.PlaceTilesRequest;
 
 import java.beans.PropertyChangeSupport;
 
@@ -14,7 +19,7 @@ public class ActionHandler {
 
     private final ModelView modelView;
     private CLI cli;
-    private GUIManager guiManager;
+    private GUI gui;
 
     private final PropertyChangeSupport pcsView = new PropertyChangeSupport(this);
 
@@ -32,13 +37,13 @@ public class ActionHandler {
 
     /**
      * Constructor in case of a GUI match
-     * @param guiManager GUIManager instance
+     * @param gui GUI instance
      * @param modelView modelView instance
      */
-    public ActionHandler(GUIManager guiManager, ModelView modelView) {
-        this.guiManager = guiManager;
+    public ActionHandler(GUI gui, ModelView modelView) {
+        this.gui = gui;
         this.modelView = modelView;
-        pcsView.addPropertyChangeListener(guiManager);
+        //pcsView.addPropertyChangeListener(gui);
     }
 
 
@@ -64,13 +69,7 @@ public class ActionHandler {
             return;
         }
 
-        if(a instanceof WrongNum){
-            pcsView.firePropertyChange("WrongNum", null, a.getAnswer());
-            return;
-        }
-
         if(a instanceof UpdateTurn){
-            // modelView.setIsYourTurn(((UpdateTurn) a).getInputEnabled());  Non so se va qui o nella cli
             pcsView.firePropertyChange("UpdateTurn", null, ((UpdateTurn) a).isYourTurn());
             return;
         }
@@ -95,13 +94,13 @@ public class ActionHandler {
             return;
         }
 
-        if(a instanceof RequestWhereToPlaceTiles){
-            pcsView.firePropertyChange("RequestToPlaceTiles", null, ((RequestWhereToPlaceTiles) a).getAnswer());
+        if(a instanceof PlaceTilesRequest){
+            pcsView.firePropertyChange("RequestToPlaceTiles", null, ((PlaceTilesRequest) a).getAnswer());
             return;
         }
 
-        if(a instanceof RequestWhatToDo){
-            pcsView.firePropertyChange("RequestWhatToDo", null, ((RequestWhatToDo) a).getAnswer());
+        if(a instanceof PickTilesRequest){
+            pcsView.firePropertyChange("PickTilesRequest", null, ((PickTilesRequest) a).getAnswer());
             return;
         }
 
@@ -110,12 +109,16 @@ public class ActionHandler {
             return;
         }
 
-        if(a instanceof PlayerDisconnected || a instanceof LobbyNotReady){
-            if(guiManager != null) {
+        if(a instanceof ErrorAnswer){
+            pcsView.firePropertyChange("ErrorAnswer", null, a);
+            return;
+        }
+
+        if(a instanceof PlayerDisconnected){
+            if(gui != null) {
             } else if(cli != null) {
                 cli.endGameMessage();
             }
-            return;
         }
     }
 
