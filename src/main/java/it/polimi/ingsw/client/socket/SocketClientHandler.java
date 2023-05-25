@@ -7,9 +7,9 @@ import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.messages.UsernameSetup;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
-import it.polimi.ingsw.communications.serveranswers.ConnectionOutcome;
-import it.polimi.ingsw.communications.serveranswers.ErrorAnswer;
-import it.polimi.ingsw.communications.serveranswers.ErrorClassification;
+import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
+import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
+import it.polimi.ingsw.communications.serveranswers.errors.ErrorClassification;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.exceptions.TakenUsername;
 
@@ -136,10 +136,10 @@ public class SocketClientHandler extends Client {
                 && ((ConnectionOutcome) answer.getAnswer()).isConnected()) {
             return true;
         } else if (answer.getAnswer() instanceof ErrorAnswer) {
-            if (((ErrorAnswer) answer.getAnswer()).getError().equals(ErrorClassification.TAKENUSERNAME)) {
+            if (((ErrorAnswer) answer.getAnswer()).getError().equals(ErrorClassification.TAKEN_USERNAME)) {
                 System.err.println("This nickname is already in use! Please choose one other.");
                 throw new TakenUsername();
-            } else if (((ErrorAnswer) answer.getAnswer()).getError().equals(ErrorClassification.MAXPLAYERSREACHED)) {
+            } else if (((ErrorAnswer) answer.getAnswer()).getError().equals(ErrorClassification.MAX_PLAYERS_REACHED)) {
                 System.err.println(
                         "This match is already full, please try again later!\nApplication will now close...");
                 System.exit(0);

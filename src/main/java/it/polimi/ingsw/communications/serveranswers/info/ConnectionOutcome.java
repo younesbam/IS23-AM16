@@ -1,9 +1,11 @@
-package it.polimi.ingsw.communications.serveranswers;
+package it.polimi.ingsw.communications.serveranswers.info;
+
+import it.polimi.ingsw.communications.serveranswers.Answer;
 
 /**
  * This class contains the server's information about the status of connection.
  */
-public class ConnectionOutcome implements Answer{
+public class ConnectionOutcome implements Answer {
     private final boolean isConnected;
     private final String answer;
 

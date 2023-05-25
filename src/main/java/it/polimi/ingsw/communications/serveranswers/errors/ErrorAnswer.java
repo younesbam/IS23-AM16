@@ -1,6 +1,8 @@
-package it.polimi.ingsw.communications.serveranswers;
+package it.polimi.ingsw.communications.serveranswers.errors;
 
-public class ErrorAnswer implements Answer{
+import it.polimi.ingsw.communications.serveranswers.Answer;
+
+public class ErrorAnswer implements Answer {
 
     private String answer;
     private final ErrorClassification errorClassification;

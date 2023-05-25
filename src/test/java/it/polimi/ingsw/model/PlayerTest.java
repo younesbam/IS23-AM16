@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,8 +29,8 @@ class PlayerTest {
 
     @Test
     void pointsTest() {
-        player.setPoints(100);
-        assertEquals(100, player.getPoints());
+        player.updateTotalPoints(100);
+        assertEquals(100, player.getTotalPoints());
     }
 
 

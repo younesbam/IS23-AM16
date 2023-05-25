@@ -1,19 +1,7 @@
 package it.polimi.ingsw.server.connection;
 
-import it.polimi.ingsw.communications.clientmessages.actions.TilesPlaced;
-import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
-import it.polimi.ingsw.communications.clientmessages.messages.Message;
-import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
-import it.polimi.ingsw.communications.clientmessages.messages.UsernameSetup;
-import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
-import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
-import it.polimi.ingsw.communications.serveranswers.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
-import it.polimi.ingsw.exceptions.OutOfBoundException;
 import it.polimi.ingsw.server.Server;
-
-import java.io.IOException;
-import java.util.logging.Level;
 
 /**
  * Represent a generic connection client-server

@@ -1,6 +1,8 @@
-package it.polimi.ingsw.communications.serveranswers;
+package it.polimi.ingsw.communications.serveranswers.info;
 
-public class PlayerNumberChosen implements Answer{
+import it.polimi.ingsw.communications.serveranswers.Answer;
+
+public class PlayerNumberChosen implements Answer {
 
     private String answer;
 

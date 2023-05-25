@@ -1,17 +1,17 @@
 package it.polimi.ingsw.communications.clientmessages.actions;
 
-public class TilesPicked implements GameAction{
+public class PickTilesAction implements GameAction{
 
     private int[][] coordinates;
 
-    public TilesPicked(int row1, int col1){
+    public PickTilesAction(int row1, int col1){
         coordinates = new int[1][2];
 
         coordinates[0][0] = row1;
         coordinates[0][1] = col1;
     }
 
-    public TilesPicked(int row1, int col1, int row2, int col2){
+    public PickTilesAction(int row1, int col1, int row2, int col2){
         coordinates = new int[2][2];
 
         coordinates[0][0] = row1;
@@ -21,7 +21,7 @@ public class TilesPicked implements GameAction{
 
     }
 
-    public TilesPicked(int row1, int col1, int row2, int col2, int row3, int col3){
+    public PickTilesAction(int row1, int col1, int row2, int col2, int row3, int col3){
         coordinates = new int[3][2];
 
         coordinates[0][0] = row1;

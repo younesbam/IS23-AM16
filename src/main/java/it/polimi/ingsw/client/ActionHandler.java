@@ -3,6 +3,12 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.communications.serveranswers.*;
+import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
+import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
+import it.polimi.ingsw.communications.serveranswers.info.PlayerNumberChosen;
+import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
+import it.polimi.ingsw.communications.serveranswers.requests.PickTilesRequest;
+import it.polimi.ingsw.communications.serveranswers.requests.PlaceTilesRequest;
 
 import java.beans.PropertyChangeSupport;
 
@@ -63,13 +69,7 @@ public class ActionHandler {
             return;
         }
 
-        if(a instanceof WrongNum){
-            pcsView.firePropertyChange("WrongNum", null, a.getAnswer());
-            return;
-        }
-
         if(a instanceof UpdateTurn){
-            // modelView.setIsYourTurn(((UpdateTurn) a).getInputEnabled());  Non so se va qui o nella cli
             pcsView.firePropertyChange("UpdateTurn", null, ((UpdateTurn) a).isYourTurn());
             return;
         }
@@ -94,13 +94,13 @@ public class ActionHandler {
             return;
         }
 
-        if(a instanceof RequestWhereToPlaceTiles){
-            pcsView.firePropertyChange("RequestToPlaceTiles", null, ((RequestWhereToPlaceTiles) a).getAnswer());
+        if(a instanceof PlaceTilesRequest){
+            pcsView.firePropertyChange("RequestToPlaceTiles", null, ((PlaceTilesRequest) a).getAnswer());
             return;
         }
 
-        if(a instanceof RequestWhatToDo){
-            pcsView.firePropertyChange("RequestWhatToDo", null, ((RequestWhatToDo) a).getAnswer());
+        if(a instanceof PickTilesRequest){
+            pcsView.firePropertyChange("PickTilesRequest", null, ((PickTilesRequest) a).getAnswer());
             return;
         }
 
@@ -109,12 +109,16 @@ public class ActionHandler {
             return;
         }
 
-        if(a instanceof PlayerDisconnected || a instanceof LobbyNotReady){
+        if(a instanceof ErrorAnswer){
+            pcsView.firePropertyChange("ErrorAnswer", null, a);
+            return;
+        }
+
+        if(a instanceof PlayerDisconnected){
             if(gui != null) {
             } else if(cli != null) {
                 cli.endGameMessage();
             }
-            return;
         }
     }
 

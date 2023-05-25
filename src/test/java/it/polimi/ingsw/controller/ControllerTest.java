@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Tile;
 import it.polimi.ingsw.model.cards.CommonGoalCard;
-import it.polimi.ingsw.server.GameHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -68,7 +67,7 @@ class ControllerTest {
             y = random.nextInt(MAXBOARDDIM);
         }
         int[][] coordinates = {{x, y}};
-        controller.canPickTiles(coordinates);
+        controller.pickTilesAction(coordinates);
 
         // Check if the tile has been removed from the board
         assertFalse(controller.getGame().getBoard().isPickable(x,y));
@@ -92,14 +91,14 @@ class ControllerTest {
     @Test
     void testCheckCommonGoal() {
         Player player = controller.getGame().getCurrentPlayer();
-        int prevPoints = player.getPoints();
+        int prevPoints = player.getTotalPoints();
         /* TO DO complete a common goal and check if points update */
     }
 
     @Test
     void testCheckPersonalGoal() {
         Player player = controller.getGame().getCurrentPlayer();
-        int prevPoints = player.getPoints();
+        int prevPoints = player.getTotalPoints();
         /* TO DO complete personal goal */
         // assertEquals(player.getPersonalGoalCard().checkScheme(player), player.getPoints()- prevPoints);
     }
@@ -123,14 +122,14 @@ class ControllerTest {
     @Test
     void testUpdatePoints() {
         // store previous points
-        int prevPoints = controller.getGame().getCurrentPlayer().getPoints();
+        int prevPoints = controller.getGame().getCurrentPlayer().getTotalPoints();
         // Add random points to the current player's score
         Random random = new Random();
         int pointsAdded = random.nextInt();
-        controller.updatePoints(pointsAdded);
+        controller.updateTotalPoints(pointsAdded);
 
         // Check if the current player's score has been updated correctly
-        assertEquals(pointsAdded, controller.getGame().getCurrentPlayer().getPoints()- prevPoints);
+        assertEquals(pointsAdded, controller.getGame().getCurrentPlayer().getTotalPoints()- prevPoints);
     }
 
     @Test

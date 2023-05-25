@@ -1,10 +1,10 @@
 package it.polimi.ingsw.communications.clientmessages.actions;
 
-public class TilesPlaced implements GameAction{
+public class PlaceTilesAction implements GameAction{
 
     private String[] coordinates;
 
-    public TilesPlaced(String[] coordinates){
+    public PlaceTilesAction(String[] coordinates){
         this.coordinates = coordinates;
     }
 

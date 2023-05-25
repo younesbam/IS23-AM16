@@ -4,12 +4,17 @@ import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.common.JSONParser;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
-import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
-import it.polimi.ingsw.communications.clientmessages.actions.TilesPlaced;
+import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
+import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
 import it.polimi.ingsw.communications.clientmessages.messages.ExitFromGame;
 import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
 import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.serveranswers.*;
+import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
+import it.polimi.ingsw.communications.serveranswers.errors.ErrorClassification;
+import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
+import it.polimi.ingsw.communications.serveranswers.info.PlayerNumberChosen;
+import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
 import it.polimi.ingsw.exceptions.OutOfBoundException;
 import it.polimi.ingsw.server.connection.CSConnection;
 import it.polimi.ingsw.server.rmi.RMIServerHandler;
@@ -201,7 +206,7 @@ public class Server {
      * @param action game action from client
      */
     private void actionHandler(VirtualPlayer currentPlayer, GameAction action){
-        if(action instanceof TilesPicked || action instanceof TilesPlaced){
+        if(action instanceof PickTilesAction || action instanceof PlaceTilesAction){
             getGameHandlerByID(currentPlayer.getID()).dispatchActions(action);
         }
     }
@@ -232,18 +237,18 @@ public class Server {
      * This method is the one that registers the new client to the match. It also checks if the username chosen by the player is not already taken.
      */
     private synchronized Integer newClientRegistration(String username, CSConnection clientConnection) throws IOException{
-        SerializedAnswer errorAnswer = new SerializedAnswer();
+        SerializedAnswer answer = new SerializedAnswer();
         // Check if the server is in a setup mode. If true it returns null and disconnect the client immediately.
         if(setupMode){
-            errorAnswer.setAnswer(new LobbyNotReady());
-            clientConnection.sendAnswerToClient(errorAnswer);
+            answer.setAnswer(new ErrorAnswer(ErrorClassification.LOBBY_NOT_READY));
+            clientConnection.sendAnswerToClient(answer);
             return null;
         }
 
         //Checks about waiting list and available slot for the game
         if (numOfPlayers != 0 && (playersWaitingList.size() >= numOfPlayers || playersConnectedList.size() >= numOfPlayers)) {
-            errorAnswer.setAnswer(new ErrorAnswer(ErrorClassification.MAXPLAYERSREACHED));
-            clientConnection.sendAnswerToClient(errorAnswer);
+            answer.setAnswer(new ErrorAnswer(ErrorClassification.MAX_PLAYERS_REACHED));
+            clientConnection.sendAnswerToClient(answer);
             return null;
         }
 
@@ -264,22 +269,17 @@ public class Server {
             playersConnectedList.add(newPlayer);
 
             System.out.println(newPlayer.getUsername() + " is now connected, his ID is " + newPlayer.getID());
-            SerializedAnswer nowConnected = new SerializedAnswer();
-            nowConnected.setAnswer(new ConnectionOutcome(true, newPlayer.getID(), "Welcome! You have been associated with the following ID " + newPlayer.getID()));
-            clientConnection.sendAnswerToClient(nowConnected);
+            answer.setAnswer(new ConnectionOutcome(true, newPlayer.getID(), "Welcome! You have been associated with the following ID " + newPlayer.getID()));
+            clientConnection.sendAnswerToClient(answer);
 
             if (playersConnectedList.size() > 1) {
-                gameHandler.sendToEveryoneExcept(new NewPlayerHasJoined("We have a new mate! Please call him: " + newPlayer.getUsername() + " :)"), clientID);
+                gameHandler.sendToEveryoneExcept(new CustomAnswer(false,"We have a new mate! Please call him: " + newPlayer.getUsername() + " :)"), clientID);
             }
 
         } else {  // Username already in use.
-            VirtualPlayer registeredClient = getVirtualPlayerByID(clientID);
-            if (registeredClient.getConnection() != null) {
-                SerializedAnswer duplicateNicknameError = new SerializedAnswer();
-                duplicateNicknameError.setAnswer(new ErrorAnswer(ErrorClassification.TAKENUSERNAME));
-                clientConnection.sendAnswerToClient(duplicateNicknameError);
-                return null;
-            }
+            answer.setAnswer(new ErrorAnswer("Username already in use. Try to connect again", ErrorClassification.TAKEN_USERNAME));
+            clientConnection.sendAnswerToClient(answer);
+            return null;
         }
 
         return clientID;

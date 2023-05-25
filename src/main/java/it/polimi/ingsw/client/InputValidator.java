@@ -2,13 +2,11 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.common.Client;
+import it.polimi.ingsw.communications.clientmessages.actions.CheckSchemeAction;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
-import it.polimi.ingsw.communications.clientmessages.actions.TilesPicked;
-import it.polimi.ingsw.communications.clientmessages.actions.TilesPlaced;
-import it.polimi.ingsw.communications.clientmessages.messages.ExitFromGame;
+import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
+import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
 import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
-import it.polimi.ingsw.communications.clientmessages.messages.Message;
-import it.polimi.ingsw.communications.serveranswers.RequestWhereToPlaceTiles;
 
 import static it.polimi.ingsw.Const.*;
 
@@ -71,14 +69,12 @@ public class InputValidator {
          */
 
 
-
-
     /**
      * Method used to check if the input of the tiles requested makes sense.
      * @param tiles
      * @return
      */
-    public TilesPicked checkTilesPicked(String[] tiles){
+    public PickTilesAction pickTiles(String[] tiles){
         try{
             //TODO da aggiungere un check per vedere se il numero di tiles prese possono essere posizionate in almeno una colonna. Se ad esempio un giocatore ha solo uno spazio libero nella sua bookshelf, non potrà ovviamente pescare 3 tiles, ed è da gestire questa cosa.
             String numOfTiles = tiles[1];
@@ -87,28 +83,28 @@ public class InputValidator {
 
             switch(numOfTiles.toUpperCase()){
                 case "ONE" -> {
-                    int row1 = Integer.parseInt(tiles[2]) - 1;
-                    int col1 = Integer.parseInt(tiles[3]) - 1;
+                    int row1 = Integer.parseInt(tiles[2]);
+                    int col1 = Integer.parseInt(tiles[3]);
 
-                    messageToServer = new TilesPicked(row1, col1);
+                    messageToServer = new PickTilesAction(row1, col1);
                 }
                 case "TWO" -> {
-                    int row1 = Integer.parseInt(tiles[2]) - 1;
-                    int col1 = Integer.parseInt(tiles[3]) - 1;
-                    int row2 = Integer.parseInt(tiles[4]) - 1;
-                    int col2 = Integer.parseInt(tiles[5]) - 1;
+                    int row1 = Integer.parseInt(tiles[2]);
+                    int col1 = Integer.parseInt(tiles[3]);
+                    int row2 = Integer.parseInt(tiles[4]);
+                    int col2 = Integer.parseInt(tiles[5]);
 
-                    messageToServer = new TilesPicked(row1, col1, row2, col2);
+                    messageToServer = new PickTilesAction(row1, col1, row2, col2);
                 }
                 case "THREE" -> {
-                    int row1 = Integer.parseInt(tiles[2]) - 1;
-                    int col1 = Integer.parseInt(tiles[3]) - 1;
-                    int row2 = Integer.parseInt(tiles[4]) - 1;
-                    int col2 = Integer.parseInt(tiles[5]) - 1;
-                    int row3 = Integer.parseInt(tiles[6]) - 1;
-                    int col3 = Integer.parseInt(tiles[7]) - 1;
+                    int row1 = Integer.parseInt(tiles[2]);
+                    int col1 = Integer.parseInt(tiles[3]);
+                    int row2 = Integer.parseInt(tiles[4]);
+                    int col2 = Integer.parseInt(tiles[5]);
+                    int row3 = Integer.parseInt(tiles[6]);
+                    int col3 = Integer.parseInt(tiles[7]);
 
-                    messageToServer = new TilesPicked(row1, col1, row2, col2, row3, col3);
+                    messageToServer = new PickTilesAction(row1, col1, row2, col2, row3, col3);
 
             }
             default -> {
@@ -116,7 +112,7 @@ public class InputValidator {
                     return null;
             }
         }
-            return (TilesPicked) messageToServer;
+            return (PickTilesAction) messageToServer;
 
         } catch (NumberFormatException e) {
             System.out.println("Input error, please try again!");
@@ -130,7 +126,7 @@ public class InputValidator {
      * @param input
      * @return
      */
-    public TilesPlaced checkTilesPlaced(String[] input) {
+    public PlaceTilesAction placeTiles(String[] input) {
 
         String[] tiles = new String[input.length - 1];
 
@@ -138,7 +134,7 @@ public class InputValidator {
             tiles[i - 1] = input[i];
         }
 
-        GameAction messageToServer = new TilesPlaced(tiles);
+        GameAction messageToServer = new PlaceTilesAction(tiles);
 
 //            switch (numOfTiles) {
 //                case "ONE" -> {
@@ -147,9 +143,9 @@ public class InputValidator {
 //
 //                    if (row1 < 0 || col1 < 0 || row1 > MAXBOOKSHELFROW || col1 > MAXBOOKSHELFCOL) {
 //                        System.out.println("The selected coordinates are out of the Bookshelf space! Please select new coordinates!\n");
-//                        cli.requestWhereToPlaceTiles(new RequestWhereToPlaceTiles().getAnswer());
+//                        cli.requestWhereToPlaceTiles(new PlaceTilesRequest().getAnswer());
 //                    } else
-//                        messageToServer = new TilesPlaced(row1, col1);
+//                        messageToServer = new PlaceTilesAction(row1, col1);
 //                }
 //                case "TWO" -> {
 //                    int row1 = Integer.parseInt(coordinates[1]) - 1;
@@ -159,12 +155,12 @@ public class InputValidator {
 //
 //                    if (row1 < 0 || col1 < 0 || row1 > MAXBOOKSHELFROW || col1 > MAXBOOKSHELFCOL || row2 < 0 || col2 < 0 || row2 > MAXBOOKSHELFROW || col2 > MAXBOOKSHELFCOL) {
 //                        System.out.println("The selected coordinates are out of the Bookshelf space! Please select new coordinates!\n");
-//                        cli.requestWhereToPlaceTiles(new RequestWhereToPlaceTiles().getAnswer());
+//                        cli.requestWhereToPlaceTiles(new PlaceTilesRequest().getAnswer());
 //                    } else if (row1 != row2) {
 //                        System.out.println("You have to place the tiles on the same column! Please select new coordinates!\n");
-//                        cli.requestWhereToPlaceTiles(new RequestWhereToPlaceTiles().getAnswer());
+//                        cli.requestWhereToPlaceTiles(new PlaceTilesRequest().getAnswer());
 //                    } else
-//                        messageToServer = new TilesPlaced(row1, col1, row2, col2);
+//                        messageToServer = new PlaceTilesAction(row1, col1, row2, col2);
 //                }
 //                case "THREE" -> {
 //                    int row1 = Integer.parseInt(coordinates[1]) - 1;
@@ -177,19 +173,19 @@ public class InputValidator {
 //
 //                    if (row1 < 0 || col1 < 0 || row1 > MAXBOOKSHELFROW || col1 > MAXBOOKSHELFCOL || row2 < 0 || col2 < 0 || row2 > MAXBOOKSHELFROW || col2 > MAXBOOKSHELFCOL || row3 < 0 || col3 < 0 || row3 > MAXBOOKSHELFROW || col3 > MAXBOOKSHELFCOL) {
 //                        System.out.println("The selected coordinates are out of the Bookshelf space! Please select new coordinates!\n");
-//                        cli.requestWhereToPlaceTiles(new RequestWhereToPlaceTiles().getAnswer());
+//                        cli.requestWhereToPlaceTiles(new PlaceTilesRequest().getAnswer());
 //                    } else if (row1 != row2 || row1 != row3 || row2 != row3) {
 //                        System.out.println("You have to place the tiles on the same column! Please select new coordinates!\n");
-//                        cli.requestWhereToPlaceTiles(new RequestWhereToPlaceTiles().getAnswer());
+//                        cli.requestWhereToPlaceTiles(new PlaceTilesRequest().getAnswer());
 //                    } else
-//                        messageToServer = new TilesPlaced(row1, col1, row2, col2, row3, col3);
+//                        messageToServer = new PlaceTilesAction(row1, col1, row2, col2, row3, col3);
 //                }
 //                default -> {
 //                    System.out.println("Input error, please try again!");
 //                    return null;
 //                }
 //            }
-            return (TilesPlaced) messageToServer;
+            return (PlaceTilesAction) messageToServer;
 
 //        } catch (NumberFormatException e) {
 //            System.out.println("Input error, please try again!");
@@ -199,16 +195,30 @@ public class InputValidator {
 
 
     /**
+     * Check personal and common goal card scheme.
+     * @param input
+     * @return
+     */
+    public CheckSchemeAction checkScheme(String[] input){
+        return new CheckSchemeAction();
+    }
+
+    /**
      * Shows user manual. List all the possible commands.
      */
     public void manual(){
         String man = """
                 Here all the possible commands:
-                PLAYERS <num_of_players> : use this command when the server asks for the number of players you want to play with.
-                PICKTILES <num_of_tiles> <row1> <col1> <row2> <col2> <row3> <col3>: use this command in order to pick tiles from the board. Note that "<row2> <col2> <row3> <col3>" are optional inputs.
-                PLACETILES <Tile1> <Tile2> <Tile3> <column>: use this command in order to place the tiles in your bookshelf. Note that "<Tile2> <Tile3>" are optional inputs.
-                EXIT : in order to close the game.
-                MAN : here we go again.
+                - PLAYERS <num_of_players> : use this command when the server asks for the number of players you want to play with.
+                - PICKTILES <num_of_tiles> <row1> <col1> <row2> <col2> <row3> <col3>: use this command in order to pick tiles from the board.
+                  <num_of_tiles> : number of tiles you want to pick. Possible options are ONE, TWO, THREE.
+                  <row> <col> : row and column of the board, based on how many tiles you want to pick.
+                  Note that "<row2> <col2> <row3> <col3>" are optional inputs.
+                - PLACETILES <Tile1> <Tile2> <Tile3> <column>: use this command in order to place the tiles in your bookshelf.
+                  <Tile> : Possible options are YELLOW, BLUE, LIGHTBLUE, GREEN, WHITE, PINK.
+                  Note that "<Tile2> <Tile3>" are optional inputs.
+                - EXIT : in order to close the game.
+                - MAN : here we go again.
                 """;
         System.out.println(BLUE_BOLD_COLOR + man + RESET_COLOR);
         System.out.println(">");

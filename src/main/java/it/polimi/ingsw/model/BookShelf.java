@@ -160,8 +160,16 @@ public class BookShelf implements Serializable {
             }
             System.out.print("]");
             System.out.println();
-            }
         }
+
+        // Print column numbers
+        System.out.print("   ");
+        for (int k = 0; k < MAXBOOKSHELFCOL; k++) {
+            System.out.print(CYAN_BOLD_COLOR + k + RESET_COLOR);
+            System.out.print("  ");
+        }
+        System.out.println();
     }
+}
 
 
