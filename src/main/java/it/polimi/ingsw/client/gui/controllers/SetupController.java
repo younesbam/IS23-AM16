@@ -21,8 +21,8 @@ import java.util.logging.Level;
 
 import static java.lang.Integer.parseInt;
 
-public class SetupController extends UI implements GUIController{
-    private GUI gui;
+public class SetupController implements GUIController{
+    private GUIManager guiManager;
 
     @FXML
     private TextField username;
@@ -46,18 +46,19 @@ public class SetupController extends UI implements GUIController{
                 connectionType = ConnectionType.SOCKET;
             else
                 connectionType = ConnectionType.RMI;
-            gui.getModelView().setUsername(username.getText());
+            guiManager.getModelView().setUsername(username.getText());
             //LoaderController loaderController;
             try {
-                connectToServer(connectionType, ipaddress.getText(), parseInt(serverport.getText()), username.getText());
+                guiManager.connectToServer(connectionType, ipaddress.getText(), parseInt(serverport.getText()), username.getText());
                 Client.LOGGER.log(Level.INFO, "Client successfully connected");
             } catch (RemoteException | NotBoundException e) {
                 Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e);
                 System.exit(-1);
             }
-            try {
-                gui.changeStage("loadingScene.fxml");
-                LoadingController loadingController = (LoadingController) gui.getControllerFromName("loadingScene.fxml");
+            guiManager.getModelView().setIsYourTurn(true);
+            guiManager.firePC("action", null, "PLAYERS 2");
+                //guiManager.changeStage("loadingScene.fxml");
+                //LoadingController loadingController = (LoadingController) gui.getControllerFromName("loadingScene.fxml");
 
                 /*gui.getListeners()
                         .addPropertyChangeListener(
@@ -65,7 +66,7 @@ public class SetupController extends UI implements GUIController{
 
 
 
-            } catch (Exception e) {
+             /*catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Duplicate nickname");
                 alert.setHeaderText("Duplicate nickname!");
@@ -85,29 +86,10 @@ public class SetupController extends UI implements GUIController{
         }
     }
 
-    public void setGui(GUI gui) {
-        this.gui = gui;
-        this.pcsDispatcher = new PropertyChangeSupport(gui);
-        this.modelView = new ModelView(gui);
-        this.actionHandler = new ActionHandler(gui, gui.getModelView());
-        setActiveGame(true);
-    }
-    private void howManyPlayerRequest(String s){
-        message.setText(s);
-
-        //updateTurn(true);
-        //setSetupMode(true);
-
-        //pcsDispatcher.firePropertyChange("playerResponse", null, input.nextLine());
-
-        //updateTurn(false);
-    }
     @Override
-    public void propertyChange(PropertyChangeEvent event) {
-        message.setText("Property change");
-        switch (event.getPropertyName()) {
-            case "HowManyPlayersRequest" -> howManyPlayerRequest((String) event.getNewValue());
-
-        }
+    public void setGuiManger(GUIManager guiManager) {
+        this.guiManager = guiManager;
     }
+
+
 }
