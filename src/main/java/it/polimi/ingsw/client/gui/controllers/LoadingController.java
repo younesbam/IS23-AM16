@@ -14,21 +14,22 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.util.Optional;
 
-public class LoadingController extends UI implements GUIController{
+public class LoadingController implements GUIController{
     private GUI gui;
     @FXML
     private Label message;
+    private GUIManager guiManager;
+
     @Override
-    public void setGui(GUI gui) {
-        this.gui = gui;
-        this.pcsDispatcher = new PropertyChangeSupport(gui);
-        this.modelView = new ModelView(gui);
-        this.actionHandler = new ActionHandler(gui, gui.getModelView());
-        setActiveGame(true);
+    public void setGuiManger(GUIManager guiManager) {
+        this.guiManager = guiManager;
     }
 
+    public void setMessage(String message){
+        this.message.setText(message);
+    }
     private void howManyPlayerRequest(String s){
-        message.setText(s);
+        //message.setText(s);
 
 
         //setSetupMode(true);
@@ -50,18 +51,9 @@ public class LoadingController extends UI implements GUIController{
         } else if (result.isPresent() && result.get() == four) {
             players = 4;
         }
-        pcsDispatcher.firePropertyChange("playerResponse", null, players);
+        //pcsDispatcher.firePropertyChange("playerResponse", null, players);
 
         //updateTurn(false);
     }
-    @Override
-    public void propertyChange(PropertyChangeEvent event) {
-        switch (event.getPropertyName()){
-            case "HowManyPlayersRequest" -> howManyPlayerRequest((String) event.getNewValue());
-            //case "SetupCompleted" -> setupCompleted((String) event.getNewValue());
-            //case "UpdateTurn" -> updateTurn((Boolean) event.getNewValue());
 
-
-        }
-    }
 }
