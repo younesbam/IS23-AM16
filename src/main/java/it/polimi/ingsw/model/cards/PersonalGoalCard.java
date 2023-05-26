@@ -43,9 +43,7 @@ public class PersonalGoalCard extends Card {
 
 
     /**
-     * Check the scheme to observe in order to get points.
-     * @param player actual player
-     * @return points achieved
+     * {@inheritDoc}
      */
     public Integer checkScheme(Player player) {
         int matches = 0;
@@ -58,5 +56,13 @@ public class PersonalGoalCard extends Card {
             }
         }
         return points.get(matches);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void printCard(){
+
     }
 }

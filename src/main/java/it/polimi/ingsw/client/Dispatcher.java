@@ -58,12 +58,15 @@ public class Dispatcher implements PropertyChangeListener {
 
         if("action".equals(propertyName)){
             switch (cmd.toUpperCase()){
+                // Messages
                 case "PLAYERS" -> messageToServer = new SerializedMessage(client.getID(), inputValidator.players(splitInput));
+                // Actions
                 case "PICKTILES" -> messageToServer = new SerializedMessage(client.getID(), inputValidator.pickTiles(splitInput));
                 case "PLACETILES" -> messageToServer = new SerializedMessage(client.getID(), inputValidator.placeTiles(splitInput));
-                case "CHECKSCHEME" -> messageToServer = new SerializedMessage(client.getID(), inputValidator.checkScheme(splitInput));
 
+                // Miscellaneous
                 case "MAN" -> inputValidator.manual();
+                case "PRINTCARDS" -> inputValidator.printCards();
                 case "EXIT" -> exitGame();
                 default -> System.out.println("Incomprehensible input. Please try again");
             }

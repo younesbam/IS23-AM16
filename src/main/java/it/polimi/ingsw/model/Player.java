@@ -3,7 +3,9 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.cards.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,7 +27,7 @@ public class Player implements Serializable {
     /**
      * Map that contains the points earned during the game from the related common card.
      */
-    private final Map<CommonGoalCard, Integer> commonCardPointsEarned;
+    private final List<Integer> commonCardPointsEarned;
 
     /**
      * Points earned during the game from the related personal card.
@@ -47,7 +49,10 @@ public class Player implements Serializable {
     public Player(String username, Integer ID){
         this.username = username;
         this.ID = ID;
-        this.commonCardPointsEarned = new HashMap<>();
+        this.commonCardPointsEarned = new ArrayList<>();
+        // Add 2 common goal card points.
+        this.commonCardPointsEarned.add(0);
+        this.commonCardPointsEarned.add(0);
     }
 
     /**
@@ -127,8 +132,8 @@ public class Player implements Serializable {
      */
     public void updateTotalPoints() {
         int total=0;
-        for(CommonGoalCard card : commonCardPointsEarned.keySet()){
-            total += commonCardPointsEarned.get(card);
+        for(int i=0; i<commonCardPointsEarned.size(); i++){
+            total += commonCardPointsEarned.get(i);
         }
         total += personalGoalCardPointsEarned;
         this.totalPoints = total;
@@ -137,32 +142,21 @@ public class Player implements Serializable {
 
     /**
      * Get points earned form the common goal card.
+     * @param i index of the card.  This is strictly related to the index of the common goal card in Game class.
      * @return points earned from that common goal card.
      */
-    public int getCommonCardPointsEarned(CommonGoalCard card) {
-        return this.commonCardPointsEarned.get(card);
+    public int getCommonCardPointsEarned(int i) {
+        return this.commonCardPointsEarned.get(i);
     }
 
 
     /**
      * Set points earned form the common goal card.
-     * @param card you scored from
+     * @param i index of the card.  This is strictly related to the index of the common goal card in Game class.
      * @param value points earned from that common goal card.
      */
-    public void setCommonCardPointsEarned(CommonGoalCard card, int value) {
-        if(this.commonCardPointsEarned.get(card) != null)
-            this.commonCardPointsEarned.replace(card, value);
-    }
-
-
-    /**
-     * Add the common goal card to the map. Easily get earned point based on the common goal card picked.
-     * <p></p>
-     * Note: use this method only when the game set the common goal card.
-     * @param card
-     */
-    public void addCommonGoalCard(CommonGoalCard card){
-        this.commonCardPointsEarned.put(card, 0);
+    public void setCommonCardPointsEarned(int i, int value) {
+        this.commonCardPointsEarned.set(i, value);
     }
 
 
@@ -170,8 +164,17 @@ public class Player implements Serializable {
      * Check personal goal card scheme and automatically update points.
      */
     public void checkPersonalGoalCardScheme(){
-        if(personalGoalCardPointsEarned <= 0)
-            personalGoalCardPointsEarned = personalGoalCard.checkScheme(this);
+        personalGoalCardPointsEarned = personalGoalCard.checkScheme(this);
+    }
+
+
+    /**
+     * Personal goal card setter.
+     * @param card Personal goal card, picked from the bag
+     * @return
+     */
+    public void setPersonalGoalCard(PersonalGoalCard card) {
+        this.personalGoalCard = card;
     }
 
 

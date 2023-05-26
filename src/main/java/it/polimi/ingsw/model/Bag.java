@@ -14,8 +14,8 @@ import static java.util.Collections.shuffle;
  */
 public class Bag implements Serializable {
 
-    private LinkedList<CommonGoalCard> initCommList;
-    private LinkedList<PersonalGoalCard> initPersList;
+    private LinkedList<CommonGoalCard> commList;
+    private LinkedList<PersonalGoalCard> persList;
 
 
     /**
@@ -23,45 +23,37 @@ public class Bag implements Serializable {
      * Then transform the Set to a Queue, in a random order.
      */
     public Bag() {
-        // Create Sets to insert random cards.
-        //initCommSet = new HashSet<>();
-        //initPersSet = new HashSet<>();
 
-        initCommList = new LinkedList<>();
-        initPersList = new LinkedList<>();
+        commList = new LinkedList<>();
+        persList = new LinkedList<>();
 
         /*
         Common card initialization
          */
         // Add common cards in the Set
-        initCommList.add(new EqualCross(1));
-        initCommList.add(new EqualCross(10));
-        initCommList.add(new DiffAligned(2));
-        initCommList.add(new DiffAligned(6));
-        initCommList.add(new EqualInCol(3));
-        initCommList.add(new EqualInCol(4));
-        initCommList.add(new MaxDiffGroup(5));
-        initCommList.add(new MaxDiffGroup(7));
-        initCommList.add(new EqualCorners(8));
-        initCommList.add(new EqualRand(9));
-        initCommList.add(new EqualDiag(11));
-        initCommList.add(new SubMatrix(12));
+        commList.add(new EqualCross(1));
+        commList.add(new EqualCross(10));
+        commList.add(new DiffAligned(2));
+        commList.add(new DiffAligned(6));
+        commList.add(new EqualInCol(3));
+        commList.add(new EqualInCol(4));
+        commList.add(new MaxDiffGroup(5));
+        commList.add(new MaxDiffGroup(7));
+        commList.add(new EqualCorners(8));
+        commList.add(new EqualRand(9));
+        commList.add(new EqualDiag(11));
+        commList.add(new SubMatrix(12));
 
         /*
         Personal card read from json
          */
         JSONParser jsonParser = new JSONParser("json/initSetup.json");
-        initPersList = jsonParser.getPersonalGoalCards();
+        persList = jsonParser.getPersonalGoalCards();
 
-        shuffle(initCommList);
-        shuffle(initPersList);
+        // Shuffle the cards
+        shuffle(commList);
+        shuffle(persList);
 
-
-        /*
-        Final operations
-         */
-        // Transform the Set into priority queue. Useful to poll the first element.
-        // TODO: dà errore quando trasformo il set in una queue perchè rompe qualcosa di Comparable. Non va manco la lista.
     }
 
 
@@ -73,7 +65,7 @@ public class Bag implements Serializable {
      */
     public CommonGoalCard pickCommonGoalCard(int playerNum) throws NullPointerException {
         CommonGoalCard comCard;
-        comCard = initCommList.poll();
+        comCard = commList.poll();
         if(comCard == null) throw new NullPointerException("Common card's deck is empty");
         comCard.placePoints(playerNum);
         return comCard;
@@ -87,7 +79,7 @@ public class Bag implements Serializable {
      */
     public PersonalGoalCard pickPersonalGoalCard() throws NullPointerException {
         PersonalGoalCard persCard;
-        persCard = initPersList.poll();
+        persCard = persList.poll();
         if(persCard == null) throw new NullPointerException("Personal card's deck is empty");
         return persCard;
     }
