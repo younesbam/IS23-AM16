@@ -38,7 +38,7 @@ public class EqualCross extends CommonGoalCard {
                 repetition = 2;
                 squareSide = 2;
             }
-            case 2 -> {
+            case 10 -> {
                 repetition = 1;
                 squareSide = 3;
             }
@@ -79,7 +79,17 @@ public class EqualCross extends CommonGoalCard {
                 /*
                 Controllo se contiene qualche tessera di tipo BLANK; in tal caso, discard. Controllo che le due liste siano uguali.
                  */
-                if(Utils.equalLists(firstDiag, secDiag) && !firstDiag.contains(Tile.BLANK) && !secDiag.contains(Tile.BLANK))
+                Tile eqTile = firstDiag.get(0);
+                boolean match = true;
+                for(int n=0; n<firstDiag.size(); n++){
+                    if(firstDiag.contains(Tile.BLANK) || secDiag.contains(Tile.BLANK) ||
+                            !firstDiag.get(n).equals(eqTile) ||
+                            !secDiag.get(n).equals(eqTile)) {
+                        match = false;
+                        break;
+                    }
+                }
+                if(match)
                     actualRepetition++;
                 if(actualRepetition>=repetition)
                     return getScore();

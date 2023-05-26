@@ -20,16 +20,21 @@ class DiffAlignedTest extends CardTest {
     @ParameterizedTest
     @ValueSource(ints = {2, 6})
     public void checkAlgorithm(int cardID) {
-        // Common goal card instantiated.
-        commonCard = new DiffAligned(cardID);
-        // Test with 2 players.
-        commonCard.placePoints(2);
-
         JSONArray test = getBookshelfFromJSON(cardID);
         // Iterate all the objects in the array. Each element is an object of boh, it's hidden now.
         for(int j=0; j< test.length(); j++){
+            // New player.
+            player = new Player("MarioRossi", 20);
+            // Common goal card instantiated.
+            commonCard = new DiffAligned(cardID);
+            // Test with 2 players.
+            commonCard.placePoints(2);
+
             // Get each object in a variable. Now we don't know what's inside
             JSONObject objInTest = test.getJSONObject(j);
+            // Print which test is running.
+            System.out.println(objInTest.getString("descr"));
+            // Get coordinates.
             JSONArray coordinates = objInTest.getJSONArray("coordinates");
             // Iterate all the objects in the array. Each element is an object of boh, it's hidden now.
             for(int k=0; k< coordinates.length(); k++){
@@ -52,9 +57,9 @@ class DiffAlignedTest extends CardTest {
              */
             boolean valid = objInTest.getBoolean("valid");
             if(valid)
-                assertEquals(commonCard.checkScheme(player), commonCard.getScore());
+                assertEquals(8, commonCard.checkScheme(player));
             else
-                assertEquals(commonCard.checkScheme(player), 0);
+                assertEquals(0, commonCard.checkScheme(player));
         }
     }
 }

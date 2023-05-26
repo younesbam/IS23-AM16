@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
 import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
 
@@ -57,30 +60,60 @@ public class EqualInCol extends CommonGoalCard {
         final int maxRow;
         int k = 0;
         Cell[][] grid = player.getBookShelf().getGrid();
-        Tile tileType;
-        Tile nextTileType;
 
-        maxRow = MAXBOOKSHELFROW - eq + 1;  // Definisco il numero massimo a cui può arrivare la tessera di riferimento, in base al numero di tessere che devo controllare.
-        for(int i = 0; i< MAXBOOKSHELFCOL; i++){
-            for(int j=0; j<maxRow; j++){
-                tileType = grid[j][i].getTile();
-                k=j+1;
-                while(k-j<eq){  // Perchè è un riferimento relativo non assoluto.
-                    nextTileType = grid[k][i].getTile();
-                    if(tileType == nextTileType && tileType != Tile.BLANK)
-                        actualEq++;
-                    k++;
+        //maxRow = MAXBOOKSHELFROW - eq + 1;  // Definisco il numero massimo a cui può arrivare la tessera di riferimento, in base al numero di tessere che devo controllare.
+        List<Tile> list = new ArrayList<>();
+        for(int i=0; i<MAXBOOKSHELFCOL; i++) {
+            list.clear();
+            k=0;
+            while(k<=MAXBOOKSHELFROW-eq) {
+                list.clear();
+                for(int j=k; j<eq+k; j++){
+                    list.add(grid[j][i].getTile());
                 }
-                if(actualEq >= eq)
+                if(eqTiles(list))
                     actualRepetition++;
-                if(actualRepetition >= repetition)
+                if(actualRepetition >= repetition){
                     return getScore();
-                actualEq = 0;  // Azzero per passare al prossimo gruppo di tessere uguali.
+                }
+                k++;
             }
         }
+//        maxRow = MAXBOOKSHELFROW - eq + 1;  // Definisco il numero massimo a cui può arrivare la tessera di riferimento, in base al numero di tessere che devo controllare.
+//        for(int i = 0; i< MAXBOOKSHELFCOL; i++){
+//            for(int j=0; j<maxRow; j++){
+//                tileType = grid[j][i].getTile();
+//                k=j+1;
+//                while(k-j<eq){  // Perchè è un riferimento relativo non assoluto.
+//                    nextTileType = grid[k][i].getTile();
+//                    if(tileType == nextTileType && tileType != Tile.BLANK)
+//                        actualEq++;
+//                    k++;
+//                }
+//                if(actualEq >= eq)
+//                    actualRepetition++;
+//                if(actualRepetition >= repetition)
+//                    return getScore();
+//                actualEq = 0;  // Azzero per passare al prossimo gruppo di tessere uguali.
+//            }
+//        }
         return 0;
     }
 
+
+    /**
+     * Check whether all the tiles are equals.
+     * @param list of tiles contained in one row/column.
+     * @return true if all tiles are equals.
+     */
+    private boolean eqTiles(List<Tile> list){
+        for(int i=0; i<list.size()-1; i++){
+            for(int j=i+1; j<list.size(); j++)
+                if(!list.get(i).equals(list.get(j)) || list.contains(Tile.BLANK))
+                    return false;
+        }
+        return true;
+    }
 
     /**
      * {@inheritDoc}

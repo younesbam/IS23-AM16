@@ -821,11 +821,11 @@
               "type": "WHITE"
             },
             {
-              "x": 0,
+              "x": 1,
               "type": "WHITE"
             },
             {
-              "x": 0,
+              "x": 1,
               "type": "WHITE"
             },
             {
@@ -1849,6 +1849,10 @@
               "type": "LIGHTBLUE"
             },
             {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
               "x": 4,
               "type": "YELLOW"
             },
@@ -2128,7 +2132,7 @@
             },
             {
               "x": 0,
-              "type": "BLUE"
+              "type": "PINK"
             },
             {
               "x": 0,
@@ -2180,7 +2184,7 @@
             },
             {
               "x": 2,
-              "type": "WHITE"
+              "type": "YELLOW"
             },
             {
               "x": 2,
@@ -2224,7 +2228,7 @@
             },
             {
               "x": 4,
-              "type": "PINK"
+              "type": "WHITE"
             },
             {
               "x": 4,
@@ -2637,6 +2641,10 @@
             {
               "x": 3,
               "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
             },
             {
               "x": 4,
@@ -3256,7 +3264,7 @@
             },
             {
               "x": 3,
-              "type": "GREEN•"
+              "type": "GREEN"
             },
             {
               "x": 3,
@@ -4776,10 +4784,6 @@
             {
               "x": 4,
               "type": "PINK"
-            },
-            {
-              "x": 5,
-              "type": "PINK"
             }
           ]
         },
@@ -4825,7 +4829,7 @@
             },
             {
               "x": 3,
-              "type": "GREEN"
+              "type": "PINK"
             },
             {
               "x": 3,
