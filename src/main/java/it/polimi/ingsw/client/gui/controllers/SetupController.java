@@ -7,6 +7,7 @@ import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.common.ConnectionType;
 import it.polimi.ingsw.server.connection.CSConnection;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -56,8 +57,11 @@ public class SetupController implements GUIController{
                 System.exit(-1);
             }
             guiManager.getModelView().setIsYourTurn(true);
-            guiManager.firePC("action", null, "PLAYERS 2");
-                //guiManager.changeStage("loadingScene.fxml");
+            //guiManager.firePC("PLAYERS 2");
+            Platform.runLater(() -> {
+                guiManager.getGui().changeStage("loadingScene.fxml");
+            });
+            //guiManager.changeStage("loadingScene.fxml");
                 //LoadingController loadingController = (LoadingController) gui.getControllerFromName("loadingScene.fxml");
 
                 /*gui.getListeners()
