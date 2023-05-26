@@ -29,16 +29,19 @@ public class DiffAligned extends CommonGoalCard {
      */
     public DiffAligned(int cardNumber) {
         super(cardNumber);
-        switch(cardNumber){
-            case 2:
+        switch (cardNumber) {
+            case 2 -> {
                 repetition = 2;
                 dir = Direction.N;
-            case 6:
+            }
+            case 6 -> {
                 repetition = 2;
                 dir = Direction.E;
-            default:
+            }
+            default -> {
                 repetition = -1;
                 dir = Direction.N;
+            }
         }
     }
 

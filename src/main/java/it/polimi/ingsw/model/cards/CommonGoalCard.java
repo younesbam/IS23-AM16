@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -13,11 +15,11 @@ public abstract class CommonGoalCard extends Card {
     /**
      * Score queue. This is based on the number of players in the game
      */
-    private Queue<Integer> score;
+    private LinkedList<Integer> score;
 
     public CommonGoalCard(int cardNumber){
         this.cardNumber = cardNumber;
-        score = new PriorityQueue<>();
+        score = new LinkedList<>();
     }
 
     /**
@@ -44,18 +46,21 @@ public abstract class CommonGoalCard extends Card {
      */
     public void placePoints(int playerNum){
         switch (playerNum) {
-            case 2:
+            case 2 -> {
                 score.add(8);
                 score.add(4);
-            case 3:
+            }
+            case 3 -> {
                 score.add(8);
                 score.add(6);
                 score.add(4);
-            case 4:
+            }
+            case 4 -> {
                 score.add(8);
                 score.add(6);
                 score.add(4);
                 score.add(2);
+            }
         }
     }
 }

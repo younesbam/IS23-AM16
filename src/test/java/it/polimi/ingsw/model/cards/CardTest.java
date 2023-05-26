@@ -17,7 +17,7 @@ class CardTest {
     /*
     Player.
      */
-    Player player = new Player("MarioRossi", 20);
+    Player player;
     /*
     Common goal card.
      */

@@ -24,11 +24,11 @@ class EqualRandTest extends CardTest{
         for(int j=0; j< test.length(); j++){
             // Get each object in a variable. Now we don't know what's inside
             JSONObject objInTest = test.getJSONObject(j);
-            JSONArray coordinates = objInTest.getJSONArray("bookshelf");
+            JSONArray coordinates = objInTest.getJSONArray("coordinates");
             // Iterate all the objects in the array. Each element is an object of boh, it's hidden now.
             for(int k=0; k< coordinates.length(); k++){
                 // Get each object in a variable. Now we don't know what's inside
-                JSONObject objInCoordinates = test.getJSONObject(k);
+                JSONObject objInCoordinates = coordinates.getJSONObject(k);
 
                 int col = objInCoordinates.getInt("x");
                 Tile tile = Tile.valueOf(objInCoordinates.getString("type").toUpperCase());

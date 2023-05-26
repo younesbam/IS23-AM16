@@ -34,15 +34,17 @@ public class EqualInCol extends CommonGoalCard {
      */
     public EqualInCol(int cardNumber) {
         super(cardNumber);
-        switch (cardNumber){
-            case 3:
+        switch (cardNumber) {
+            case 3 -> {
                 eq = 4;
                 repetition = 4;
                 dir = Direction.N;
-            case 4:
+            }
+            case 4 -> {
                 eq = 2;
                 repetition = 6;
                 dir = Direction.N;
+            }
         }
     }
 

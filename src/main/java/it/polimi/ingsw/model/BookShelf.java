@@ -74,7 +74,7 @@ public class BookShelf implements Serializable {
     public void placeTiles(int column, List<Tile> list){
         //TODO: le celle vengono riempite dall'alto! Bisogna partire dal basso a riempire la bookshelf!
         int i=0;
-        while (i <6 && grid[i][column].getTile() == Tile.BLANK)
+        while (i < MAXBOOKSHELFROW && grid[i][column].getTile() == Tile.BLANK)
             i++;
 
         i--;

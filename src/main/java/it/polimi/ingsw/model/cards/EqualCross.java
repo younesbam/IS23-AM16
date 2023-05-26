@@ -33,13 +33,15 @@ public class EqualCross extends CommonGoalCard {
      */
     public EqualCross(int cardNumber) {
         super(cardNumber);
-        switch(cardNumber){
-            case 1:
+        switch (cardNumber) {
+            case 1 -> {
                 repetition = 2;
                 squareSide = 2;
-            case 2:
+            }
+            case 2 -> {
                 repetition = 1;
                 squareSide = 3;
+            }
         }
     }
 
@@ -69,7 +71,7 @@ public class EqualCross extends CommonGoalCard {
                 tanto devo controllare che siano tutte uguali, non quante.
                  */
                 ref = grid[j][i].getTile();
-                while(k<=squareSide){
+                while(k<squareSide){
                     firstDiag.add(grid[j+k][i+k].getTile());
                     secDiag.add(grid[j+k][i+(squareSide-1)-k].getTile());  // Tessera di riferimento di coordinare i+lato del quadrato
                     k++;

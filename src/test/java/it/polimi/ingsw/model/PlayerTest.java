@@ -36,12 +36,12 @@ class PlayerTest {
 
     @Test
     void bookShelfTest() {
-        List<Tile> tiles = new ArrayList<>();
-        tiles = Collections.singletonList(Tile.PINK);
-        bs.placeTiles(1, tiles);
-        player.setBookShelf(bs);
-
-        assertEquals(bs, player.getBookShelf());
+//        List<Tile> tiles = new ArrayList<>();
+//        tiles = Collections.singletonList(Tile.PINK);
+//        bs.placeTiles(1, tiles);
+//        player.setBookShelf(bs);
+//
+//        assertEquals(bs, player.getBookShelf());
     }
 
     @Test

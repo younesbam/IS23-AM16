@@ -53,7 +53,6 @@ public class ActionHandler {
      */
     public void answerManager(Answer a){
 
-
         if(a instanceof PlayerNumberChosen){
             pcsView.firePropertyChange("PlayerNumberChosen", null, a.getAnswer());
             return;

@@ -47,6 +47,7 @@ public class Player implements Serializable {
      * @param ID
      */
     public Player(String username, Integer ID){
+        this.bookShelf = new BookShelf();
         this.username = username;
         this.ID = ID;
         this.commonCardPointsEarned = new ArrayList<>();
@@ -95,13 +96,13 @@ public class Player implements Serializable {
     public BookShelf getBookShelf() {
         return bookShelf; }
 
-    /**
-     * Bookshelf setter.
-     * @param bookShelf
-     */
-    public void setBookShelf(BookShelf bookShelf){
-        this.bookShelf = bookShelf;
-    }
+//    /**
+//     * Bookshelf setter.
+//     * @param bookShelf
+//     */
+//    public void setBookShelf(BookShelf bookShelf){
+//        this.bookShelf = bookShelf;
+//    }
 
     /**
      * Number of turns getter.
