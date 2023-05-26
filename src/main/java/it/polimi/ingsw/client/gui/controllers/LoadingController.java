@@ -36,7 +36,7 @@ public class LoadingController implements GUIController{
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Lobby capacity");
         alert.setHeaderText("Choose the number of players.");
-        alert.setContentText(((HowManyPlayersRequest) gui.getModelView().getAnswerFromServer().getAnswer()).toString());
+        alert.setContentText(((HowManyPlayersRequest) guiManager.getModelView().getAnswerFromServer().getAnswer()).toString());
 
         ButtonType two = new ButtonType("2");
         ButtonType three = new ButtonType("3");
