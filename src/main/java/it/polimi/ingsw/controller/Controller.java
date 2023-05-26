@@ -56,7 +56,6 @@ public class Controller implements PropertyChangeListener {
         //select a personal goal card for each player
         for (i = 0; i < game.getNumOfPlayers(); i++) {
             game.getPlayers().get(i).setPersonalGoalCard(game.getBag().pickPersonalGoalCard());
-            game.getPlayers().get(i).setBookShelf(new BookShelf());
         }
 
         game.createBoard();
@@ -356,14 +355,15 @@ public class Controller implements PropertyChangeListener {
                 }
             }
 
-            game.getCurrentPlayer().getBookShelf().checkColumn(column - 1, coordinates.length - 1);
-            game.getCurrentPlayer().getBookShelf().placeTiles(column - 1, rightOrderTiles);
+            game.getCurrentPlayer().getBookShelf().checkColumn(column, coordinates.length - 1);
+            game.getCurrentPlayer().getBookShelf().placeTiles(column, rightOrderTiles);
 
             gameHandler.sendToEveryone(new GameReplica(game));
             gameHandler.sendToPlayer(new BookShelfFilledWithTiles(), currentPlayer.getID());
 
             // Check scheme of personal and common cards. Also update points.
             checkScheme();
+            gameHandler.sendToPlayer(new CustomAnswer(false, "Total points earned until now: " + game.getCurrentPlayer().getTotalPoints()),currentPlayer.getID());
 
             if(!checkEndGame()){
                 nextPlayer();

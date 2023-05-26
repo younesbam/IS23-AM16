@@ -234,7 +234,7 @@ public class InputValidator {
                 - MAN : here we go again.
                 """;
         System.out.println(BLUE_BOLD_COLOR + man + RESET_COLOR);
-        System.out.println(">");
+        System.out.print(">");
     }
 
     /**

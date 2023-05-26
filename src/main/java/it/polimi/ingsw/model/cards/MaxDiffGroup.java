@@ -41,17 +41,19 @@ public class MaxDiffGroup extends CommonGoalCard {
      */
     public MaxDiffGroup(int cardNumber) {
         super(cardNumber);
-        switch (cardNumber){
-            case 5:
+        switch (cardNumber) {
+            case 5 -> {
                 maxNotEq = 3;
                 repetition = 3;
                 group = 6;
                 dir = Direction.N;
-            case 7:
+            }
+            case 7 -> {
                 maxNotEq = 3;
                 repetition = 4;
                 group = 5;
                 dir = Direction.E;
+            }
         }
     }
 
