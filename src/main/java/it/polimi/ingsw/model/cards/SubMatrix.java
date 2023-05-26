@@ -19,10 +19,7 @@ public class SubMatrix extends CommonGoalCard {
     }
 
     /**
-     * Check if the player respect the rules to achieve the card's points
-     * @param player actual player
-     * @return Integer which represent the points that the player can obtain. 0 can be returned
-     * @author Nicolo' Gandini
+     * {@inheritDoc}
      */
     public Integer checkScheme(Player player) {
         /*
@@ -42,5 +39,13 @@ public class SubMatrix extends CommonGoalCard {
                 return 0;
         }
         return getScore();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void printCard(){
+
     }
 }

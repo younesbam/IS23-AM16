@@ -65,7 +65,7 @@ public class Controller implements PropertyChangeListener {
 
         gameHandler.sendToEveryone(new GameReplica(game));
 
-        askWhatToDo();
+        askToPickTiles();
         //the game board should be already filled with tiles
     }
 
@@ -82,7 +82,7 @@ public class Controller implements PropertyChangeListener {
     /**
      * Method used to ask the player what he wants to do at the start of his turn.
      */
-    public void askWhatToDo(){
+    private void askToPickTiles(){
         gameHandler.sendToPlayer(new PickTilesRequest(), currentPlayer.getID());
     }
 
@@ -114,7 +114,7 @@ public class Controller implements PropertyChangeListener {
     }
 
 
-    public void askToPlaceTiles(){
+    private void askToPlaceTiles(){
         gameHandler.sendToPlayer(new PlaceTilesRequest(), getCurrentPlayer().getID());
     }
 
@@ -122,17 +122,18 @@ public class Controller implements PropertyChangeListener {
     /**
      * Method called after every turn, it checks if the current player has reached any common goal in this turn.
      */
-    public void checkCommonGoal() {
+    private void checkCommonGoal() {
         int points = 0;
         /*
         Iterate all the common cards in the game and check the related scheme.
         If respected, add points to the current player.
+        Check also if the player has already earned points from the card. If true, skip control.
          */
-        for(CommonGoalCard card : game.getCommonGoalCards()){
-            points = currentPlayer.getCommonCardPointsEarned(card);
-            if(points <= 0){
-                currentPlayer.setCommonCardPointsEarned(card, card.checkScheme(currentPlayer));
-            }
+        for(int i=0; i<game.getCommonGoalCards().size(); i++){
+            CommonGoalCard card = game.getCommonGoalCards().get(i);
+            points = currentPlayer.getCommonCardPointsEarned(i);
+            if(points <= 0)
+                currentPlayer.setCommonCardPointsEarned(i, card.checkScheme(currentPlayer));
         }
 
 //        for (int i = 0; i < 2; i++) {
@@ -151,7 +152,7 @@ public class Controller implements PropertyChangeListener {
     /**
      * Method called at the end of the game to calculate the points gained by the personal goal.
      */
-    public void checkPersonalGoal() {
+    private void checkPersonalGoal() {
         currentPlayer.checkPersonalGoalCardScheme();
 //        int numOfPlayers = game.getNumOfPlayers();
 //
@@ -361,14 +362,14 @@ public class Controller implements PropertyChangeListener {
             gameHandler.sendToEveryone(new GameReplica(game));
             gameHandler.sendToPlayer(new BookShelfFilledWithTiles(), currentPlayer.getID());
 
-            checkPersonalGoal(currentPlayer);
-            checkCommonGoal();
+            // Check scheme of personal and common cards. Also update points.
+            checkScheme();
 
             if(!checkEndGame()){
                 nextPlayer();
             }
             gameHandler.sendToEveryone(new GameReplica(game));
-            askWhatToDo();
+            askToPickTiles();
         }
         catch (InvalidParameterException e){
             gameHandler.sendToPlayer(new CustomAnswer(false, "Invalid parameters!"), currentPlayer.getID());
@@ -379,7 +380,11 @@ public class Controller implements PropertyChangeListener {
     }
 
 
-    public void checkSchemeAction(String[] s){
+    /**
+     * Check the scheme of both commons and personal goal card. ALso update points of the player.
+     * @param s
+     */
+    private void checkScheme(){
         checkCommonGoal();
         checkPersonalGoal();
         updateTotalPoints();
@@ -389,7 +394,6 @@ public class Controller implements PropertyChangeListener {
         switch (evt.getPropertyName()){
             case "PickTilesAction" -> pickTilesAction((int[][]) evt.getNewValue());
             case "PlaceTilesAction" -> placeTilesAction((String[]) evt.getNewValue());
-            case "CheckSchemeAction" -> checkSchemeAction((String[]) evt.getNewValue());
         }
 
     }

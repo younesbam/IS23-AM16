@@ -56,9 +56,7 @@ public class MaxDiffGroup extends CommonGoalCard {
     }
 
     /**
-     * Check if the player respect the rules to obtain the card's points
-     * @param player actual player
-     * @return Integer which represent the points that the player can obtain. 0 can be returned
+     * {@inheritDoc}
      */
     public Integer checkScheme(Player player) {
         int occurrences = 0;  // Viene incrementato se il tipo è trovato all'interno del Set.
@@ -97,5 +95,13 @@ public class MaxDiffGroup extends CommonGoalCard {
             }
         }
         return 0;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void printCard(){
+
     }
 }

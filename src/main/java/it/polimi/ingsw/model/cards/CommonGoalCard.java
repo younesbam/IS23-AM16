@@ -58,13 +58,4 @@ public abstract class CommonGoalCard extends Card {
                 score.add(2);
         }
     }
-
-
-    /**
-     * Check the scheme to observe in order to get points.
-     * @param player actual player
-     * @return points achieved
-     */
-    public abstract Integer checkScheme(Player player);
-
 }

@@ -32,9 +32,7 @@ public class EqualRand extends CommonGoalCard {
     }
 
     /**
-     * Check if the player respect the rules to obtain the card's points
-     * @param player actual player
-     * @return Integer which represent the points that the player can obtain. 0 can be returned
+     * {@inheritDoc}
      */
     public Integer checkScheme(Player player) {
         Cell[][] grid = player.getBookShelf().getGrid();
@@ -56,5 +54,13 @@ public class EqualRand extends CommonGoalCard {
             }
         }
         return 0;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void printCard(){
+
     }
 }

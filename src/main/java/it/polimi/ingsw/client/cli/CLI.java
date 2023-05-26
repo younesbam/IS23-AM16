@@ -202,7 +202,6 @@ public class CLI extends UI implements Runnable{
     private void initialPhaseOfTheTurn(String request){
         modelView.setIsYourTurn(true);
 
-
         System.out.println("\n\nHere is your Bookshelf:\n");
         modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
 
@@ -212,7 +211,7 @@ public class CLI extends UI implements Runnable{
         System.out.println("\n");
 
         printMAN();
-        System.out.println(request + "\n>");
+        System.out.print(request + "\n>");
     }
 
 

@@ -43,9 +43,7 @@ public class DiffAligned extends CommonGoalCard {
     }
 
     /**
-     * Check if the player respect the rules to obtain the card's points
-     * @param player actual player
-     * @return Integer which represent the points that the player can obtain. 0 can be returned
+     * {@inheritDoc}
      */
     public Integer checkScheme(Player player) {
         int actualRepetition = 0;  // Rappresenta il numero di ripetizioni dello stesso algoritmo. Sulle carte indicate come "x2", "x3"...
@@ -104,5 +102,13 @@ public class DiffAligned extends CommonGoalCard {
             }
         }
         return 0;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void printCard(){
+
     }
 }

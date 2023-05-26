@@ -126,7 +126,7 @@ class ControllerTest {
         // Add random points to the current player's score
         Random random = new Random();
         int pointsAdded = random.nextInt();
-        controller.updateTotalPoints(pointsAdded);
+        controller.updateTotalPoints();//controller.updateTotalPoints(pointsAdded);
 
         // Check if the current player's score has been updated correctly
         assertEquals(pointsAdded, controller.getGame().getCurrentPlayer().getTotalPoints()- prevPoints);

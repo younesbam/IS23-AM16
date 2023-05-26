@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.communications.clientmessages.actions.CheckSchemeAction;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
@@ -178,10 +177,6 @@ public class GameHandler {
         }
         if(action instanceof PlaceTilesAction){
             pcsController.firePropertyChange("PlaceTilesAction", null, ((PlaceTilesAction) action).getCoordinates());
-            return;
-        }
-        if(action instanceof CheckSchemeAction) {
-            pcsController.firePropertyChange("CheckSchemeAction", null, null);
             return;
         }
     }

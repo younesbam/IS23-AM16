@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.cards.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Game class contains the main elements of a game match.
@@ -21,21 +22,13 @@ public class Game implements Serializable {
     private Player currentPlayer;
     private int currentPlayerID;
     private int numOfPlayers;
-    private final ArrayList<CommonGoalCard> commonGoalCards = new ArrayList<>();
+    private final List<CommonGoalCard> commonGoalCards = new ArrayList<>();
     private final Bag bag;
 
 
     public Game() {
-
+        // Only the bag instance, because the board must me created when we know the number of players.
         this.bag = new Bag();
-
-        /*
-         * Factory method to create the board based on the number of players.
-        */
-
-         // TODO: da istanziare la board nel controller durante il setup iniziale
-//        this.creationFactory = new CreationFactory();
-//        this.board = creationFactory.createBoard(numOfPlayers);
     }
 
     /**
@@ -66,7 +59,7 @@ public class Game implements Serializable {
 
     public ArrayList<Player> getPlayers() {return this.players;}
 
-    public ArrayList<CommonGoalCard> getCommonGoalCards() {return this.commonGoalCards;}
+    public List<CommonGoalCard> getCommonGoalCards() {return this.commonGoalCards;}
 
 
     /**

@@ -206,9 +206,7 @@ public class Server {
      * @param action game action from client
      */
     private void actionHandler(VirtualPlayer currentPlayer, GameAction action){
-        if(action instanceof PickTilesAction || action instanceof PlaceTilesAction){
-            getGameHandlerByID(currentPlayer.getID()).dispatchActions(action);
-        }
+        getGameHandlerByID(currentPlayer.getID()).dispatchActions(action);
     }
 
 

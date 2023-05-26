@@ -2,11 +2,14 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.common.Client;
-import it.polimi.ingsw.communications.clientmessages.actions.CheckSchemeAction;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
 import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
+import it.polimi.ingsw.model.cards.CommonGoalCard;
+import it.polimi.ingsw.model.cards.PersonalGoalCard;
+
+import java.util.List;
 
 import static it.polimi.ingsw.Const.*;
 
@@ -195,12 +198,20 @@ public class InputValidator {
 
 
     /**
-     * Check personal and common goal card scheme.
-     * @param input
-     * @return
+     * Print both common and personal goal cards.
      */
-    public CheckSchemeAction checkScheme(String[] input){
-        return new CheckSchemeAction();
+    public void printCards(){
+        List<CommonGoalCard> commons = modelView.getGame().getCommonGoalCards();
+        PersonalGoalCard personal = modelView.getGame().getCurrentPlayer().getPersonalGoalCard();
+
+        // Print commons.
+        for(int i=0; i < commons.size(); i++){
+            commons.get(i).printCard();
+        }
+        System.out.println("");
+
+        // Print personal.
+        personal.printCard();
     }
 
     /**
@@ -209,14 +220,16 @@ public class InputValidator {
     public void manual(){
         String man = """
                 Here all the possible commands:
-                - PLAYERS <num_of_players> : use this command when the server asks for the number of players you want to play with.
+                - PLAYERS <num_of_players> : use this command when the server asks for the number of players you want to play with. Numeric format.
                 - PICKTILES <num_of_tiles> <row1> <col1> <row2> <col2> <row3> <col3>: use this command in order to pick tiles from the board.
                   <num_of_tiles> : number of tiles you want to pick. Possible options are ONE, TWO, THREE.
-                  <row> <col> : row and column of the board, based on how many tiles you want to pick.
+                  <row> <col> : row and column of the board, based on how many tiles you want to pick. Numeric format.
                   Note that "<row2> <col2> <row3> <col3>" are optional inputs.
                 - PLACETILES <Tile1> <Tile2> <Tile3> <column>: use this command in order to place the tiles in your bookshelf.
                   <Tile> : Possible options are YELLOW, BLUE, LIGHTBLUE, GREEN, WHITE, PINK.
+                  <column> : column where you want to place the tiles. Numeric format.
                   Note that "<Tile2> <Tile3>" are optional inputs.
+                - PRINTCARDS : print both common and personal goal cards.
                 - EXIT : in order to close the game.
                 - MAN : here we go again.
                 """;
