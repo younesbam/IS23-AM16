@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
 import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
 
@@ -50,12 +53,9 @@ public class DiffAligned extends CommonGoalCard {
      */
     public Integer checkScheme(Player player) {
         int actualRepetition = 0;  // Rappresenta il numero di ripetizioni dello stesso algoritmo. Sulle carte indicate come "x2", "x3"...
-        int k = 0;  // Variabile incrementale che controlla le tessere sulla stessa riga/colonna.
         final int maxI;
         final int maxJ;
         Cell[][] grid = player.getBookShelf().getGrid();
-        Tile tileType;
-        Tile nextTileType;
 
         /*
         Le variabili maxI e maxJ servono per dare un limite alla tabella. La variabile j è quella che incrementa sempre
@@ -64,47 +64,43 @@ public class DiffAligned extends CommonGoalCard {
         Se devo controllare in orizzontale che le tessere siano diverse devo limitare la variaible j come MAXCOL-1.
          */
         if(dir == Direction.N || dir == Direction.S){
-            maxJ = MAXBOOKSHELFROW -1;
+            maxJ = MAXBOOKSHELFROW;
             maxI = MAXBOOKSHELFCOL;
         } else {
-            maxJ = MAXBOOKSHELFCOL -1;
+            maxJ = MAXBOOKSHELFCOL;
             maxI = MAXBOOKSHELFROW;
         }
-        for(int i=0; i<maxI; i++){
-            for(int j=0; j<maxJ; j++){
-                /*
-                Devo invertire la variabile j per i controlli, in base a se sto controllando sulla riga o colonna.
-                 */
-                if(dir == Direction.N || dir == Direction.S)
-                    tileType = grid[j][i].getTile();
-                else
-                    tileType = grid[i][j].getTile();
-                k = j+1;
-                /*
-                Uso la variaible k per controllare le tessere successive alla tessera di riferimento (controllata da j)
-                 */
-                while(k<maxJ){
-                    if(dir == Direction.N || dir == Direction.S)
-                        nextTileType = grid[k][i].getTile();
-                    else
-                        nextTileType = grid[i][k].getTile();
 
-                    if(tileType == nextTileType || tileType== Tile.BLANK || nextTileType== Tile.BLANK)
-                        break;
-                    /*
-                    Se le tessere sono tutte diverse, vuol dire che sono arrivato in fondo, sia con j che con k.
-                    j arriverà alla riga o colonna massima -1, k invece deve arrivare in fondo.
-                     */
-                    if(j==maxJ-2 && k==maxJ-1)
-                        actualRepetition++;
-                    k++;
-                }
+        List<Tile> list = new ArrayList<>();
+        for(int i=0; i<maxI; i++){
+            list.clear();
+            for(int j=0; j<maxJ; j++){
+                if(dir == Direction.N || dir == Direction.S)
+                    list.add(grid[j][i].getTile()); // verticale
+                else
+                    list.add(grid[i][j].getTile()); // orizzontale
             }
+            if(diffTiles(list))
+                actualRepetition++;
             if(actualRepetition >= repetition){
                 return getScore();
             }
         }
         return 0;
+    }
+
+    /**
+     * Check whether all the tiles are different.
+     * @param list of tiles contained in one row/column.
+     * @return true if all tiles are different.
+     */
+    private boolean diffTiles(List<Tile> list){
+        for(int i=0; i<list.size()-1; i++){
+            for(int j=i+1; j<list.size(); j++)
+                if(list.get(i).equals(list.get(j)) || list.contains(Tile.BLANK))
+                    return false;
+        }
+        return true;
     }
 
 

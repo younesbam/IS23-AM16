@@ -34,11 +34,20 @@ public class EqualDiag extends CommonGoalCard {
          */
         Cell[][] grid = player.getBookShelf().getGrid();
 
-        for(int i = 0; i<Math.min(MAXBOOKSHELFROW, MAXBOOKSHELFCOL); i++) {
-            if(grid[0][0].getTile() == Tile.BLANK || grid[0][0].getTile() != grid[i][i].getTile())
-                return 0;
-            if(grid[0][0].getTile() == Tile.BLANK || grid[1][0].getTile() != grid[i+1][i].getTile())
-                return 0;
+        boolean retry = false;
+        // Controllo la prima diagonale, quella più sopra.
+        for(int i = 0; i<Math.min(MAXBOOKSHELFROW, MAXBOOKSHELFCOL)-1; i++) {
+            if(grid[i][i].getTile() == Tile.BLANK || grid[i][i].getTile() != grid[i+1][i+1].getTile()){
+                retry = true;
+                break;
+            }
+        }
+        // Controllo non andato a buon fine. Controllo al diagonale sotto
+        if(retry){
+            for(int i = 0; i<Math.min(MAXBOOKSHELFROW, MAXBOOKSHELFCOL)-1; i++) {
+                if(grid[i+1][i].getTile() == Tile.BLANK || grid[i+1][i].getTile() != grid[i+2][i+1].getTile())
+                    return 0;
+            }
         }
         return getScore();
     }

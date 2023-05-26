@@ -29,7 +29,7 @@ public class SubMatrix extends CommonGoalCard {
          */
         Cell[][] grid = player.getBookShelf().getGrid();
         int k = 0;
-        for(int j = MAXBOOKSHELFROW -1; j>=1; j--) {
+        for(int j = MAXBOOKSHELFROW -1; j>=0; j--) {
             for(int i = MAXBOOKSHELFCOL -1-k; i>=0; i--){
                 if(grid[j][i].getTile() == Tile.BLANK)
                     return 0;

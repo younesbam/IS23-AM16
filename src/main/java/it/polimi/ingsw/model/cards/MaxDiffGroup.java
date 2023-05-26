@@ -61,6 +61,7 @@ public class MaxDiffGroup extends CommonGoalCard {
      * {@inheritDoc}
      */
     public Integer checkScheme(Player player) {
+        int actualRepetition = 0;  // Rappresenta il numero di ripetizioni dello stesso algoritmo. Sulle carte indicate come "x2", "x3"...
         int occurrences = 0;  // Viene incrementato se il tipo è trovato all'interno del Set.
         final int maxI;
         final int maxJ;
@@ -75,26 +76,22 @@ public class MaxDiffGroup extends CommonGoalCard {
             maxI = MAXBOOKSHELFROW;
         }
         /*
-        Trasformo la colonna/riga in un Set. In questo modo trovo subito se Type.X è contenuto nel Set e decido se può ottenere punteggio o no il player.
-        Itero l'enum Type per cercare almeno una presenza del tipo di carta all'interno del Set.
-        Se è >= al mumero massimo di carte diverse, allora il giocatore ha fatto l'obiettivo.
+        Trasformo la colonna/riga in un Set. Dal momento che il set non ammette ripetizioni, controllo la
+        dimensione del Set: se è minore del massimo delle tessere diverse che posso avere, incremento le ripetizioni.
          */
         for(int i=0; i<maxI; i++){
+            set.clear();
             for(int j=0; j<maxJ; j++){
-                set.clear();
                 if(dir == Direction.N || dir == Direction.S)
                     set.add(grid[j][i].getTile());
                 else
                     set.add(grid[i][j].getTile());
             }
-            for(Tile type : Tile.values()){
-                if(type == Tile.BLANK)
-                    break;
-                if(set.contains(type))
-                    occurrences++;
-                if(occurrences <= maxNotEq)
-                    return getScore();
-            }
+            if (set.size() <= maxNotEq && !set.contains(Tile.BLANK))
+                actualRepetition++;
+
+            if (actualRepetition >= repetition)
+                return getScore();
         }
         return 0;
     }
