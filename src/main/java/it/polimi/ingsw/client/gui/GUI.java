@@ -8,6 +8,7 @@ import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.client.gui.controllers.GUIController;
 import it.polimi.ingsw.client.gui.controllers.GUIManager;
+import it.polimi.ingsw.client.gui.controllers.LoadingController;
 import it.polimi.ingsw.server.connection.CSConnection;
 import it.polimi.ingsw.server.connection.RMICSConnection;
 import javafx.application.Application;
@@ -35,8 +36,6 @@ public class GUI extends Application {
     private static final String SETUP = "joinScene.fxml";
     private static final String CHAT = "chatScene.fxml";
     private final PropertyChangeSupport listeners = new PropertyChangeSupport(this);
-    private final ModelView modelView;
-    private final ActionHandler actionHandler;
     private final Logger logger = Logger.getLogger(getClass().getName());
     private final HashMap<String, Scene> nameMapScene = new HashMap<>();
     /**
@@ -57,28 +56,9 @@ public class GUI extends Application {
      * Constructor GUI
      */
     public GUI() {
-        this.modelView = new ModelView(this);
-        actionHandler = new ActionHandler(this, modelView);
         guiManager = new GUIManager(this);
-        activeGame = true;
-
     }
 
-    public void setup() {
-        List<String> fxmList = new ArrayList<>(Arrays.asList(SETUP,LOADER, MAIN_GUI, GOALS, CHAT));
-        try {
-            for (String path : fxmList) {
-                FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/fxml/" + path));
-                nameMapScene.put(path, new Scene(loader.load()));
-                GUIController controller = loader.getController();
-                //controller.setGui(this);
-                nameMapController.put(path, controller);
-            }
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
-        }
-        currentScene = nameMapScene.get(SETUP);
-    }
     public void setCurrentScene(Scene currentScene){
         this.currentScene = currentScene;
     }
@@ -99,15 +79,6 @@ public class GUI extends Application {
         launch();
     }
 
-    /**
-     * Method getListeners returns the listeners of this GUI object.
-     *
-     * @return the listeners (type PropertyChangeSupport) of this GUI object.
-     */
-    public PropertyChangeSupport getListeners() {
-        return listeners;
-    }
-
 
     public Stage getStage() {
         return this.stage;
@@ -121,32 +92,22 @@ public class GUI extends Application {
      *
      * @return the modelView (type ModelView) of this GUI object.
      */
-    public ModelView getModelView() {
-        return modelView;
-    }
+
     public GUIManager getGuiManager(){
         return this.guiManager;
     }
-    /**
-     * Method getActionHandler returns the actionHandler of this GUI object.
-     *
-     * @return the actionHandler (type ActionHandler) of this GUI object.
-     */
-    public ActionHandler getActionHandler() {
-        return actionHandler;
+
+
+
+
+    public void changeStage(String newScene) {
+       // Platform.runLater(() -> {
+            currentScene = nameMapScene.get(newScene);
+            stage.setScene(currentScene);
+            stage.show();
+
+        //});
     }
-    /**
-     * Method getControllerFromName gets a scene controller based on inserted name from the dedicated hashmap.
-     *
-     * @param name of type String - the player's name.
-     * @return GUIController - the scene controller.
-     */
-    public GUIController getControllerFromName(String name) {
-        return nameMapController.get(name);
-    }
-
-
-
 
 
 
