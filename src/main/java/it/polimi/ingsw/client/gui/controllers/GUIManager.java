@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.communications.serveranswers.ConnectionOutcome;
+import it.polimi.ingsw.communications.serveranswers.PlayerDisconnected;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -86,12 +87,6 @@ public class GUIManager extends UI {
         System.out.println(loadingController);
         System.out.println(loadingController.getStatus());
 
-        //LoadingController loadingController = (LoadingController) getControllerFromName(LOADER);
-        //loadingController.setMessage(s);
-        //Platform.runLater(() -> {
-          //  gui.changeStage(LOADER);
-        //});
-        /*client.setID(a.getID());*/
     }
 
     private void connectionOutcome(ConnectionOutcome a){
@@ -106,7 +101,10 @@ public class GUIManager extends UI {
 
     private void customAnswer(String answer) {
         System.out.println(answer);
-
+        LoadingController loadingController = (LoadingController) getControllerFromName(LOADER);
+        Platform.runLater(()->{
+            loadingController.setWaitingLabel(answer);
+        });
     }
     public void wrongNum(String s){
         howManyPlayerRequest(s);
@@ -118,7 +116,7 @@ public class GUIManager extends UI {
         Platform.runLater(() -> {
             LoadingController loadingController = (LoadingController)getControllerFromName(LOADER);
             loadingController.updateStatus(s);
-            loadingController.hideChoosePlayerNumber();
+            loadingController.waitingMode();
         });
     }
 
