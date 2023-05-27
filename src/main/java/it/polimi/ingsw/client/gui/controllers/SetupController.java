@@ -24,7 +24,6 @@ import static java.lang.Integer.parseInt;
 
 public class SetupController implements GUIController{
     private GUIManager guiManager;
-
     @FXML
     private TextField username;
     @FXML private TextField ipaddress;
@@ -56,12 +55,11 @@ public class SetupController implements GUIController{
                 Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e);
                 System.exit(-1);
             }
+            //gui.changeStage("loadingScene.fxml");
             guiManager.getModelView().setIsYourTurn(true);
             //guiManager.firePC("PLAYERS 2");
-            Platform.runLater(() -> {
-                guiManager.getGui().changeStage("loadingScene.fxml");
-            });
-            //guiManager.changeStage("loadingScene.fxml");
+
+            guiManager.changeStage("loadingScene.fxml");
                 //LoadingController loadingController = (LoadingController) gui.getControllerFromName("loadingScene.fxml");
 
                 /*gui.getListeners()
