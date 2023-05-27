@@ -26,7 +26,7 @@ public class LoadingController implements GUIController{
     @FXML
     private RadioButton players_4;
     @FXML
-    private Button playerNumberChosenBtn;
+    private Label waitingLabel;
     private GUIManager guiManager;
 
     @Override
@@ -35,15 +35,15 @@ public class LoadingController implements GUIController{
     }
     public void updateStatus(String s){status.setText(s);}
     public String getStatus(){return status.getText();}
-
-    public void hideChoosePlayerNumber(){
+    public void setWaitingLabel(String s){waitingLabel.setText(s);}
+    public void waitingMode(){
         playersNumberPane.setVisible(false);
+        waitingLabel.setVisible(true);
     }
-    public void showChoosePlayerNumber(){
-        playersNumberPane.setVisible(true);
-    }
+
     public void resetLoading(){
         playersNumberPane.setVisible(true);
+        waitingLabel.setVisible(false);
     }
     public void PlayerNumberChosen(){
         String playerNumber="1";
