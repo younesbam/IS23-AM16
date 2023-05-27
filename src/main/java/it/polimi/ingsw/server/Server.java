@@ -15,6 +15,7 @@ import it.polimi.ingsw.communications.serveranswers.errors.ErrorClassification;
 import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
 import it.polimi.ingsw.communications.serveranswers.info.PlayerNumberChosen;
 import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
+import it.polimi.ingsw.controller.Phase;
 import it.polimi.ingsw.exceptions.OutOfBoundException;
 import it.polimi.ingsw.server.connection.CSConnection;
 import it.polimi.ingsw.server.rmi.RMIServerHandler;
@@ -33,6 +34,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static it.polimi.ingsw.Const.*;
+import static it.polimi.ingsw.controller.Phase.LOBBY;
+import static it.polimi.ingsw.controller.Phase.SETUP;
 
 public class Server {
     /**
@@ -326,18 +329,29 @@ public class Server {
      */
     private void setNumOfPlayers(VirtualPlayer player, int numOfPlayers) throws OutOfBoundException{
         /*
+        Check if we are in the setup phase, which is true just for the first player. After the first player chooses the number of players, the phase is set to LOBBY,
+        and if other players will try to use the PLAYERS command, they will receive an incorrect phase message.
+         */
+        if(gameHandler.getController().getPhase() == SETUP) {
+
+            /*
         Check if the players are in the right range.
          */
-        if(numOfPlayers > 4 || numOfPlayers < 2)
-            throw new OutOfBoundException();
+            if (numOfPlayers > 4 || numOfPlayers < 2)
+                throw new OutOfBoundException();
         /*
         Set number of players (also in GameHandler)
          */
-        this.numOfPlayers = numOfPlayers;
-        player.getGameHandler().setNumOfPlayers(numOfPlayers);
-        player.send(new PlayerNumberChosen(numOfPlayers));
-        setupMode = false;  // Stop the setup mode. Now the server can accept new players.
-        System.out.println(GREEN_COLOR + "Setup mode ended. Clients are now welcome!" + RESET_COLOR);
+            this.numOfPlayers = numOfPlayers;
+            player.getGameHandler().setNumOfPlayers(numOfPlayers);
+            player.send(new PlayerNumberChosen(numOfPlayers));
+            setupMode = false;  // Stop the setup mode. Now the server can accept new players.
+            System.out.println(GREEN_COLOR + "Setup mode ended. Clients are now welcome!" + RESET_COLOR);
+            gameHandler.getController().setPhase(Phase.LOBBY);
+        }
+        else{
+            player.send(new ErrorAnswer("You cannot play this command in this game phase!", ErrorClassification.INCORRECT_PHASE));
+        }
     }
 
     
