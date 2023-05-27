@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.text.Text;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
@@ -16,18 +17,16 @@ import java.util.Optional;
 
 public class LoadingController implements GUIController{
     @FXML
-    private Label message;
+    private Text status;
     private GUIManager guiManager;
 
     @Override
     public void setGuiManger(GUIManager guiManager) {
         this.guiManager = guiManager;
     }
-
-    public void setMessage(String message){
-        this.message.setText(message);
-    }
-    private void howManyPlayerRequest(String s){
+    public void updateStatus(String s){status.setText(s);}
+    public String getStatus(){return status.getText();}
+    /*private void howManyPlayerRequest(String s){
         //message.setText(s);
 
 
@@ -54,6 +53,6 @@ public class LoadingController implements GUIController{
 
         //updateTurn(false);
     }
-
+     */
 
 }
