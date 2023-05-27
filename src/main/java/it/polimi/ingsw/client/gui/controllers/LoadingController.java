@@ -6,9 +6,8 @@ import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.communications.serveranswers.HowManyPlayersRequest;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 import java.beans.PropertyChangeEvent;
@@ -17,7 +16,17 @@ import java.util.Optional;
 
 public class LoadingController implements GUIController{
     @FXML
-    private Text status;
+    private Label status;
+    @FXML
+    private AnchorPane playersNumberPane;
+    @FXML
+    private RadioButton players_2;
+    @FXML
+    private RadioButton players_3;
+    @FXML
+    private RadioButton players_4;
+    @FXML
+    private Button playerNumberChosenBtn;
     private GUIManager guiManager;
 
     @Override
@@ -26,6 +35,26 @@ public class LoadingController implements GUIController{
     }
     public void updateStatus(String s){status.setText(s);}
     public String getStatus(){return status.getText();}
+
+    public void hideChoosePlayerNumber(){
+        playersNumberPane.setVisible(false);
+    }
+    public void showChoosePlayerNumber(){
+        playersNumberPane.setVisible(true);
+    }
+    public void resetLoading(){
+        playersNumberPane.setVisible(true);
+    }
+    public void PlayerNumberChosen(){
+        String playerNumber="1";
+        if(players_2.isSelected())
+            playerNumber="2";
+        else if(players_3.isSelected())
+            playerNumber="3";
+        else if(players_4.isSelected())
+            playerNumber="4";
+        guiManager.firePC("action", null, "PLAYERS "+playerNumber);
+    }
     /*private void howManyPlayerRequest(String s){
         //message.setText(s);
 

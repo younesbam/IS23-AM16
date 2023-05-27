@@ -45,9 +45,9 @@ public class GUIManager extends UI {
         this.actionHandler = new ActionHandler(this, this.modelView);
         setActiveGame(true);
     }
-    public void firePC(String cmd){
+    public void firePC(String propertyName, Object oldValue,Object newValue){
         if (isActiveGame()) {
-            pcsDispatcher.firePropertyChange("action", null, cmd);
+            pcsDispatcher.firePropertyChange(propertyName, oldValue, newValue);
         }
     }
     public HashMap<String, Scene> setup() {
@@ -79,7 +79,10 @@ public class GUIManager extends UI {
         System.out.println(s);
         modelView.setIsYourTurn(true);
         LoadingController loadingController = (LoadingController) getControllerFromName(LOADER);
-        Platform.runLater(() -> loadingController.updateStatus(s));
+        Platform.runLater(() ->{
+            loadingController.resetLoading();
+            loadingController.updateStatus(s);
+        });
         System.out.println(loadingController);
         System.out.println(loadingController.getStatus());
 
@@ -112,11 +115,11 @@ public class GUIManager extends UI {
         System.out.println(s);
 
         updateTurn(false);
-        /*LoadingController loadingController = (LoadingController) getControllerFromName(LOADER);
-        loadingController.setMessage(s);*/
-        //Platform.runLater(() -> {
-            gui.changeStage(LOADER);
-        //});
+        Platform.runLater(() -> {
+            LoadingController loadingController = (LoadingController)getControllerFromName(LOADER);
+            loadingController.updateStatus(s);
+            loadingController.hideChoosePlayerNumber();
+        });
     }
 
     public void changeStage(String newScene){
