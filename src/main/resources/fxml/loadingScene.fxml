@@ -11,30 +11,44 @@
 
 <AnchorPane fx:id="PlayerNumberChosenBtn" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.LoadingController">
    <children>
-      <ImageView fitHeight="99.0" fitWidth="322.0" layoutX="319.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="99.0" fitWidth="322.0" layoutX="320.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@graphics/Title.png" />
          </image>
       </ImageView>
-      <AnchorPane fx:id="playersNumberPane" layoutX="340.0" layoutY="313.0" prefHeight="154.0" prefWidth="278.0">
+      <AnchorPane fx:id="playersNumberPane" layoutX="280.0" layoutY="285.0" prefHeight="93.0" prefWidth="400.0" visible="false">
          <children>
-            <RadioButton fx:id="players_2" layoutX="60.0" layoutY="-1.0" mnemonicParsing="false" selected="true" text="2">
+            <RadioButton fx:id="players_2" layoutX="34.0" layoutY="8.0" mnemonicParsing="false" selected="true" text="2 Players">
                <toggleGroup>
                   <ToggleGroup fx:id="playersNumber" />
                </toggleGroup>
-            </RadioButton>
-            <RadioButton fx:id="players_3" layoutX="116.0" layoutY="-1.0" mnemonicParsing="false" text="3" toggleGroup="$playersNumber" />
-            <RadioButton fx:id="players_4" layoutX="171.0" layoutY="-1.0" mnemonicParsing="false" text="4" toggleGroup="$playersNumber" />
-            <Button fx:id="PlayerNumberChosenBtn" layoutX="111.0" layoutY="46.0" mnemonicParsing="false" onAction="#PlayerNumberChosen" text="Start">
                <font>
-                  <Font size="19.0" />
+                  <Font size="14.0" />
+               </font>
+            </RadioButton>
+            <RadioButton fx:id="players_3" layoutX="155.0" layoutY="8.0" mnemonicParsing="false" text="3 Players" toggleGroup="$playersNumber">
+               <font>
+                  <Font size="14.0" />
+               </font></RadioButton>
+            <RadioButton fx:id="players_4" layoutX="274.0" layoutY="8.0" mnemonicParsing="false" text="4 Players" toggleGroup="$playersNumber">
+               <font>
+                  <Font size="14.0" />
+               </font></RadioButton>
+            <Button fx:id="PlayerNumberChosenBtn" layoutX="150.0" layoutY="49.0" mnemonicParsing="false" onAction="#PlayerNumberChosen" text="START GAME!">
+               <font>
+                  <Font size="20.0" />
                </font>
             </Button>
          </children>
       </AnchorPane>
-      <Label fx:id="status" contentDisplay="CENTER" layoutX="159.0" layoutY="233.0" prefHeight="49.0" prefWidth="642.0" text="Label">
+      <Label fx:id="status" contentDisplay="CENTER" layoutX="159.0" layoutY="235.0" prefHeight="49.0" prefWidth="642.0" textAlignment="CENTER">
          <font>
-            <Font size="18.0" />
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="waitingLabel" layoutX="336.0" layoutY="432.0" text="WAITING FOR OTHER PLAYERS...">
+         <font>
+            <Font size="20.0" />
          </font>
       </Label>
    </children>
