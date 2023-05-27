@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import it.polimi.ingsw.client.gui.controllers.LoadingController;
 
 public class GUIManager extends UI {
 
@@ -49,7 +50,7 @@ public class GUIManager extends UI {
             pcsDispatcher.firePropertyChange("action", null, cmd);
         }
     }
-    public void setup() {
+    public HashMap<String, Scene> setup() {
         List<String> fxmList = new ArrayList<>(Arrays.asList(SETUP,LOADER, MAIN_GUI, GOALS, CHAT));
         try {
             for (String path : fxmList) {
@@ -57,13 +58,13 @@ public class GUIManager extends UI {
                 nameMapScene.put(path, new Scene(loader.load()));
                 GUIController controller = loader.getController();
                 controller.setGuiManger(this);
-                controller.setGui(this.gui);
                 nameMapController.put(path, controller);
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
         gui.setCurrentScene(nameMapScene.get(SETUP));
+        return nameMapScene;
     }
 
     public ModelView getModelView(){
@@ -77,6 +78,11 @@ public class GUIManager extends UI {
     private void howManyPlayerRequest(String s){
         System.out.println(s);
         modelView.setIsYourTurn(true);
+        LoadingController loadingController = (LoadingController) getControllerFromName(LOADER);
+        Platform.runLater(() -> loadingController.updateStatus(s));
+        System.out.println(loadingController);
+        System.out.println(loadingController.getStatus());
+
         //LoadingController loadingController = (LoadingController) getControllerFromName(LOADER);
         //loadingController.setMessage(s);
         //Platform.runLater(() -> {
@@ -87,14 +93,11 @@ public class GUIManager extends UI {
 
     private void connectionOutcome(ConnectionOutcome a){
         System.out.println(a.getAnswer());
-        /*changeStage(LOADER);
-        LoadingController loadingController = (LoadingController) gui.getControllerFromName(LOADER);
-        loadingController.setMessage(a.getAnswer().toString());*/
         client.setID(a.getID());
+
         Platform.runLater(() -> {
             gui.changeStage(LOADER);
         });
-
 
     }
 
