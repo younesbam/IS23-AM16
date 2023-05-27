@@ -4,7 +4,9 @@ import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
 import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
@@ -49,13 +51,25 @@ public class EqualCross extends CommonGoalCard {
      * {@inheritDoc}
      */
     public Integer checkScheme(Player player) {
-        int actualRepetition = 0;  // Rappresenta il numero di ripetizioni dello stesso algoritmo. Sulle carte indicate come "x2", "x3"...
+        //int actualRepetition = 0;  // Rappresenta il numero di ripetizioni dello stesso algoritmo. Sulle carte indicate come "x2", "x3"...
         Cell[][] grid = player.getBookShelf().getGrid();
         List<Tile> firstDiag = new ArrayList<>();  // Diagonale principale
         List<Tile> secDiag = new ArrayList<>();  // Diagonale secondaria.
+        Map<Tile, Integer> map = new HashMap<>();  // Mappa che tiene traccia della tessera e di quanti match ha trovato.
         Tile ref;  // Tessera di riferimento
         int k=0;  // Contatore per prendere le tessere sulla prima diagonale.
 
+        /*
+         Viene creata una mappa con tutte le tiles possibili. Una volta che viene creato un quadrato,
+         il valore viene incrementato. Quando trovo 2 quadrati con gli stessi valori all'interno ho soddisfatto il goal.
+         */
+
+        for (Tile tile : Tile.values()) {
+            if (tile == Tile.BLANK || tile == Tile.UNAVAILABLE)
+                map.put(tile, -1);
+            else
+                map.put(tile, 0);
+        }
         /*
         Uso il lato del quadrato per porre un limite alla tessera di riferimento. In questo caso è sempre quella in alto a sx per la prima diagonale,
         e in alto a dx per la seconda diagonale. Si andrà poi a scendere (++ dell'indice) di riga in entrambe le diagonali e rispettivamente:
@@ -90,8 +104,8 @@ public class EqualCross extends CommonGoalCard {
                     }
                 }
                 if(match)
-                    actualRepetition++;
-                if(actualRepetition>=repetition)
+                    map.replace(ref, map.get(ref)+1);
+                if(map.get(ref)>=repetition)
                     return getScore();
             }
         }

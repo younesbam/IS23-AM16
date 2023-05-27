@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
 import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
@@ -41,12 +42,12 @@ public class EqualInCol extends CommonGoalCard {
             case 3 -> {
                 eq = 4;
                 repetition = 4;
-                dir = Direction.N;
+                //dir = Direction.N;
             }
             case 4 -> {
                 eq = 2;
                 repetition = 6;
-                dir = Direction.N;
+                //dir = Direction.N;
             }
         }
     }
@@ -60,6 +61,7 @@ public class EqualInCol extends CommonGoalCard {
         final int maxRow;
         int k = 0;
         Cell[][] grid = player.getBookShelf().getGrid();
+        Boolean[][] visited = new Boolean[MAXBOOKSHELFROW][MAXBOOKSHELFCOL];
 
         //maxRow = MAXBOOKSHELFROW - eq + 1;  // Definisco il numero massimo a cui può arrivare la tessera di riferimento, in base al numero di tessere che devo controllare.
         List<Tile> list = new ArrayList<>();
@@ -76,6 +78,20 @@ public class EqualInCol extends CommonGoalCard {
                 if(actualRepetition >= repetition){
                     return getScore();
                 }
+                k++;
+            }
+        }
+        for(int i=0; i<MAXBOOKSHELFROW; i++) {
+            list.clear();
+            k=0;
+            while(k<MAXBOOKSHELFCOL-eq) {
+                list.clear();
+                for (int j=k; j<eq+k; j++)
+                    list.add(grid[i][j].getTile());
+                if(eqTiles(list))
+                    actualRepetition++;
+                if(actualRepetition>=repetition)
+                    return getScore();
                 k++;
             }
         }
@@ -114,6 +130,7 @@ public class EqualInCol extends CommonGoalCard {
         }
         return true;
     }
+
 
     /**
      * {@inheritDoc}
