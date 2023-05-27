@@ -27,12 +27,12 @@
             <RadioButton fx:id="players_4" layoutX="171.0" layoutY="-1.0" mnemonicParsing="false" text="4" toggleGroup="$playersNumber" />
             <Button fx:id="PlayerNumberChosenBtn" layoutX="111.0" layoutY="46.0" mnemonicParsing="false" onAction="#PlayerNumberChosen" text="Start">
                <font>
-                  <Font size="14.0" />
+                  <Font size="19.0" />
                </font>
             </Button>
          </children>
       </AnchorPane>
-      <Label fx:id="status" contentDisplay="CENTER" layoutX="466.0" layoutY="233.0" text="Label">
+      <Label fx:id="status" contentDisplay="CENTER" layoutX="159.0" layoutY="233.0" prefHeight="49.0" prefWidth="642.0" text="Label">
          <font>
             <Font size="18.0" />
          </font>
