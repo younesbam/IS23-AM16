@@ -9,5 +9,5 @@ public class ChatController implements GUIController{
     public void setGuiManger(GUIManager guiManager) {
         this.guiManager = guiManager;
     }
-    
+
 }
