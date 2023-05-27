@@ -57,6 +57,7 @@ public class GUIManager extends UI {
                 nameMapScene.put(path, new Scene(loader.load()));
                 GUIController controller = loader.getController();
                 controller.setGuiManger(this);
+                controller.setGui(this.gui);
                 nameMapController.put(path, controller);
             }
         } catch (IOException e) {
@@ -76,11 +77,11 @@ public class GUIManager extends UI {
     private void howManyPlayerRequest(String s){
         System.out.println(s);
         modelView.setIsYourTurn(true);
-        LoadingController loadingController = (LoadingController) getControllerFromName(LOADER);
-        loadingController.setMessage(s);
-        Platform.runLater(() -> {
-            gui.changeStage(LOADER);
-        });
+        //LoadingController loadingController = (LoadingController) getControllerFromName(LOADER);
+        //loadingController.setMessage(s);
+        //Platform.runLater(() -> {
+          //  gui.changeStage(LOADER);
+        //});
         /*client.setID(a.getID());*/
     }
 
@@ -90,10 +91,16 @@ public class GUIManager extends UI {
         LoadingController loadingController = (LoadingController) gui.getControllerFromName(LOADER);
         loadingController.setMessage(a.getAnswer().toString());*/
         client.setID(a.getID());
+        Platform.runLater(() -> {
+            gui.changeStage(LOADER);
+        });
+
+
     }
 
     private void customAnswer(String answer) {
         System.out.println(answer);
+
     }
     public void wrongNum(String s){
         howManyPlayerRequest(s);
@@ -102,17 +109,17 @@ public class GUIManager extends UI {
         System.out.println(s);
 
         updateTurn(false);
-        LoadingController loadingController = (LoadingController) getControllerFromName(LOADER);
-        loadingController.setMessage(s);
-        Platform.runLater(() -> {
+        /*LoadingController loadingController = (LoadingController) getControllerFromName(LOADER);
+        loadingController.setMessage(s);*/
+        //Platform.runLater(() -> {
             gui.changeStage(LOADER);
-        });
+        //});
     }
 
     public void changeStage(String newScene){
-        Platform.runLater(() -> {
+        //Platform.runLater(() -> {
             gui.changeStage(newScene);
-        });
+        //});
     }
 
     public GUI getGui(){return this.gui;}
