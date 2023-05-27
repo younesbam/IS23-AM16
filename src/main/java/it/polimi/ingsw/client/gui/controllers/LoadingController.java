@@ -15,7 +15,6 @@ import java.beans.PropertyChangeSupport;
 import java.util.Optional;
 
 public class LoadingController implements GUIController{
-    private GUI gui;
     @FXML
     private Label message;
     private GUIManager guiManager;
@@ -55,5 +54,6 @@ public class LoadingController implements GUIController{
 
         //updateTurn(false);
     }
+
 
 }
