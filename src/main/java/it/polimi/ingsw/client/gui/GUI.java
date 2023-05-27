@@ -58,12 +58,24 @@ public class GUI extends Application {
     public GUI() {
         guiManager = new GUIManager(this);
     }
+    public void setNameMapScene() {
+        List<String> fxmList = new ArrayList<>(Arrays.asList(SETUP,LOADER, MAIN_GUI, GOALS, CHAT));
+        try {
+            for (String path : fxmList) {
+                FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/fxml/" + path));
+                nameMapScene.put(path, new Scene(loader.load()));
+            }
+        } catch (IOException e) {
+            System.out.println("Scene not found");
+        }
 
+    }
     public void setCurrentScene(Scene currentScene){
         this.currentScene = currentScene;
     }
     @Override
     public void start(Stage stage) throws IOException {
+        setNameMapScene();
         guiManager.setup();
         this.stage = stage;
         run();
