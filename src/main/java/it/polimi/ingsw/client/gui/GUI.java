@@ -37,7 +37,7 @@ public class GUI extends Application {
     private static final String CHAT = "chatScene.fxml";
     private final PropertyChangeSupport listeners = new PropertyChangeSupport(this);
     private final Logger logger = Logger.getLogger(getClass().getName());
-    private final HashMap<String, Scene> nameMapScene = new HashMap<>();
+    private HashMap<String, Scene> nameMapScene = new HashMap<>();
     /**
      * Maps each scene controller's name to the effective controller object, in order to get the correct controller
      * for modifying operations.
@@ -58,7 +58,7 @@ public class GUI extends Application {
     public GUI() {
         guiManager = new GUIManager(this);
     }
-    public void setNameMapScene() {
+    /*public void setNameMapScene() {
         List<String> fxmList = new ArrayList<>(Arrays.asList(SETUP,LOADER, MAIN_GUI, GOALS, CHAT));
         try {
             for (String path : fxmList) {
@@ -69,14 +69,13 @@ public class GUI extends Application {
             System.out.println("Scene not found");
         }
 
-    }
+    }*/
     public void setCurrentScene(Scene currentScene){
         this.currentScene = currentScene;
     }
     @Override
     public void start(Stage stage) throws IOException {
-        setNameMapScene();
-        guiManager.setup();
+        nameMapScene = guiManager.setup();
         this.stage = stage;
         run();
 
@@ -113,12 +112,10 @@ public class GUI extends Application {
 
 
     public void changeStage(String newScene) {
-       // Platform.runLater(() -> {
-            currentScene = nameMapScene.get(newScene);
-            stage.setScene(currentScene);
-            stage.show();
+       currentScene = nameMapScene.get(newScene);
+       stage.setScene(currentScene);
+       stage.show();
 
-        //});
     }
 
 
