@@ -170,6 +170,15 @@ public class GameHandler {
     }
 
 
+    /**
+     * Controller getter.
+     * @return
+     */
+    public Controller getController(){
+        return this.controller;
+    }
+
+
     public void dispatchActions(GameAction action){
         if (action instanceof PickTilesAction){
             pcsController.firePropertyChange("PickTilesAction", null, ((PickTilesAction) action).getTiles());
