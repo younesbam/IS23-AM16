@@ -285,8 +285,18 @@ public class CLI extends UI implements Runnable{
         System.out.println(RED_COLOR + a.getAnswer() + RESET_COLOR);
         switch (a.getError()){
             case LOBBY_NOT_READY, MAX_PLAYERS_REACHED, TAKEN_USERNAME -> endGameMessage();
+            //case INCORRECT_PHASE -> incorrectPhaseMessage((String) a.getAnswer());
+            default -> System.out.println("\n>");
         }
     }
+
+
+
+    private void incorrectPhaseMessage(String message) {
+        System.out.println(message);
+    }
+
+
 
     public void propertyChange(PropertyChangeEvent event){
         switch (event.getPropertyName()){

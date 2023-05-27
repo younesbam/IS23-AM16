@@ -5,7 +5,8 @@ public enum ErrorClassification {
     TAKEN_USERNAME,
     INPUT_INVALID,
     MAX_PLAYERS_REACHED,
-    SERVER_IS_DOWN
+    SERVER_IS_DOWN,
+    INCORRECT_PHASE
 
 
 
