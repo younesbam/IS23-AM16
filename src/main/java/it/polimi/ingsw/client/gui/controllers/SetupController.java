@@ -31,6 +31,7 @@ public class SetupController implements GUIController{
     @FXML private Label message;
     @FXML private RadioButton rmiRadioBtn;
     @FXML private RadioButton socketRadioBtn;
+    private static final String LOADER = "loadingScene.fxml";
     public void join() {
         ConnectionType connectionType;
         if (username.getText().equals("")
@@ -55,11 +56,11 @@ public class SetupController implements GUIController{
                 Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e);
                 System.exit(-1);
             }
-            //gui.changeStage("loadingScene.fxml");
+
             guiManager.getModelView().setIsYourTurn(true);
             //guiManager.firePC("PLAYERS 2");
 
-            guiManager.changeStage("loadingScene.fxml");
+            guiManager.changeStage(LOADER);
                 //LoadingController loadingController = (LoadingController) gui.getControllerFromName("loadingScene.fxml");
 
                 /*gui.getListeners()
