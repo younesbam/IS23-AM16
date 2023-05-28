@@ -12,6 +12,11 @@
 
 <AnchorPane prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.SetupController">
    <children>
+      <ImageView fitHeight="540.0" fitWidth="972.0" pickOnBounds="true">
+         <image>
+            <Image url="@graphics/bg.jpg" />
+         </image>
+      </ImageView>
       <TextField fx:id="username" layoutX="481.0" layoutY="166.0" promptText="Username" />
       <TextField fx:id="ipaddress" layoutX="481.0" layoutY="208.0" promptText="IP Address" />
       <TextField fx:id="serverport" layoutX="481.0" layoutY="250.0" promptText="Server Port" />

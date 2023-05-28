@@ -13,6 +13,11 @@
 
 <AnchorPane prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.MainSceneController">
    <children>
+      <ImageView fitHeight="540.0" fitWidth="960.0" pickOnBounds="true">
+         <image>
+            <Image url="@graphics/bg.jpg" />
+         </image>
+      </ImageView>
       <AnchorPane layoutX="504.0" layoutY="64.0" prefHeight="389.0" prefWidth="352.0">
          <children>
             <GridPane alignment="CENTER" layoutX="40.0" layoutY="25.0" prefHeight="320.0" prefWidth="274.0">

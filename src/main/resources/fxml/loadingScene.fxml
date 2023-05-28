@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
@@ -11,6 +12,11 @@
 
 <AnchorPane fx:id="PlayerNumberChosenBtn" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.LoadingController">
    <children>
+      <ImageView fitHeight="540.0" fitWidth="960.0" pickOnBounds="true">
+         <image>
+            <Image url="@graphics/bg.jpg" />
+         </image>
+      </ImageView>
       <ImageView fitHeight="99.0" fitWidth="322.0" layoutX="320.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@graphics/Title.png" />
@@ -34,22 +40,23 @@
                <font>
                   <Font size="14.0" />
                </font></RadioButton>
-            <Button fx:id="PlayerNumberChosenBtn" layoutX="150.0" layoutY="49.0" mnemonicParsing="false" onAction="#PlayerNumberChosen" text="START GAME!">
+            <Button fx:id="PlayerNumberChosenBtn" layoutX="172.0" layoutY="47.0" mnemonicParsing="false" onAction="#PlayerNumberChosen" text="START">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
          </children>
       </AnchorPane>
-      <Label fx:id="status" contentDisplay="CENTER" layoutX="159.0" layoutY="235.0" prefHeight="49.0" prefWidth="642.0" textAlignment="CENTER">
+      <Label fx:id="status" contentDisplay="CENTER" layoutX="265.0" layoutY="234.0" prefHeight="50.0" prefWidth="467.0" textAlignment="CENTER">
          <font>
-            <Font size="16.0" />
+            <Font size="15.0" />
          </font>
       </Label>
-      <Label fx:id="waitingLabel" layoutX="336.0" layoutY="432.0" text="WAITING FOR OTHER PLAYERS...">
+      <Label fx:id="waitingLabel" layoutX="336.0" layoutY="432.0" text="WAITING FOR PLAYERS TO JOIN...">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
+      <ProgressBar fx:id="progressBar" layoutX="335.0" layoutY="473.0" prefHeight="20.0" prefWidth="299.0" />
    </children>
 </AnchorPane>
