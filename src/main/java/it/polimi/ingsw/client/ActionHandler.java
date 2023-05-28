@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.gui.GUI;
+import it.polimi.ingsw.client.gui.controllers.GUIManager;
 import it.polimi.ingsw.communications.serveranswers.*;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
@@ -19,7 +20,7 @@ public class ActionHandler {
 
     private final ModelView modelView;
     private CLI cli;
-    private GUI gui;
+    private GUIManager guiManager;
 
     private final PropertyChangeSupport pcsView = new PropertyChangeSupport(this);
 
@@ -37,13 +38,13 @@ public class ActionHandler {
 
     /**
      * Constructor in case of a GUI match
-     * @param gui GUI instance
+     * @param guiManager GUIManager instance
      * @param modelView modelView instance
      */
-    public ActionHandler(GUI gui, ModelView modelView) {
-        this.gui = gui;
+    public ActionHandler(GUIManager guiManager, ModelView modelView) {
+        this.guiManager = guiManager;
         this.modelView = modelView;
-        //pcsView.addPropertyChangeListener(gui);
+        pcsView.addPropertyChangeListener(guiManager);
     }
 
 
@@ -114,7 +115,7 @@ public class ActionHandler {
         }
 
         if(a instanceof PlayerDisconnected){
-            if(gui != null) {
+            if(guiManager != null) {
             } else if(cli != null) {
                 cli.endGameMessage();
             }
