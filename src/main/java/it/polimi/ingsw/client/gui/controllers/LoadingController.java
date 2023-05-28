@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.client.gui.GUI;
-import it.polimi.ingsw.communications.serveranswers.HowManyPlayersRequest;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
