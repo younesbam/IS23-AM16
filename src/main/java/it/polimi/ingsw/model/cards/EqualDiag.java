@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 
+import java.sql.SQLOutput;
+
 import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
 import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
 
@@ -33,23 +35,57 @@ public class EqualDiag extends CommonGoalCard {
         Cerco il minimo tra MAXROW e MAXCOL perchè se cambia la dimensione della matrice potrebbe esserci un lato più lungo dell'altro.
          */
         Cell[][] grid = player.getBookShelf().getGrid();
+        boolean valid;
 
-        boolean retry = false;
-        // Controllo la prima diagonale, quella più sopra.
+        valid = true;
+        // Controllo la prima diagonale, quella più sopra (da sx a dx).
         for(int i = 0; i<Math.min(MAXBOOKSHELFROW, MAXBOOKSHELFCOL)-1; i++) {
             if(grid[i][i].getTile() == Tile.BLANK || grid[i][i].getTile() != grid[i+1][i+1].getTile()){
-                retry = true;
+                valid = false;
                 break;
             }
         }
-        // Controllo non andato a buon fine. Controllo al diagonale sotto
-        if(retry){
-            for(int i = 0; i<Math.min(MAXBOOKSHELFROW, MAXBOOKSHELFCOL)-1; i++) {
-                if(grid[i+1][i].getTile() == Tile.BLANK || grid[i+1][i].getTile() != grid[i+2][i+1].getTile())
-                    return 0;
+        if(valid)
+            return getScore();
+
+        // Controllo non andato a buon fine. Controllo la diagonale sotto (da sx a dx).
+        valid = true;
+        for(int i = 0; i<Math.min(MAXBOOKSHELFROW, MAXBOOKSHELFCOL)-1; i++) {
+            if(grid[i+1][i].getTile() == Tile.BLANK || grid[i+1][i].getTile() != grid[i+2][i+1].getTile()) {
+                valid = false;
+                break;
             }
         }
-        return getScore();
+        if(valid)
+            return getScore();
+
+        // Controllo la prima diagonale, quella più sopra (da dx a sx).
+        valid = true;
+        int j=0;
+        for(int i=MAXBOOKSHELFCOL-1; i>0; i--) {
+            if(grid[j][i].getTile() == Tile.BLANK || grid[j][i].getTile() != grid[j+1][i-1].getTile()) {
+                valid = false;
+                break;
+            }
+            j++;
+        }
+        if(valid)
+            return getScore();
+
+        // Controllo non andato a buon fine. Controllo la diagonale sotto (da dx a sx).
+        valid = true;
+        j=1;
+        for(int i=MAXBOOKSHELFCOL-1; i>0; i--) {
+            if(grid[j][i].getTile() == Tile.BLANK || grid[j][i].getTile() != grid[j+1][i-1].getTile()) {
+                valid = false;
+                break;
+            }
+            j++;
+        }
+        if(valid)
+            return getScore();
+
+        return 0;
     }
 
 
@@ -57,6 +93,13 @@ public class EqualDiag extends CommonGoalCard {
      * {@inheritDoc}
      */
     public void printCard(){
-
+        System.out.println( "    COMMON CARD NUMBER 11 \n"+
+                            "++++++++++++++++++++++++++++ \n" +
+                            "+  | = |                   + \n" +
+                            "+      | = |               + \n" +
+                            "+          | = |           + \n" +
+                            "+              | = |       + \n" +
+                            "+                  | = |   + \n"+
+                            "++++++++++++++++++++++++++++ \n");
     }
 }

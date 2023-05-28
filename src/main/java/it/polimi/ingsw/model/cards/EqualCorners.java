@@ -41,6 +41,14 @@ public class EqualCorners extends CommonGoalCard {
      * {@inheritDoc}
      */
     public void printCard(){
-
+        System.out.println( "     COMMON CARD NUMBER 8 \n"+
+                            "+++++++++++++++++++++++++++++ \n"   +
+                            "+   | = |   |   |   | = |   + \n" +
+                            "+   |   |   |   |   |   |   + \n" +
+                            "+   |   |   |   |   |   |   + \n" +
+                            "+   |   |   |   |   |   |   + \n" +
+                            "+   |   |   |   |   |   |   + \n" +
+                            "+   | = |   |   |   | = |   + \n" +
+                            "+++++++++++++++++++++++++++++ \n");
     }
 }

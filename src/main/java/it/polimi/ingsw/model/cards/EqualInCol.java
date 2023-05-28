@@ -61,58 +61,79 @@ public class EqualInCol extends CommonGoalCard {
         final int maxRow;
         int k = 0;
         Cell[][] grid = player.getBookShelf().getGrid();
-        Boolean[][] visited = new Boolean[MAXBOOKSHELFROW][MAXBOOKSHELFCOL];
+        Boolean[][] registeredGrid = new Boolean[MAXBOOKSHELFROW][MAXBOOKSHELFCOL];
+        boolean cellAlreadyRegistered = false;
+
+        for(int i=0; i<MAXBOOKSHELFROW; i++)
+            for(int j=0; j<MAXBOOKSHELFCOL; j++)
+                registeredGrid[i][j] = false;
 
         //maxRow = MAXBOOKSHELFROW - eq + 1;  // Definisco il numero massimo a cui può arrivare la tessera di riferimento, in base al numero di tessere che devo controllare.
         List<Tile> list = new ArrayList<>();
+        /*
+        Questo ciclo controlla in verticale se trova dei pattern; quando trova un pattern, segna le celle come visitate in modo da non fare il controllo 2 volte.
+         */
         for(int i=0; i<MAXBOOKSHELFCOL; i++) {
             list.clear();
             k=0;
+            // Scorro le n tessere richieste dalla carta.
             while(k<=MAXBOOKSHELFROW-eq) {
                 list.clear();
-                for(int j=k; j<eq+k; j++){
+                cellAlreadyRegistered = false;
+                // Aggiungo le tessere ad una lista per controllare che siano uguali.
+                for(int j=k; j<eq+k; j++)
                     list.add(grid[j][i].getTile());
+                // Se le tessere sono uguali, se il pattern non è già stato registrato lo registro e lo conto come pattern trovato.
+                if(eqTiles(list)){
+                    for(int j=k; j<eq+k; j++){
+                        if(registeredGrid[j][i]){
+                            cellAlreadyRegistered = true;
+                            break;
+                        }
+                    }
+                    // Se non avevo già contato il pattern come trovato, lo conto e segno le celle come già registrate.
+                    if (!cellAlreadyRegistered){
+                        for(int j=k; j<eq+k; j++)
+                            registeredGrid[j][i] = true;
+                        actualRepetition++;
+                    }
                 }
-                if(eqTiles(list))
-                    actualRepetition++;
+
                 if(actualRepetition >= repetition){
                     return getScore();
                 }
                 k++;
             }
         }
+        /*
+        Questo ciclo controlla in orizzontale se trova dei pattern; quando trova un pattern, segna le celle come visitate in modo da non fare il controllo 2 volte.
+         */
         for(int i=0; i<MAXBOOKSHELFROW; i++) {
             list.clear();
             k=0;
-            while(k<MAXBOOKSHELFCOL-eq) {
+            while(k<=MAXBOOKSHELFCOL-eq) {
                 list.clear();
+                cellAlreadyRegistered = false;
                 for (int j=k; j<eq+k; j++)
                     list.add(grid[i][j].getTile());
-                if(eqTiles(list))
-                    actualRepetition++;
+                if(eqTiles(list)) {
+                    for (int j=k; j<eq+k; j++) {
+                        if(registeredGrid[i][j]){
+                            cellAlreadyRegistered = true;
+                            break;
+                        }
+                    }
+                    if(!cellAlreadyRegistered){
+                        for (int j=k; j<eq+k; j++)
+                            registeredGrid[i][j] = true;
+                        actualRepetition++;
+                    }
+                }
                 if(actualRepetition>=repetition)
                     return getScore();
                 k++;
             }
         }
-//        maxRow = MAXBOOKSHELFROW - eq + 1;  // Definisco il numero massimo a cui può arrivare la tessera di riferimento, in base al numero di tessere che devo controllare.
-//        for(int i = 0; i< MAXBOOKSHELFCOL; i++){
-//            for(int j=0; j<maxRow; j++){
-//                tileType = grid[j][i].getTile();
-//                k=j+1;
-//                while(k-j<eq){  // Perchè è un riferimento relativo non assoluto.
-//                    nextTileType = grid[k][i].getTile();
-//                    if(tileType == nextTileType && tileType != Tile.BLANK)
-//                        actualEq++;
-//                    k++;
-//                }
-//                if(actualEq >= eq)
-//                    actualRepetition++;
-//                if(actualRepetition >= repetition)
-//                    return getScore();
-//                actualEq = 0;  // Azzero per passare al prossimo gruppo di tessere uguali.
-//            }
-//        }
         return 0;
     }
 
@@ -136,6 +157,23 @@ public class EqualInCol extends CommonGoalCard {
      * {@inheritDoc}
      */
     public void printCard(){
-
+        switch (cardNumber) {
+            case 3 -> {
+                System.out.println( "COMMON CARD NUMBER 3 \n" +
+                                    "++++++++++++++++++++ \n"+
+                                    "+      | = |       + \n" +
+                                    "+      | = | x4    + \n" +
+                                    "+      | = |       + \n" +
+                                    "+      | = |       + \n"+
+                                    "++++++++++++++++++++ \n");
+            }
+            case 4 -> {
+                System.out.println( "COMMON CARD NUMBER 4  \n" +
+                                    "+++++++++++++++++++++ \n"+
+                                    "+       | = |       + \n" +
+                                    "+       | = |  x2   + \n"+
+                                    "+++++++++++++++++++++ \n");
+            }
+        }
     }
 }
