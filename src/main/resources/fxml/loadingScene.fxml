@@ -22,37 +22,37 @@
             <Image url="@graphics/Title.png" />
          </image>
       </ImageView>
-      <AnchorPane fx:id="playersNumberPane" layoutX="280.0" layoutY="285.0" prefHeight="93.0" prefWidth="400.0" visible="false">
+      <AnchorPane fx:id="playersNumberPane" layoutX="280.0" layoutY="285.0" prefHeight="93.0" prefWidth="400.0">
          <children>
-            <RadioButton fx:id="players_2" layoutX="34.0" layoutY="8.0" mnemonicParsing="false" selected="true" text="2 Players">
+            <RadioButton fx:id="players_2" layoutX="34.0" layoutY="8.0" mnemonicParsing="false" selected="true" text="2 Players" textFill="WHITE">
                <toggleGroup>
                   <ToggleGroup fx:id="playersNumber" />
                </toggleGroup>
                <font>
-                  <Font size="14.0" />
+                  <Font name="System Bold" size="14.0" />
                </font>
             </RadioButton>
-            <RadioButton fx:id="players_3" layoutX="155.0" layoutY="8.0" mnemonicParsing="false" text="3 Players" toggleGroup="$playersNumber">
+            <RadioButton fx:id="players_3" layoutX="155.0" layoutY="8.0" mnemonicParsing="false" text="3 Players" textFill="WHITE" toggleGroup="$playersNumber">
                <font>
-                  <Font size="14.0" />
+                  <Font name="System Bold" size="14.0" />
                </font></RadioButton>
-            <RadioButton fx:id="players_4" layoutX="274.0" layoutY="8.0" mnemonicParsing="false" text="4 Players" toggleGroup="$playersNumber">
+            <RadioButton fx:id="players_4" layoutX="274.0" layoutY="8.0" mnemonicParsing="false" text="4 Players" textFill="WHITE" toggleGroup="$playersNumber">
                <font>
-                  <Font size="14.0" />
+                  <Font name="System Bold" size="14.0" />
                </font></RadioButton>
-            <Button fx:id="PlayerNumberChosenBtn" layoutX="172.0" layoutY="47.0" mnemonicParsing="false" onAction="#PlayerNumberChosen" text="START">
+            <Button fx:id="PlayerNumberChosenBtn" layoutX="155.0" layoutY="47.0" mnemonicParsing="false" onAction="#PlayerNumberChosen" text="START" textFill="#ac856e">
                <font>
-                  <Font size="20.0" />
+                  <Font name="System Bold" size="20.0" />
                </font>
             </Button>
          </children>
       </AnchorPane>
-      <Label fx:id="status" contentDisplay="CENTER" layoutX="265.0" layoutY="234.0" prefHeight="50.0" prefWidth="467.0" textAlignment="CENTER">
+      <Label fx:id="status" contentDisplay="CENTER" layoutX="267.0" layoutY="234.0" prefHeight="50.0" prefWidth="437.0" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
-            <Font size="15.0" />
+            <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="waitingLabel" layoutX="336.0" layoutY="432.0" text="WAITING FOR PLAYERS TO JOIN...">
+      <Label fx:id="waitingLabel" layoutX="336.0" layoutY="432.0" text="WAITING FOR PLAYERS TO JOIN..." textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
