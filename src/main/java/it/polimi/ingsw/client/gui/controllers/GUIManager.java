@@ -101,10 +101,6 @@ public class GUIManager extends UI {
 
     private void customAnswer(String answer) {
         System.out.println(answer);
-        LoadingController loadingController = (LoadingController) getControllerFromName(LOADER);
-        Platform.runLater(()->{
-            loadingController.setWaitingLabel(answer);
-        });
     }
     public void wrongNum(String s){
         howManyPlayerRequest(s);
