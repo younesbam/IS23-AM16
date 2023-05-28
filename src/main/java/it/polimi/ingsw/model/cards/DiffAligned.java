@@ -108,6 +108,24 @@ public class DiffAligned extends CommonGoalCard {
      * {@inheritDoc}
      */
     public void printCard(){
-
+        switch (cardNumber) {
+            case 2 -> {
+                System.out.println( "COMMON CARD NUMBER 2\n"+
+                                    "++++++++++++++++++ \n" +
+                                    "+      | ≠ |     + \n" +
+                                    "+      | ≠ |     + \n" +
+                                    "+      | ≠ | x2  + \n" +
+                                    "+      | ≠ |     + \n" +
+                                    "+      | ≠ |     + \n" +
+                                    "+      | ≠ |     + \n" +
+                                    "++++++++++++++++++ \n");
+            }
+            case 6 -> {
+                System.out.println( "       COMMON CARD NUMBER 6 \n"+
+                                    "++++++++++++++++++++++++++++++++ \n" +
+                                    "+   | ≠ | ≠ | ≠ | ≠ | ≠ | x2   + \n" +
+                                    "++++++++++++++++++++++++++++++++ \n");
+            }
+        }
     }
 }

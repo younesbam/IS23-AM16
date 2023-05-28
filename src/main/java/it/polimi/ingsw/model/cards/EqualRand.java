@@ -61,6 +61,11 @@ public class EqualRand extends CommonGoalCard {
      * {@inheritDoc}
      */
     public void printCard(){
-
+        System.out.println( "COMMON CARD NUMBER 9 \n" +
+                            "++++++++++++++++++++++++++++ \n"+
+                            "+      | = |   | = |       + \n" +
+                            "+  | = |   | = |   | = |   + \n" +
+                            "+  | = |   | = |   | = |   + \n" +
+                            "++++++++++++++++++++++++++++");
     }
 }

@@ -82,11 +82,11 @@
             },
             {
               "x": 3,
-              "type": "GREEN"
+              "type": "PINK"
             },
             {
               "x": 3,
-              "type": "GREEN"
+              "type": "PINK"
             },
             {
               "x": 3,
@@ -106,11 +106,11 @@
             },
             {
               "x": 4,
-              "type": "GREEN"
+              "type": "PINK"
             },
             {
               "x": 4,
-              "type": "GREEN"
+              "type": "PINK"
             },
             {
               "x": 4,
@@ -144,11 +144,11 @@
             },
             {
               "x": 0,
-              "type": "WHITE"
+              "type": "BLUE"
             },
             {
               "x": 0,
-              "type": "WHITE"
+              "type": "BLUE"
             },
             {
               "x": 1,
@@ -160,11 +160,11 @@
             },
             {
               "x": 1,
-              "type": "WHITE"
+              "type": "BLUE"
             },
             {
               "x": 1,
-              "type": "WHITE"
+              "type": "BLUE"
             },
             {
               "x": 2,
@@ -230,19 +230,19 @@
           "coordinates": [
             {
               "x": 0,
-              "type": "LIGHTBLUE"
+              "type": "GREEN"
             },
             {
               "x": 0,
-              "type": "LIGHTBLUE"
+              "type": "GREEN"
             },
             {
               "x": 1,
-              "type": "LIGHTBLUE"
+              "type": "GREEN"
             },
             {
               "x": 1,
-              "type": "LIGHTBLUE"
+              "type": "GREEN"
             },
             {
               "x": 2,
@@ -430,7 +430,7 @@
             },
             {
               "x": 3,
-              "type": "PINK"
+              "type": "WHITE"
             },
             {
               "x": 3,
@@ -474,6 +474,14 @@
           "descr": "n.6 invalid test",
           "valid": "FALSE",
           "coordinates": [
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
             {
               "x": 2,
               "type": "GREEN"
@@ -1040,7 +1048,7 @@
             },
             {
               "x": 0,
-              "type": "BLUE"
+              "type": "WHITE"
             },
             {
               "x": 0,
@@ -1056,7 +1064,7 @@
             },
             {
               "x": 1,
-              "type": "GREEN"
+              "type": "WHITE"
             },
             {
               "x": 1,
@@ -1077,22 +1085,6 @@
             {
               "x": 1,
               "type": "GREEN"
-            },
-            {
-              "x": 2,
-              "type": "PINK"
-            },
-            {
-              "x": 2,
-              "type": "PINK"
-            },
-            {
-              "x": 2,
-              "type": "PINK"
-            },
-            {
-              "x": 2,
-              "type": "PINK"
             },
             {
               "x": 2,
@@ -1100,11 +1092,27 @@
             },
             {
               "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
               "type": "YELLOW"
             },
             {
               "x": 3,
-              "type": "LIGHTBLUE"
+              "type": "WHITE"
             },
             {
               "x": 3,
@@ -1170,7 +1178,7 @@
             },
             {
               "x": 0,
-              "type": "PINK"
+              "type": "LIGHTBLUE"
             },
             {
               "x": 0,
@@ -1202,7 +1210,7 @@
             },
             {
               "x": 1,
-              "type": "WHITE"
+              "type": "GREEN"
             },
             {
               "x": 2,
@@ -1250,7 +1258,7 @@
             },
             {
               "x": 3,
-              "type": "BLUE"
+              "type": "GREEN"
             },
             {
               "x": 4,
@@ -1274,7 +1282,7 @@
             },
             {
               "x": 4,
-              "type": "LIGHTBLUE"
+              "type": "GREEN"
             }
           ]
         },
@@ -1316,7 +1324,7 @@
             },
             {
               "x": 1,
-              "type": "GREEN"
+              "type": "BLUE"
             },
             {
               "x": 1,
@@ -1324,7 +1332,7 @@
             },
             {
               "x": 2,
-              "type": "BLUE"
+              "type": "LIGHTBLUE"
             },
             {
               "x": 2,
@@ -1343,24 +1351,28 @@
               "type": "YELLOW"
             },
             {
-              "x": 4,
-              "type": "BLUE"
-            },
-            {
-              "x": 4,
-              "type": "BLUE"
-            },
-            {
-              "x": 4,
-              "type": "BLUE"
-            },
-            {
-              "x": 4,
-              "type": "BLUE"
+              "x": 3,
+              "type": "LIGHTBLUE"
             },
             {
               "x": 4,
               "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
             },
             {
               "x": 4,
@@ -1533,6 +1545,10 @@
             {
               "x": 3,
               "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
             },
             {
               "x": 4,
@@ -1622,7 +1638,7 @@
             },
             {
               "x": 0,
-              "type": "PINK"
+              "type": "LIGHTBLUE"
             },
             {
               "x": 0,
@@ -1670,6 +1686,10 @@
             },
             {
               "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
               "type": "WHITE"
             },
             {
@@ -1677,16 +1697,12 @@
               "type": "LIGHTBLUE"
             },
             {
-              "x": 2,
-              "type": "LIGHTBLUE"
-            },
-            {
               "x": 3,
               "type": "BLUE"
             },
             {
               "x": 3,
-              "type": "BLUE"
+              "type": "YELLOW"
             },
             {
               "x": 3,
@@ -1740,7 +1756,7 @@
             },
             {
               "x": 0,
-              "type": "GREEN"
+              "type": "PINK"
             },
             {
               "x": 0,
@@ -1776,7 +1792,7 @@
             },
             {
               "x": 3,
-              "type": "PINK"
+              "type": "LIGHTBLUE"
             },
             {
               "x": 4,
@@ -1838,19 +1854,19 @@
             },
             {
               "x": 1,
-              "type": "WHITE"
+              "type": "PINK"
             },
             {
               "x": 2,
-              "type": "LIGHTBLUE"
+              "type": "PINK"
             },
             {
               "x": 3,
-              "type": "LIGHTBLUE"
+              "type": "GREEN"
             },
             {
               "x": 3,
-              "type": "LIGHTBLUE"
+              "type": "GREEN"
             },
             {
               "x": 4,
@@ -1896,7 +1912,7 @@
             },
             {
               "x": 0,
-              "type": "BLUE"
+              "type": "PINK"
             },
             {
               "x": 0,
@@ -1924,6 +1940,10 @@
             },
             {
               "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
               "type": "LIGHTBLUE"
             },
             {
@@ -1954,7 +1974,7 @@
             },
             {
               "x": 0,
-              "type": "YELLOW"
+              "type": "PINK"
             },
             {
               "x": 0,
@@ -1982,7 +2002,7 @@
             },
             {
               "x": 1,
-              "type": "WHITE"
+              "type": "LIGHTBLUE"
             },
             {
               "x": 1,
@@ -1990,7 +2010,7 @@
             },
             {
               "x": 2,
-              "type": "LIGHTBLUE"
+              "type": "YELLOW"
             },
             {
               "x": 2,
@@ -2002,7 +2022,7 @@
             },
             {
               "x": 2,
-              "type": "YELLOW"
+              "type": "LIGHTBLUE"
             },
             {
               "x": 2,
@@ -2014,7 +2034,7 @@
             },
             {
               "x": 3,
-              "type": "GREEN"
+              "type": "BLUE"
             },
             {
               "x": 3,
@@ -2038,11 +2058,11 @@
             },
             {
               "x": 4,
-              "type": "WHITE"
+              "type": "BLUE"
             },
             {
               "x": 4,
-              "type": "BLUE"
+              "type": "PINK"
             },
             {
               "x": 4,
@@ -2088,11 +2108,11 @@
             },
             {
               "x": 2,
-              "type": "YELLOW"
+              "type": "LIGHTBLUE"
             },
             {
               "x": 3,
-              "type": "LIGHTBLUE"
+              "type": "YELLOW"
             },
             {
               "x": 3,
@@ -5851,7 +5871,7 @@
             },
             {
               "x": 4,
-              "type": "GREEN"
+              "type": "PINK"
             },
             {
               "x": 4,
@@ -5918,6 +5938,510 @@
             {
               "x": 4,
               "type": "GREEN"
+            }
+          ]
+        },
+        {
+          "descr": "n.7 valid test",
+          "valid": "TRUE",
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.8 valid test",
+          "valid": "TRUE",
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
+            }
+          ]
+        },
+        {
+          "descr": "n.9 invalid test",
+          "valid": "FALSE",
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            }
+          ]
+        },
+        {
+          "descr": "n.10 invalid test",
+          "valid": "FALSE",
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "GREEN"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
             }
           ]
         }
@@ -5933,123 +6457,63 @@
           "coordinates": [
             {
               "x": 0,
-              "type": "PINK"
-            },
-            {
-              "x": 0,
-              "type": "PINK"
-            },
-            {
-              "x": 0,
-              "type": "PINK"
-            },
-            {
-              "x": 0,
-              "type": "PINK"
-            },
-            {
-              "x": 0,
-              "type": "PINK"
-            },
-            {
-              "x": 0,
-              "type": "BLUE"
-            },
-            {
-              "x": 1,
-              "type": "PINK"
-            },
-            {
-              "x": 1,
-              "type": "PINK"
-            },
-            {
-              "x": 1,
-              "type": "PINK"
-            },
-            {
-              "x": 1,
-              "type": "PINK"
-            },
-            {
-              "x": 1,
-              "type": "LIGHTBLUE"
-            },
-            {
-              "x": 1,
-              "type": "BLUE"
-            },
-            {
-              "x": 2,
-              "type": "PINK"
-            },
-            {
-              "x": 2,
-              "type": "PINK"
-            },
-            {
-              "x": 2,
-              "type": "PINK"
-            },
-            {
-              "x": 2,
-              "type": "GREEN"
-            },
-            {
-              "x": 2,
-              "type": "BLUE"
-            },
-            {
-              "x": 2,
-              "type": "LIGHTBLUE"
-            },
-            {
-              "x": 3,
-              "type": "PINK"
-            },
-            {
-              "x": 3,
-              "type": "PINK"
-            },
-            {
-              "x": 3,
-              "type": "LIGHTBLUE"
-            },
-            {
-              "x": 3,
-              "type": "LIGHTBLUE"
-            },
-            {
-              "x": 3,
-              "type": "YELLOW"
-            },
-            {
-              "x": 3,
-              "type": "YELLOW"
-            },
-            {
-              "x": 4,
-              "type": "PINK"
-            },
-            {
-              "x": 4,
-              "type": "GREEN"
-            },
-            {
-              "x": 4,
-              "type": "BLUE"
-            },
-            {
-              "x": 4,
-              "type": "LIGHTBLUE"
-            },
-            {
-              "x": 4,
               "type": "WHITE"
             },
             {
-              "x": 4,
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 0,
               "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "WHITE"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
             }
           ]
         },
@@ -6059,103 +6523,83 @@
           "coordinates": [
             {
               "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
               "type": "WHITE"
             },
             {
-              "x": 0,
-              "type": "BLUE"
-            },
-            {
-              "x": 0,
-              "type": "BLUE"
-            },
-            {
-              "x": 0,
-              "type": "BLUE"
-            },
-            {
-              "x": 0,
-              "type": "BLUE"
-            },
-            {
-              "x": 0,
-              "type": "BLUE"
-            },
-            {
-              "x": 1,
-              "type": "PINK"
-            },
-            {
-              "x": 1,
-              "type": "BLUE"
-            },
-            {
-              "x": 1,
-              "type": "BLUE"
-            },
-            {
-              "x": 1,
-              "type": "BLUE"
-            },
-            {
-              "x": 1,
-              "type": "BLUE"
-            },
-            {
-              "x": 2,
-              "type": "PINK"
-            },
-            {
-              "x": 2,
-              "type": "BLUE"
-            },
-            {
-              "x": 2,
-              "type": "BLUE"
-            },
-            {
-              "x": 2,
-              "type": "BLUE"
-            },
-            {
-              "x": 2,
+              "x": 3,
               "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
             },
             {
               "x": 3,
               "type": "GREEN"
             },
             {
-              "x": 3,
-              "type": "BLUE"
+              "x": 4,
+              "type": "PINK"
             },
             {
-              "x": 3,
-              "type": "BLUE"
-            },
-            {
-              "x": 3,
-              "type": "YELLOW"
-            },
-            {
-              "x": 3,
-              "type": "LIGHTBLUE"
-            },
-            {
-              "x": 3,
+              "x": 4,
               "type": "BLUE"
             },
             {
               "x": 4,
               "type": "LIGHTBLUE"
-            },
-            {
-              "x": 4,
-              "type": "BLUE"
             },
             {
               "x": 4,
               "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
             }
           ]
         },
@@ -6165,209 +6609,129 @@
           "coordinates": [
             {
               "x": 0,
-              "type": "YELLOW"
-            },
-            {
-              "x": 0,
-              "type": "YELLOW"
-            },
-            {
-              "x": 0,
-              "type": "YELLOW"
-            },
-            {
-              "x": 0,
-              "type": "YELLOW"
-            },
-            {
-              "x": 0,
-              "type": "YELLOW"
-            },
-            {
-              "x": 0,
-              "type": "YELLOW"
-            },
-            {
-              "x": 1,
-              "type": "YELLOW"
-            },
-            {
-              "x": 1,
-              "type": "YELLOW"
-            },
-            {
-              "x": 1,
-              "type": "YELLOW"
-            },
-            {
-              "x": 1,
-              "type": "YELLOW"
-            },
-            {
-              "x": 1,
-              "type": "YELLOW"
-            },
-            {
-              "x": 2,
-              "type": "YELLOW"
-            },
-            {
-              "x": 2,
-              "type": "YELLOW"
-            },
-            {
-              "x": 2,
-              "type": "YELLOW"
-            },
-            {
-              "x": 2,
               "type": "BLUE"
             },
             {
-              "x": 2,
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
               "type": "BLUE"
             },
             {
-              "x": 2,
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
               "type": "PINK"
             },
             {
-              "x": 3,
+              "x": 0,
               "type": "YELLOW"
             },
             {
-              "x": 3,
+              "x": 1,
               "type": "YELLOW"
             },
             {
-              "x": 3,
+              "x": 1,
               "type": "GREEN"
             },
             {
-              "x": 3,
-              "type": "GREEN"
-            },
-            {
-              "x": 4,
+              "x": 1,
               "type": "YELLOW"
             },
             {
-              "x": 4,
+              "x": 1,
+              "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
               "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 3,
+              "type": "YELLOW"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 4,
+              "type": "YELLOW"
+            },
+            {
+              "x": 4,
+              "type": "PINK"
             }
           ]
         },
         {
-          "descr": "n.4 invalid test",
-          "valid": "FALSE",
+          "descr": "n.4 valid test",
+          "valid": "TRUE",
           "coordinates": [
             {
               "x": 0,
-              "type": "PINK"
-            },
-            {
-              "x": 0,
-              "type": "PINK"
-            },
-            {
-              "x": 0,
-              "type": "PINK"
-            },
-            {
-              "x": 0,
-              "type": "PINK"
-            },
-            {
-              "x": 0,
-              "type": "PINK"
-            },
-            {
-              "x": 0,
-              "type": "PINK"
+              "type": "WHITE"
             },
             {
               "x": 1,
-              "type": "PINK"
-            },
-            {
-              "x": 1,
-              "type": "PINK"
-            },
-            {
-              "x": 1,
-              "type": "PINK"
-            },
-            {
-              "x": 1,
-              "type": "PINK"
-            },
-            {
-              "x": 1,
-              "type": "LIGHTBLUE"
-            },
-            {
-              "x": 1,
-              "type": "PINK"
-            },
-            {
-              "x": 2,
-              "type": "PINK"
-            },
-            {
-              "x": 2,
-              "type": "PINK"
-            },
-            {
-              "x": 2,
-              "type": "PINK"
-            },
-            {
-              "x": 2,
-              "type": "LIGHTBLUE"
-            },
-            {
-              "x": 2,
               "type": "BLUE"
             },
             {
+              "x": 1,
+              "type": "PINK"
+            },
+            {
               "x": 2,
+              "type": "GREEN"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
               "type": "YELLOW"
             },
             {
               "x": 3,
-              "type": "PINK"
-            },
-            {
-              "x": 3,
-              "type": "PINK"
-            },
-            {
-              "x": 3,
-              "type": "BLUE"
-            },
-            {
-              "x": 3,
-              "type": "LIGHTBLUE"
-            },
-            {
-              "x": 3,
               "type": "WHITE"
-            },
-            {
-              "x": 3,
-              "type": "WHITE"
-            },
-            {
-              "x": 4,
-              "type": "BLUE"
-            },
-            {
-              "x": 4,
-              "type": "PINK"
-            },
-            {
-              "x": 4,
-              "type": "YELLOW"
             },
             {
               "x": 4,
@@ -6375,11 +6739,19 @@
             },
             {
               "x": 4,
-              "type": "LIGHTBLUE"
+              "type": "PINK"
             },
             {
               "x": 4,
               "type": "WHITE"
+            },
+            {
+              "x": 4,
+              "type": "BLUE"
+            },
+            {
+              "x": 4,
+              "type": "LIGHTBLUE"
             }
           ]
         },
@@ -6393,7 +6765,7 @@
             },
             {
               "x": 0,
-              "type": "PINK"
+              "type": "LIGHTBLUE"
             },
             {
               "x": 0,
@@ -6401,7 +6773,7 @@
             },
             {
               "x": 0,
-              "type": "PINK"
+              "type": "BLUE"
             },
             {
               "x": 0,
@@ -6421,7 +6793,7 @@
             },
             {
               "x": 1,
-              "type": "PINK"
+              "type": "WHITE"
             },
             {
               "x": 1,
@@ -6441,43 +6813,97 @@
             },
             {
               "x": 2,
-              "type": "PINK"
+              "type": "YELLOW"
             },
             {
               "x": 2,
               "type": "PINK"
             },
             {
-              "x": 2,
-              "type": "PINK"
-            },
-            {
               "x": 3,
               "type": "BLUE"
             },
             {
               "x": 3,
               "type": "PINK"
+            }
+          ]
+        },
+        {
+          "descr": "n.6 invalid test",
+          "valid": "FALSE",
+          "coordinates": [
+            {
+              "x": 0,
+              "type": "GREEN"
             },
             {
-              "x": 3,
-              "type": "PINK"
+              "x": 0,
+              "type": "WHITE"
             },
             {
-              "x": 3,
-              "type": "BLUE"
+              "x": 0,
+              "type": "YELLOW"
             },
             {
-              "x": 3,
-              "type": "BLUE"
-            },
-            {
-              "x": 4,
+              "x": 0,
               "type": "LIGHTBLUE"
             },
             {
-              "x": 4,
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
               "type": "PINK"
+            },
+            {
+              "x": 1,
+              "type": "GREEN"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "BLUE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "WHITE"
+            },
+            {
+              "x": 2,
+              "type": "PINK"
+            },
+            {
+              "x": 3,
+              "type": "BLUE"
+            },
+            {
+              "x": 3,
+              "type": "PINK"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
+            },
+            {
+              "x": 4,
+              "type": "GREEN"
             },
             {
               "x": 4,
@@ -6490,20 +6916,44 @@
           ]
         },
         {
-          "descr": "n.6 invalid test",
+          "descr": "n.7 invalid test",
           "valid": "FALSE",
           "coordinates": [
             {
               "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 0,
+              "type": "BLUE"
+            },
+            {
+              "x": 0,
+              "type": "WHITE"
+            },
+            {
+              "x": 0,
               "type": "PINK"
             },
             {
               "x": 0,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
+              "type": "YELLOW"
+            },
+            {
+              "x": 1,
               "type": "GREEN"
             },
             {
-              "x": 0,
-              "type": "GREEN"
+              "x": 1,
+              "type": "YELLOW"
             },
             {
               "x": 1,
@@ -6511,23 +6961,19 @@
             },
             {
               "x": 1,
-              "type": "PINK"
+              "type": "YELLOW"
             },
             {
-              "x": 1,
+              "x": 2,
+              "type": "YELLOW"
+            },
+            {
+              "x": 2,
               "type": "BLUE"
             },
             {
               "x": 2,
-              "type": "PINK"
-            },
-            {
-              "x": 2,
-              "type": "PINK"
-            },
-            {
-              "x": 2,
-              "type": "PINK"
+              "type": "YELLOW"
             },
             {
               "x": 2,
@@ -6535,43 +6981,23 @@
             },
             {
               "x": 3,
-              "type": "PINK"
-            },
-            {
-              "x": 3,
-              "type": "PINK"
-            },
-            {
-              "x": 3,
-              "type": "PINK"
-            },
-            {
-              "x": 3,
-              "type": "PINK"
-            },
-            {
-              "x": 3,
               "type": "YELLOW"
             },
             {
               "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "LIGHTBLUE"
+            },
+            {
+              "x": 3,
+              "type": "WHITE"
+            },
+            {
+              "x": 4,
               "type": "YELLOW"
-            },
-            {
-              "x": 4,
-              "type": "PINK"
-            },
-            {
-              "x": 4,
-              "type": "PINK"
-            },
-            {
-              "x": 4,
-              "type": "PINK"
-            },
-            {
-              "x": 4,
-              "type": "PINK"
             },
             {
               "x": 4,

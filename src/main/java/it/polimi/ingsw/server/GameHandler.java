@@ -135,7 +135,15 @@ public class GameHandler {
         }
 
         sendToEveryoneExcept(new CustomAnswer(false, "The first player is: " + server.getUsernameByID(firstPlayer) + "!"), firstPlayer);
-        sendToPlayer(new CustomAnswer(false, "You are the first player! Here's your chair!"), firstPlayer);
+        sendToPlayer(new CustomAnswer(false, "You are the first player! Here's your chair! \n " +
+                                                        "  __________.\n" +
+                                                        "  /_/-----/_/|   \n" +
+                                                        "  ( ( ' ' ( (| \n" +
+                                                        "  (_( ' ' (_(| \n" +
+                                                        "  / /=====/ /| \n" +
+                                                        " /_//____/_/ | \n" +
+                                                        "(o|:.....|o) | \n" +
+                                                        "|_|:_____|_|/' \n"), firstPlayer);
 
         controller.setup();
     }

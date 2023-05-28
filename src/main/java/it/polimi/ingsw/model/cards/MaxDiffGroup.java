@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
@@ -101,6 +102,26 @@ public class MaxDiffGroup extends CommonGoalCard {
      * {@inheritDoc}
      */
     public void printCard(){
-
+        switch (cardNumber) {
+            case 5 -> {
+                System.out.println(         "COMMON CARD NUMBER 5 \n" +
+                                    "++++++++++++++++++++++++++++++++ \n"+
+                                    "+          |   |               + \n" +
+                                    "+          |   |               + \n" +
+                                    "+          |   |  MAX 3| ≠ |   + \n" +
+                                    "+          |   |       x3      + \n" +
+                                    "+          |   |               + \n" +
+                                    "+          |   |               + \n"+
+                                    "++++++++++++++++++++++++++++++++ \n");
+            }
+            case 7 -> {
+                System.out.println( "COMMON CARD NUMBER 7 \n" +
+                                    "++++++++++++++++++++++++++++ \n"+
+                                    "+  |   |   |   |   |   |   + \n" +
+                                    "+        MAX 3| ≠ |        + \n" +
+                                    "+           x4             + \n"+
+                                    "++++++++++++++++++++++++++++ \n");
+            }
+        }
     }
 }
