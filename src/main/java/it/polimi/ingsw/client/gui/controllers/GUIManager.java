@@ -183,6 +183,21 @@ public class GUIManager extends UI {
             countDownController.updateTime(a.getAnswer().substring(a.getAnswer().length() - 1));
         });
     }
+
+    public void firstPlayerSelected(String s){
+        Platform.runLater(()->{
+            MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
+            mainSceneController.updateTurn("Turn: "+s);
+        });
+    }
+
+    public void chairAssigned(String s){
+        Platform.runLater(()->{
+            MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
+            mainSceneController.updateTurn(s);
+            mainSceneController.showChair();
+        });
+    }
     /**
      * Method getControllerFromName gets a scene controller based on inserted name from the dedicated hashmap.
      *
@@ -206,6 +221,8 @@ public class GUIManager extends UI {
            case "EndOfYourTurn" -> updateTurn(false);
            case "PlayerNumberChosen" -> playerNumberChosen((String) event.getNewValue());
            case "CountDown" -> countDown((CountDown) event.getNewValue());
+           case "FirstPlayerSelected" -> firstPlayerSelected((String) event.getNewValue());
+           case "ChairAssigned" -> chairAssigned((String) event.getNewValue());
         }
     }
 

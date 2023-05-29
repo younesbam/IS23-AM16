@@ -7,8 +7,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.control.Label;
 
-import java.awt.*;
 import java.util.Random;
 
 import static it.polimi.ingsw.Const.*;
@@ -19,6 +19,9 @@ public class MainSceneController implements GUIController{
     private static final String IMAGEPATH = "/fxml/graphics/item_tiles/";
     @FXML
     private GridPane boardGrid;
+    @FXML
+    private Label turn;
+    @FXML ImageView chair;
     @Override
     public void setGuiManger(GUIManager guiManager) {
         this.guiManager = guiManager;
@@ -44,5 +47,17 @@ public class MainSceneController implements GUIController{
                 }
             }
         }
+    }
+
+    public void updateTurn(String turn){
+        this.turn.setText(turn);
+    }
+
+    public void showChair(){
+        chair.setVisible(true);
+    }
+
+    public void hideChair(){
+        chair.setVisible(false);
     }
 }

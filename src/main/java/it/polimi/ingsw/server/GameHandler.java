@@ -3,9 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
-import it.polimi.ingsw.communications.serveranswers.Answer;
-import it.polimi.ingsw.communications.serveranswers.CustomAnswer;
-import it.polimi.ingsw.communications.serveranswers.PlayerDisconnected;
+import it.polimi.ingsw.communications.serveranswers.*;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
@@ -135,6 +133,7 @@ public class GameHandler {
         }
 
         sendToEveryoneExcept(new CustomAnswer(false, "The first player is: " + server.getUsernameByID(firstPlayer) + "!"), firstPlayer);
+        sendToEveryoneExcept(new FirstPlayerSelected(server.getUsernameByID(firstPlayer)), firstPlayer);
         sendToPlayer(new CustomAnswer(false, "You are the first player! Here's your chair! \n " +
                                                         "  __________.\n" +
                                                         "  /_/-----/_/|   \n" +
@@ -144,8 +143,10 @@ public class GameHandler {
                                                         " /_//____/_/ | \n" +
                                                         "(o|:.....|o) | \n" +
                                                         "|_|:_____|_|/' \n"), firstPlayer);
+        sendToPlayer(new ChairAssigned(), firstPlayer);
 
         controller.setup();
+
     }
 
 

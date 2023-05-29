@@ -119,6 +119,16 @@ public class ActionHandler {
             return;
         }
 
+        if(a instanceof FirstPlayerSelected){
+            pcsView.firePropertyChange("FirstPlayerSelected", null, ((FirstPlayerSelected) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof ChairAssigned){
+            pcsView.firePropertyChange("ChairAssigned", null, ((ChairAssigned) a).getAnswer());
+            return;
+        }
+
         if(a instanceof PlayerDisconnected){
             if(guiManager != null) {
             } else if(cli != null) {
