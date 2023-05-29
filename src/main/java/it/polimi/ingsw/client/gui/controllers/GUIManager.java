@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui.controllers;
 
+import com.sun.tools.javac.Main;
 import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.client.common.UI;
@@ -102,6 +103,13 @@ public class GUIManager extends UI {
 
     private void customAnswer(String answer) {
         System.out.println(answer);
+        if(answer.equals("The game is on!\n")){
+            Platform.runLater(()->{
+                gui.changeStage(MAIN_GUI);
+                MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
+                mainSceneController.printBoard();
+            });
+        }
     }
     public void wrongNum(String s){
         howManyPlayerRequest(s);
@@ -162,7 +170,6 @@ public class GUIManager extends UI {
         modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
         System.out.println("\n");
         //printMAN();
-
         System.out.println("\n" + request + "\n");
 
     }
