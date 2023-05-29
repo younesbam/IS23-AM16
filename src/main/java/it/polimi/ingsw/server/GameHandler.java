@@ -207,11 +207,11 @@ public class GameHandler {
 
     public void dispatchActions(GameAction action){
         if (action instanceof PickTilesAction){
-            pcsController.firePropertyChange("PickTilesAction", null, ((PickTilesAction) action).getTiles());
+            pcsController.firePropertyChange("PickTilesAction", null, action);
             return;
         }
         if(action instanceof PlaceTilesAction){
-            pcsController.firePropertyChange("PlaceTilesAction", null, ((PlaceTilesAction) action).getCoordinates());
+            pcsController.firePropertyChange("PlaceTilesAction", null, action);
             return;
         }
         if(action instanceof PrintCardsAction){

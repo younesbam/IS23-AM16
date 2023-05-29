@@ -1,17 +1,33 @@
 package it.polimi.ingsw.communications.clientmessages.actions;
 
+import it.polimi.ingsw.model.Tile;
+
+import java.util.List;
+
+/**
+ * Place tiles request from the player
+ */
 public class PlaceTilesAction implements GameAction{
-
-    private String[] coordinates;
-
-    public PlaceTilesAction(String[] coordinates){
-        this.coordinates = coordinates;
-    }
+    /**
+     * List of tiles to be placed in the bookshelf
+     */
+    private List<Tile> tiles;
 
     /**
-     * Tiles getter.
+     * Column where to place tiles.
      */
-    public String[] getCoordinates(){
-        return this.coordinates;
+    private int col;
+
+    public PlaceTilesAction(List<Tile> tiles, int col) {
+        this.tiles = tiles;
+        this.col = col;
+    }
+
+    public List<Tile> getTiles() {
+        return tiles;
+    }
+
+    public int getCol() {
+        return col;
     }
 }

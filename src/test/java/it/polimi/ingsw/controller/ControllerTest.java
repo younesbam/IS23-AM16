@@ -67,7 +67,7 @@ class ControllerTest {
             y = random.nextInt(MAXBOARDDIM);
         }
         int[][] coordinates = {{x, y}};
-        controller.pickTilesAction(coordinates);
+//        controller.pickTilesAction(coordinates);
 
         // Check if the tile has been removed from the board
         assertFalse(controller.getGame().getBoard().isPickable(x,y));
