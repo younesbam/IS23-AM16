@@ -308,6 +308,7 @@ public class Server {
             System.out.println(numOfPlayers + " players are now ready to play. Game is starting...");
             for(int i = 3; i > 0; i--) {
                 gameHandler.sendToEveryone(new CustomAnswer(false, "Game will start in " + i));
+                gameHandler.sendToEveryone(new CountDown(i));
                 TimeUnit.MILLISECONDS.sleep(1000);
             }
 

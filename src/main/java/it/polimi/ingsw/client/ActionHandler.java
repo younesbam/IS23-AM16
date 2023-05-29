@@ -114,12 +114,19 @@ public class ActionHandler {
             return;
         }
 
+        if(a instanceof CountDown){
+            pcsView.firePropertyChange("CountDown", null, a);
+            return;
+        }
+
         if(a instanceof PlayerDisconnected){
             if(guiManager != null) {
             } else if(cli != null) {
                 cli.endGameMessage();
             }
         }
+
+
     }
 
 

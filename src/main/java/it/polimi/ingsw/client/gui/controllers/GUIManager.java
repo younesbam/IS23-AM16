@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.client.gui.GUI;
+import it.polimi.ingsw.communications.serveranswers.CountDown;
 import it.polimi.ingsw.communications.serveranswers.PlayerDisconnected;
 import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
@@ -29,6 +30,7 @@ public class GUIManager extends UI {
     private static final String GOALS = "goalCardScene.fxml";
     private static final String SETUP = "joinScene.fxml";
     private static final String CHAT = "chatScene.fxml";
+    private static final String COUNTDOWN = "countDown.fxml";
     private final Logger logger = Logger.getLogger(getClass().getName());
     private final HashMap<String, Scene> nameMapScene = new HashMap<>();
     /**
@@ -54,7 +56,7 @@ public class GUIManager extends UI {
         }
     }
     public HashMap<String, Scene> setup() {
-        List<String> fxmList = new ArrayList<>(Arrays.asList(SETUP,LOADER, MAIN_GUI, GOALS, CHAT));
+        List<String> fxmList = new ArrayList<>(Arrays.asList(SETUP,LOADER, MAIN_GUI, GOALS, CHAT, COUNTDOWN));
         try {
             for (String path : fxmList) {
                 FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/fxml/" + path));
@@ -174,6 +176,13 @@ public class GUIManager extends UI {
 
     }
 
+    public void countDown(CountDown a){
+        Platform.runLater(()->{
+            gui.changeStage(COUNTDOWN);
+            CountDownController countDownController = (CountDownController) getControllerFromName(COUNTDOWN);
+            countDownController.updateTime(a.getAnswer().substring(a.getAnswer().length() - 1));
+        });
+    }
     /**
      * Method getControllerFromName gets a scene controller based on inserted name from the dedicated hashmap.
      *
@@ -196,7 +205,7 @@ public class GUIManager extends UI {
            case "ItsYourTurn" -> updateTurn(true);
            case "EndOfYourTurn" -> updateTurn(false);
            case "PlayerNumberChosen" -> playerNumberChosen((String) event.getNewValue());
-
+           case "CountDown" -> countDown((CountDown) event.getNewValue());
         }
     }
 

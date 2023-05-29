@@ -35,6 +35,7 @@ public class GUI extends Application {
     private static final String GOALS = "goalCardScene.fxml";
     private static final String SETUP = "joinScene.fxml";
     private static final String CHAT = "chatScene.fxml";
+    private static final String COUNTDOWN = "countDown.fxml";
     private final PropertyChangeSupport listeners = new PropertyChangeSupport(this);
     private final Logger logger = Logger.getLogger(getClass().getName());
     private HashMap<String, Scene> nameMapScene = new HashMap<>();
