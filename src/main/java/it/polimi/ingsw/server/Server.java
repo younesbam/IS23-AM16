@@ -4,8 +4,6 @@ import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.common.JSONParser;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
-import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
-import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
 import it.polimi.ingsw.communications.clientmessages.messages.ExitFromGame;
 import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
 import it.polimi.ingsw.communications.clientmessages.messages.Message;
@@ -35,7 +33,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static it.polimi.ingsw.Const.*;
-import static it.polimi.ingsw.controller.Phase.LOBBY;
 import static it.polimi.ingsw.controller.Phase.SETUP;
 
 public class Server {

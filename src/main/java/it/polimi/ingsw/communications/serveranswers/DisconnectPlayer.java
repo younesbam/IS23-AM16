@@ -1,8 +1,8 @@
 package it.polimi.ingsw.communications.serveranswers;
 
-public class PlayerDisconnected implements Answer{
+public class DisconnectPlayer implements Answer{
 
-    public PlayerDisconnected(){};
+    public DisconnectPlayer(){};
 
 
     @Override

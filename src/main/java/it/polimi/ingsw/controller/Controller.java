@@ -7,7 +7,6 @@ import it.polimi.ingsw.communications.serveranswers.requests.PickTilesRequest;
 import it.polimi.ingsw.communications.serveranswers.requests.PlaceTilesRequest;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.CommonGoalCard;
-import it.polimi.ingsw.model.cards.PersonalGoalCard;
 import it.polimi.ingsw.server.GameHandler;
 
 import java.beans.PropertyChangeEvent;
@@ -521,7 +520,7 @@ public class Controller implements PropertyChangeListener {
         //TODO c'è da chiudere le connessioni e finire gli ultimi messaggi di fine partita, e poi bona.
 
         //chiusura connessioni.
-        gameHandler.sendToEveryone(new PlayerDisconnected());
+        gameHandler.sendToEveryone(new DisconnectPlayer());
         for(Player p  : game.getActivePlayers()) {
             gameHandler.getServer().getVirtualPlayerByID(p.getID()).getConnection().disconnect();
         }
