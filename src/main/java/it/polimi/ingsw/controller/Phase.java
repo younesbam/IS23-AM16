@@ -4,7 +4,8 @@ public enum Phase {
     SETUP,
     LOBBY,
     TILESPICKING,
-    TILESPLACING
+    TILESPLACING,
+    ENDGAME
 
 
 }

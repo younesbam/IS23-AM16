@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
+import it.polimi.ingsw.communications.clientmessages.actions.PrintCardsAction;
 import it.polimi.ingsw.communications.clientmessages.messages.ExitFromGame;
 import it.polimi.ingsw.communications.clientmessages.messages.Message;
 
@@ -63,7 +64,7 @@ public class Dispatcher implements PropertyChangeListener {
 
                 // Miscellaneous
                 case "MAN" -> inputValidator.manual();
-                case "PRINTCARDS" -> inputValidator.printCards();
+                case "PRINTCARDS" -> messageToServer = new SerializedMessage(client.getID(), new PrintCardsAction());
                 case "EXIT" -> exitGame();
                 default -> System.out.println("Incomprehensible input. Please try again");
             }

@@ -304,6 +304,7 @@ public class Server {
             System.out.println(RED_COLOR + "Setup mode started. Clients are not welcome. Wait for the lobby host to choose the number of players" + RESET_COLOR);
             answer.setAnswer(new HowManyPlayersRequest("Hi " + getWaitingPlayerByID(connection.getID()).getUsername() + ", you are now the host of this lobby.\nPlease choose the number of players you want to play with:"));
             connection.sendAnswerToClient(answer);
+            gameHandler.getController().setCurrentPlayer(gameHandler.getController().getGame().getActivePlayers().get(0));
         } else if(playersWaitingList.size() == numOfPlayers) {  // Game has reached the right number of players. Game is starting
             System.out.println(numOfPlayers + " players are now ready to play. Game is starting...");
             for(int i = 3; i > 0; i--) {

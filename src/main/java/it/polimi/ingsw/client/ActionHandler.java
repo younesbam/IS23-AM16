@@ -107,6 +107,10 @@ public class ActionHandler {
             pcsView.firePropertyChange("BookShelfFilledWithTiles", null, ((BookShelfFilledWithTiles) a).getAnswer());
             return;
         }
+        if(a instanceof PrintCardsAnswer){
+            pcsView.firePropertyChange("PrintCardsAnswer", null, a);
+            return;
+        }
 
         if(a instanceof ErrorAnswer){
             pcsView.firePropertyChange("ErrorAnswer", null, a);

@@ -198,23 +198,6 @@ public class InputValidator {
 
 
     /**
-     * Print both common and personal goal cards.
-     */
-    public void printCards(){
-        List<CommonGoalCard> commons = modelView.getGame().getCommonGoalCards();
-        PersonalGoalCard personal = modelView.getGame().getCurrentPlayer().getPersonalGoalCard();
-
-        // Print commons.
-        for(int i=0; i < commons.size(); i++){
-            commons.get(i).printCard();
-        }
-        System.out.println("");
-
-        // Print personal.
-        personal.printCard();
-    }
-
-    /**
      * Shows user manual. List all the possible commands.
      */
     public void manual(){

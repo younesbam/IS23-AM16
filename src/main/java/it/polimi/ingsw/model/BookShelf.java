@@ -95,6 +95,7 @@ public class BookShelf implements Serializable {
         return grid;
     }
 
+
     /**
      * This method checks if the player has completed his bookshelf (so if the bookshelf is full).
      * If so, the game ends.

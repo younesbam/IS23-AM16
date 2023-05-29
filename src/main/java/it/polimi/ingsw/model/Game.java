@@ -24,6 +24,7 @@ public class Game implements Serializable {
     private int numOfPlayers;
     private final List<CommonGoalCard> commonGoalCards = new ArrayList<>();
     private final Bag bag;
+    private Player firstPlayer;
 
 
     public Game() {
@@ -54,6 +55,24 @@ public class Game implements Serializable {
 
     public int getNumOfPlayers(){
         return this.numOfPlayers;
+    }
+
+
+    /**
+     * First player setter.
+     * @param player
+     */
+    public void setFirstPlayer(Player player){
+        this.firstPlayer = player;
+    }
+
+
+    /**
+     * First player getter.
+     * @return
+     */
+    public Player getFirstPlayer(){
+        return this.firstPlayer;
     }
 
 

@@ -3,6 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
+import it.polimi.ingsw.communications.clientmessages.actions.PrintCardsAction;
 import it.polimi.ingsw.communications.serveranswers.Answer;
 import it.polimi.ingsw.communications.serveranswers.CustomAnswer;
 import it.polimi.ingsw.communications.serveranswers.PlayerDisconnected;
@@ -64,6 +65,15 @@ public class GameHandler {
     public void setNumOfPlayers(int numOfPlayers){
         this.numOfPlayers = numOfPlayers;
         game.setNumOfPlayers(numOfPlayers);
+    }
+
+
+    /**
+     * Server getter.
+     * @return
+     */
+    public Server getServer(){
+        return this.server;
     }
 
 
@@ -130,6 +140,7 @@ public class GameHandler {
                 game.getPlayers().get(i).setChair(false);
             }
             game.getPlayers().get(i).setChair(true);
+            game.setFirstPlayer(game.getPlayers().get(i));
             game.setCurrentPlayer(game.getPlayers().get(i));
             firstPlayer = game.getPlayers().get(i).getID();
         }
@@ -160,6 +171,13 @@ public class GameHandler {
         }
     }
 
+
+    /**
+     * This method terminates a game when it ends correctly.
+     */
+    public void endMatch(){
+
+    }
 
     /**
      * alreadyStarted setter.
@@ -194,6 +212,10 @@ public class GameHandler {
         }
         if(action instanceof PlaceTilesAction){
             pcsController.firePropertyChange("PlaceTilesAction", null, ((PlaceTilesAction) action).getCoordinates());
+            return;
+        }
+        if(action instanceof PrintCardsAction){
+            pcsController.firePropertyChange("PrintCardsAction", null, action);
             return;
         }
     }

@@ -4,13 +4,17 @@ import it.polimi.ingsw.client.*;
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.common.ConnectionType;
+import it.polimi.ingsw.communications.serveranswers.PrintCardsAnswer;
 import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
+import it.polimi.ingsw.model.cards.CommonGoalCard;
+import it.polimi.ingsw.model.cards.PersonalGoalCard;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 
@@ -215,28 +219,26 @@ public class CLI extends UI implements Runnable{
     }
 
 
-    private void printPersonalGoalCard(){
-        //print the card
-    }
-
-
-    private void printCommonGoalCard(){
-        //print the card
-
-    }
-
-
+    /**
+     * This method asks the player where he wants to place his tiles.
+     * @param request
+     */
     public void requestWhereToPlaceTiles(String request){
 
+        System.out.println("\n");
         modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
         System.out.println("\n");
         printMAN();
 
-        System.out.println("\n" + request + "\n");
-
+        System.out.println(request + "\n");
+        System.out.println(">");
     }
 
 
+    /**
+     * This method confirms the correct tiles placing, displaying the new Bookshelf.
+     * @param string
+     */
     private void tilesPlaced(String string) {
         System.out.println(string);
 
@@ -245,11 +247,16 @@ public class CLI extends UI implements Runnable{
     }
 
 
+    /**
+     * This method confirms the correct number of players choice.
+     * @param s
+     */
     public void playerNumberChosen(String s){
         System.out.println(s);
 
         updateTurn(false);
     }
+
 
     /**
      * Message shown when a game ends.
@@ -291,6 +298,23 @@ public class CLI extends UI implements Runnable{
     }
 
 
+    /**
+     * Print both common and personal goal cards.
+     */
+    public void printCards(){
+        List<CommonGoalCard> commons = modelView.getGame().getCommonGoalCards();
+        PersonalGoalCard personal = modelView.getGame().getCurrentPlayer().getPersonalGoalCard();
+
+        // Print commons.
+        for(int i=0; i < commons.size(); i++){
+            commons.get(i).printCard();
+        }
+        System.out.println("");
+
+        // Print personal.
+        personal.printCard();
+    }
+
 
     private void incorrectPhaseMessage(String message) {
         System.out.println(message);
@@ -310,8 +334,10 @@ public class CLI extends UI implements Runnable{
             case "ItsYourTurn" -> updateTurn(true);
             case "EndOfYourTurn" -> updateTurn(false);
             case "PlayerNumberChosen" -> playerNumberChosen((String) event.getNewValue());
+            case "PrintCardsAnswer" -> printCards();
 
             case "ErrorAnswer" -> errorAnswer((ErrorAnswer) event.getNewValue());
+
         }
     }
 

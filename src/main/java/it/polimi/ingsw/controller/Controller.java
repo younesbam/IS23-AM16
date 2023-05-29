@@ -7,12 +7,16 @@ import it.polimi.ingsw.communications.serveranswers.requests.PickTilesRequest;
 import it.polimi.ingsw.communications.serveranswers.requests.PlaceTilesRequest;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.CommonGoalCard;
+import it.polimi.ingsw.model.cards.PersonalGoalCard;
 import it.polimi.ingsw.server.GameHandler;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.Const.MAXBOARDDIM;
 import static it.polimi.ingsw.controller.Phase.SETUP;
@@ -23,6 +27,8 @@ public class Controller implements PropertyChangeListener {
     private Player currentPlayer;
     private ArrayList<Tile> currentTiles = new ArrayList<>();
     private Phase phase;
+    private boolean lastTurn = false;
+    private int counter = 0;
 
 
     /**
@@ -44,11 +50,19 @@ public class Controller implements PropertyChangeListener {
     }
 
 
+    /**
+     * Phase getter.
+     * @return
+     */
     public Phase getPhase(){
         return this.phase;
     }
 
 
+    /**
+     * Phase setter.
+     * @param phase
+     */
     public void setPhase(Phase phase){
         this.phase = phase;
     }
@@ -76,6 +90,7 @@ public class Controller implements PropertyChangeListener {
         game.createBoard();
         game.getBoard().updateBoard();
         setCurrentPlayer(game.getCurrentPlayer());
+        this.counter = game.getNumOfPlayers() - 1;
 
         gameHandler.sendToEveryone(new GameReplica(game));
 
@@ -178,6 +193,9 @@ public class Controller implements PropertyChangeListener {
     }
 
 
+    /**
+     * Method that switches the current player to the next one.
+     */
     public void nextPlayer(){
         gameHandler.sendToPlayer(new EndOfYourTurn(), currentPlayer.getID());
         game.nextPlayer();
@@ -192,8 +210,11 @@ public class Controller implements PropertyChangeListener {
      * @return
      */
     public boolean checkEndGame() {
-        if (game.getCurrentPlayer().getBookShelf().checkEndGame()) {
-            return true;
+        if(!lastTurn) {
+            if (game.getCurrentPlayer().getBookShelf().checkEndGame()) {
+                return true;
+            } else
+                return false;
         }
         else
             return false;
@@ -202,7 +223,6 @@ public class Controller implements PropertyChangeListener {
 
     /**
      * Method that updates current player's points.
-     * @param points
      */
     public void updateTotalPoints() {
         game.getCurrentPlayer().updateTotalPoints();
@@ -216,18 +236,6 @@ public class Controller implements PropertyChangeListener {
     public void setCurrentPlayer(Player player) {
         game.setCurrentPlayer(player);
         this.currentPlayer = player;
-    }
-
-
-//    /**
-//     * Method that switches the current player to the next one.
-//     */
-//    public void nextPlayer() {
-//        game.nextPlayer();
-//    }
-
-    public void endGame() {
-
     }
 
 
@@ -364,7 +372,7 @@ public class Controller implements PropertyChangeListener {
                         }
                     }
                     case 4 -> {
-                        if (!(((currentTiles.get(0).name().equals(coordinates[0]) || currentTiles.get(0).name().equals(coordinates[0]))) && ((currentTiles.get(1).name().equals(coordinates[1]) || currentTiles.get(1).name().equals(coordinates[1]))) && ((currentTiles.get(2).name().equals(coordinates[2]) || currentTiles.get(2).name().equals(coordinates[2]))))) {
+                        if (!(((currentTiles.get(0).name().equals(coordinates[0]) || currentTiles.get(1).name().equals(coordinates[0]) || currentTiles.get(2).name().equals(coordinates[0]))) && ((currentTiles.get(0).name().equals(coordinates[1]) || currentTiles.get(1).name().equals(coordinates[1]) || currentTiles.get(2).name().equals(coordinates[1]))) && ((currentTiles.get(0).name().equals(coordinates[2]) || currentTiles.get(1).name().equals(coordinates[2]) || currentTiles.get(2).name().equals(coordinates[2]))))) {
                             gameHandler.sendToPlayer(new CustomAnswer(false, "Wrong tiles selected, please try again!"), currentPlayer.getID());
                         } else {
                             rightOrderTiles.add(Tile.valueOf(coordinates[0]));
@@ -385,12 +393,30 @@ public class Controller implements PropertyChangeListener {
                 checkScheme();
                 gameHandler.sendToPlayer(new CustomAnswer(false, "Total points earned until now: " + game.getCurrentPlayer().getTotalPoints()), currentPlayer.getID());
 
+                game.getBoard().updateBoard();
+
+                //check if a player has completed his bookshelf, otherwise it sets lastTurn to true, in order to start the last turns for the remaining players.
                 if (!checkEndGame()) {
                     setPhase(Phase.TILESPICKING);
                     nextPlayer();
                 }
+                else{
+                    if(!lastTurn) {
+                        lastTurn = true;
+                        counter = counterCalculator();
+                        gameHandler.sendToPlayer(new CustomAnswer(false, "\nCongratulations, you have completed your Bookshelf! Now let the remaining players complete their turn in order to complete the round, and than we will reward the winner!\n"), currentPlayer.getID());
+                        gameHandler.sendToEveryone(new CustomAnswer(false, "\nPlayer " + currentPlayer.getUsername() + " has completed his Bookshelf!\nNow we will go on with turns until we reach the player that started the match! (The one and only with the majestic chair!)\n"));
+                    }
+                }
+
                 gameHandler.sendToEveryone(new GameReplica(game));
-                askToPickTiles();
+
+                //if we're in the last round of turns, we call the right method.
+                if(lastTurn)
+                    lastTurnHandler();
+                else
+                    askToPickTiles();
+
             } catch (InvalidParameterException e) {
                 gameHandler.sendToPlayer(new CustomAnswer(false, "Invalid parameters!"), currentPlayer.getID());
             } catch (NotEmptyColumnException e) {
@@ -404,8 +430,43 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
+     * This method handles the last turns, after a player has completed his bookshelf.
+     */
+    public void lastTurnHandler(){
+        if(counter > 0){
+            setPhase(Phase.TILESPICKING);
+            nextPlayer();
+
+            counter--;
+            askToPickTiles();
+        }
+        else
+            endGame();
+    }
+
+
+    /**
+     * Method that computes and returns the right counter, which represents the number of players that still have to take their turn after the first player completed his bookshelf.
+     * @return
+     */
+    public int counterCalculator(){
+        int c;
+
+            if(game.getFirstPlayer().getID() > currentPlayer.getID()){
+                c = game.getFirstPlayer().getID() - currentPlayer.getID() - 1;
+            }
+            else if(game.getFirstPlayer().getID() < currentPlayer.getID()){
+                c = (game.getNumOfPlayers() - currentPlayer.getID() - 1) + game.getFirstPlayer().getID();
+            }
+            else
+                c = game.getNumOfPlayers() - 1;
+
+        return c;
+    }
+
+
+    /**
      * Check the scheme of both commons and personal goal card. ALso update points of the player.
-     * @param s
      */
     private void checkScheme(){
         checkCommonGoal();
@@ -413,10 +474,65 @@ public class Controller implements PropertyChangeListener {
         updateTotalPoints();
     }
 
+
+    /**
+     * Check if you're in the right game phase to print the cards.
+     */
+    public void checkPrintAction(){
+        if(phase == Phase.TILESPLACING || phase == Phase.TILESPICKING){
+            gameHandler.sendToPlayer(new PrintCardsAnswer(), currentPlayer.getID());
+        }
+        else
+            gameHandler.sendToPlayer(new ErrorAnswer("You cannot play this command in this game phase!", ErrorClassification.INCORRECT_PHASE), currentPlayer.getID());
+
+    }
+
+
+    /**
+     * Method that terminates the game, crowning the winner.
+     */
+    public void endGame(){
+        //calcolare i punteggi di tutti e assegnare il vincitore!
+        setPhase(Phase.ENDGAME);
+
+        List<Player> rightPointsOrder = new ArrayList<>();
+        String s = "This is the final ranking:\n";
+        int i = 1;
+
+        //Players being ordered by descending points.
+        rightPointsOrder = game.getActivePlayers().stream().sorted(Comparator.comparingInt(Player::getTotalPoints).reversed()).collect(Collectors.toList());
+
+        //TODO gestire il caso di parità.
+        //Ranking creation
+        for (Player p : rightPointsOrder){
+            gameHandler.sendToPlayer(new CustomAnswer(false, "You have collected " + p.getTotalPoints() + " points! Congratulations!\n"), p.getID());
+            s = s + "\n" + i + ". " + p.getUsername() + "    " + p.getTotalPoints();
+            i++;
+        }
+
+        //Sending the ranking and the final messages to everyone.
+        //TODO POTREMMO METTERE DEI TIMER PER NON FAR ARRIVARE TUTTI I MESSAGGI INSIEME QUA IN MEZZO!
+        gameHandler.sendToEveryone(new CustomAnswer(false, s));
+        gameHandler.sendToEveryone(new CustomAnswer(false, "And the winner is... " + rightPointsOrder.get(0).getUsername() + "!!\nCongratulations!"));
+        gameHandler.sendToEveryoneExcept(new CustomAnswer(false, "\nUnfortunately you have not won this game, but better luck next time!"), rightPointsOrder.get(0).getID());
+        gameHandler.sendToPlayer(new CustomAnswer(false, "\nYou are the undisputed winner! Congratulations again!"), rightPointsOrder.get(0).getID());
+        gameHandler.sendToEveryone(new CustomAnswer(false, "\nThe game has come to an end."));
+
+        //TODO c'è da chiudere le connessioni e finire gli ultimi messaggi di fine partita, e poi bona.
+
+        //chiusura connessioni.
+        gameHandler.sendToEveryone(new PlayerDisconnected());
+        for(Player p  : game.getActivePlayers()) {
+            gameHandler.getServer().getVirtualPlayerByID(p.getID()).getConnection().disconnect();
+        }
+    }
+
+
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()){
             case "PickTilesAction" -> pickTilesAction((int[][]) evt.getNewValue());
             case "PlaceTilesAction" -> placeTilesAction((String[]) evt.getNewValue());
+            case "PrintCardsAction" -> checkPrintAction();
         }
 
     }
