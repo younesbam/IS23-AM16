@@ -2,13 +2,16 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.common.Client;
+import it.polimi.ingsw.common.Coordinate;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
 import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
+import it.polimi.ingsw.model.Tile;
 import it.polimi.ingsw.model.cards.CommonGoalCard;
 import it.polimi.ingsw.model.cards.PersonalGoalCard;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static it.polimi.ingsw.Const.*;
@@ -74,48 +77,52 @@ public class InputValidator {
 
     /**
      * Method used to check if the input of the tiles requested makes sense.
-     * @param tiles
+     * @param s
      * @return
      */
-    public PickTilesAction pickTiles(String[] tiles){
+    public PickTilesAction pickTiles(String[] s){
+        int row, col;
+        List<Coordinate> coordinates = new ArrayList<>();
         try{
-            //TODO da aggiungere un check per vedere se il numero di tiles prese possono essere posizionate in almeno una colonna. Se ad esempio un giocatore ha solo uno spazio libero nella sua bookshelf, non potrà ovviamente pescare 3 tiles, ed è da gestire questa cosa.
-            String numOfTiles = tiles[1];
-
-            GameAction messageToServer = null;
+            String numOfTiles = s[1];
 
             switch(numOfTiles.toUpperCase()){
                 case "ONE" -> {
-                    int row1 = Integer.parseInt(tiles[2]);
-                    int col1 = Integer.parseInt(tiles[3]);
-
-                    messageToServer = new PickTilesAction(row1, col1);
+                    // Fist tile's coordinates
+                    row = Integer.parseInt(s[2]);
+                    col = Integer.parseInt(s[3]);
+                    coordinates.add(new Coordinate(row, col));
                 }
                 case "TWO" -> {
-                    int row1 = Integer.parseInt(tiles[2]);
-                    int col1 = Integer.parseInt(tiles[3]);
-                    int row2 = Integer.parseInt(tiles[4]);
-                    int col2 = Integer.parseInt(tiles[5]);
-
-                    messageToServer = new PickTilesAction(row1, col1, row2, col2);
+                    // Fist tile's coordinates
+                    row = Integer.parseInt(s[2]);
+                    col = Integer.parseInt(s[3]);
+                    coordinates.add(new Coordinate(row, col));
+                    // Second tile's coordinates
+                    row = Integer.parseInt(s[4]);
+                    col = Integer.parseInt(s[5]);
+                    coordinates.add(new Coordinate(row, col));
                 }
                 case "THREE" -> {
-                    int row1 = Integer.parseInt(tiles[2]);
-                    int col1 = Integer.parseInt(tiles[3]);
-                    int row2 = Integer.parseInt(tiles[4]);
-                    int col2 = Integer.parseInt(tiles[5]);
-                    int row3 = Integer.parseInt(tiles[6]);
-                    int col3 = Integer.parseInt(tiles[7]);
-
-                    messageToServer = new PickTilesAction(row1, col1, row2, col2, row3, col3);
-
-            }
-            default -> {
+                    // Fist tile's coordinates
+                    row = Integer.parseInt(s[2]);
+                    col = Integer.parseInt(s[3]);
+                    coordinates.add(new Coordinate(row, col));
+                    // Second tile's coordinates
+                    row = Integer.parseInt(s[4]);
+                    col = Integer.parseInt(s[5]);
+                    coordinates.add(new Coordinate(row, col));
+                    // Third tile's coordinates
+                    row = Integer.parseInt(s[6]);
+                    col = Integer.parseInt(s[7]);
+                    coordinates.add(new Coordinate(row, col));
+                }
+                default -> {
                     System.out.println("Input error, please try again!");
                     return null;
+                }
             }
-        }
-            return (PickTilesAction) messageToServer;
+            return new PickTilesAction(coordinates);
 
         } catch (NumberFormatException e) {
             System.out.println("Input error, please try again!");
@@ -126,74 +133,42 @@ public class InputValidator {
 
     /**
      * Method used to check if the coordinates chosen where to place the tiles actually make sense.
-     * @param input
+     * @param s
      * @return
      */
-    public PlaceTilesAction placeTiles(String[] input) {
+    public PlaceTilesAction placeTiles(String[] s) {
+        List<Tile> tiles = new ArrayList<>();
+        int col = 0;
 
-        String[] tiles = new String[input.length - 1];
+        try {
+            // Check the length of the string in order to save the correct parameters
+            switch (s.length){
+                case 3 -> {
+                    tiles.add(Tile.valueOf(s[0]));
+                    col = Integer.parseInt(s[1]);
+                }
+                case 4 -> {
+                    tiles.add(Tile.valueOf(s[0]));
+                    tiles.add(Tile.valueOf(s[1]));
+                    col = Integer.parseInt(s[2]);
+                }
+                case 5 -> {
+                    tiles.add(Tile.valueOf(s[0]));
+                    tiles.add(Tile.valueOf(s[1]));
+                    tiles.add(Tile.valueOf(s[2]));
+                    col = Integer.parseInt(s[3]);
+                }
+                default -> {
+                    System.out.println("Input error, please try again!");
+                    return null;
+                }
+            }
+            return new PlaceTilesAction(tiles, col);
 
-        for(int i = 1; i < input.length; i++){
-            tiles[i - 1] = input[i];
+        } catch (IllegalArgumentException e){
+            System.out.println("Input error, please try again!");
+            return null;
         }
-
-        GameAction messageToServer = new PlaceTilesAction(tiles);
-
-//            switch (numOfTiles) {
-//                case "ONE" -> {
-//                    int row1 = Integer.parseInt(coordinates[1]) - 1;
-//                    int col1 = Integer.parseInt(coordinates[2]) - 1;
-//
-//                    if (row1 < 0 || col1 < 0 || row1 > MAXBOOKSHELFROW || col1 > MAXBOOKSHELFCOL) {
-//                        System.out.println("The selected coordinates are out of the Bookshelf space! Please select new coordinates!\n");
-//                        cli.requestWhereToPlaceTiles(new PlaceTilesRequest().getAnswer());
-//                    } else
-//                        messageToServer = new PlaceTilesAction(row1, col1);
-//                }
-//                case "TWO" -> {
-//                    int row1 = Integer.parseInt(coordinates[1]) - 1;
-//                    int col1 = Integer.parseInt(coordinates[2]) - 1;
-//                    int row2 = Integer.parseInt(coordinates[3]) - 1;
-//                    int col2 = Integer.parseInt(coordinates[4]) - 1;
-//
-//                    if (row1 < 0 || col1 < 0 || row1 > MAXBOOKSHELFROW || col1 > MAXBOOKSHELFCOL || row2 < 0 || col2 < 0 || row2 > MAXBOOKSHELFROW || col2 > MAXBOOKSHELFCOL) {
-//                        System.out.println("The selected coordinates are out of the Bookshelf space! Please select new coordinates!\n");
-//                        cli.requestWhereToPlaceTiles(new PlaceTilesRequest().getAnswer());
-//                    } else if (row1 != row2) {
-//                        System.out.println("You have to place the tiles on the same column! Please select new coordinates!\n");
-//                        cli.requestWhereToPlaceTiles(new PlaceTilesRequest().getAnswer());
-//                    } else
-//                        messageToServer = new PlaceTilesAction(row1, col1, row2, col2);
-//                }
-//                case "THREE" -> {
-//                    int row1 = Integer.parseInt(coordinates[1]) - 1;
-//                    int col1 = Integer.parseInt(coordinates[2]) - 1;
-//                    int row2 = Integer.parseInt(coordinates[3]) - 1;
-//                    int col2 = Integer.parseInt(coordinates[4]) - 1;
-//                    int row3 = Integer.parseInt(coordinates[1]) - 1;
-//                    int col3 = Integer.parseInt(coordinates[2]) - 1;
-//
-//
-//                    if (row1 < 0 || col1 < 0 || row1 > MAXBOOKSHELFROW || col1 > MAXBOOKSHELFCOL || row2 < 0 || col2 < 0 || row2 > MAXBOOKSHELFROW || col2 > MAXBOOKSHELFCOL || row3 < 0 || col3 < 0 || row3 > MAXBOOKSHELFROW || col3 > MAXBOOKSHELFCOL) {
-//                        System.out.println("The selected coordinates are out of the Bookshelf space! Please select new coordinates!\n");
-//                        cli.requestWhereToPlaceTiles(new PlaceTilesRequest().getAnswer());
-//                    } else if (row1 != row2 || row1 != row3 || row2 != row3) {
-//                        System.out.println("You have to place the tiles on the same column! Please select new coordinates!\n");
-//                        cli.requestWhereToPlaceTiles(new PlaceTilesRequest().getAnswer());
-//                    } else
-//                        messageToServer = new PlaceTilesAction(row1, col1, row2, col2, row3, col3);
-//                }
-//                default -> {
-//                    System.out.println("Input error, please try again!");
-//                    return null;
-//                }
-//            }
-            return (PlaceTilesAction) messageToServer;
-
-//        } catch (NumberFormatException e) {
-//            System.out.println("Input error, please try again!");
-//            return null;
-//        }
     }
 
 
