@@ -22,7 +22,7 @@
             <Image url="@graphics/Title.png" />
          </image>
       </ImageView>
-      <AnchorPane fx:id="playersNumberPane" layoutX="280.0" layoutY="285.0" prefHeight="93.0" prefWidth="400.0">
+      <AnchorPane fx:id="playersNumberPane" layoutX="280.0" layoutY="285.0" prefHeight="93.0" prefWidth="400.0" visible="false">
          <children>
             <RadioButton fx:id="players_2" layoutX="34.0" layoutY="8.0" mnemonicParsing="false" selected="true" text="2 Players" textFill="WHITE">
                <toggleGroup>

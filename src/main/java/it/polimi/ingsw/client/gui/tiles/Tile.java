@@ -38,20 +38,20 @@ public class Tile extends Rectangle {
     }
     /** Method makeSelectable makes the tile selectable. */
     public void makeSelectable() {
-        /*setOnMouseEntered(mouseEvent -> setCursor(Cursor.HAND));
+        setOnMouseEntered(mouseEvent -> setCursor(Cursor.HAND));
 
         setOnMouseClicked(
                 mouseEvent -> {
                     mainSceneController
                             .getGuiManager();
                             //.firePropertyChange();
-                });*/
+                });
     }
 
     /** Method deselects the tile. */
     public void deselect() {
-        /*setOnMouseEntered(null);
-        setOnMouseClicked(null);*/
+        setOnMouseEntered(null);
+        setOnMouseClicked(null);
     }
 
     /** Method move handles move action. */

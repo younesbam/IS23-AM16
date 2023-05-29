@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.client.gui.tiles.Tile;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 
@@ -27,19 +28,20 @@ public class MainSceneController implements GUIController{
     public void printBoard(){
         String[][] board = guiManager.getModelView().getGame().getBoard().getBoardforGUI();
         Random random = new Random();
+        int imageChoise;
         for (int i = 0; i < MAXBOARDDIM; i++) {
             for (int j = 0; j < MAXBOARDDIM; j++) {
                 if(!(board[i][j].equals("BLANK")||board[i][j].equals("UNAVAILABLE"))){
                     Tile tile = new Tile(i, j, this);
+                    imageChoise = random.nextInt(1,4);
                     tile.setFill(
                             new ImagePattern(
                                     new Image(GUI.class.getResourceAsStream(IMAGEPATH
                                                                                 +board[i][j]
-                                                                                +random.nextInt(1,4)
+                                                                                +imageChoise
                                                                                 +".png"))));
-                    boardGrid.add(tile, i, j);
+                    boardGrid.add(tile,j,i);
                 }
-
             }
         }
     }

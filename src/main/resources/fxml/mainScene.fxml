@@ -20,13 +20,13 @@
       </ImageView>
       <AnchorPane layoutX="504.0" layoutY="64.0" prefHeight="389.0" prefWidth="352.0">
          <children>
-            <GridPane alignment="CENTER" layoutX="40.0" layoutY="25.0" prefHeight="320.0" prefWidth="274.0">
+            <GridPane alignment="CENTER" layoutX="44.0" layoutY="25.0" prefHeight="320.0" prefWidth="298.0">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.60003662109375" minWidth="10.0" prefWidth="57.800012207031244" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.19997558593751" minWidth="10.0" prefWidth="56.99998779296875" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.20001220703125" minWidth="10.0" prefWidth="57.19999999999999" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.20001220703125" minWidth="10.0" prefWidth="56.800024414062506" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.39990234375" minWidth="10.0" prefWidth="57.59997558593753" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.60003662109375" minWidth="10.0" prefWidth="53.5999755859375" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.79997558593749" minWidth="10.0" prefWidth="62.400036621093754" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.39997558593748" minWidth="10.0" prefWidth="62.599951171875006" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.20001220703125" minWidth="10.0" prefWidth="64.00007324218751" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.39990234375" minWidth="10.0" prefWidth="53.7999267578125" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints maxHeight="70.80000152587891" minHeight="10.0" prefHeight="52.40000610351562" vgrow="SOMETIMES" />
@@ -189,7 +189,7 @@
                   </ImageView>
                </children>
             </GridPane>
-            <ImageView fitHeight="390.0" fitWidth="352.0" pickOnBounds="true">
+            <ImageView fitHeight="390.0" fitWidth="386.0" pickOnBounds="true">
                <image>
                   <Image url="@graphics/boards/bookshelf_orth.png" />
                </image>
@@ -215,15 +215,15 @@
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="41.4" minHeight="10.0" prefHeight="41.4" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="46.19998779296875" minHeight="10.0" prefHeight="38.4" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="50.39999999999999" minHeight="10.0" prefHeight="38.39999999999999" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="53.79999389648438" minHeight="10.0" prefHeight="38.400000000000006" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="54.59998168945313" minHeight="10.0" prefHeight="36.80000610351564" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="55.00000610351563" minHeight="10.0" prefHeight="40.79998168945312" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="50.400000000000006" minHeight="10.0" prefHeight="40.800018310546875" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="46.39996337890625" minHeight="10.0" prefHeight="39.999981689453136" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="50.4000244140625" minHeight="10.0" prefHeight="39.39998779296877" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
          </children>
