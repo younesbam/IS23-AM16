@@ -31,6 +31,7 @@ public class GUIManager extends UI {
     private static final String SETUP = "joinScene.fxml";
     private static final String CHAT = "chatScene.fxml";
     private static final String COUNTDOWN = "countDown.fxml";
+
     private final Logger logger = Logger.getLogger(getClass().getName());
     private final HashMap<String, Scene> nameMapScene = new HashMap<>();
     /**
@@ -142,11 +143,15 @@ public class GUIManager extends UI {
     }
 
     private void updateTurn(Boolean yourTurn) {
+        MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
         if(yourTurn){
             System.out.println("\nIt's now your turn!");
+            Platform.runLater(()->mainSceneController.allowPickTiles());
         }
-        else
+        else {
             System.out.println("\nWait for your next turn now!");
+            Platform.runLater(()->mainSceneController.disablePickTiles());
+        }
         modelView.setIsYourTurn(yourTurn);
 
         if(yourTurn)

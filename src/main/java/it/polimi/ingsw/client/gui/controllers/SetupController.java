@@ -60,7 +60,7 @@ public class SetupController implements GUIController{
             guiManager.getModelView().setIsYourTurn(true);
             //guiManager.firePC("PLAYERS 2");
 
-            guiManager.changeStage(LOADER);
+            //guiManager.changeStage(LOADER);
                 //LoadingController loadingController = (LoadingController) gui.getControllerFromName("loadingScene.fxml");
 
                 /*gui.getListeners()

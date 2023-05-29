@@ -14,7 +14,7 @@ import javafx.scene.shape.Rectangle;
  *
  * @author Younes Bamhaoud
  */
-public class Tile extends Rectangle {
+public class Tile extends Rectangle{
 
     private int x;
     private int y;
