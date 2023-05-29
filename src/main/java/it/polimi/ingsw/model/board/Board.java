@@ -169,7 +169,7 @@ public abstract class Board implements Serializable {
 
 
     /**
-     * Method used to print the board.
+     * Method used to print the board for CLI.
      */
     public void printBoard() {
         for (int i = 0; i < MAXBOARDDIM; i++) {
@@ -199,6 +199,19 @@ public abstract class Board implements Serializable {
             System.out.print("  ");
         }
         System.out.println();
+    }
+
+    /**
+     * Method used to get the board for GUI.
+     */
+    public String[][] getBoardforGUI() {
+        String[][] board = new String[MAXBOARDDIM][MAXBOARDDIM];
+        for (int i = 0; i < MAXBOARDDIM; i++) {
+            for (int j = 0; j < MAXBOARDDIM; j++) {
+                board[i][j] = grid[i][j].getTile().name();
+            }
+        }
+        return board;
     }
 }
 
