@@ -254,7 +254,7 @@
       </AnchorPane>
       <AnchorPane layoutX="100.0" layoutY="14.0" prefHeight="40.0" prefWidth="732.0">
          <children>
-            <Label layoutX="8.0" layoutY="4.0" text="Username" textFill="WHITE">
+            <Label fx:id="username" layoutX="8.0" layoutY="4.0" text="Username" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>

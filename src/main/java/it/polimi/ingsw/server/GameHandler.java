@@ -146,7 +146,7 @@ public class GameHandler {
         sendToPlayer(new ChairAssigned(), firstPlayer);
 
         controller.setup();
-
+        sendToEveryone(new GameReady());
     }
 
 

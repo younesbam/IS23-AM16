@@ -105,13 +105,13 @@ public class GUIManager extends UI {
 
     private void customAnswer(String answer) {
         System.out.println(answer);
-        if(answer.equals("The game is on!\n")){
+        /*if(answer.equals("The game is on!\n")){
             Platform.runLater(()->{
                 gui.changeStage(MAIN_GUI);
                 MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
                 mainSceneController.printBoard();
             });
-        }
+        }*/
     }
     public void wrongNum(String s){
         howManyPlayerRequest(s);
@@ -198,6 +198,15 @@ public class GUIManager extends UI {
             mainSceneController.showChair();
         });
     }
+
+    public void gameReady(String s){
+        Platform.runLater(()->{
+            gui.changeStage(MAIN_GUI);
+            MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
+            mainSceneController.printBoard();
+            mainSceneController.setUsername(client.getUsername());
+        });
+    }
     /**
      * Method getControllerFromName gets a scene controller based on inserted name from the dedicated hashmap.
      *
@@ -223,6 +232,7 @@ public class GUIManager extends UI {
            case "CountDown" -> countDown((CountDown) event.getNewValue());
            case "FirstPlayerSelected" -> firstPlayerSelected((String) event.getNewValue());
            case "ChairAssigned" -> chairAssigned((String) event.getNewValue());
+           case "GameReady" -> gameReady((String) event.getNewValue());
         }
     }
 

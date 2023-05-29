@@ -129,6 +129,11 @@ public class ActionHandler {
             return;
         }
 
+        if(a instanceof GameReady){
+            pcsView.firePropertyChange("GameReady", null, ((GameReady) a).getAnswer());
+            return;
+        }
+
         if(a instanceof PlayerDisconnected){
             if(guiManager != null) {
             } else if(cli != null) {

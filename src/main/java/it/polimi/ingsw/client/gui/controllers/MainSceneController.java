@@ -21,6 +21,8 @@ public class MainSceneController implements GUIController{
     private GridPane boardGrid;
     @FXML
     private Label turn;
+    @FXML
+    private Label username;
     @FXML ImageView chair;
     @Override
     public void setGuiManger(GUIManager guiManager) {
@@ -30,13 +32,14 @@ public class MainSceneController implements GUIController{
     public GUIManager getGuiManager(){return this.guiManager;}
     public void printBoard(){
         String[][] board = guiManager.getModelView().getGame().getBoard().getBoardforGUI();
-        Random random = new Random();
+        //Random random = new Random();
         int imageChoise;
         for (int i = 0; i < MAXBOARDDIM; i++) {
             for (int j = 0; j < MAXBOARDDIM; j++) {
                 if(!(board[i][j].equals("BLANK")||board[i][j].equals("UNAVAILABLE"))){
                     Tile tile = new Tile(i, j, this);
-                    imageChoise = random.nextInt(1,4);
+                    //imageChoise = random.nextInt(1,4);
+                    imageChoise = guiManager.getModelView().getGame().getNumOfPlayers()-1;
                     tile.setFill(
                             new ImagePattern(
                                     new Image(GUI.class.getResourceAsStream(IMAGEPATH
@@ -59,5 +62,9 @@ public class MainSceneController implements GUIController{
 
     public void hideChair(){
         chair.setVisible(false);
+    }
+
+    public void setUsername(String username){
+        this.username.setText(username);
     }
 }
