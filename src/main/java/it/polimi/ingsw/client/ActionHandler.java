@@ -117,7 +117,7 @@ public class ActionHandler {
             return;
         }
 
-        if(a instanceof PlayerDisconnected){
+        if(a instanceof DisconnectPlayer){
             if(gui != null) {
             } else if(cli != null) {
                 cli.endGameMessage();

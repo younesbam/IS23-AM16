@@ -6,7 +6,7 @@ import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PrintCardsAction;
 import it.polimi.ingsw.communications.serveranswers.Answer;
 import it.polimi.ingsw.communications.serveranswers.CustomAnswer;
-import it.polimi.ingsw.communications.serveranswers.PlayerDisconnected;
+import it.polimi.ingsw.communications.serveranswers.DisconnectPlayer;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
@@ -165,7 +165,7 @@ public class GameHandler {
      */
     public void endMatch(String playerDisconnected) {
         sendToEveryone(new CustomAnswer(false, "Player " + playerDisconnected + " has disconnected :( Game will finish without a winner! Thanks to have played MyShelfie! Hope to see you soon ;)"));
-        sendToEveryone(new PlayerDisconnected());
+        sendToEveryone(new DisconnectPlayer());
         for(Player p  : game.getActivePlayers()) {
             server.getVirtualPlayerByID(p.getID()).getConnection().disconnect();
         }

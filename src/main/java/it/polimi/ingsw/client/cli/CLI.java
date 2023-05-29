@@ -230,8 +230,8 @@ public class CLI extends UI implements Runnable{
         System.out.println("\n");
         printMAN();
 
-        System.out.println(request + "\n");
-        System.out.println(">");
+        System.out.println(request);
+        System.out.print(">");
     }
 
 
