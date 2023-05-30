@@ -189,7 +189,7 @@ public class Server {
             } catch (OutOfBoundException e) {
                 Server.LOGGER.log(Level.INFO, "Wrong number of players received from client");
                 SerializedAnswer answer = new SerializedAnswer();
-                answer.setAnswer(new HowManyPlayersRequest("Wrong number of players. Please choose the number of players you want to play with.\n Type MAN if you dont' know the syntax!"));
+                answer.setAnswer(new HowManyPlayersRequest("Wrong number of players. Please choose the number of players you want to play with. Type MAN if you dont' know the syntax!"));
                 currentPlayer.send(answer.getAnswer());
             }
         }
