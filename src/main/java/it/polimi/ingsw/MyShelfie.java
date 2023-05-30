@@ -22,7 +22,7 @@ public class MyShelfie {
                     "               \\__.'                                                    ");
             System.out.println("Authors: \n" +
                     "Francesca Rosa Diz \nNicolò Gandini \nTommaso Baroni \nYounes Bamhaoud \n");
-            System.out.println("\n Select one of the following: \n");
+            System.out.println("Select one of the following:");
             System.out.println("0. SERVER\n1. CLI CLIENT\n2. GUI CLIENT");
             System.out.print(">");
             Scanner scanner = new Scanner(System.in);
