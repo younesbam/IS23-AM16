@@ -1,13 +1,23 @@
 package it.polimi.ingsw.communications.serveranswers.errors;
 
 public enum ErrorClassification {
+    // Setup errors
     LOBBY_NOT_READY,
     TAKEN_USERNAME,
-    INPUT_INVALID,
     MAX_PLAYERS_REACHED,
-    SERVER_IS_DOWN,
-    INCORRECT_PHASE
 
+    // Generic in-game errors
+    INCORRECT_PHASE,
+    INVALID_PARAMETERS,
 
+    // Picking errors
+    NOT_ENOUGH_SPACE,
+    TILES_NOT_PICKABLE,
+    INVALID_ROW_COL,
+    TILES_NOT_STRAIGHT,
+    TILES_NOT_ADJACENT,
 
+    // Placing errors
+    WRONG_TILES_SELECTED,
+    FULL_COLUMN
 }

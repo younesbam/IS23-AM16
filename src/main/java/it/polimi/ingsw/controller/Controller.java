@@ -221,7 +221,7 @@ public class Controller implements PropertyChangeListener {
      *
      * @param action list of coordinates where to pick tiles from the board
      */
-    public void pickTilesAction(PickTilesAction action) {
+    private void pickTilesAction(PickTilesAction action) {
         List<Coordinate> coordinates = action.getCoordinates();
         boolean canPick;
 
@@ -243,15 +243,15 @@ public class Controller implements PropertyChangeListener {
             }
         }
         if(!canPick){
-            gameHandler.sendToPlayer(new ErrorAnswer("You cannot play this command in this game phase!", ErrorClassification.INCORRECT_PHASE), currentPlayer.getID());
+            gameHandler.sendToPlayer(new ErrorAnswer("You don't have enough free spaces to place these tiles!. Choose less tiles.", ErrorClassification.NOT_ENOUGH_SPACE), currentPlayer.getID());
             return;
         }
 
         // Check if the tiles are pickable.
         for(Coordinate c : coordinates){
-            canPick = game.getBoard().isPickable(c.getCol(), c.getRow());
+            canPick = c.getRow()>=0 && c.getCol()>=0 && game.getBoard().isPickable(c.getRow(), c.getCol());
             if(!canPick){
-                gameHandler.sendToPlayer(new ErrorAnswer("You cannot play this command in this game phase!", ErrorClassification.INCORRECT_PHASE), currentPlayer.getID());
+                gameHandler.sendToPlayer(new ErrorAnswer("You cannot pick one of the selected tiles. Please choose other tiles.", ErrorClassification.TILES_NOT_PICKABLE), currentPlayer.getID());
                 return;
             }
         }
@@ -263,7 +263,7 @@ public class Controller implements PropertyChangeListener {
                 int col1 = coordinates.get(0).getCol();
 
                 if (row1 > MAXBOARDDIM || col1 > MAXBOARDDIM || row1 < 0 || col1 < 0) {
-                    gameHandler.sendToPlayer(new CustomAnswer(false, "You selected an invalid row/col, please try again"), currentPlayer.getID());
+                    gameHandler.sendToPlayer(new ErrorAnswer("You selected an invalid row/col, please try again", ErrorClassification.INVALID_ROW_COL), currentPlayer.getID());
                     return;
                 }
             }
@@ -278,15 +278,15 @@ public class Controller implements PropertyChangeListener {
 
                 if (row1 > MAXBOARDDIM || col1 > MAXBOARDDIM || row1 < 0 || col1 < 0 ||
                         row2 > MAXBOARDDIM || col2 > MAXBOARDDIM || row2 < 0 || col2 < 0) {
-                    gameHandler.sendToPlayer(new CustomAnswer(false, "You selected an invalid row/col, please try again"), currentPlayer.getID());
+                    gameHandler.sendToPlayer(new ErrorAnswer("You selected an invalid row/col, please try again", ErrorClassification.INVALID_ROW_COL), currentPlayer.getID());
                     return;
 
                 } else if (col1 != col2 && row1 != row2) {
-                    gameHandler.sendToPlayer(new CustomAnswer(false, "You have to select tiles that lie on the board in a straight line!"), currentPlayer.getID());
+                    gameHandler.sendToPlayer(new ErrorAnswer("You have to select tiles that lie on the board in a straight line!", ErrorClassification.TILES_NOT_STRAIGHT), currentPlayer.getID());
                     return;
 
                 } else if (!((diffRows == 1 && diffCol == 0) || (diffRows == 0 && diffCol == 1))) {
-                    gameHandler.sendToPlayer(new CustomAnswer(false, "The tiles have to be adjacent!"), currentPlayer.getID());
+                    gameHandler.sendToPlayer(new ErrorAnswer("The tiles have to be adjacent!", ErrorClassification.TILES_NOT_ADJACENT), currentPlayer.getID());
                     return;
                 }
             }
@@ -308,16 +308,16 @@ public class Controller implements PropertyChangeListener {
                 if (row1 > MAXBOARDDIM || col1 > MAXBOARDDIM || row1 < 0 || col1 < 0 ||
                         row2 > MAXBOARDDIM || col2 > MAXBOARDDIM || row2 < 0 || col2 < 0 ||
                         row3 > MAXBOARDDIM || col3 > MAXBOARDDIM || row3 < 0 || col3 < 0) {
-                    gameHandler.sendToPlayer(new CustomAnswer(false, "You selected an invalid row/col, please try again"), currentPlayer.getID());
+                    gameHandler.sendToPlayer(new ErrorAnswer("You selected an invalid row/col, please try again", ErrorClassification.INVALID_ROW_COL), currentPlayer.getID());
                     return;
 
                 } else if (col1 != col2 && col2 != col3 && col1 != col3 && row1 != row2 && row2 != row3 && row1 != row3) {
-                    gameHandler.sendToPlayer(new CustomAnswer(false, "You have to select tiles that lie on the board in a straight line!"), currentPlayer.getID());
+                    gameHandler.sendToPlayer(new ErrorAnswer("You have to select tiles that lie on the board in a straight line!", ErrorClassification.TILES_NOT_STRAIGHT), currentPlayer.getID());
                     return;
 
                 } else if (!((((diffRows12 == 1 && diffCol12 == 0) || (diffRows12 == 0 && diffCol12 == 1)) && (((diffRows13 == 1 && diffCol13 == 0) || (diffRows13 == 0 && diffCol13 == 1)) || ((diffRows23 == 1 && diffCol23 == 0) || (diffRows23 == 0 && diffCol23 == 1))))
                         || (((diffRows13 == 1 && diffCol13 == 0) || (diffRows13 == 0 && diffCol13 == 1)) && ((diffRows12 == 1 && diffCol12 == 0) || (diffRows12 == 0 && diffCol12 == 1)) || ((diffRows23 == 1 && diffCol23 == 0) || (diffRows23 == 0 && diffCol23 == 1))))) {
-                    gameHandler.sendToPlayer(new CustomAnswer(false, "The tiles have to be adjacent!"), currentPlayer.getID());
+                    gameHandler.sendToPlayer(new ErrorAnswer("The tiles have to be adjacent!", ErrorClassification.TILES_NOT_ADJACENT), currentPlayer.getID());
                     return;
                 }
             }
@@ -333,7 +333,7 @@ public class Controller implements PropertyChangeListener {
      *
      * @param action it contains the coordinates of the bookshelf on where to place the tiles and tiles also
      */
-    public void placeTilesAction(PlaceTilesAction action) {
+    private void placeTilesAction(PlaceTilesAction action) {
         List<Tile> tiles = action.getTiles();
         int col = action.getCol();
 
@@ -345,7 +345,7 @@ public class Controller implements PropertyChangeListener {
 
         // Check if the selected tiles correspond with the picked tiles
         if(!tiles.containsAll(pickedTiles) || !pickedTiles.containsAll(tiles)){
-            gameHandler.sendToPlayer(new CustomAnswer(false, "Wrong tiles selected, please try again!"), currentPlayer.getID());
+            gameHandler.sendToPlayer(new ErrorAnswer("Wrong tiles selected, please try again!", ErrorClassification.WRONG_TILES_SELECTED), currentPlayer.getID());
             return;
         }
 
@@ -353,10 +353,10 @@ public class Controller implements PropertyChangeListener {
         try{
             game.getCurrentPlayer().getBookShelf().checkColumn(col, tiles.toArray().length);
         } catch (InvalidParameterException e) {
-            gameHandler.sendToPlayer(new CustomAnswer(false, "Invalid parameters!"), currentPlayer.getID());
+            gameHandler.sendToPlayer(new ErrorAnswer("Invalid parameters!", ErrorClassification.INVALID_PARAMETERS), currentPlayer.getID());
             return;
         } catch (NotEmptyColumnException e) {
-            gameHandler.sendToPlayer(new CustomAnswer(false, "Not enough space in this column! Please select another one!"), currentPlayer.getID());
+            gameHandler.sendToPlayer(new ErrorAnswer("Not enough space in this column! Please select another one!", ErrorClassification.FULL_COLUMN), currentPlayer.getID());
             return;
         }
 
@@ -463,7 +463,7 @@ public class Controller implements PropertyChangeListener {
         //calcolare i punteggi di tutti e assegnare il vincitore!
         setPhase(Phase.ENDGAME);
 
-        List<Player> rightPointsOrder = new ArrayList<>();
+        List<Player> rightPointsOrder;
         String s = "This is the final ranking:\n";
         int i = 1;
 
@@ -479,7 +479,6 @@ public class Controller implements PropertyChangeListener {
         }
 
         //Sending the ranking and the final messages to everyone.
-        //TODO POTREMMO METTERE DEI TIMER PER NON FAR ARRIVARE TUTTI I MESSAGGI INSIEME QUA IN MEZZO!
         gameHandler.sendToEveryone(new CustomAnswer(false, s));
         gameHandler.sendToEveryone(new CustomAnswer(false, "And the winner is... " + rightPointsOrder.get(0).getUsername() + "!!\nCongratulations!"));
         gameHandler.sendToEveryoneExcept(new CustomAnswer(false, "\nUnfortunately you have not won this game, but better luck next time!"), rightPointsOrder.get(0).getID());
