@@ -96,14 +96,6 @@ public class Player implements Serializable {
     public BookShelf getBookShelf() {
         return bookShelf; }
 
-//    /**
-//     * Bookshelf setter.
-//     * @param bookShelf
-//     */
-//    public void setBookShelf(BookShelf bookShelf){
-//        this.bookShelf = bookShelf;
-//    }
-
     /**
      * Number of turns getter.
      * @return

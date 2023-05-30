@@ -14,17 +14,6 @@ public class Cell implements Serializable {
     private Tile tile;
 
     /**
-     * This variable specifies the x coordinate of the cell.
-     */
-    private int x;
-
-    /**
-     * This variable specifies the y coordinate of the cell.
-     */
-    private int y;
-
-
-    /**
      * Constructor for the cell.
      */
     public Cell(){
