@@ -60,9 +60,16 @@ public class PersonalGoalCard extends Card {
 
 
     /**
+     * Prints the card on the CLI.
      * {@inheritDoc}
      */
     public void printCard(){
-
+        System.out.println("This is how you will earn points with your Personal Goal Card: \n"+
+                            "\n" +
+                "+-------------------------+---+---+---+---+---+----+\n" +
+                "| Number of correct tiles | 1 | 2 | 3 | 4 | 5 | 6  |\n" +
+                "+-------------------------+---+---+---+---+---+----+\n" +
+                "| Earned points           | 1 | 2 | 4 | 6 | 9 | 12 |\n" +
+                "+-------------------------+---+---+---+---+---+----+\n");
     }
 }

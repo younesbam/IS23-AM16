@@ -22,36 +22,21 @@ public class SubMatrix extends CommonGoalCard {
     }
 
     /**
-     * {@inheritDoc}
+     * Checks whether the scheme is valid.
+     * @param player actual player
+     * @return points earned from the player.
      */
     public Integer checkScheme(Player player) {
-//        /*
-//        Creo una variabile k che incrementa ad ogni riga che scorro(al contrario, dal basso verso l'alto).
-//        In tal modo riesco a sottrarre al numero delle colonne da controllare, fino ad arrivare a 1 cella da controllare
-//        in alto. In questo caso poi esco dal ciclo.
-//         */
-
-//        int k = 0;
-//        for(int j = MAXBOOKSHELFROW -1; j>=0; j--) {
-//            for(int i = MAXBOOKSHELFCOL -1-k; i>=0; i--){
-//                if(grid[j][i].getTile() == Tile.BLANK)
-//                    return 0;
-//            }
-//            k++;
-//            if(k>= MAXBOOKSHELFCOL -1)
-//                return 0;
-//        }
-//        return getScore();
         Cell[][] grid = player.getBookShelf().getGrid();
         int numOfBlank;
         boolean valid;
         List<Tile> lastRow = new ArrayList<>();
 
-        // Questo ciclo controlla la sottomatrice decrescente che parte dalla riga 5 (è piena solo la riga più in basso).
+        // This cycle checks decreasing submatrix starting from row 5.
         valid = true;
         numOfBlank = 0;
         for(int i=MAXBOOKSHELFROW-1; i>=0; i--){
-            if(!checkRowDecrescente(grid, i, numOfBlank)){
+            if(!checkDecreasingRow(grid, i, numOfBlank)){
                 valid = false;
                 break;
             }
@@ -60,7 +45,7 @@ public class SubMatrix extends CommonGoalCard {
         if(valid)
             return getScore();
 
-        // Questo ciclo controlla la sottomatrice decrescente che ha le righe 4 e 5 piene.
+        // This cycle checks decreasing submatrix with both rows 4 and 5 filled.
         valid = true;
         numOfBlank = 0;
         for(int i=0; i<MAXBOOKSHELFCOL; i++)
@@ -68,7 +53,7 @@ public class SubMatrix extends CommonGoalCard {
 
         if(!lastRow.contains(Tile.BLANK)){
             for(int i=MAXBOOKSHELFROW-2; i>=0; i--){
-                if(!checkRowDecrescente(grid, i, numOfBlank)){
+                if(!checkDecreasingRow(grid, i, numOfBlank)){
                     valid = false;
                     break;
                 }
@@ -80,11 +65,11 @@ public class SubMatrix extends CommonGoalCard {
             return getScore();
 
 
-        // Questo ciclo controlla la sottomatrice crescente che parte dalla riga 5 (è piena solo la riga più in basso).
+        // This cycle checks increasing submatrix starting from row 5.
         valid = true;
         numOfBlank = 0;
         for(int i=MAXBOOKSHELFROW-1; i>=0; i--){
-            if(!checkRowCrescente(grid, i, numOfBlank)){
+            if(!checkIncreasingRow(grid, i, numOfBlank)){
                 valid = false;
                 break;
             }
@@ -93,7 +78,7 @@ public class SubMatrix extends CommonGoalCard {
         if(valid)
             return getScore();
 
-        // Questo ciclo controlla la sottomatrice crescente con le righe 4 e 5 piene.
+        // This cycle checks increasing submatrix with both rows 4 and 5 filled.
         valid = true;
         numOfBlank = 0;
         lastRow.clear();
@@ -102,7 +87,7 @@ public class SubMatrix extends CommonGoalCard {
 
         if(!lastRow.contains(Tile.BLANK)){
             for(int i=MAXBOOKSHELFROW-2; i>=0; i--){
-                if(!checkRowCrescente(grid, i, numOfBlank)){
+                if(!checkIncreasingRow(grid, i, numOfBlank)){
                     valid = false;
                     break;
                 }
@@ -118,13 +103,13 @@ public class SubMatrix extends CommonGoalCard {
 
 
     /**
-     * Questo metodo controlla se la riga è riempita in modo corretto verifcando la matrice decrescente.
-     * @param grid
-     * @param row
-     * @param numOfBlank
-     * @return
+     * Checks whether the row is filled correctly in order to verify increasing submatrix.
+     * @param grid player's bookshelf
+     * @param row row to check
+     * @param numOfBlank number of expected blanks
+     * @return true if the row is filled correctly.
      */
-    private boolean checkRowDecrescente(Cell[][] grid, int row, int numOfBlank){
+    private boolean checkDecreasingRow(Cell[][] grid, int row, int numOfBlank){
         for(int i=0; i<MAXBOOKSHELFCOL-numOfBlank; i++){
             if(grid[row][i].getTile() == Tile.BLANK){
                 return false;
@@ -139,13 +124,13 @@ public class SubMatrix extends CommonGoalCard {
     }
 
     /**
-     * Questo metodo controlla se la riga è riempita in modo corretto verificando la matrice crescente.
-     * @param grid
-     * @param row
-     * @param numOfBlank
-     * @return
+     * Checks whether the row is filled correctly in order to verify increasing submatrix.
+     * @param grid player's bookshelf
+     * @param row row to check
+     * @param numOfBlank number of blanks to check
+     * @return true if the row respects the pattern.
      */
-    private boolean checkRowCrescente(Cell[][] grid, int row, int numOfBlank){
+    private boolean checkIncreasingRow(Cell[][] grid, int row, int numOfBlank){
         for(int i=MAXBOOKSHELFCOL-1; i>=numOfBlank; i--){
             if(grid[row][i].getTile() == Tile.BLANK){
                 return false;
@@ -161,10 +146,15 @@ public class SubMatrix extends CommonGoalCard {
 
 
     /**
+     * Prints the card on the CLI.
      * {@inheritDoc}
      */
     public void printCard(){
         System.out.println( "    COMMON CARD NUMBER 12 \n" +
+                            "Five columns of increasing or decreasing height.\n" +
+                            "Starting from the first column on the left or on the right, each next column must \n" +
+                            "be made of exactly one more tile. \n" +
+                            "Tiles can be of any type. \n"+
                             "++++++++++++++++++++++++++++ \n"+
                             "+  |   |                   + \n" +
                             "+  |   |   |               + \n" +
