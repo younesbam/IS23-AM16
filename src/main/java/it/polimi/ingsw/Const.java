@@ -57,6 +57,7 @@ public final class Const {
     public static final String CLI_INPUT_ERROR = "Input error, please try again!\n>";
     public static final String CLI_INCOMPR_INPUT = "Incomprehensible input. Please try again\n>";
 
+
     /**
      * Delay time [s] between two pings to the clients.
      */
