@@ -37,7 +37,7 @@ public class BookShelf implements Serializable {
 
     /**
      * This method controls whether the player can insert the tiles he picked in the column he selects.
-     * @param n number of the selected column
+     * @param col number of the selected column
      * @param nTiles number of the tiles to insert
      * @return true if the tiles can be inserted.
      * @throws InvalidParameterException if the number of the column of the tiles are invalid.
@@ -55,6 +55,7 @@ public class BookShelf implements Serializable {
 
         if (col>MAXBOOKSHELFCOL-1 || col<0 || nTiles<=0 || nTiles>MAXPICKEDTILES) throw new InvalidParameterException();
 
+
         for (int i=0; i<MAXBOOKSHELFCOL; i++) {
             if(grid[i][col].getTile() == Tile.BLANK)
                 available++;
@@ -69,6 +70,8 @@ public class BookShelf implements Serializable {
     /**
      * This method adds the tile(s) the player selects in the desired column if the column has enough free
      * spaces (checked by checkColumn()).
+     * <p></p>
+     * Note: column checking with {@link #checkColumn(int, int) checkColumn} is mandatory before using this method.
      * @param column number of the desired column.
      * @param list list of tile(s) selected by the player.
      */

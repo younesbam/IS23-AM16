@@ -177,8 +177,8 @@ public class CLI extends UI implements Runnable{
      */
      private void howManyPlayerRequest(String s){
          System.out.println(s);
+         System.out.print(">");
          modelView.setIsYourTurn(true);
-         // TODO: qui viene settato a true ma non viene mai messo a FALSE. Bisogna gestire questo, per evitare che il client mandi messaggi al server
      }
 
 
@@ -292,8 +292,7 @@ public class CLI extends UI implements Runnable{
         System.out.println(RED_COLOR + a.getAnswer() + RESET_COLOR);
         switch (a.getError()){
             case LOBBY_NOT_READY, MAX_PLAYERS_REACHED, TAKEN_USERNAME -> endGameMessage();
-            //case INCORRECT_PHASE -> incorrectPhaseMessage((String) a.getAnswer());
-            default -> System.out.println("\n>");
+            default -> System.out.print(">");
         }
     }
 

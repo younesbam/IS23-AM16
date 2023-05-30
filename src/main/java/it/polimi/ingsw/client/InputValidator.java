@@ -50,29 +50,13 @@ public class InputValidator {
             numOfPlayers = Integer.parseInt(s[1]);
         } catch (NumberFormatException e){
             numOfPlayers = 0;
+        } catch (ArrayIndexOutOfBoundsException e){  // Invalid parameters in input
+            System.out.print(CLI_INPUT_ERROR);
+            return null;
         }
 
         return new HowManyPlayersResponse(numOfPlayers);
     }
-
-
-        /*
-        Io qui andrei ad impacchettare direttamente l'input per evitare che il server debba lavorarci ancora. Prende quello che gli è stato inviato e lo manda al controller, come già fa.
-
-        Non andrei ad appesantire ancora con i controlli di MAXDIM ecc... perchè tanto li fa il controller (e se non li fa male!). Se vede che non vanno bene, deve essere il server a restituire il messaggio
-        al client "guarda che hai pescato delle tiles sbagliate, scrivi di nuovo cosa vuoi prendere".
-
-        Non mi sembra proprio giusto da qui andare a chiamare nuovamente la cli con "requestTiles" visto che andrebbe a bloccare di nuovo la cli.
-
-        Io proporrei quindi:
-        - Il giocatore scrive PICKTILES ONE 1 2 3 4 ecc...
-        - Qui impacchetto quello che ha scritto per mandarlo e renderlo subito leggibile al server, pronti via
-        - il server manda quello che ha letto al controller (già fa così mi pare).
-        - il controller risponde con va bene/non va bene.
-        - il server agisce di conseguenza e manda un messaggio al client "ok hai pescato x, y ora dimmi dove vuoi piazzarle" oppure "hai sbagliato coordinate, ripesca".
-
-         Tutto questo senza chiamare input.nextLine da nessuna parte perchè tanto il loop fa già il suo lavoro
-         */
 
 
     /**
@@ -118,14 +102,14 @@ public class InputValidator {
                     coordinates.add(new Coordinate(row, col));
                 }
                 default -> {
-                    System.out.println("Input error, please try again!");
+                    System.out.print(CLI_INPUT_ERROR);
                     return null;
                 }
             }
             return new PickTilesAction(coordinates);
 
-        } catch (NumberFormatException e) {
-            System.out.println("Input error, please try again!");
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            System.out.print(CLI_INPUT_ERROR);
             return null;
         }
     }
@@ -144,29 +128,29 @@ public class InputValidator {
             // Check the length of the string in order to save the correct parameters
             switch (s.length){
                 case 3 -> {
-                    tiles.add(Tile.valueOf(s[0]));
-                    col = Integer.parseInt(s[1]);
-                }
-                case 4 -> {
-                    tiles.add(Tile.valueOf(s[0]));
-                    tiles.add(Tile.valueOf(s[1]));
+                    tiles.add(Tile.valueOf(s[1].toUpperCase()));
                     col = Integer.parseInt(s[2]);
                 }
-                case 5 -> {
-                    tiles.add(Tile.valueOf(s[0]));
-                    tiles.add(Tile.valueOf(s[1]));
-                    tiles.add(Tile.valueOf(s[2]));
+                case 4 -> {
+                    tiles.add(Tile.valueOf(s[1].toUpperCase()));
+                    tiles.add(Tile.valueOf(s[2].toUpperCase()));
                     col = Integer.parseInt(s[3]);
                 }
+                case 5 -> {
+                    tiles.add(Tile.valueOf(s[1].toUpperCase()));
+                    tiles.add(Tile.valueOf(s[2].toUpperCase()));
+                    tiles.add(Tile.valueOf(s[3].toUpperCase()));
+                    col = Integer.parseInt(s[4]);
+                }
                 default -> {
-                    System.out.println("Input error, please try again!");
+                    System.out.print(CLI_INPUT_ERROR);
                     return null;
                 }
             }
             return new PlaceTilesAction(tiles, col);
 
-        } catch (IllegalArgumentException e){
-            System.out.println("Input error, please try again!");
+        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e){
+            System.out.print(CLI_INPUT_ERROR);
             return null;
         }
     }
