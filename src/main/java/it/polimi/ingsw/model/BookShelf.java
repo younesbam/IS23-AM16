@@ -32,7 +32,7 @@ public class BookShelf implements Serializable {
      */
     public BookShelf() {
         grid = Utils.createBlankGrid(MAXBOOKSHELFROW, MAXBOOKSHELFCOL);
-        freeSpaces = 30;
+        freeSpaces = MAXBOOKSHELFROW*MAXBOOKSHELFCOL;
     }
 
     /**
@@ -72,7 +72,6 @@ public class BookShelf implements Serializable {
      * @param list list of tile(s) selected by the player.
      */
     public void placeTiles(int column, List<Tile> list){
-        //TODO: le celle vengono riempite dall'alto! Bisogna partire dal basso a riempire la bookshelf!
         int i=0;
         while (i < MAXBOOKSHELFROW && grid[i][column].getTile() == Tile.BLANK)
             i++;

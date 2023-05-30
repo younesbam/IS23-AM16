@@ -80,19 +80,19 @@ public abstract class Board implements Serializable {
      * This method checks is a tile can be picked or not (so if it has at least one free side and at least one
      * occupied side).
      *
-     * @param x x coordinate of the cell to check.
-     * @param y y coordinate of the cell to check.
+     * @param row row coordinate of the cell to check.
+     * @param col col coordinate of the cell to check.
      * @return true if the tile can be picked.
      */
-    public boolean isPickable(int x, int y) {
+    public boolean isPickable(int row, int col) {
 
-        if(!grid[x][y].getTile().name().equals("BLANK") && !grid[x][y].getTile().name().equals("UNAVAILABLE")) {
+        if(!grid[row][col].getTile().name().equals("BLANK") && !grid[row][col].getTile().name().equals("UNAVAILABLE")) {
 
             // These variables represent the adjacent cells.
-            int west = y - 1;
-            int south = x + 1;
-            int east = y + 1;
-            int north = x - 1;
+            int west = col - 1;
+            int south = row + 1;
+            int east = col + 1;
+            int north = row - 1;
 
 
             // Number of free and occupied cells.
@@ -100,25 +100,25 @@ public abstract class Board implements Serializable {
             int occupied = 0;
 
             if (west >= 0) {
-                if (grid[x][west].getTile() == Tile.BLANK || grid[x][west].getTile() == Tile.UNAVAILABLE)
+                if (grid[row][west].getTile() == Tile.BLANK || grid[row][west].getTile() == Tile.UNAVAILABLE)
                     free++;
                 else
                     occupied++;
             }
             if (east < MAXBOARDDIM) {
-                if (grid[x][east].getTile() == Tile.BLANK || grid[x][east].getTile() == Tile.UNAVAILABLE)
+                if (grid[row][east].getTile() == Tile.BLANK || grid[row][east].getTile() == Tile.UNAVAILABLE)
                     free++;
                 else
                     occupied++;
             }
             if (south < MAXBOARDDIM) {
-                if (grid[south][y].getTile() == Tile.BLANK || grid[south][y].getTile() == Tile.UNAVAILABLE)
+                if (grid[south][col].getTile() == Tile.BLANK || grid[south][col].getTile() == Tile.UNAVAILABLE)
                     free++;
                 else
                     occupied++;
             }
             if (north >= 0) {
-                if (grid[north][y].getTile() == Tile.BLANK || grid[north][y].getTile() == Tile.UNAVAILABLE)
+                if (grid[north][col].getTile() == Tile.BLANK || grid[north][col].getTile() == Tile.UNAVAILABLE)
                     free++;
                 else
                     occupied++;
@@ -134,14 +134,14 @@ public abstract class Board implements Serializable {
     /**
      * This method removes the tile the player has chosen.
      *
-     * @param x x coordinate of the tile the player has chosen.
-     * @param y y coordinate of the tile the player has chosen.
+     * @param row row of the tile the player has chosen.
+     * @param col column of the tile the player has chosen.
      * @return the tile the player has picked.
      */
-    public Tile removeTile(int x, int y) {
-        Tile tile = grid[x][y].getTile();
+    public Tile removeTile(int row, int col) {
+        Tile tile = grid[row][col].getTile();
 
-        grid[x][y].setTile(Tile.BLANK);
+        grid[row][col].setTile(Tile.BLANK);
 
         return tile;
     }
@@ -159,13 +159,11 @@ public abstract class Board implements Serializable {
     /**
      * This method returns the tile at the requested coordinates.
      *
-     * @param x
-     * @param y
+     * @param row
+     * @param col
      * @return
      */
-    public Tile getTile(int x, int y) {
-        return grid[x][y].getTile();
-    }
+    public Tile getTile(int row, int col) {return grid[row][col].getTile();}
 
 
     /**

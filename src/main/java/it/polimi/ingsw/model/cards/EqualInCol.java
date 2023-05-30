@@ -53,11 +53,12 @@ public class EqualInCol extends CommonGoalCard {
     }
 
     /**
-     * {@inheritDoc}
+     * Checks whether the scheme is valid.
+     * @param player actual player
+     * @return points earned from the player.
      */
     public Integer checkScheme(Player player) {
-        int actualRepetition = 0;  // Rappresenta il numero di ripetizioni dello stesso algoritmo. Sulle carte indicate come "x2", "x3"...
-        int actualEq = 0;  // Conto il numero di tessere uguali per poter incrementare le ripetizioni.
+        int actualRepetition = 0; // Number of repetitions of the same pattern. On cards as "x2", "x3", ...
         final int maxRow;
         int k = 0;
         Cell[][] grid = player.getBookShelf().getGrid();
@@ -68,22 +69,26 @@ public class EqualInCol extends CommonGoalCard {
             for(int j=0; j<MAXBOOKSHELFCOL; j++)
                 registeredGrid[i][j] = false;
 
-        //maxRow = MAXBOOKSHELFROW - eq + 1;  // Definisco il numero massimo a cui può arrivare la tessera di riferimento, in base al numero di tessere che devo controllare.
         List<Tile> list = new ArrayList<>();
+
         /*
-        Questo ciclo controlla in verticale se trova dei pattern; quando trova un pattern, segna le celle come visitate in modo da non fare il controllo 2 volte.
+        This cycle controls vertically if patterns are present.
+        When a pattern is found, it marks the cells as already visited in order to not check them twice.
          */
         for(int i=0; i<MAXBOOKSHELFCOL; i++) {
             list.clear();
             k=0;
-            // Scorro le n tessere richieste dalla carta.
+
+            // Scan the n tiles requested by the card.
             while(k<=MAXBOOKSHELFROW-eq) {
                 list.clear();
                 cellAlreadyRegistered = false;
-                // Aggiungo le tessere ad una lista per controllare che siano uguali.
+
+                // Add the tiles to a list to check if they are equals.
                 for(int j=k; j<eq+k; j++)
                     list.add(grid[j][i].getTile());
-                // Se le tessere sono uguali, se il pattern non è già stato registrato lo registro e lo conto come pattern trovato.
+
+                // If tiles are equals, if the pattern hasn't already been registered, I regiter it and count it as found.
                 if(eqTiles(list)){
                     for(int j=k; j<eq+k; j++){
                         if(registeredGrid[j][i]){
@@ -91,7 +96,8 @@ public class EqualInCol extends CommonGoalCard {
                             break;
                         }
                     }
-                    // Se non avevo già contato il pattern come trovato, lo conto e segno le celle come già registrate.
+
+                    // If the pattern hadn't already been found, I count it and mark the cells as already registered.
                     if (!cellAlreadyRegistered){
                         for(int j=k; j<eq+k; j++)
                             registeredGrid[j][i] = true;
@@ -105,8 +111,10 @@ public class EqualInCol extends CommonGoalCard {
                 k++;
             }
         }
+
         /*
-        Questo ciclo controlla in orizzontale se trova dei pattern; quando trova un pattern, segna le celle come visitate in modo da non fare il controllo 2 volte.
+        This cycle check horizontally if there are patterns.
+        When it finds a pattern, it marks cells as visited in order to not check them twice.
          */
         for(int i=0; i<MAXBOOKSHELFROW; i++) {
             list.clear();
@@ -154,12 +162,16 @@ public class EqualInCol extends CommonGoalCard {
 
 
     /**
+     * Prints the card on the CLI.
      * {@inheritDoc}
      */
     public void printCard(){
         switch (cardNumber) {
             case 3 -> {
-                System.out.println( "COMMON CARD NUMBER 3 \n" +
+                System.out.println( "COMMON CARD NUMBER 3: \n" +
+                                    "Four groups each containing at least 4 tiles of the same type (not necessarily\n" +
+                                    "in the depicted shape).\n" +
+                                    "The tiles of one group can be different from those of another group.\n" +
                                     "++++++++++++++++++++ \n"+
                                     "+      | = |       + \n" +
                                     "+      | = | x4    + \n" +
@@ -168,10 +180,13 @@ public class EqualInCol extends CommonGoalCard {
                                     "++++++++++++++++++++ \n");
             }
             case 4 -> {
-                System.out.println( "COMMON CARD NUMBER 4  \n" +
+                System.out.println( "COMMON CARD NUMBER 4:  \n" +
+                                    "Six groups each containing at least 2 tiles of the same type (not necessarily \n" +
+                                    "in the depicted shape).\n" +
+                                    "The tiles of one group can be different from those of another group.\n" +
                                     "+++++++++++++++++++++ \n"+
                                     "+       | = |       + \n" +
-                                    "+       | = |  x2   + \n"+
+                                    "+       | = |  x6   + \n"+
                                     "+++++++++++++++++++++ \n");
             }
         }
