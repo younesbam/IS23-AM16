@@ -49,19 +49,21 @@ public class DiffAligned extends CommonGoalCard {
     }
 
     /**
-     * {@inheritDoc}
+     * Checks whether the scheme is valid.
+     * @param player actual player
+     * @return points earned from the player.
      */
     public Integer checkScheme(Player player) {
-        int actualRepetition = 0;  // Rappresenta il numero di ripetizioni dello stesso algoritmo. Sulle carte indicate come "x2", "x3"...
+        int actualRepetition = 0; // Number of repetitions of the same algorithm. On cards as "x2", "x3", ...
         final int maxI;
         final int maxJ;
         Cell[][] grid = player.getBookShelf().getGrid();
 
         /*
-        Le variabili maxI e maxJ servono per dare un limite alla tabella. La variabile j è quella che incrementa sempre
-        per controllare se le tessere sono uguali/deverse o no. La variabile i è quella che fa spostare di riga/colonna.
-        Se devo controllare in verticale che le tessere siano diverse devo limitare la variaible j come MAXROW-1.
-        Se devo controllare in orizzontale che le tessere siano diverse devo limitare la variaible j come MAXCOL-1.
+        Variables maxI and maxJ are used to give boundaries to the table. j controls whether tiles are equals or not.
+        i lets you change row or column.
+        To check vertically: j must be limited to MAXROW-1.
+        To check horizontally: j must be limited to MAXCOL-1.
          */
         if(dir == Direction.N || dir == Direction.S){
             maxJ = MAXBOOKSHELFROW;
@@ -76,9 +78,9 @@ public class DiffAligned extends CommonGoalCard {
             list.clear();
             for(int j=0; j<maxJ; j++){
                 if(dir == Direction.N || dir == Direction.S)
-                    list.add(grid[j][i].getTile()); // verticale
+                    list.add(grid[j][i].getTile()); // Vertically
                 else
-                    list.add(grid[i][j].getTile()); // orizzontale
+                    list.add(grid[i][j].getTile()); // Horizontally
             }
             if(diffTiles(list))
                 actualRepetition++;
@@ -105,12 +107,14 @@ public class DiffAligned extends CommonGoalCard {
 
 
     /**
+     * Prints the card on the CLI.
      * {@inheritDoc}
      */
     public void printCard(){
         switch (cardNumber) {
             case 2 -> {
-                System.out.println( "COMMON CARD NUMBER 2\n"+
+                System.out.println( "COMMON CARD NUMBER 2:  \n"+
+                                    "Two columns each formed by 6 different types of tiles.\n"+
                                     "++++++++++++++++++ \n" +
                                     "+      | ≠ |     + \n" +
                                     "+      | ≠ |     + \n" +
@@ -121,7 +125,9 @@ public class DiffAligned extends CommonGoalCard {
                                     "++++++++++++++++++ \n");
             }
             case 6 -> {
-                System.out.println( "       COMMON CARD NUMBER 6 \n"+
+                System.out.println( "       COMMON CARD NUMBER 6:  \n"+
+                                    "Two lines each formed by 5 different types of tiles. \n" +
+                                    "One line can show the same or a different combination of the other line. \n"+
                                     "++++++++++++++++++++++++++++++++ \n" +
                                     "+   | ≠ | ≠ | ≠ | ≠ | ≠ | x2   + \n" +
                                     "++++++++++++++++++++++++++++++++ \n");

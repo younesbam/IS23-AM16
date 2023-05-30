@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public abstract class Card implements Serializable {
     /**
-     * Id of the card
+     * ID of the card
      */
     protected int cardNumber;
 

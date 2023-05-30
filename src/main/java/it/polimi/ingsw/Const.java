@@ -26,12 +26,6 @@ public final class Const {
 
 
     /**
-     * Maximum number of players during the game.
-     */
-    private static final int MAXPLAYERS = 4;
-
-
-    /**
      * Maximum number of common goal cards during the game.
      */
     private static final int COMGOALCARDS = 2;
@@ -47,6 +41,16 @@ public final class Const {
      * Maximum number of columns and rows for the board.
      */
     public static final int MAXBOARDDIM = 9;
+
+    /**
+     * Minimum number of players.
+     */
+    public static final int MINPLAYERS = 2;
+
+    /**
+     * Maximum number of players.
+     */
+    public static final int MAXPLAYERS = 4;
 
 
     /**

@@ -22,7 +22,7 @@ public class MaxDiffGroup extends CommonGoalCard {
     private int maxNotEq;
 
     /**
-     *
+     * Number of repetition of the pattern.
      */
     private int repetition;
 
@@ -59,11 +59,12 @@ public class MaxDiffGroup extends CommonGoalCard {
     }
 
     /**
-     * {@inheritDoc}
+     * Checks whether the scheme is valid.
+     * @param player actual player
+     * @return points earned from the player.
      */
     public Integer checkScheme(Player player) {
-        int actualRepetition = 0;  // Rappresenta il numero di ripetizioni dello stesso algoritmo. Sulle carte indicate come "x2", "x3"...
-        int occurrences = 0;  // Viene incrementato se il tipo è trovato all'interno del Set.
+        int actualRepetition = 0;  // Number of repetitions of the same pattern. On cards as "x2", "x3", ...
         final int maxI;
         final int maxJ;
         Set<Tile> set = new HashSet<>();
@@ -76,9 +77,10 @@ public class MaxDiffGroup extends CommonGoalCard {
             maxJ = MAXBOOKSHELFCOL;
             maxI = MAXBOOKSHELFROW;
         }
+
         /*
-        Trasformo la colonna/riga in un Set. Dal momento che il set non ammette ripetizioni, controllo la
-        dimensione del Set: se è minore del massimo delle tessere diverse che posso avere, incremento le ripetizioni.
+        Transformation of the row/column in a Set. Since the Set doesn't allow repetitions, we check the size of the Set:
+        if it is lower than the maximum number of different tiles allowed, actualRepetition is incremented.
          */
         for(int i=0; i<maxI; i++){
             set.clear();
@@ -99,12 +101,15 @@ public class MaxDiffGroup extends CommonGoalCard {
 
 
     /**
+     * Prints the card on the CLI.
      * {@inheritDoc}
      */
     public void printCard(){
         switch (cardNumber) {
             case 5 -> {
-                System.out.println(         "COMMON CARD NUMBER 5 \n" +
+                System.out.println(         "COMMON CARD NUMBER 5: \n" +
+                                    "Three columns each formed by 6 tiles of maximum three different types.\n" +
+                                    "One column can show the same or a different combination of another column.\n" +
                                     "++++++++++++++++++++++++++++++++ \n"+
                                     "+          |   |               + \n" +
                                     "+          |   |               + \n" +
@@ -115,7 +120,9 @@ public class MaxDiffGroup extends CommonGoalCard {
                                     "++++++++++++++++++++++++++++++++ \n");
             }
             case 7 -> {
-                System.out.println( "COMMON CARD NUMBER 7 \n" +
+                System.out.println( "   COMMON CARD NUMBER 7: \n" +
+                                    "Four lines each formed by 5 tiles of maximum three different types.\n" +
+                                    "One line can show the same or a different combination of another line.\n" +
                                     "++++++++++++++++++++++++++++ \n"+
                                     "+  |   |   |   |   |   |   + \n" +
                                     "+        MAX 3| ≠ |        + \n" +
