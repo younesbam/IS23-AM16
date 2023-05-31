@@ -14,13 +14,13 @@
 ## Implemented Functionalities
 | Functionality      | Status | Percentage |
 |:-------------------|:-----:|:----------:|
-| UML                | [⚠️]() |    50%     |
-| Basic rules        | [⚠️]() |     0%     |
-| Complete rules     | [⛔]() |     0%     |
-| Socket             | [⛔]() |     0%     |
-| RMI                | [⛔]() |     0%     |
-| CLI                | [⛔]() |     0%     |
-| GUI                | [⛔]() |     0%     |
+| UML                | [⚠️]() |    90%     |
+| Basic rules        | [✅]() |    100%    |
+| Complete rules     | [✅]() |    100%    |
+| Socket             | [✅]() |    100%    |
+| RMI                | [✅]() |    100%    |
+| CLI                | [⚠️]() |    98%     |
+| GUI                | [⚠️]() |    50%     |
 | AF: Multiple games | [⛔]() |     0%     |
 | AF: Persistence    | [⛔]() |     0%     |
 | AF: Resilience     | [⛔]() |     0%     |
