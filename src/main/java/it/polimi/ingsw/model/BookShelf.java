@@ -110,33 +110,6 @@ public class BookShelf implements Serializable {
 
 
     /**
-     * This method updates the bookshelf free spaces. It is called after every turn to update its value.
-     */
-    //TODO aggiungi la chiamata a questo metodo nel controller dopo che il giocatore ha messo le tiles nella sua bookshelf ad ogni turno.
-    public void countFreeSpaces(){
-        int n = 0;
-
-        for (int i=0; i<MAXBOOKSHELFROW; i++) {
-            for (int j=0; j<MAXBOOKSHELFCOL; j++) {
-                if (grid[i][j].getTile() == Tile.BLANK) {
-                    n++;
-                }
-            }
-        }
-        freeSpaces = n;
-    }
-
-
-    /**
-     * FreeSpaces getter.
-     * @return
-     */
-    public int getFreeSpaces() {
-        return freeSpaces;
-    }
-
-
-    /**
      * Method used to print the bookshelf.
      */
     public void printBookShelf(){
