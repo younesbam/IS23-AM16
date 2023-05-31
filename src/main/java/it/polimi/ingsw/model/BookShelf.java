@@ -42,7 +42,7 @@ public class BookShelf implements Serializable {
      * @return true if the tiles can be inserted.
      * @throws InvalidParameterException if the number of the column of the tiles are invalid.
      */
-    public void checkColumn(int n, int nTiles) throws InvalidParameterException, NotEmptyColumnException {
+    public void checkColumn(int col, int nTiles) throws InvalidParameterException, NotEmptyColumnException {
 
         /*
          * This attribute counts the number of available cells in the column.
@@ -52,10 +52,11 @@ public class BookShelf implements Serializable {
         /*
          * Check of the validity of the column's number.
          */
-        if (n>MAXBOOKSHELFCOL || n<0 || nTiles<0 || nTiles>MAXPICKEDTILES) throw new InvalidParameterException();
+
+        if (col>MAXBOOKSHELFCOL-1 || col<0 || nTiles<=0 || nTiles>MAXPICKEDTILES) throw new InvalidParameterException();
 
         for (int i=0; i<MAXBOOKSHELFCOL; i++) {
-            if(grid[i][n].getTile() == Tile.BLANK)
+            if(grid[i][col].getTile() == Tile.BLANK)
                 available++;
         }
 
