@@ -21,10 +21,6 @@ public class BookShelf implements Serializable {
      */
     private Cell[][] grid;
 
-    /**
-     * This attribute keeps track of the BLANK spaces in the bookshelf.
-     */
-    private int freeSpaces;
 
     /**
      * Constructor for the BookShelf.
@@ -32,7 +28,6 @@ public class BookShelf implements Serializable {
      */
     public BookShelf() {
         grid = Utils.createBlankGrid(MAXBOOKSHELFROW, MAXBOOKSHELFCOL);
-        freeSpaces = MAXBOOKSHELFROW*MAXBOOKSHELFCOL;
     }
 
     /**
@@ -111,33 +106,6 @@ public class BookShelf implements Serializable {
             }
         }
         return true;
-    }
-
-
-    /**
-     * This method updates the bookshelf free spaces. It is called after every turn to update its value.
-     */
-    //TODO aggiungi la chiamata a questo metodo nel controller dopo che il giocatore ha messo le tiles nella sua bookshelf ad ogni turno.
-    public void countFreeSpaces(){
-        int n = 0;
-
-        for (int i=0; i<MAXBOOKSHELFROW; i++) {
-            for (int j=0; j<MAXBOOKSHELFCOL; j++) {
-                if (grid[i][j].getTile() == Tile.BLANK) {
-                    n++;
-                }
-            }
-        }
-        freeSpaces = n;
-    }
-
-
-    /**
-     * FreeSpaces getter.
-     * @return
-     */
-    public int getFreeSpaces() {
-        return freeSpaces;
     }
 
 

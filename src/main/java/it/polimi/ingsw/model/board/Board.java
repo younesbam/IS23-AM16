@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.exceptions.OutOfBoundException;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Tile;
 
+import java.awt.font.OpenType;
 import java.io.Serializable;
+import java.security.InvalidParameterException;
 import java.util.*;
 
 import static it.polimi.ingsw.Const.*;
@@ -79,12 +82,14 @@ public abstract class Board implements Serializable {
     /**
      * This method checks is a tile can be picked or not (so if it has at least one free side and at least one
      * occupied side).
-     *
+     * Check also the validity of the parameters
      * @param row row coordinate of the cell to check.
      * @param col col coordinate of the cell to check.
      * @return true if the tile can be picked.
      */
-    public boolean isPickable(int row, int col) {
+    public boolean isPickable(int row, int col) throws InvalidParameterException {
+        // Exception if coordinates are wrong
+        if(row > MAXBOARDDIM-1 || col > MAXBOARDDIM-1 || row < 0 || col < 0) throw new InvalidParameterException();
 
         if(!grid[row][col].getTile().name().equals("BLANK") && !grid[row][col].getTile().name().equals("UNAVAILABLE")) {
 
