@@ -52,7 +52,7 @@ public class BookShelf implements Serializable {
         /*
          * Check of the validity of the column's number.
          */
-        if (col>MAXBOOKSHELFCOL-1 || col<0 || nTiles<0 || nTiles>MAXPICKEDTILES) throw new InvalidParameterException();
+        if (col>MAXBOOKSHELFCOL-1 || col<0 || nTiles<=0 || nTiles>MAXPICKEDTILES) throw new InvalidParameterException();
 
         for (int i=0; i<MAXBOOKSHELFCOL; i++) {
             if(grid[i][col].getTile() == Tile.BLANK)
