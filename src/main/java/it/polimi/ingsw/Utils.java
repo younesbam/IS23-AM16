@@ -56,12 +56,4 @@ public final class Utils {
 
         return grid;
     }
-
-
-    /**
-     * Print MyShelfie logo.
-     */
-    public static void printLogo(){
-        System.out.println();
-    }
 }

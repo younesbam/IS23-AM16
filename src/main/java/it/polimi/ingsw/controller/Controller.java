@@ -126,13 +126,11 @@ public class Controller implements PropertyChangeListener {
      * @param coordinates
      */
     private void removeTilesFromBoard(List<Coordinate> coordinates){
-        //ArrayList<Tile> tiles = new ArrayList<>();
-
+        Tile removedTile;
         for(Coordinate c : coordinates){
-            //tiles.add(game.getBoard().getTile(coordinates[i][0], coordinates[i][1]));
-            pickedTiles.add(game.getBoard().getTile(c.getRow(), c.getCol()));
-            gameHandler.sendToPlayer(new CustomAnswer(false, "\nYou picked the following tile:" + game.getBoard().getTile(c.getRow(), c.getCol()).name()), currentPlayer.getID());
-            game.getBoard().removeTile(c.getRow(), c.getCol());
+            removedTile = game.getBoard().removeTile(c.getRow(), c.getCol());
+            pickedTiles.add(removedTile);
+            gameHandler.sendToPlayer(new CustomAnswer(false, "\nYou picked the following tile:" + removedTile.name()), currentPlayer.getID());
         }
 
         setPhase(Phase.TILESPLACING);
@@ -298,7 +296,8 @@ public class Controller implements PropertyChangeListener {
         }
         // Create a sequence of n, n+1, n+2... ints from the first element of the previous ordered list (that is n) and check if are equals
         orderedInts = IntStream.iterate(values.get(0), i -> i + 1)
-                .limit(values.size()).boxed()
+                .limit(values.size())
+                .boxed()
                 .toList();
         if(!values.equals(orderedInts)){
             gameHandler.sendToPlayer(new ErrorAnswer("The tiles have to be adjacent!", ErrorClassification.TILES_NOT_ADJACENT), currentPlayer.getID());
