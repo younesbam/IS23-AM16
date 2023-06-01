@@ -486,7 +486,6 @@ public class Server {
      * @param args
      */
     public static void main(String[] args) {
-        Utils.printLogo();
         System.out.print("Welcome to the server of MyShelfie!\n");
         new Server();
     }
