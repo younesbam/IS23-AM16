@@ -32,8 +32,9 @@ public class RMICSConnection extends CSConnection {
         try {
             client.ping();
         }catch (RemoteException e){
-            Server.LOGGER.log(Level.WARNING, "Disconnect directive. No response from client", e);
-            disconnect();
+            suspend();
+            //Server.LOGGER.log(Level.WARNING, "Disconnect directive. No response from client", e);
+            //disconnect();
         }
     }
 

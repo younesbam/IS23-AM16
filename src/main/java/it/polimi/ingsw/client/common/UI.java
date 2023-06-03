@@ -42,8 +42,6 @@ public abstract class UI implements PropertyChangeListener {
      */
     private boolean activeGame;
 
-    protected int tmp = 0;
-
 
     /**
      * Connect client to server, based on chosen communication protocol.
@@ -51,7 +49,6 @@ public abstract class UI implements PropertyChangeListener {
      * @param address of the server
      * @param port of the server
      * @param username of the player
-     * @param disconnectionListener
      * @throws Exception
      */
     public void connectToServer(ConnectionType connectionType, String address, int port, String username) throws RemoteException, NotBoundException {
