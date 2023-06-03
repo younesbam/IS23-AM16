@@ -40,7 +40,7 @@ public abstract class Client extends UnicastRemoteObject {
     /**
      * Ping timer. Used to start a timer
      */
-    protected Timer pingTimer;
+    protected Timer pingTimer = new Timer();
 
     /**
      * Client's action handler.
