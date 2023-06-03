@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 
 import java.beans.PropertyChangeSupport;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Handles the match, controller and game
@@ -23,7 +24,6 @@ public class GameHandler {
     private final Controller controller;
     private int numOfPlayers;
     private final PropertyChangeSupport pcsController = new PropertyChangeSupport(this);
-    private int playerID;
     private boolean alreadyStarted;
 
 
@@ -131,11 +131,9 @@ public class GameHandler {
         sendToEveryone(new CustomAnswer(false, "Now the first player to play is being randomly selected, be ready, it could be you!"));
 
         int firstPlayer = 0;
-        int min = 0;
-        int randomNum = (int) Math.floor(Math.random() *(numOfPlayers - min + 1) + min);
-        int i;
+        int randomNum = ThreadLocalRandom.current().nextInt(0, numOfPlayers + 1);
 
-        for (i = 0; i < numOfPlayers; i++) {
+        for (int i = 0; i < numOfPlayers; i++) {
             if (i != randomNum) {
                 game.getPlayers().get(i).setChair(false);
             }

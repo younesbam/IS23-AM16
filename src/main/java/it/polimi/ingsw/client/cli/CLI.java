@@ -70,7 +70,6 @@ public class CLI extends UI implements Runnable{
      * Loop the CLI waiting for new ACTION command
      */
     private void loop(){
-        //System.out.println("SONO NEL LOOOOOOOOPPPPPPP");
         input.reset();
         pcsDispatcher.firePropertyChange("action", null, input.nextLine());
     }
@@ -103,9 +102,21 @@ public class CLI extends UI implements Runnable{
      * @return type of connection
      */
     private ConnectionType askConnectionType(){
-        System.out.println("Please choose your connection type.\nType SOCKET or RMI to confirm your choice.");
-        System.out.print(">");
-        return ConnectionType.valueOf(input.nextLine().toUpperCase());
+        ConnectionType conn = null;
+        boolean connChosen = false;
+        while (!connChosen){
+            System.out.println("Please choose your connection type.\nType SOCKET or RMI to confirm your choice.");
+            System.out.print(">");
+
+            try {
+                conn = ConnectionType.valueOf(input.nextLine().toUpperCase());
+                connChosen = true;
+            } catch (IllegalArgumentException e) {
+                connChosen = false;
+            }
+        }
+
+        return conn;
     }
 
 
@@ -125,9 +136,21 @@ public class CLI extends UI implements Runnable{
      * @return selected port
      */
     private int askPort(){
-        System.out.println("Insert the port number of the server, it should be a number between 1024 and 65565");
-        System.out.print(">");
-        return input.nextInt();
+        int port = 0;
+        boolean portChosen = false;
+        while (!portChosen){
+            System.out.println("Insert the port number of the server, it should be a number between 1024 and 65565");
+            System.out.print(">");
+
+            try {
+                port = Integer.parseInt(input.nextLine());
+                portChosen = true;
+            } catch (NumberFormatException e) {
+                portChosen = false;
+            }
+        }
+
+        return port;
     }
 
 
@@ -138,9 +161,9 @@ public class CLI extends UI implements Runnable{
         /*
         Set port, IP address, username.
          */
-        ConnectionType connectionType = ConnectionType.RMI;   // askConnectionType();
+        ConnectionType connectionType = ConnectionType.RMI; // askConnectionType();
         String ipAddress = "127.0.0.1";    //askIpAddress();
-        int numOfPort = 1098;    //askPort();
+        int numOfPort = 1098;  //askPort();
         String username = askUsername();
 
         /*
@@ -153,7 +176,6 @@ public class CLI extends UI implements Runnable{
          */
         try{
             connectToServer(connectionType, ipAddress, numOfPort, username);
-            //Client.LOGGER.log(Level.INFO, "Client successfully connected");
         }catch (RemoteException | NotBoundException e){
             Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e);
             System.exit(-1);
@@ -193,9 +215,6 @@ public class CLI extends UI implements Runnable{
         else
             System.out.println("\nWait for your next turn now!");
         modelView.setIsYourTurn(yourTurn);
-
-        if(yourTurn)
-            System.out.print(">");
     }
 
 

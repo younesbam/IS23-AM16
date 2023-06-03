@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.Const;
 import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.common.JSONParser;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
@@ -27,6 +28,7 @@ import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +37,7 @@ import static it.polimi.ingsw.Const.*;
 import static it.polimi.ingsw.controller.Phase.SETUP;
 
 public class Server {
+    public final Object clientLock = new Object();
     /**
      * Logger of the server.
      */
@@ -73,14 +76,19 @@ public class Server {
     private int currentPlayerID;
 
     /**
-     * List of players waiting for game to start.
+     * List of players waiting for game to start. List cleared when game start.
      */
     private final List<VirtualPlayer> playersWaitingList = new ArrayList<>();
 
     /**
-     * List of connected players. Used to do some tasks, for instance ping all the connected clients.
+     * List of connected players. Use this to ping all connected clients
      */
     private final List<VirtualPlayer> playersConnectedList = new ArrayList<>();
+
+    /**
+     * List of suspended players. Here all the crashed clients. Use this list to avoid ping disconnected clients.
+     */
+    private final List<VirtualPlayer> playersSuspendedList = new ArrayList<>();
 
     /**
      * Represent that the first player doesn't answer to the number of players question.
@@ -130,15 +138,13 @@ public class Server {
         Ping thread to check if clients are still alive
         WARNING: remember to shut down the thread with exec.shutdownNow();
          */
-//        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-//        exec.scheduleAtFixedRate(() -> {
-//            /*
-//            Each client registered in the server is pinged. If the client doesn't respond, the ping() method proceed itself to disconnect the client.
-//             */
-//            for (VirtualPlayer p : playersConnectedList) {
-//                p.getConnection().ping();
-//            }
-//        }, 1, Const.SERVER_PING_DELAY, TimeUnit.SECONDS);
+        ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
+        exec.scheduleAtFixedRate(() -> {
+            /*
+            Each client registered in the server is pinged. If the client doesn't respond, the ping() method proceed itself to disconnect the client.
+             */
+            pingClients();
+        }, 1, Const.SERVER_PING_DELAY, TimeUnit.SECONDS);
     }
 
 
@@ -330,26 +336,25 @@ public class Server {
         Check if we are in the setup phase, which is true just for the first player. After the first player chooses the number of players, the phase is set to LOBBY,
         and if other players will try to use the PLAYERS command, they will receive an incorrect phase message.
          */
-        if(gameHandler.getController().getPhase() == SETUP) {
+        if(gameHandler.getController().getPhase() != SETUP){
+            player.send(new ErrorAnswer("You cannot play this command in this game phase!", ErrorClassification.INCORRECT_PHASE));
+            return;
+        }
 
-            /*
+        /*
         Check if the players are in the right range.
          */
-            if (numOfPlayers > 4 || numOfPlayers < 2)
-                throw new OutOfBoundException();
+        if (numOfPlayers > 4 || numOfPlayers < 2)
+            throw new OutOfBoundException();
         /*
         Set number of players (also in GameHandler)
          */
-            this.numOfPlayers = numOfPlayers;
-            player.getGameHandler().setNumOfPlayers(numOfPlayers);
-            player.send(new PlayerNumberChosen(numOfPlayers));
-            setupMode = false;  // Stop the setup mode. Now the server can accept new players.
-            System.out.println(GREEN_COLOR + "Setup mode ended. Clients are now welcome!" + RESET_COLOR);
-            gameHandler.getController().setPhase(Phase.LOBBY);
-        }
-        else{
-            player.send(new ErrorAnswer("You cannot play this command in this game phase!", ErrorClassification.INCORRECT_PHASE));
-        }
+        this.numOfPlayers = numOfPlayers;
+        player.getGameHandler().setNumOfPlayers(numOfPlayers);
+        player.send(new PlayerNumberChosen(numOfPlayers));
+        setupMode = false;  // Stop the setup mode. Now the server can accept new players.
+        System.out.println(GREEN_COLOR + "Setup mode ended. Clients are now welcome!" + RESET_COLOR);
+        gameHandler.getController().setPhase(Phase.LOBBY);
     }
 
     
@@ -366,8 +371,8 @@ public class Server {
 
     /**
      * This method closes all the connections to the server.
-     * */
-    public void exit() {
+     */
+    private void exit() {
         //DA MODIFICARE E FARE IN MODO CHE CON "QUIT" DI CHIUDA ANCHE LA CONNESSIONE RMI (IF/ELSE)
         Scanner in = new Scanner(System.in);
         while (true) {
@@ -380,6 +385,27 @@ public class Server {
                 break;
             }
         }
+    }
+
+
+    /**
+     * Ping every connected client
+     */
+    private synchronized void pingClients(){
+        for (VirtualPlayer p : playersConnectedList) {
+            p.getConnection().ping();
+        }
+    }
+
+
+    public void suspendClient(CSConnection connection){
+        VirtualPlayer suspendedPlayer = getVirtualPlayerByID(connection.getID());
+        if(suspendedPlayer == null){
+            System.out.println("Player doesn't exist. Impossible to suspend it");
+            return;
+        }
+        removePlayer(connection.getID());
+        playersSuspendedList.add(suspendedPlayer);
     }
 
 

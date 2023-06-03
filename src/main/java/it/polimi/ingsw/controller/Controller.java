@@ -27,10 +27,10 @@ import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
 import static it.polimi.ingsw.controller.Phase.SETUP;
 
 public class Controller implements PropertyChangeListener {
-    private Game game;
+    private final Game game;
     private final GameHandler gameHandler;
     private Player currentPlayer;
-    private List<Tile> pickedTiles = new ArrayList<>();
+    private final List<Tile> pickedTiles = new ArrayList<>();
     private Phase phase;
     private boolean lastTurn = false;
     private int counter = 0;

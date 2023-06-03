@@ -71,4 +71,8 @@ public abstract class CSConnection {
      */
     public abstract void sendAnswerToClient(SerializedAnswer answer);
 
+
+    public void suspend(){
+        server.suspendClient(this);
+    }
 }
