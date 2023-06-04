@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.common.exceptions.PlayerNotFoundException;
 import it.polimi.ingsw.model.board.*;
 import it.polimi.ingsw.model.cards.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The Game class contains the main elements of a game match.
@@ -17,10 +19,9 @@ import java.util.List;
 public class Game implements Serializable {
     private Board board;
     private CreationFactory creationFactory;
-    private final ArrayList<Player> players = new ArrayList<>();
     private final ArrayList<Player> activePlayers = new ArrayList<>();
+    private final ArrayList<Player> inactivePlayers = new ArrayList<>();
     private Player currentPlayer;
-    private int currentPlayerID;
     private int numOfPlayers;
     private final List<CommonGoalCard> commonGoalCards = new ArrayList<>();
     private final Bag bag;
@@ -39,7 +40,6 @@ public class Game implements Serializable {
      * @param player
      */
     public void createPlayer(Player player){
-        this.players.add(player);
         this.activePlayers.add(player);
     }
 
@@ -78,7 +78,6 @@ public class Game implements Serializable {
     }
 
 
-    public ArrayList<Player> getPlayers() {return this.players;}
 
     public List<CommonGoalCard> getCommonGoalCards() {return this.commonGoalCards;}
 
@@ -130,8 +129,15 @@ public class Game implements Serializable {
      * Method used to switch to the next player.
      */
     public void nextPlayer() {
-        currentPlayerID = (currentPlayer.getID() == activePlayers.size() - 1) ? 0 : currentPlayerID + 1;
-        setCurrentPlayer(activePlayers.get(currentPlayerID));
+        for(int i=0; i<activePlayers.size(); i++){
+            if(currentPlayer.equals(activePlayers.get(i))){
+                if(i == activePlayers.size()-1)
+                    setCurrentPlayer(activePlayers.get(0));
+                else
+                    setCurrentPlayer(activePlayers.get(i+1));
+                return;
+            }
+        }
     }
 
 
@@ -141,5 +147,42 @@ public class Game implements Serializable {
     public void createBoard(){
         this.creationFactory = new CreationFactory();
         this.board = creationFactory.createBoard(numOfPlayers);
+    }
+
+
+    /**
+     * Move player from active to inactive list
+     * @param ID of the player
+     * @throws PlayerNotFoundException
+     */
+    public void moveActiveToInactive(int ID) throws PlayerNotFoundException {
+        Player playerToMove = getPlayerByID(ID);
+        if(playerToMove == null) throw new PlayerNotFoundException();
+        for(Player p : activePlayers){
+            if(playerToMove.equals(p)){
+                activePlayers.remove(p);
+                inactivePlayers.add(p);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Move player from inactive to active list
+     * @param username of the player
+     * @throws PlayerNotFoundException
+     */
+    public void moveInactiveToActive(String username) throws PlayerNotFoundException {
+        Player playerToMove = null;
+        for(Player p : inactivePlayers){
+            if(p.getUsername().equals(username)){
+                playerToMove = p;
+                break;
+            }
+        }
+        if(playerToMove == null) throw new PlayerNotFoundException();
+
+        inactivePlayers.remove(playerToMove);
+        activePlayers.add(playerToMove);
     }
 }

@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.Player;
 
 import java.beans.PropertyChangeSupport;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 
 /**
  * Handles the match, controller and game
@@ -82,22 +83,21 @@ public class GameHandler {
      * @param answer
      */
     public void sendToEveryone(Answer answer){
-        for(Player p: game.getActivePlayers()){
+        for(VirtualPlayer p: server.getConnectedPlayers()){
             sendToPlayer(answer, server.getIDByUsername(p.getUsername()));
         }
-
     }
 
 
     /**
-     * This method is used to send an answer from the server to everyone execpt the
+     * This method is used to send an answer from the server to everyone except the selected player
      * @param answer
      * @param notToHim
      */
     public void sendToEveryoneExcept(Answer answer, int notToHim) {
-        for(Player activePlayers : controller.getGame().getActivePlayers()) {
-            if(server.getIDByUsername(activePlayers.getUsername()) != notToHim) {
-                sendToPlayer(answer, activePlayers.getID());
+        for(VirtualPlayer p : server.getConnectedPlayers()) {
+            if(server.getIDByUsername(p.getUsername()) != notToHim) {
+                sendToPlayer(answer, p.getID());
             }
         }
     }
@@ -109,7 +109,10 @@ public class GameHandler {
      * @param playerID
      */
     public void sendToPlayer(Answer answer, int playerID){
-        server.getVirtualPlayerByID(playerID).send(answer);
+        if(server.getVirtualPlayerByID(playerID) != null)
+            server.getVirtualPlayerByID(playerID).send(answer);
+        else
+            Server.LOGGER.log(Level.WARNING, "Failed to send message to player. No player with ID " + playerID + " found");
     }
 
 
@@ -135,12 +138,12 @@ public class GameHandler {
 
         for (int i = 0; i < numOfPlayers; i++) {
             if (i != randomNum) {
-                game.getPlayers().get(i).setChair(false);
+                game.getActivePlayers().get(i).setChair(false);
             }
-            game.getPlayers().get(i).setChair(true);
-            game.setFirstPlayer(game.getPlayers().get(i));
-            game.setCurrentPlayer(game.getPlayers().get(i));
-            firstPlayer = game.getPlayers().get(i).getID();
+            game.getActivePlayers().get(i).setChair(true);
+            game.setFirstPlayer(game.getActivePlayers().get(i));
+            game.setCurrentPlayer(game.getActivePlayers().get(i));
+            firstPlayer = game.getActivePlayers().get(i).getID();
         }
 
         sendToEveryoneExcept(new CustomAnswer(false, "The first player is: " + server.getUsernameByID(firstPlayer) + "!"), firstPlayer);
@@ -216,5 +219,10 @@ public class GameHandler {
             pcsController.firePropertyChange("PrintCardsAction", null, action);
             return;
         }
+    }
+
+
+    public void suspendClient(int ID){
+        controller.suspendClient(ID);
     }
 }

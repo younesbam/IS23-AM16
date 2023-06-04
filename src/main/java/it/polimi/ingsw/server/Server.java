@@ -96,6 +96,11 @@ public class Server {
      */
     private boolean setupMode;
 
+    /**
+     * Scheduler service
+     */
+    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
 
     /**
      * Class constructor
@@ -138,12 +143,16 @@ public class Server {
         Ping thread to check if clients are still alive
         WARNING: remember to shut down the thread with exec.shutdownNow();
          */
-        ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
-        exec.scheduleAtFixedRate(() -> {
+        scheduler.scheduleAtFixedRate(() -> {
             /*
             Each client registered in the server is pinged. If the client doesn't respond, the ping() method proceed itself to disconnect the client.
              */
-            pingClients();
+            try {
+                pingClients();
+            }catch (Exception e){
+                LOGGER.log(Level.WARNING, "Exception thrown",e);
+            }
+
         }, 1, Const.SERVER_PING_DELAY, TimeUnit.SECONDS);
     }
 
@@ -392,20 +401,18 @@ public class Server {
      * Ping every connected client
      */
     private synchronized void pingClients(){
+        VirtualPlayer disconnectedPlayer = null;
         for (VirtualPlayer p : playersConnectedList) {
-            p.getConnection().ping();
+            try{
+                p.getConnection().ping();
+            }catch (RemoteException e){
+                disconnectedPlayer = p;
+                break;
+            }
         }
-    }
-
-
-    public void suspendClient(CSConnection connection){
-        VirtualPlayer suspendedPlayer = getVirtualPlayerByID(connection.getID());
-        if(suspendedPlayer == null){
-            System.out.println("Player doesn't exist. Impossible to suspend it");
-            return;
+        if(disconnectedPlayer != null){
+            suspendClient(disconnectedPlayer.getConnection());
         }
-        removePlayer(connection.getID());
-        playersSuspendedList.add(suspendedPlayer);
     }
 
 
@@ -485,6 +492,14 @@ public class Server {
         return null;
     }
 
+    /**
+     * Get connected virtual player list
+     * @return
+     */
+    public List<VirtualPlayer> getConnectedPlayers(){
+        return playersConnectedList;
+    }
+
 
     /**
      * This method removes a player from the current server.
@@ -514,5 +529,30 @@ public class Server {
     public static void main(String[] args) {
         System.out.print("Welcome to the server of MyShelfie!\n");
         new Server();
+    }
+
+
+    public void suspendClient(CSConnection connection){
+        VirtualPlayer suspendedPlayer = getVirtualPlayerByID(connection.getID());
+        if(suspendedPlayer == null){
+            System.out.println("Player doesn't exist. Impossible to suspend it");
+            return;
+        }
+
+        System.out.println("Suspending player " + suspendedPlayer.getUsername());
+        try{
+            playersConnectedList.remove(suspendedPlayer);
+        }catch (NullPointerException e){
+            //
+        }
+
+//        try{
+//            playersWaitingList.remove(suspendedPlayer);
+//        }catch (NullPointerException e){
+//            //
+//        }
+
+        playersSuspendedList.add(suspendedPlayer);
+        gameHandler.suspendClient(suspendedPlayer.getID());
     }
 }

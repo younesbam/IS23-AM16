@@ -28,14 +28,8 @@ public class RMICSConnection extends CSConnection {
      * {@inheritDoc}
      */
     @Override
-    public void ping() {
-        try {
-            client.ping();
-        }catch (RemoteException e){
-            suspend();
-            //Server.LOGGER.log(Level.WARNING, "Disconnect directive. No response from client", e);
-            //disconnect();
-        }
+    public void ping() throws RemoteException {
+        client.ping();
     }
 
 
@@ -70,7 +64,7 @@ public class RMICSConnection extends CSConnection {
             client.onServerAnswer(answer);
         } catch (RemoteException e) {
             Server.LOGGER.log(Level.SEVERE, "Failed to send message to the client: ", e);
-            disconnect();
+            //disconnect();
         }
     }
 }

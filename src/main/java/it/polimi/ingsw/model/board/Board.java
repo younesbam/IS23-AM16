@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.common.Coordinate;
+import it.polimi.ingsw.common.exceptions.CellNotEmptyException;
+import it.polimi.ingsw.common.exceptions.WrongCoordinateException;
+import it.polimi.ingsw.common.exceptions.WrongTilesException;
 import it.polimi.ingsw.exceptions.OutOfBoundException;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Tile;
@@ -68,8 +72,7 @@ public abstract class Board implements Serializable {
      *
      * @return true if the board must be refilled.
      */
-    public boolean refillNeeded() {
-
+    private boolean refillNeeded() {
         // If there is at least one cell pickable there is no need to refill.
         for (int i = 0; i < MAXBOARDDIM; i++)
             for (int j = 0; j < MAXBOARDDIM; j++)
@@ -77,6 +80,35 @@ public abstract class Board implements Serializable {
                     return false;
 
         return true;
+    }
+
+    /**
+     * Restore tiles on the board following a picking action and disconnection of the player
+     * @param map containing tiles picked and coordinate of where tiles were picked
+     * @throws WrongTilesException wrong tiles passed
+     * @throws WrongCoordinateException wrong coordinates passed
+     */
+    public void restoreTiles(Map<Tile, Coordinate> map) throws WrongTilesException, WrongCoordinateException, CellNotEmptyException {
+        Tile tile;
+        int row, col;
+        // Iterate all over the map for preliminary checks
+        for (Map.Entry<Tile, Coordinate> entry : map.entrySet()) {
+            row = entry.getValue().getRow();
+            col = entry.getValue().getCol();
+            tile = entry.getKey();
+
+            if(tile == Tile.BLANK || tile == Tile.UNAVAILABLE) throw new WrongTilesException();
+            if(row >= MAXBOARDDIM || row < 0 || col >= MAXBOARDDIM || col < 0) throw new WrongCoordinateException();
+            if(grid[row][col].getTile() != Tile.BLANK) throw new CellNotEmptyException();
+        }
+        // Iterate all over the map to restore tiles
+        for (Map.Entry<Tile, Coordinate> entry : map.entrySet()) {
+            row = entry.getValue().getRow();
+            col = entry.getValue().getCol();
+            tile = entry.getKey();
+
+            grid[row][col].setTile(tile);
+        }
     }
 
     /**

@@ -3,6 +3,8 @@ package it.polimi.ingsw.server.connection;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.server.Server;
 
+import java.rmi.RemoteException;
+
 /**
  * Represent a generic connection client-server
  * @author Nicolo' Gandini
@@ -55,7 +57,7 @@ public abstract class CSConnection {
      * Send a ping message to clients, to know if they are still connected. Otherwise, disconnect the client.
      * @see #disconnect()
      */
-    public abstract void ping();
+    public abstract void ping() throws RemoteException;
 
 
     /**
@@ -71,8 +73,4 @@ public abstract class CSConnection {
      */
     public abstract void sendAnswerToClient(SerializedAnswer answer);
 
-
-    public void suspend(){
-        server.suspendClient(this);
-    }
 }

@@ -15,7 +15,7 @@ class Board2PlayersTest extends BoardTest{
     @Test
     void boardTest(){
         // The board has just been created, so it is empty.
-        assertTrue(b.refillNeeded());
+       // assertTrue(b.refillNeeded());
 
         // Filling the board.
         b.updateBoard();
@@ -65,6 +65,10 @@ class Board2PlayersTest extends BoardTest{
         assertNotEquals(Tile.BLANK, b.getTile(1,3));
         assertNotEquals(Tile.BLANK, b.getTile(5,6));
         assertNotEquals(Tile.BLANK, b.getTile(6,4));
+        assertTrue(b.isPickable(5,5));
+//        assertFalse(b.refillNeeded());
+        assertNotEquals(b.removeTile(4,5),Tile.UNAVAILABLE);
+        assertNotEquals(b.removeTile(4,5), Tile.BLANK);
     }
 
     @Test
