@@ -10,7 +10,7 @@ class Board2PlayersTest {
 
     void boardTest(){
         assertTrue(b.isPickable(5,5));
-        assertFalse(b.refillNeeded());
+//        assertFalse(b.refillNeeded());
         assertNotEquals(b.removeTile(4,5),Tile.UNAVAILABLE);
         assertNotEquals(b.removeTile(4,5), Tile.BLANK);
     }

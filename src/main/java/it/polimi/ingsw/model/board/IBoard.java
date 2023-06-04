@@ -5,5 +5,5 @@ package it.polimi.ingsw.model.board;
  */
 public interface IBoard {
     void updateBoard();
-    boolean refillNeeded();
+    //boolean refillNeeded();
 }
