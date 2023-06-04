@@ -61,7 +61,7 @@ public final class Const {
     /**
      * Delay time [s] between two pings to the clients.
      */
-    public static final int SERVER_PING_DELAY = 2;
+    public static final int SERVER_PING_DELAY = 5;
 
 
     /**
