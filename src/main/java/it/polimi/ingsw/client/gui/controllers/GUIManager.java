@@ -31,7 +31,7 @@ public class GUIManager extends UI {
     private static final String SETUP = "joinScene.fxml";
     private static final String CHAT = "chatScene.fxml";
     private static final String COUNTDOWN = "countDown.fxml";
-
+    private boolean playingGame = false;
     private final Logger logger = Logger.getLogger(getClass().getName());
     private final HashMap<String, Scene> nameMapScene = new HashMap<>();
     /**
@@ -97,7 +97,6 @@ public class GUIManager extends UI {
     private void connectionOutcome(ConnectionOutcome a){
         System.out.println(a.getAnswer());
         client.setID(a.getID());
-
         Platform.runLater(() -> {
             gui.changeStage(LOADER);
         });
@@ -133,26 +132,44 @@ public class GUIManager extends UI {
 
         System.out.println("\n\nHere is your new Bookshelf:\n");
         modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
+        MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
+        Platform.runLater(()->{
+            mainSceneController.printBookShelf();
+        });
     }
 
     private void updateTurn(Boolean yourTurn) {
-        MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
-        if(yourTurn){
-            System.out.println("\nIt's now your turn!");
-            Platform.runLater(()->mainSceneController.allowPickTiles());
-        }
-        else {
-            System.out.println("\nWait for your next turn now!");
-            Platform.runLater(()->mainSceneController.disablePickTiles());
+        if(playingGame){
+            MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
+            if(yourTurn){
+                Platform.runLater(()->{
+                    mainSceneController.updateTurn("It's now your turn!");
+                    mainSceneController.printBoard();
+                    mainSceneController.allowPickTiles();
+                    mainSceneController.printBookShelf();
+                });
+                System.out.println("It's now your turn!");
+            }
+            else {
+                System.out.println("\nWait for your next turn now!");
+                Platform.runLater(()->{
+                    mainSceneController.printBoard();
+                    mainSceneController.disablePickTiles();
+                    mainSceneController.updateTurn("Wait for your next turn now!");
+                });
+            }
         }
         modelView.setIsYourTurn(yourTurn);
-
-        if(yourTurn)
-            System.out.print(">");
     }
     private void initialPhaseOfTheTurn(String request){
-        modelView.setIsYourTurn(true);
 
+        modelView.setIsYourTurn(true);
+        Platform.runLater(()->{
+            MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
+            mainSceneController.printBoard();
+            mainSceneController.printBookShelf();
+            mainSceneController.allowPickTiles();
+        });
 
         System.out.println("\n\nHere is your Bookshelf:\n");
         modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
@@ -176,9 +193,9 @@ public class GUIManager extends UI {
     }
 
     public void countDown(CountDown a){
+        CountDownController countDownController = (CountDownController) getControllerFromName(COUNTDOWN);
         Platform.runLater(()->{
             gui.changeStage(COUNTDOWN);
-            CountDownController countDownController = (CountDownController) getControllerFromName(COUNTDOWN);
             countDownController.updateTime(a.getAnswer().substring(a.getAnswer().length() - 1));
         });
     }
@@ -199,13 +216,20 @@ public class GUIManager extends UI {
     }
 
     public void gameReady(String s){
+        playingGame = true;
         Platform.runLater(()->{
             gui.changeStage(MAIN_GUI);
             MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
             mainSceneController.printBoard();
+            if(!modelView.getIsYourTurn())
+                mainSceneController.disablePickTiles();
             mainSceneController.printBookShelf();
             mainSceneController.setUsername(client.getUsername());
         });
+    }
+
+    public int getPlayerID(){
+        return client.getID();
     }
     /**
      * Method getControllerFromName gets a scene controller based on inserted name from the dedicated hashmap.
@@ -219,6 +243,7 @@ public class GUIManager extends UI {
     public void propertyChange(PropertyChangeEvent event){
        switch (event.getPropertyName()){
            case "ConnectionOutcome" -> connectionOutcome((ConnectionOutcome) event.getNewValue());
+           case "CountDown" -> countDown((CountDown) event.getNewValue());
            case "HowManyPlayersRequest" -> howManyPlayerRequest((String) event.getNewValue());
            case "UpdateTurn" -> updateTurn((Boolean) event.getNewValue());
            case "CustomAnswer" -> customAnswer((String) event.getNewValue());
@@ -229,7 +254,6 @@ public class GUIManager extends UI {
            case "ItsYourTurn" -> updateTurn(true);
            case "EndOfYourTurn" -> updateTurn(false);
            case "PlayerNumberChosen" -> playerNumberChosen((String) event.getNewValue());
-           case "CountDown" -> countDown((CountDown) event.getNewValue());
            case "FirstPlayerSelected" -> firstPlayerSelected((String) event.getNewValue());
            case "ChairAssigned" -> chairAssigned((String) event.getNewValue());
            case "GameReady" -> gameReady((String) event.getNewValue());

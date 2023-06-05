@@ -28,7 +28,7 @@ public class MainSceneController implements GUIController{
     private static final String IMAGEPATH = "/fxml/graphics/item_tiles/";
     private static final int MAX_CHOOSABLE_TILES = 3;
     private Tile[] chosenTiles = new Tile[MAX_CHOOSABLE_TILES];
-    private  int numOfChosenTile = 0;
+    private  int numOfChosenTiles = 0;
 
     @FXML
     private GridPane boardGrid;
@@ -48,6 +48,10 @@ public class MainSceneController implements GUIController{
     private GridPane bookShelfGrid;
     @FXML
     private AnchorPane highlightPane;
+    @FXML
+    private Button confirmPlacementBtn;
+    @FXML
+    private Button cancelPlacementBtn;
 
     private final double bookShelfStartX = 560.0;
     private final double booShelfEndX = 900.0;
@@ -59,6 +63,7 @@ public class MainSceneController implements GUIController{
     private BookShelf bookShelf;
     private int columnChosen;
     private int numOfTilesPlaced;
+    private String[][] board;
     @Override
     public void setGuiManger(GUIManager guiManager) {
         this.guiManager = guiManager;
@@ -66,8 +71,9 @@ public class MainSceneController implements GUIController{
 
     public GUIManager getGuiManager(){return this.guiManager;}
     public void printBoard(){
+        boardGrid.getChildren().clear();
         imageChoise = guiManager.getModelView().getGame().getNumOfPlayers()-1;
-        String[][] board = guiManager.getModelView().getGame().getBoard().getBoardforGUI();
+        board = guiManager.getModelView().getGame().getBoard().getBoardforGUI();
         //Random random = new Random();
         for (int i = 0; i < MAXBOARDDIM; i++) {
             for (int j = 0; j < MAXBOARDDIM; j++) {
@@ -88,7 +94,9 @@ public class MainSceneController implements GUIController{
     }
 
     public void printBookShelf(){
-        bookShelf = guiManager.getModelView().getGame().getCurrentPlayer().getBookShelf();
+        //bookShelf = guiManager.getModelView().getGame().getCurrentPlayer().getBookShelf();
+        bookShelf =  guiManager.getModelView().getGame().getPlayerByID(guiManager.getPlayerID()).getBookShelf();
+        imageChoise = guiManager.getModelView().getGame().getNumOfPlayers()-1;
         Cell[][] grid = bookShelf.getGrid();
         for (int i = 0; i < MAXBOOKSHELFROW; i++) {
             for (int j = 0; j < MAXBOOKSHELFCOL; j++) {
@@ -97,7 +105,7 @@ public class MainSceneController implements GUIController{
                     tile.setFill(
                             new ImagePattern(
                                     new Image(GUI.class.getResourceAsStream(IMAGEPATH
-                                            +grid[i][j]
+                                            +grid[i][j].getTile().name()
                                             +imageChoise
                                             +".png"))));
                     bookShelfGrid.add(tile,j,i);
@@ -107,13 +115,13 @@ public class MainSceneController implements GUIController{
     }
 
     private void chooseTile(Tile chosenTile){
-        chosenTiles[numOfChosenTile]=chosenTile;
-        chosenTilesGrid.add(chosenTile, numOfChosenTile, 0);
-        numOfChosenTile++;
+        chosenTiles[numOfChosenTiles]=chosenTile;
+        chosenTilesGrid.add(chosenTile, numOfChosenTiles, 0);
+        numOfChosenTiles++;
         boardGrid.getChildren().remove(chosenTile);
         confirmTilesChoiseBtn.setVisible(true);
         cancelTilesChoiseBtn.setVisible(true);
-        if(numOfChosenTile==3)
+        if(numOfChosenTiles==3)
             disablePickTiles();
     }
 
@@ -132,7 +140,7 @@ public class MainSceneController implements GUIController{
                 boardGrid.add(tileToRemove, tileToRemove.getOrdinate(), tileToRemove.getAbscissa());
                 chosenTilesGrid.getChildren().remove(tileToRemove);
                 chosenTiles[i] = null;
-                numOfChosenTile--;
+                numOfChosenTiles--;
             }
         }
     }
@@ -155,6 +163,7 @@ public class MainSceneController implements GUIController{
             System.out.println(cmd.toString());
             this.getGuiManager().firePC("action", null, cmd.toString());
         }
+        disablePickTiles();
 
     }
     public void allowPlaceTiles(){
@@ -163,10 +172,13 @@ public class MainSceneController implements GUIController{
         int i = 0;
         for (Node n:highlightPane.getChildren()) {
             try{
-                bookShelf.checkColumn(i, numOfChosenTile);
+                bookShelf.checkColumn(i, numOfChosenTiles);
                 n.setVisible(true);
+                System.out.println("Column " + i + " allowed because num of chosen tiles is " + numOfChosenTiles);
+                System.out.println("Free spaces in bookShelf: " + bookShelf.getFreeSpaces());
             }
             catch (NotEmptyColumnException e){
+                System.out.println("Column " + i + " NOT allowed because num of chosen tiles is " + numOfChosenTiles);
                 n.setVisible(false);
             }
             finally {
@@ -176,6 +188,8 @@ public class MainSceneController implements GUIController{
         chosenTilesGrid.setDisable(false);
         cancelTilesChoiseBtn.setVisible(false);
         confirmTilesChoiseBtn.setVisible(false);
+        confirmPlacementBtn.setVisible(false);
+        cancelPlacementBtn.setVisible(false);
         for (Node n: chosenTilesGrid.getChildren()) {
             n.setOnMouseClicked(mouseEvent -> {});
             n.setOnMousePressed(mouseEvent -> tilePressed(mouseEvent, (Tile)n));
@@ -208,19 +222,19 @@ public class MainSceneController implements GUIController{
             System.out.println("tile dropped outside bookshelf");
         }
         else{ /* CASE TILE DROPPED INSIDE THE BOOKSHELF*/
-            if(columnChosen==-1) {
-                columnChosen = (int) ((mouseEvent.getSceneX() - bookShelfStartX) / dropSpace);
+            int tryColumn = (int) ((mouseEvent.getSceneX() - bookShelfStartX) / dropSpace);
+            if(columnChosen==-1 && highlightPane.getChildren().get(tryColumn).isVisible()) {
+                columnChosen = tryColumn;
                 for (Node n: highlightPane.getChildren())
                     n.setVisible(false);
                 highlightPane.getChildren().get(columnChosen).setVisible(true);
             }
-            chosenTilesGrid.getChildren().remove(tile);
-            addTileToBookShelfGrid(tile, columnChosen);
-            //bookShelfGrid.add(tile, columnChosen, MAXBOOKSHELFROW-1-numOfTilesPlaced);
-            numOfTilesPlaced++;
-            System.out.println("tile dropped");
-            System.out.println(mouseEvent.getSceneY());
-
+            if(columnChosen!=-1 && highlightPane.getChildren().get(tryColumn).isVisible()){
+                chosenTilesGrid.getChildren().remove(tile);
+                addTileToBookShelfGrid(tile, columnChosen);
+                //bookShelfGrid.add(tile, columnChosen, MAXBOOKSHELFROW-1-numOfTilesPlaced);
+                numOfTilesPlaced++;
+            }
         }
         tile.setTranslateX(0);
         tile.setTranslateY(0);
@@ -229,12 +243,54 @@ public class MainSceneController implements GUIController{
         for (int i = MAXBOOKSHELFROW-1; i >= 0; i--) {
             if(bookShelf.getGrid()[i][columnChosen].getTile().name().equals("BLANK")
             || bookShelf.getGrid()[i][columnChosen].getTile().name().equals("UNAVAILABLE")){
-                bookShelfGrid.add(tile, columnChosen, i + numOfTilesPlaced);
+                bookShelfGrid.add(tile, columnChosen, i - numOfTilesPlaced);
+                System.out.println("tile dropped in "+(i-numOfTilesPlaced)+ ", "+ columnChosen);
+                /* ORDER chosenTiles based on column order */
+                for (int j = 0; j < numOfChosenTiles; j++) {
+                    if(chosenTiles[j].equals(tile))
+                        chosenTiles[j] = chosenTiles[numOfTilesPlaced];
+                }
+                chosenTiles[numOfTilesPlaced] = tile;
+                confirmPlacementBtn.setVisible(true);
+                cancelPlacementBtn.setVisible(true);
                 break;
             }
 
         }
-        numOfTilesPlaced++;
+    }
+    public void confirmPlacement(){
+        if(numOfTilesPlaced == numOfChosenTiles){
+            StringBuilder cmd = new StringBuilder("PLACETILES ");
+            for (int i = 0; i < numOfChosenTiles; i++) {
+                cmd.append(board[chosenTiles[i].getAbscissa()][chosenTiles[i].getOrdinate()]+" ");
+                chosenTiles[i]=null;
+            }
+            cmd.append(columnChosen);
+            System.out.println(cmd);
+            guiManager.firePC("action", null, cmd.toString());
+            highlightPane.getChildren().get(columnChosen).setVisible(false);
+            confirmPlacementBtn.setVisible(false);
+            cancelPlacementBtn.setVisible(false);
+            chosenTilesGrid.getChildren().clear();
+            numOfChosenTiles = 0;
+        }
+        else
+            System.out.println("You have to place all chosen tiles in the bookshelf!");
+        System.out.println(numOfChosenTiles);
+        System.out.println(numOfTilesPlaced);
+    }
+
+    public void cancelPlacement(){
+        chosenTilesGrid.getChildren().clear();
+        int i;
+        for (i = 0; i < numOfTilesPlaced; i++) {
+            bookShelfGrid.getChildren().remove(chosenTiles[i]);
+            chosenTilesGrid.add(chosenTiles[i],i,0);
+        }
+        for(;i<numOfChosenTiles;i++){
+            chosenTilesGrid.add(chosenTiles[i],i,0);
+        }
+        allowPlaceTiles();
     }
     public void allowPickTiles(){
         boardGrid.setDisable(false);

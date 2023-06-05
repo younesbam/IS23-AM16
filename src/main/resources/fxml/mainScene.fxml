@@ -159,7 +159,7 @@
       </ImageView>
       <AnchorPane layoutX="530.0" layoutY="64.0" prefHeight="76.0" prefWidth="386.0">
          <children>
-            <GridPane fx:id="chosenTilesGrid" disable="true" hgap="5.0" layoutX="70.0" layoutY="13.0" prefHeight="50.0" prefWidth="152.0">
+            <GridPane fx:id="chosenTilesGrid" disable="true" hgap="5.0" layoutX="41.0" layoutY="13.0" prefHeight="50.0" prefWidth="152.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -169,13 +169,24 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
-            <Button fx:id="confirmTilesChoiseBtn" layoutX="247.0" layoutY="13.0" mnemonicParsing="false" onAction="#confirmTilesChoise" text="Confirm" textFill="#ac856e" visible="false" />
-            <Button fx:id="cancelTilesChoiseBtn" layoutX="251.0" layoutY="49.0" mnemonicParsing="false" onAction="#cancelTilesChoise" text="Cancel" textFill="#ac856e" visible="false" />
+            <Button fx:id="confirmTilesChoiseBtn" layoutX="214.0" layoutY="23.0" mnemonicParsing="false" onAction="#confirmTilesChoise" text="Confirm" textFill="#ac856e" visible="false">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
+            <Button fx:id="cancelTilesChoiseBtn" layoutX="289.0" layoutY="23.0" mnemonicParsing="false" onAction="#cancelTilesChoise" text="Cancel" textFill="#ac856e" visible="false">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
          </children>
       </AnchorPane>
-      <Button layoutX="653.0" layoutY="543.0" mnemonicParsing="false" text="CONFIRM MOVE" textFill="#ac856e">
+      <Button fx:id="confirmPlacementBtn" layoutX="586.0" layoutY="546.0" mnemonicParsing="false" onAction="#confirmPlacement" text="Confirm Placement" textFill="#ac856e" visible="false">
          <font>
-            <Font size="16.0" />
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="cancelPlacementBtn" layoutX="731.0" layoutY="546.0" mnemonicParsing="false" onAction="#cancelPlacement" text="Cancel Placement" textFill="#ac856e" visible="false">
+         <font>
+            <Font size="14.0" />
          </font>
       </Button>
    </children>
