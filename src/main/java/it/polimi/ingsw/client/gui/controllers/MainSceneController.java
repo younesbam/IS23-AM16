@@ -95,7 +95,8 @@ public class MainSceneController implements GUIController{
 
     public void printBookShelf(){
         //bookShelf = guiManager.getModelView().getGame().getCurrentPlayer().getBookShelf();
-        bookShelf =  guiManager.getModelView().getGame().getPlayerByID(guiManager.getPlayerID()).getBookShelf();
+        bookShelfGrid.getChildren().clear();
+        bookShelf = guiManager.getModelView().getGame().getPlayerByID(guiManager.getPlayerID()).getBookShelf();
         imageChoise = guiManager.getModelView().getGame().getNumOfPlayers()-1;
         Cell[][] grid = bookShelf.getGrid();
         for (int i = 0; i < MAXBOOKSHELFROW; i++) {

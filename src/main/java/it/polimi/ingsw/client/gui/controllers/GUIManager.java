@@ -155,7 +155,7 @@ public class GUIManager extends UI {
                 Platform.runLater(()->{
                     mainSceneController.printBoard();
                     mainSceneController.disablePickTiles();
-                    mainSceneController.updateTurn("Wait for your next turn now!");
+                    mainSceneController.updateTurn("Turn: " + modelView.getGame().getCurrentPlayer().getUsername());
                 });
             }
         }
