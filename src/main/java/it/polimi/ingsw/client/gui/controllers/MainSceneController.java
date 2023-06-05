@@ -18,6 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.control.Label;
 import javafx.scene.Cursor;
+import javafx.stage.Popup;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,7 @@ public class MainSceneController implements GUIController{
     private static final String IMAGEPATH = "/fxml/graphics/item_tiles/";
     private static final int MAX_CHOOSABLE_TILES = 3;
     private Tile[] chosenTiles = new Tile[MAX_CHOOSABLE_TILES];
+    private static final String GOALS = "goalCardScene.fxml";
     private  int numOfChosenTiles = 0;
 
     @FXML
@@ -52,6 +54,8 @@ public class MainSceneController implements GUIController{
     private Button confirmPlacementBtn;
     @FXML
     private Button cancelPlacementBtn;
+    @FXML
+    private Button goalCardsBtn;
 
     private final double bookShelfStartX = 560.0;
     private final double booShelfEndX = 900.0;
@@ -292,6 +296,10 @@ public class MainSceneController implements GUIController{
             chosenTilesGrid.add(chosenTiles[i],i,0);
         }
         allowPlaceTiles();
+    }
+
+    public void showGoalCards(){
+        guiManager.popupStage(GOALS,"Goal Cards");
     }
     public void allowPickTiles(){
         boardGrid.setDisable(false);

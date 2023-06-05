@@ -1,51 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.GoalCardSceneController">
+<AnchorPane prefHeight="472.0" prefWidth="643.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.GoalCardSceneController">
    <children>
-      <Label layoutX="90.0" layoutY="87.0" text="Personal Goal Card">
+      <ImageView fitHeight="475.0" fitWidth="643.0" pickOnBounds="true">
+         <image>
+            <Image url="@graphics/bg.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="69.0" layoutY="58.0" text="Personal Goal Card" textFill="WHITE">
          <font>
-            <Font size="20.0" />
+            <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <AnchorPane layoutX="57.0" layoutY="118.0" prefHeight="331.0" prefWidth="233.0">
+      <AnchorPane fx:id="personalGoalCardPane" layoutX="48.0" layoutY="89.0" prefHeight="302.0" prefWidth="207.0">
          <children>
-            <ImageView fitHeight="312.0" fitWidth="205.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="personalGoalCardImage" fitHeight="312.0" fitWidth="205.0" layoutX="4.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@graphics/personal_goal_cards/front_EMPTY.jpg" />
                </image>
             </ImageView>
          </children>
       </AnchorPane>
-      <Label layoutX="545.0" layoutY="131.0" text="Common Goal Card">
+      <Label layoutX="359.0" layoutY="28.0" text="Common Goal Card" textFill="WHITE">
          <font>
-            <Font size="20.0" />
+            <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <AnchorPane layoutX="343.0" layoutY="162.0" prefHeight="215.0" prefWidth="578.0">
+      <AnchorPane fx:id="CommonGoalCardPane" layoutX="285.0" layoutY="73.0" prefHeight="375.0" prefWidth="330.0">
          <children>
-            <ImageView fitHeight="182.0" fitWidth="272.0" layoutX="14.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="commonGoalCard1" fitHeight="182.0" fitWidth="272.0" layoutX="29.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@graphics/common_goal_cards/1.jpg" />
                </image>
             </ImageView>
-            <ImageView fitHeight="182.0" fitWidth="272.0" layoutX="290.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="commonGoalCard2" fitHeight="182.0" fitWidth="272.0" layoutX="29.0" layoutY="194.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@graphics/common_goal_cards/2.jpg" />
                </image>
             </ImageView>
          </children>
       </AnchorPane>
-      <Button layoutX="376.0" layoutY="469.0" mnemonicParsing="false" text="BACK TO THE GAME">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Button>
    </children>
 </AnchorPane>

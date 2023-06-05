@@ -116,7 +116,13 @@ public class GUI extends Application {
        currentScene = nameMapScene.get(newScene);
        stage.setScene(currentScene);
        stage.show();
+    }
 
+    public void newStage(String newScene, String title){
+        Stage popupStage = new Stage();
+        popupStage.setScene(nameMapScene.get(newScene));
+        popupStage.setTitle(title);
+        popupStage.show();
     }
 
 

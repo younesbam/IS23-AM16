@@ -31,6 +31,8 @@ public class GUIManager extends UI {
     private static final String SETUP = "joinScene.fxml";
     private static final String CHAT = "chatScene.fxml";
     private static final String COUNTDOWN = "countDown.fxml";
+    private static final String PERSONAL_GOAL_CARD_PATH = "/fxml/graphics/personal_goal_cards/";
+    private static final String COMMON_GOAL_CARD_PATH = "/fxml/graphics/common_goal_cards/";
     private boolean playingGame = false;
     private final Logger logger = Logger.getLogger(getClass().getName());
     private final HashMap<String, Scene> nameMapScene = new HashMap<>();
@@ -120,10 +122,10 @@ public class GUIManager extends UI {
         });
     }
 
-    public void changeStage(String newScene){
-        //Platform.runLater(() -> {
-            gui.changeStage(newScene);
-        //});
+    public void popupStage(String newScene, String title){
+        Platform.runLater(() ->{
+            gui.newStage(newScene, title);
+        });
     }
 
     public GUI getGui(){return this.gui;}
@@ -212,6 +214,7 @@ public class GUIManager extends UI {
             MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
             mainSceneController.updateTurn(s);
             mainSceneController.showChair();
+
         });
     }
 
@@ -227,7 +230,21 @@ public class GUIManager extends UI {
             mainSceneController.setUsername(client.getUsername());
         });
     }
+    public void goalCardsAssigned(){
+        GoalCardSceneController goalCardSceneController = (GoalCardSceneController) getControllerFromName(GOALS);
+        Platform.runLater(()->{
+        goalCardSceneController.setCommonGoalCard1(COMMON_GOAL_CARD_PATH
+                        + modelView.getGame().getCommonGoalCards().get(0).getCardNumber()
+                        + ".png");
+        goalCardSceneController.setCommonGoalCard2(COMMON_GOAL_CARD_PATH
+                + modelView.getGame().getCommonGoalCards().get(1).getCardNumber()
+                + ".png");
+        goalCardSceneController.setPersonalGoalCard(PERSONAL_GOAL_CARD_PATH
+                + modelView.getGame().getPlayerByID(getPlayerID()).getPersonalGoalCard().getCardNumber()
+                + ".png");
+        });
 
+    }
     public int getPlayerID(){
         return client.getID();
     }
@@ -257,6 +274,7 @@ public class GUIManager extends UI {
            case "FirstPlayerSelected" -> firstPlayerSelected((String) event.getNewValue());
            case "ChairAssigned" -> chairAssigned((String) event.getNewValue());
            case "GameReady" -> gameReady((String) event.getNewValue());
+           case "GoalCardsAssigned" -> goalCardsAssigned();
         }
     }
 
