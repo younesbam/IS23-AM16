@@ -28,7 +28,7 @@ class ControllerTest {
         int numOfPlayers = game.getNumOfPlayers();
         assertTrue(numOfPlayers > 0);
 
-        List<Player> players = game.getActivePlayers();
+        List<Player> players = game.getPlayers();
         assertNotNull(players);
         assertEquals(numOfPlayers, players.size());
 
@@ -134,14 +134,14 @@ class ControllerTest {
 
     @Test
     void testSetCurrentPlayer() {
-        Player firstPlayer = controller.getGame().getActivePlayers().get(0);
+        Player firstPlayer = controller.getGame().getPlayers().get(0);
         controller.setCurrentPlayer(firstPlayer);
         assertEquals(firstPlayer, controller.getGame().getCurrentPlayer());
     }
 
     @Test
     void testNextPlayer() {
-        List<Player> players = controller.getGame().getActivePlayers();
+        List<Player> players = controller.getGame().getPlayers();
         int numOfPlayers = players.size();
         // Last player is the current player
         controller.getGame().setCurrentPlayer(players.get(numOfPlayers-1));

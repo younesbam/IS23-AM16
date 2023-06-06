@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.common.exceptions.NoNextPlayerException;
 import it.polimi.ingsw.common.exceptions.PlayerNotFoundException;
 import it.polimi.ingsw.model.board.*;
 import it.polimi.ingsw.model.cards.*;
@@ -7,7 +8,6 @@ import it.polimi.ingsw.model.cards.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The Game class contains the main elements of a game match.
@@ -19,8 +19,7 @@ import java.util.Objects;
 public class Game implements Serializable {
     private Board board;
     private CreationFactory creationFactory;
-    private final ArrayList<Player> activePlayers = new ArrayList<>();
-    private final ArrayList<Player> inactivePlayers = new ArrayList<>();
+    private final ArrayList<Player> players = new ArrayList<>();
     private Player currentPlayer;
     private int numOfPlayers;
     private final List<CommonGoalCard> commonGoalCards = new ArrayList<>();
@@ -29,7 +28,7 @@ public class Game implements Serializable {
 
 
     public Game() {
-        // Only the bag instance, because the board must me created when we know the number of players.
+        // Only the bag instance, because the board must be created when we know the number of players.
         this.bag = new Bag();
     }
 
@@ -38,7 +37,7 @@ public class Game implements Serializable {
      * @param player
      */
     public void createPlayer(Player player){
-        this.activePlayers.add(player);
+        this.players.add(player);
     }
 
     /**
@@ -46,7 +45,7 @@ public class Game implements Serializable {
      * @param player
      */
     public void removePlayer(Player player){
-        this.activePlayers.remove(player);
+        this.players.remove(player);
     }
 
     public void setNumOfPlayers(int numOfPlayers){
@@ -106,7 +105,7 @@ public class Game implements Serializable {
      * @return
      */
     public Player getPlayerByID(int id) {
-        for (Player player : activePlayers) {
+        for (Player player : players) {
             if (player.getID() == id) {
                 return player;
             }
@@ -118,24 +117,61 @@ public class Game implements Serializable {
      * This method returns the list of active players.
      * @return
      */
-    public ArrayList<Player> getActivePlayers() {
-        return activePlayers;
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 
 
     /**
      * Method used to switch to the next player.
      */
-    public void nextPlayer() {
-        for(int i=0; i<activePlayers.size(); i++){
-            if(currentPlayer.equals(activePlayers.get(i))){
-                if(i == activePlayers.size()-1)
-                    setCurrentPlayer(activePlayers.get(0));
-                else
-                    setCurrentPlayer(activePlayers.get(i+1));
-                return;
+    public void nextPlayer() throws NoNextPlayerException {
+//        boolean onePlayerMore = false;
+//        for(Player p : players){
+//            if(!p.equals(currentPlayer) && p.isActive()){
+//                onePlayerMore = true;
+//                break;
+//            }
+//        }
+        // Check if there is at least one player more than the current player. If not, throw an exception
+        int activePlayers = 0;
+        for(Player p : players){
+            if(p.isActive())
+                activePlayers++;
+        }
+
+        if(activePlayers <= 1) throw new NoNextPlayerException();
+
+        // Set the next player. Check if it is active. If not, jump to the next player.
+        Player nextPlayer = null;
+        // Iterate the list from the current player to the end
+        for(int i=players.indexOf(currentPlayer)+1; i<players.size(); i++){
+            if(players.get(i).isActive()){
+                nextPlayer = players.get(i);
+                break;
             }
         }
+        // Iterate the list again (from 0 to currentPlayer-1) if the next player were not found.
+        if(nextPlayer == null){
+            for(int i=0; i<players.indexOf(currentPlayer); i++){
+                if(players.get(i).isActive()){
+                    nextPlayer = players.get(i);
+                    break;
+                }
+            }
+        }
+
+        setCurrentPlayer(nextPlayer);
+
+//        for(int i = 0; i< players.size(); i++){
+//            if(currentPlayer.equals(players.get(i))){
+//                if(i == players.size()-1)
+//                    setCurrentPlayer(players.get(0));
+//                else
+//                    setCurrentPlayer(players.get(i+1));
+//                return;
+//            }
+//        }
     }
 
 
@@ -148,39 +184,46 @@ public class Game implements Serializable {
     }
 
 
-    /**
-     * Move player from active to inactive list
-     * @param ID of the player
-     * @throws PlayerNotFoundException
-     */
-    public void moveActiveToInactive(int ID) throws PlayerNotFoundException {
-        Player playerToMove = getPlayerByID(ID);
-        if(playerToMove == null) throw new PlayerNotFoundException();
-        for(Player p : activePlayers){
-            if(playerToMove.equals(p)){
-                activePlayers.remove(p);
-                inactivePlayers.add(p);
-                break;
-            }
+    public void setActivePlayer(int ID, boolean active){
+        for(Player p : players){
+            if(p.getID() == ID)
+                p.setActive(active);
         }
     }
 
-    /**
-     * Move player from inactive to active list
-     * @param username of the player
-     * @throws PlayerNotFoundException
-     */
-    public void moveInactiveToActive(String username) throws PlayerNotFoundException {
-        Player playerToMove = null;
-        for(Player p : inactivePlayers){
-            if(p.getUsername().equals(username)){
-                playerToMove = p;
-                break;
-            }
-        }
-        if(playerToMove == null) throw new PlayerNotFoundException();
+//    /**
+//     * Move player from active to inactive list
+//     * @param ID of the player
+//     * @throws PlayerNotFoundException
+//     */
+//    public void moveActiveToInactive(int ID) throws PlayerNotFoundException {
+//        Player playerToMove = getPlayerByID(ID);
+//        if(playerToMove == null) throw new PlayerNotFoundException();
+//        for(Player p : players){
+//            if(playerToMove.equals(p)){
+//                players.remove(p);
+//                inactivePlayers.add(p);
+//                break;
+//            }
+//        }
+//    }
 
-        inactivePlayers.remove(playerToMove);
-        activePlayers.add(playerToMove);
-    }
+//    /**
+//     * Move player from inactive to active list
+//     * @param username of the player
+//     * @throws PlayerNotFoundException
+//     */
+//    public void moveInactiveToActive(String username) throws PlayerNotFoundException {
+//        Player playerToMove = null;
+//        for(Player p : inactivePlayers){
+//            if(p.getUsername().equals(username)){
+//                playerToMove = p;
+//                break;
+//            }
+//        }
+//        if(playerToMove == null) throw new PlayerNotFoundException();
+//
+//        inactivePlayers.remove(playerToMove);
+//        players.add(playerToMove);
+//    }
 }

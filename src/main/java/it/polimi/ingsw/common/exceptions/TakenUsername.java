@@ -1,4 +1,4 @@
-package it.polimi.ingsw.exceptions;
+package it.polimi.ingsw.common.exceptions;
 
 /**
  * This exception is thrown when a player tries to connect to a game with an username that is already taken.

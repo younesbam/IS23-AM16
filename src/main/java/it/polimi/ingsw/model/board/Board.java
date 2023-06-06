@@ -7,7 +7,6 @@ import it.polimi.ingsw.common.exceptions.WrongTilesException;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Tile;
 
-import java.awt.font.OpenType;
 import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.*;

@@ -11,7 +11,7 @@
 //import it.polimi.ingsw.communications.serveranswers.error.ErrorAnswer;
 //import it.polimi.ingsw.communications.serveranswers.error.ErrorClassification;
 //import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
-//import it.polimi.ingsw.exceptions.TakenUsername;
+//import it.polimi.ingsw.common.exceptions.TakenUsername;
 //
 //import java.io.IOException;
 //import java.io.ObjectInputStream;

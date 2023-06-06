@@ -28,8 +28,14 @@ public class RMICSConnection extends CSConnection {
      * {@inheritDoc}
      */
     @Override
-    public void ping() throws RemoteException {
-        client.ping();
+    public void ping(){
+        try{
+            client.ping();
+            this.alive = true;
+        }catch (RemoteException e){
+            this.alive = false;
+            server.suspendClient(this);
+        }
     }
 
 
@@ -42,17 +48,16 @@ public class RMICSConnection extends CSConnection {
             this.alive = false;
             try {
                 client.disconnectMe();
-                Server.LOGGER.log(Level.INFO, "Client successfully disconnected");
+                Server.LOGGER.log(Level.INFO, "Client " + ID + " successfully disconnected");
             }catch (RemoteException e){
-                Server.LOGGER.log(Level.WARNING, "Failed to disconnect the client", e);
+                Server.LOGGER.log(Level.WARNING, "Failed to disconnect the client " + ID, e);
             }
-
-            if(getID() != null){
-                server.removePlayer(getID());
-                return;
-            }
-            Server.LOGGER.log(Level.WARNING, "Client never registered in the server");
         }
+        if(getID() != null){
+            server.removePlayer(getID());
+            return;
+        }
+        Server.LOGGER.log(Level.WARNING, "Client " + ID + " never registered in the server");
     }
 
 
@@ -63,7 +68,7 @@ public class RMICSConnection extends CSConnection {
         try{
             client.onServerAnswer(answer);
         } catch (RemoteException e) {
-            Server.LOGGER.log(Level.SEVERE, "Failed to send message to the client: ", e);
+            Server.LOGGER.log(Level.WARNING, "Failed to send message to the client " + ID);
             //disconnect();
         }
     }
