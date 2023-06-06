@@ -39,7 +39,15 @@ public class Player implements Serializable {
      */
     private int numOfTurns;
 
+    private boolean active;
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     /**
      * Player constructor.
@@ -54,6 +62,7 @@ public class Player implements Serializable {
         // Add 2 common goal card points.
         this.commonCardPointsEarned.add(0);
         this.commonCardPointsEarned.add(0);
+        this.active = true;
     }
 
     /**

@@ -113,7 +113,7 @@ public class Controller implements PropertyChangeListener {
 
         //select a personal goal card for each player
         for (int i = 0; i < game.getNumOfPlayers(); i++) {
-            game.getActivePlayers().get(i).setPersonalGoalCard(game.getBag().pickPersonalGoalCard());
+            game.getPlayers().get(i).setPersonalGoalCard(game.getBag().pickPersonalGoalCard());
         }
 
         game.createBoard();
@@ -199,9 +199,14 @@ public class Controller implements PropertyChangeListener {
      * Method that switches the current player to the next one.
      */
     private void nextPlayer(){
-        if(game.getActivePlayers().contains(currentPlayer))
-            gameHandler.sendToPlayer(new EndOfYourTurn(), currentPlayer.getID());
-        game.nextPlayer();
+        gameHandler.sendToPlayer(new EndOfYourTurn(), currentPlayer.getID());
+        try {
+            game.nextPlayer();
+        }catch (NoNextPlayerException e){
+            System.out.println("No players connected. Shutting down");
+            System.exit(0);
+        }
+
         this.currentPlayer = game.getCurrentPlayer();
         gameHandler.sendToPlayer(new ItsYourTurn(), currentPlayer.getID());
     }
@@ -486,7 +491,9 @@ public class Controller implements PropertyChangeListener {
         int i = 1;
 
         //Players being ordered by descending points.
-        rightPointsOrder = game.getActivePlayers().stream().sorted(Comparator.comparingInt(Player::getTotalPoints).reversed()).collect(Collectors.toList());
+        rightPointsOrder = game.getPlayers().stream()
+                .sorted(Comparator.comparingInt(Player::getTotalPoints).reversed())
+                .collect(Collectors.toList());
 
         //TODO gestire il caso di parità.
         //Ranking creation
@@ -507,7 +514,7 @@ public class Controller implements PropertyChangeListener {
 
         //chiusura connessioni.
         gameHandler.sendToEveryone(new DisconnectPlayer());
-        for(Player p  : game.getActivePlayers()) {
+        for(Player p  : game.getPlayers()) {
             gameHandler.getServer().getVirtualPlayerByID(p.getID()).getConnection().disconnect();
         }
     }
@@ -524,10 +531,16 @@ public class Controller implements PropertyChangeListener {
 
 
     public synchronized void suspendClient(int ID){
+        // Check if the players is already suspended
+        for(Player p : game.getPlayers())
+            if(p.getID() == ID && !p.isActive())
+                return;
+
+        // Set player as not active
+        game.setActivePlayer(ID, false);
         // Disconnected player is the current player.
         if(currentPlayer.getID() == ID){
-            // Don't exclude the current player. It is already disconnected in server
-            gameHandler.sendToEveryone(new CustomAnswer(false, "The current player is disconnected. Every potential tile picked from the board will be replaced on the board"));
+            //gameHandler.sendToEveryone(new CustomAnswer(false, game.getPlayerByID(ID).getUsername() + " is disconnected. Every potential tile picked from the board will be replaced on the board"));
             // The player has picked tiles but never placed them
             if(!pickedTiles.isEmpty()){
                 try{
@@ -541,11 +554,20 @@ public class Controller implements PropertyChangeListener {
             endTurn();
         }
 
-        // Move player to inactive list in the game.
-        try{
-            game.moveActiveToInactive(ID);
-        } catch (PlayerNotFoundException e){
-            Server.LOGGER.log(Level.WARNING, "Player with ID " + ID + " already disconnected", e);
-        }
+        gameHandler.sendToEveryone(new CustomAnswer(false, game.getPlayerByID(ID).getUsername() + " is disconnected. Every potential tile picked from the board will be replaced on the board\n" +
+                "The game proceeds anyway. Turns of " + game.getPlayerByID(ID).getUsername() + " will be skipped until it connects again"));
+
+//        try{
+//            game.moveActiveToInactive(ID);
+//        } catch (PlayerNotFoundException e){
+//            Server.LOGGER.log(Level.WARNING, "Player with ID " + ID + " already disconnected", e);
+//        }
+    }
+
+    public synchronized void restoreClient(int ID){
+        // Set player as not active
+        game.setActivePlayer(ID, true);
+
+        gameHandler.sendToEveryone(new CustomAnswer(false, game.getPlayerByID(ID).getUsername() + " reconnects! Now the turns will consider his/her presence"));
     }
 }

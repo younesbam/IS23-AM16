@@ -57,7 +57,7 @@ public abstract class CSConnection {
      * Send a ping message to clients, to know if they are still connected. Otherwise, disconnect the client.
      * @see #disconnect()
      */
-    public abstract void ping() throws RemoteException;
+    public abstract void ping();
 
 
     /**

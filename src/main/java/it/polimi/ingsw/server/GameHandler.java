@@ -83,9 +83,8 @@ public class GameHandler {
      * @param answer
      */
     public void sendToEveryone(Answer answer){
-        for(VirtualPlayer p: server.getConnectedPlayers()){
-            sendToPlayer(answer, server.getIDByUsername(p.getUsername()));
-        }
+        for(VirtualPlayer p: server.getConnectedPlayers())
+            sendToPlayer(answer, p.getID());
     }
 
 
@@ -96,9 +95,8 @@ public class GameHandler {
      */
     public void sendToEveryoneExcept(Answer answer, int notToHim) {
         for(VirtualPlayer p : server.getConnectedPlayers()) {
-            if(server.getIDByUsername(p.getUsername()) != notToHim) {
+            if(p.getID() != notToHim)
                 sendToPlayer(answer, p.getID());
-            }
         }
     }
 
@@ -109,10 +107,9 @@ public class GameHandler {
      * @param playerID
      */
     public void sendToPlayer(Answer answer, int playerID){
-        if(server.getVirtualPlayerByID(playerID) != null)
-            server.getVirtualPlayerByID(playerID).send(answer);
-        else
-            Server.LOGGER.log(Level.WARNING, "Failed to send message to player. No player with ID " + playerID + " found");
+        VirtualPlayer player = server.getVirtualPlayerByID(playerID);
+        if(player != null && player.getConnection().isAlive())
+            player.send(answer);
     }
 
 
@@ -138,12 +135,12 @@ public class GameHandler {
 
         for (int i = 0; i < numOfPlayers; i++) {
             if (i != randomNum) {
-                game.getActivePlayers().get(i).setChair(false);
+                game.getPlayers().get(i).setChair(false);
             }
-            game.getActivePlayers().get(i).setChair(true);
-            game.setFirstPlayer(game.getActivePlayers().get(i));
-            game.setCurrentPlayer(game.getActivePlayers().get(i));
-            firstPlayer = game.getActivePlayers().get(i).getID();
+            game.getPlayers().get(i).setChair(true);
+            game.setFirstPlayer(game.getPlayers().get(i));
+            game.setCurrentPlayer(game.getPlayers().get(i));
+            firstPlayer = game.getPlayers().get(i).getID();
         }
 
         sendToEveryoneExcept(new CustomAnswer(false, "The first player is: " + server.getUsernameByID(firstPlayer) + "!"), firstPlayer);
@@ -167,7 +164,7 @@ public class GameHandler {
     public void endMatch(String playerDisconnected) {
         sendToEveryone(new CustomAnswer(false, "Player " + playerDisconnected + " has disconnected :( Game will finish without a winner! Thanks to have played MyShelfie! Hope to see you soon ;)"));
         sendToEveryone(new DisconnectPlayer());
-        for(Player p  : game.getActivePlayers()) {
+        for(Player p  : game.getPlayers()) {
             server.getVirtualPlayerByID(p.getID()).getConnection().disconnect();
         }
     }
@@ -224,5 +221,9 @@ public class GameHandler {
 
     public void suspendClient(int ID){
         controller.suspendClient(ID);
+    }
+
+    public void restoreClient(int ID){
+        controller.restoreClient(ID);
     }
 }

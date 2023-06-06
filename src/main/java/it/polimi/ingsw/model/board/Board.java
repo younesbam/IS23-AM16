@@ -4,11 +4,9 @@ import it.polimi.ingsw.common.Coordinate;
 import it.polimi.ingsw.common.exceptions.CellNotEmptyException;
 import it.polimi.ingsw.common.exceptions.WrongCoordinateException;
 import it.polimi.ingsw.common.exceptions.WrongTilesException;
-import it.polimi.ingsw.exceptions.OutOfBoundException;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Tile;
 
-import java.awt.font.OpenType;
 import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.*;
