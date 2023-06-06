@@ -66,6 +66,14 @@ public class ServerSideSocket implements Runnable{
 
 
     /**
+     * Shutdown active threads.
+     */
+    public void shutdown(){
+        executorService.shutdownNow();
+    }
+
+
+    /**
      * Runnable method that creates a ServerSocket instance and calls the connection method.
      */
     @Override

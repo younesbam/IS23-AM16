@@ -108,7 +108,7 @@ public class SocketCSConnection extends CSConnection implements Runnable{
      */
     public void run() {
         try {
-            while (isAlive()) {
+            while (alive) {
                 readStreamFromClient();
             }
         } catch(IOException e) {

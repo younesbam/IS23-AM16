@@ -6,23 +6,26 @@ import it.polimi.ingsw.server.connection.CSConnection;
 
 public class VirtualPlayer {
 
-    public final String username;
-    public final GameHandler gameHandler;
-    public final CSConnection connection;
+    private final String username;
+    private final GameHandler gameHandler;
+    private CSConnection connection;
 
 
     /**
      * Class constructor.
      *
      * @param username
-     * @param ID
-     * @param c
-     * @param g
+     * @param c connection
+     * @param g game handler
      */
     public VirtualPlayer(String username, CSConnection c, GameHandler g) {
         this.username = username;
         this.connection = c;
         this.gameHandler = g;
+    }
+
+    public void restorePlayer(CSConnection connection){
+        this.connection = connection;
     }
 
     /**

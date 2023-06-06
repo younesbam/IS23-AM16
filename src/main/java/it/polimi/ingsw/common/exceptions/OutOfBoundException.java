@@ -1,4 +1,4 @@
-package it.polimi.ingsw.exceptions;
+package it.polimi.ingsw.common.exceptions;
 
 /**
  * This exception is thrown when a limit of a range is exceeded.
