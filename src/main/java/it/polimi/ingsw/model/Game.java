@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.common.exceptions.NoNextPlayerException;
-import it.polimi.ingsw.common.exceptions.PlayerNotFoundException;
 import it.polimi.ingsw.model.board.*;
 import it.polimi.ingsw.model.cards.*;
 
@@ -128,13 +127,10 @@ public class Game implements Serializable {
      * Method used to switch to the next player.
      */
     public void nextPlayer() throws NoNextPlayerException {
-//        boolean onePlayerMore = false;
-//        for(Player p : players){
-//            if(!p.equals(currentPlayer) && p.isActive()){
-//                onePlayerMore = true;
-//                break;
-//            }
-//        }
+        // If the player is still active it means that he completed the turn successfully. Otherwise, he disconnects during his turn. Do not increment turn counter.
+        if(this.currentPlayer.isActive())
+            this.currentPlayer.updateNumOfTurns();
+
         // Check if there is at least one player more than the current player. If not, throw an exception
         int activePlayers = 0;
         for(Player p : players){

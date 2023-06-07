@@ -6,23 +6,29 @@ import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
 import it.polimi.ingsw.communications.serveranswers.*;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorClassification;
+import it.polimi.ingsw.communications.serveranswers.info.*;
+import it.polimi.ingsw.communications.serveranswers.requests.DisconnectPlayer;
 import it.polimi.ingsw.communications.serveranswers.requests.PickTilesRequest;
 import it.polimi.ingsw.communications.serveranswers.requests.PlaceTilesRequest;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.CommonGoalCard;
 import it.polimi.ingsw.server.GameHandler;
 import it.polimi.ingsw.server.Server;
+import it.polimi.ingsw.server.connection.CSConnection;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.security.InvalidParameterException;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Const.*;
 import static it.polimi.ingsw.controller.Phase.SETUP;
+import static it.polimi.ingsw.controller.Phase.STANDBY;
 
 public class Controller implements PropertyChangeListener {
     /**
@@ -59,6 +65,7 @@ public class Controller implements PropertyChangeListener {
      * Left players that have to complete the turn when a player filled its board
      */
     private int leftPlayers = 0;
+
 
 
     /**
@@ -202,13 +209,14 @@ public class Controller implements PropertyChangeListener {
         gameHandler.sendToPlayer(new EndOfYourTurn(), currentPlayer.getID());
         try {
             game.nextPlayer();
+            this.currentPlayer = game.getCurrentPlayer();
+            gameHandler.sendToPlayer(new ItsYourTurn(), currentPlayer.getID());
         }catch (NoNextPlayerException e){
-            System.out.println("No players connected. Shutting down");
-            System.exit(0);
+            // No players connected
+            System.out.println(RED_COLOR + "Not enough players connected. Standby mode activated. I will resume the game when there are at least 2 connected players. zzz..." + RESET_COLOR);
+            gameHandler.sendToEveryone(new CustomAnswer(false, "Not enough players connected. Standby mode activated. You cannot play until at least one more player is connected"));
+            setPhase(STANDBY);
         }
-
-        this.currentPlayer = game.getCurrentPlayer();
-        gameHandler.sendToPlayer(new ItsYourTurn(), currentPlayer.getID());
     }
 
 
@@ -530,6 +538,11 @@ public class Controller implements PropertyChangeListener {
     }
 
 
+    /**
+     * Suspend a client after failed ping request
+     * @see Server#suspendClient(CSConnection) suspendClient
+     * @param ID of the client
+     */
     public synchronized void suspendClient(int ID){
         // Check if the players is already suspended
         for(Player p : game.getPlayers())
@@ -540,7 +553,6 @@ public class Controller implements PropertyChangeListener {
         game.setActivePlayer(ID, false);
         // Disconnected player is the current player.
         if(currentPlayer.getID() == ID){
-            //gameHandler.sendToEveryone(new CustomAnswer(false, game.getPlayerByID(ID).getUsername() + " is disconnected. Every potential tile picked from the board will be replaced on the board"));
             // The player has picked tiles but never placed them
             if(!pickedTiles.isEmpty()){
                 try{
@@ -556,17 +568,23 @@ public class Controller implements PropertyChangeListener {
 
         gameHandler.sendToEveryone(new CustomAnswer(false, game.getPlayerByID(ID).getUsername() + " is disconnected. Every potential tile picked from the board will be replaced on the board\n" +
                 "The game proceeds anyway. Turns of " + game.getPlayerByID(ID).getUsername() + " will be skipped until it connects again"));
-
-//        try{
-//            game.moveActiveToInactive(ID);
-//        } catch (PlayerNotFoundException e){
-//            Server.LOGGER.log(Level.WARNING, "Player with ID " + ID + " already disconnected", e);
-//        }
     }
 
+
+    /**
+     * Restore a suspended client after the client reconnects to the server
+     * @see Server#restoreClient(CSConnection) suspendClient
+     * @param ID of the client
+     */
     public synchronized void restoreClient(int ID){
         // Set player as not active
         game.setActivePlayer(ID, true);
+
+        // Check if in standby mode and try to switch to the next player
+        if(getPhase() == STANDBY){
+            gameHandler.sendToEveryone(new CustomAnswer(false, "We are still waiting for another player to restart the game"));
+            endTurn();
+        }
 
         gameHandler.sendToEveryone(new CustomAnswer(false, game.getPlayerByID(ID).getUsername() + " reconnects! Now the turns will consider his/her presence"));
     }

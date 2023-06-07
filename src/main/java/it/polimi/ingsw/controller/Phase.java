@@ -29,7 +29,12 @@ public enum Phase {
     /**
      * Game is ending. Points calculations and final stuffs
      */
-    ENDGAME
+    ENDGAME,
+
+    /**
+     * No players connected. The game sleeps until at least two player are connected to continue the game.
+     */
+    STANDBY
 
 
 }

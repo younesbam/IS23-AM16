@@ -4,10 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 class PlayerTest {
     Player player;
     BookShelf bs;
@@ -15,8 +11,8 @@ class PlayerTest {
     final static Boolean chair = true;
     int numTurns = 5;
     int points;
-    List<Integer> commonPoints = new ArrayList<>();
-    List<Integer> personalPoints = new ArrayList<>();
+    //List<Integer> commonPoints = new ArrayList<>();
+    //List<Integer> personalPoints = new ArrayList<>();
     static final int COMMON1 = 8;
     static final int COMMON2 = 6;
     static final int PERSONAL = 12;
@@ -27,10 +23,10 @@ class PlayerTest {
     void init(){
         player = new Player(nickName, ID);
         bs = new BookShelf();
-        player.setNumOfTurns(numTurns);
-        commonPoints.add(COMMON1);
-        commonPoints.add(COMMON2);
-        personalPoints.add(PERSONAL);
+        //player.setNumOfTurns(numTurns);
+        //commonPoints.add(COMMON1);
+        //commonPoints.add(COMMON2);
+        //personalPoints.add(PERSONAL);
         points = COMMON1 + COMMON2 + PERSONAL;
     }
 
@@ -52,6 +48,11 @@ class PlayerTest {
         assertEquals(ID, player.getID());
     }
 
+    @Test
+    void turnsTest(){
+        //player.updateNumOfTurns(numTurns);
+        assertEquals(numTurns, player.getNumOfTurns());
+    }
 
 
 }
