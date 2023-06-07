@@ -29,13 +29,15 @@ public class RMICSConnection extends CSConnection {
      */
     @Override
     public void ping(){
-        try{
-            client.ping();
-            this.alive = true;
-        }catch (RemoteException e){
-            this.alive = false;
-            server.suspendClient(this);
+        if(this.alive){
+            try{
+                client.ping();
+            }catch (RemoteException e){
+                this.alive = false;
+                server.suspendClient(this);
+            }
         }
+
     }
 
 
@@ -65,11 +67,13 @@ public class RMICSConnection extends CSConnection {
      * {@inheritDoc}
      */
     public void sendAnswerToClient(SerializedAnswer answer) {
-        try{
-            client.onServerAnswer(answer);
-        } catch (RemoteException e) {
-            Server.LOGGER.log(Level.WARNING, "Failed to send message to the client " + ID);
-            //disconnect();
+        if(this.alive){
+            try{
+                client.onServerAnswer(answer);
+            } catch (RemoteException e) {
+                Server.LOGGER.log(Level.WARNING, "Failed to send message to the client " + ID);
+                //disconnect();
+            }
         }
     }
 }

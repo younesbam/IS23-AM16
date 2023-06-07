@@ -54,15 +54,13 @@ public abstract class CSConnection {
 
 
     /**
-     * Send a ping message to clients, to know if they are still connected. Otherwise, disconnect the client.
-     * @see #disconnect()
+     * Send a ping message to clients, to know if they are still connected. Otherwise, puts the client in standby, waiting for reconnection
      */
     public abstract void ping();
 
 
     /**
-     * Disconnect the client if it doesn't respond to the ping signal from the server.
-     * @see #ping()
+     * Disconnect the client.
      */
     public abstract void disconnect();
 

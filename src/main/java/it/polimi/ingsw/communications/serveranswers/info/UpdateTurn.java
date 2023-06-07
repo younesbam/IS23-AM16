@@ -1,6 +1,8 @@
-package it.polimi.ingsw.communications.serveranswers;
+package it.polimi.ingsw.communications.serveranswers.info;
 
-public class UpdateTurn implements Answer{
+import it.polimi.ingsw.communications.serveranswers.Answer;
+
+public class UpdateTurn implements Answer {
     /**
      * Message to the client.
      */

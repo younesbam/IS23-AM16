@@ -1,7 +1,9 @@
 package it.polimi.ingsw.client.common;
 
+import it.polimi.ingsw.Const;
 import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.client.ModelView;
+import it.polimi.ingsw.client.utils.PingClientTask;
 import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 
@@ -52,6 +54,8 @@ public abstract class Client extends UnicastRemoteObject {
      */
     protected ModelView modelView;
 
+    private int temp = 0;
+
 
     /**
      * Constructor.
@@ -87,6 +91,17 @@ public abstract class Client extends UnicastRemoteObject {
 
     public void setID(Integer ID) {
         this.ID = ID;
+    }
+
+    /**
+     * Handle ping request by cancelling a timer that shut the client down after n seconds.
+     */
+    protected void handlePingRequest(){
+        temp++;
+        System.out.println("Il server ti sta pingandooooooooooooooooooooooooooo " + temp);
+        pingTimer.cancel();
+        pingTimer = new Timer();
+        pingTimer.schedule(new PingClientTask(), Const.CLIENT_DISCONNECTION_TIME*1000);
     }
 
     /**

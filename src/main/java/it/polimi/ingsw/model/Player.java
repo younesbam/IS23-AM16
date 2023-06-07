@@ -4,9 +4,7 @@ import it.polimi.ingsw.model.cards.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class represent the PLAYER model.
@@ -63,6 +61,7 @@ public class Player implements Serializable {
         this.commonCardPointsEarned.add(0);
         this.commonCardPointsEarned.add(0);
         this.active = true;
+        this.numOfTurns = 0;
     }
 
     /**
@@ -115,10 +114,9 @@ public class Player implements Serializable {
 
     /**
      * Method used to set the number of turns played.
-     * @param numOfTurns
      */
-    public void setNumOfTurns(int numOfTurns) {
-        this.numOfTurns = numOfTurns;
+    public void updateNumOfTurns() {
+        this.numOfTurns++;
     }
 
     /**

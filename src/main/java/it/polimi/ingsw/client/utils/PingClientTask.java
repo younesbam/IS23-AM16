@@ -5,7 +5,8 @@ import java.util.TimerTask;
 public class PingClientTask extends TimerTask {
     @Override
     public void run() {
-        System.out.println("Network error ì, you will be disconnected");
-        //System.exit(0);
+        System.out.println("Network error, you will be disconnected in a second. \n" +
+                "No panic: you can connect again with the same username and continue the game without loosing earned points");
+        System.exit(0);
     }
 }
