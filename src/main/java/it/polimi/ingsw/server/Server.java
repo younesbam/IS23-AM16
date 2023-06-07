@@ -12,6 +12,7 @@ import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorClassification;
 import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
 import it.polimi.ingsw.communications.serveranswers.info.PlayerNumberChosen;
+import it.polimi.ingsw.communications.serveranswers.requests.DisconnectPlayer;
 import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
 import it.polimi.ingsw.controller.Phase;
 import it.polimi.ingsw.common.exceptions.OutOfBoundException;
@@ -151,6 +152,15 @@ public class Server {
 
 
     /**
+     * Ping every connected client
+     */
+    private synchronized void pingClients(){
+        for(VirtualPlayer p : playersConnectedList)
+            p.getConnection().ping();
+    }
+
+
+    /**
      * Initialize RMI communication.
      * @throws RemoteException
      * @throws AlreadyBoundException
@@ -229,7 +239,7 @@ public class Server {
         try {
             connection.setID(newClientRegistration(usernameChoice, connection));
             if (connection.getID() == null) {
-                connection.disconnect();
+                //connection.disconnect();
                 return;
             }
             lobby(connection);
@@ -291,6 +301,7 @@ public class Server {
                 clientConnection.setID(clientID);
                 playerToRestore.restorePlayer(clientConnection);  // Assign the actual client-server connection
                 answer.setAnswer(new ConnectionOutcome(true, playerToRestore.getID(), "Welcome back!"));
+                clientConnection.sendAnswerToClient(answer);
                 restoreClient(clientConnection);
             } else {
                 answer.setAnswer(new ErrorAnswer("Username already in use. Try to connect again", ErrorClassification.TAKEN_USERNAME));
@@ -512,65 +523,41 @@ public class Server {
 
 
     /**
-     * Main class of the server.
-     * @param args
+     * Suspend a client after failed ping {@link CSConnection#ping() ping} request
+     * @param connection
      */
-    public static void main(String[] args) {
-        System.out.print("Welcome to the server of MyShelfie!\n");
-        new Server();
-    }
-
-
-    /**
-     * Ping every connected client
-     */
-    private synchronized void pingClients(){
-//        VirtualPlayer disconnectedPlayer = null;
-//        for (VirtualPlayer p : playersConnectedList) {
-//            try{
-//                p.getConnection().ping();
-//            }catch (RemoteException e){
-//                disconnectedPlayer = p;
-//                break;
-//            }
-//        }
-//        if(disconnectedPlayer != null){
-//            suspendClient(disconnectedPlayer.getConnection());
-//        }
-        for(VirtualPlayer p : playersConnectedList)
-            p.getConnection().ping();
-    }
-
     public void suspendClient(CSConnection connection){
         VirtualPlayer suspendedClient = getVirtualPlayerByID(connection.getID());
         if(suspendedClient == null){
             System.out.println("Player doesn't exist. Impossible to suspend it");
             return;
         }
-
-//        System.out.println("Suspending player " + suspendedClient.getUsername());
-//        try{
-//            playersConnectedList.remove(suspendedClient);
-//        }catch (NullPointerException e){
-//            //
-//        }
-
-//        try{
-//            playersWaitingList.remove(suspendedClient);
-//        }catch (NullPointerException e){
-//            //
-//        }
-
-//        playersSuspendedList.add(suspendedClient);
         System.out.println("Suspending player " + suspendedClient.getUsername() + " ...");
         gameHandler.suspendClient(suspendedClient.getID());
         System.out.println("Player suspended successfully");
     }
 
+
+    /**
+     * Restore client after a {@link Server#suspendClient(CSConnection) suspension} from the server
+     * <p></p>
+     * Note: in order to properly restore the client, username must be the same of the disconnected client
+     * @param connection
+     */
     public void restoreClient(CSConnection connection){
         VirtualPlayer restoredClient = getVirtualPlayerByID(connection.getID());
         System.out.println("Restoring player " + restoredClient.getUsername() + " ...");
         gameHandler.restoreClient(restoredClient.getID());
         System.out.println("Player restored successfully");
+    }
+
+
+    /**
+     * Main class of the server.
+     * @param args
+     */
+    public static void main(String[] args) {
+        System.out.print("Welcome to the server of MyShelfie!\n");
+        new Server();
     }
 }

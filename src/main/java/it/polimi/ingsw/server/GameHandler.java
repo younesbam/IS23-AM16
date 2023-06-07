@@ -6,14 +6,13 @@ import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PrintCardsAction;
 import it.polimi.ingsw.communications.serveranswers.Answer;
 import it.polimi.ingsw.communications.serveranswers.CustomAnswer;
-import it.polimi.ingsw.communications.serveranswers.DisconnectPlayer;
+import it.polimi.ingsw.communications.serveranswers.requests.DisconnectPlayer;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 
 import java.beans.PropertyChangeSupport;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
 
 /**
  * Handles the match, controller and game
@@ -108,7 +107,7 @@ public class GameHandler {
      */
     public void sendToPlayer(Answer answer, int playerID){
         VirtualPlayer player = server.getVirtualPlayerByID(playerID);
-        if(player != null && player.getConnection().isAlive())
+        if(player != null)
             player.send(answer);
     }
 

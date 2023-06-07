@@ -67,7 +67,7 @@ public final class Const {
     /**
      * Delay time [s] between two pings. Activated from the server.
      */
-    public static final int CLIENT_DISCONNECTION_TIME = 15;
+    public static final int CLIENT_DISCONNECTION_TIME = 10;
 
     // Regular colors
     public static final String RESET_COLOR = "\033[0m";
