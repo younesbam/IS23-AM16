@@ -2,11 +2,15 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
+import it.polimi.ingsw.communications.clientmessages.actions.PrintCardsAction;
 import it.polimi.ingsw.communications.clientmessages.messages.ExitFromGame;
 import it.polimi.ingsw.communications.clientmessages.messages.Message;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import static it.polimi.ingsw.Const.CLI_INCOMPR_INPUT;
+import static it.polimi.ingsw.Const.CLI_INPUT_ERROR;
 
 /**
  * This class receives the action performed by the user from the CLI, and calls the right method to execute it.
@@ -66,9 +70,9 @@ public class Dispatcher implements PropertyChangeListener {
 
                 // Miscellaneous
                 case "MAN" -> inputValidator.manual();
-                case "PRINTCARDS" -> inputValidator.printCards();
+                case "PRINTCARDS" -> messageToServer = new SerializedMessage(client.getID(), new PrintCardsAction());
                 case "EXIT" -> exitGame();
-                default -> System.out.println("Incomprehensible input. Please try again");
+                default -> System.out.print(CLI_INCOMPR_INPUT);
             }
 
             // Send game action to server

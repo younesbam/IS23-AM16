@@ -21,10 +21,6 @@ public class BookShelf implements Serializable {
      */
     private Cell[][] grid;
 
-    /**
-     * This attribute keeps track of the BLANK spaces in the bookshelf.
-     */
-    private int freeSpaces;
 
     /**
      * Constructor for the BookShelf.
@@ -32,17 +28,16 @@ public class BookShelf implements Serializable {
      */
     public BookShelf() {
         grid = Utils.createBlankGrid(MAXBOOKSHELFROW, MAXBOOKSHELFCOL);
-        freeSpaces = 30;
     }
 
     /**
      * This method controls whether the player can insert the tiles he picked in the column he selects.
-     * @param n number of the selected column
+     * @param col number of the selected column
      * @param nTiles number of the tiles to insert
      * @return true if the tiles can be inserted.
      * @throws InvalidParameterException if the number of the column of the tiles are invalid.
      */
-    public void checkColumn(int n, int nTiles) throws InvalidParameterException, NotEmptyColumnException {
+    public void checkColumn(int col, int nTiles) throws InvalidParameterException, NotEmptyColumnException {
 
         /*
          * This attribute counts the number of available cells in the column.
@@ -52,10 +47,10 @@ public class BookShelf implements Serializable {
         /*
          * Check of the validity of the column's number.
          */
-        if (n>MAXBOOKSHELFCOL || n<0 || nTiles<0 || nTiles>MAXPICKEDTILES) throw new InvalidParameterException();
+        if (col>MAXBOOKSHELFCOL-1 || col<0 || nTiles<=0 || nTiles>MAXPICKEDTILES) throw new InvalidParameterException();
 
         for (int i=0; i<MAXBOOKSHELFCOL; i++) {
-            if(grid[i][n].getTile() == Tile.BLANK)
+            if(grid[i][col].getTile() == Tile.BLANK)
                 available++;
         }
 
@@ -68,11 +63,12 @@ public class BookShelf implements Serializable {
     /**
      * This method adds the tile(s) the player selects in the desired column if the column has enough free
      * spaces (checked by checkColumn()).
+     * <p></p>
+     * Note: column checking with {@link #checkColumn(int, int) checkColumn} is mandatory before using this method.
      * @param column number of the desired column.
      * @param list list of tile(s) selected by the player.
      */
     public void placeTiles(int column, List<Tile> list){
-        //TODO: le celle vengono riempite dall'alto! Bisogna partire dal basso a riempire la bookshelf!
         int i=0;
         while (i < MAXBOOKSHELFROW && grid[i][column].getTile() == Tile.BLANK)
             i++;
@@ -94,6 +90,7 @@ public class BookShelf implements Serializable {
     public Cell[][] getGrid() {
         return grid;
     }
+
 
     /**
      * This method checks if the player has completed his bookshelf (so if the bookshelf is full).

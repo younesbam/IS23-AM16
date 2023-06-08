@@ -108,6 +108,10 @@ public class ActionHandler {
             pcsView.firePropertyChange("BookShelfFilledWithTiles", null, ((BookShelfFilledWithTiles) a).getAnswer());
             return;
         }
+        if(a instanceof PrintCardsAnswer){
+            pcsView.firePropertyChange("PrintCardsAnswer", null, a);
+            return;
+        }
 
         if(a instanceof ErrorAnswer){
             pcsView.firePropertyChange("ErrorAnswer", null, a);
@@ -134,14 +138,12 @@ public class ActionHandler {
             return;
         }
 
-        if(a instanceof PlayerDisconnected){
+        if(a instanceof DisconnectPlayer){
             if(guiManager != null) {
             } else if(cli != null) {
                 cli.endGameMessage();
             }
         }
-
-
     }
 
 
