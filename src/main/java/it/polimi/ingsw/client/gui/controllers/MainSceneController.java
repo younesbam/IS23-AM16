@@ -180,7 +180,6 @@ public class MainSceneController implements GUIController{
                 bookShelf.checkColumn(i, numOfChosenTiles);
                 n.setVisible(true);
                 System.out.println("Column " + i + " allowed because num of chosen tiles is " + numOfChosenTiles);
-                System.out.println("Free spaces in bookShelf: " + bookShelf.getFreeSpaces());
             }
             catch (NotEmptyColumnException e){
                 System.out.println("Column " + i + " NOT allowed because num of chosen tiles is " + numOfChosenTiles);
