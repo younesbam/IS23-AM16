@@ -20,7 +20,7 @@
       </Label>
       <AnchorPane fx:id="personalGoalCardPane" layoutX="48.0" layoutY="89.0" prefHeight="302.0" prefWidth="207.0">
          <children>
-            <ImageView fx:id="personalGoalCardImage" fitHeight="312.0" fitWidth="205.0" layoutX="4.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="personalGoalCard" fitHeight="312.0" fitWidth="205.0" layoutX="4.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@graphics/personal_goal_cards/front_EMPTY.jpg" />
                </image>
