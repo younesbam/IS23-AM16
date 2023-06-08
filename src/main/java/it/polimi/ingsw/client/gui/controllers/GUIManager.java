@@ -230,15 +230,15 @@ public class GUIManager extends UI {
             mainSceneController.setUsername(client.getUsername());
         });
     }
-    public void goalCardsAssigned(){
+    public void printGoalCards(){
         GoalCardSceneController goalCardSceneController = (GoalCardSceneController) getControllerFromName(GOALS);
         Platform.runLater(()->{
         goalCardSceneController.setCommonGoalCard1(COMMON_GOAL_CARD_PATH
                         + modelView.getGame().getCommonGoalCards().get(0).getCardNumber()
-                        + ".png");
+                        + ".jpg");
         goalCardSceneController.setCommonGoalCard2(COMMON_GOAL_CARD_PATH
                 + modelView.getGame().getCommonGoalCards().get(1).getCardNumber()
-                + ".png");
+                + ".jpg");
         goalCardSceneController.setPersonalGoalCard(PERSONAL_GOAL_CARD_PATH
                 + modelView.getGame().getPlayerByID(getPlayerID()).getPersonalGoalCard().getCardNumber()
                 + ".png");
@@ -274,7 +274,7 @@ public class GUIManager extends UI {
            case "FirstPlayerSelected" -> firstPlayerSelected((String) event.getNewValue());
            case "ChairAssigned" -> chairAssigned((String) event.getNewValue());
            case "GameReady" -> gameReady((String) event.getNewValue());
-           case "GoalCardsAssigned" -> goalCardsAssigned();
+           //case "PrintCardsAnswer" -> printGoalCards();
         }
     }
 

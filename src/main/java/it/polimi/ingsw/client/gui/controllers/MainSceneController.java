@@ -297,8 +297,9 @@ public class MainSceneController implements GUIController{
         allowPlaceTiles();
     }
 
-    public void showGoalCards(){
+    public void printGoalCards(){
         guiManager.popupStage(GOALS,"Goal Cards");
+        guiManager.printGoalCards();
     }
     public void allowPickTiles(){
         boardGrid.setDisable(false);
