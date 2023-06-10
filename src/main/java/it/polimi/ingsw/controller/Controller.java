@@ -351,6 +351,7 @@ public class Controller implements PropertyChangeListener {
         // Check scheme of personal and common cards. Also update points.
         checkScheme();
         gameHandler.sendToPlayer(new CustomAnswer(false, "Total points earned until now: " + game.getCurrentPlayer().getTotalPoints()), currentPlayer.getID());
+        gameHandler.sendToPlayer(new UpdatePlayerPoints(game.getCurrentPlayer().getTotalPoints()), currentPlayer.getID());
 
         // Update game board
         game.getBoard().updateBoard();

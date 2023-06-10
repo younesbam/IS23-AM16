@@ -138,6 +138,11 @@ public class ActionHandler {
             return;
         }
 
+        if(a instanceof UpdatePlayerPoints){
+            pcsView.firePropertyChange("UpdatePlayerPoints", null, ((UpdatePlayerPoints) a).getAnswer());
+            return;
+        }
+
         if(a instanceof DisconnectPlayer){
             if(guiManager != null) {
             } else if(cli != null) {

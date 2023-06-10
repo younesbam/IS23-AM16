@@ -149,6 +149,7 @@ public class GUIManager extends UI {
                     mainSceneController.printBoard();
                     mainSceneController.allowPickTiles();
                     mainSceneController.printBookShelf();
+                    mainSceneController.printBoard();
                 });
                 System.out.println("It's now your turn!");
             }
@@ -186,7 +187,9 @@ public class GUIManager extends UI {
     }
     public void requestWhereToPlaceTiles(String request){
         MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
-        Platform.runLater(()->mainSceneController.allowPlaceTiles());
+        Platform.runLater(()->{
+            mainSceneController.allowPlaceTiles();
+        });
         modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
         System.out.println("\n");
         //printMAN();
@@ -230,6 +233,12 @@ public class GUIManager extends UI {
             mainSceneController.setUsername(client.getUsername());
         });
     }
+    public void updatePlayerPoints(String points){
+        Platform.runLater(()->{
+            MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
+            mainSceneController.updatePoints(points);
+        });
+    }
     public void printGoalCards(){
         GoalCardSceneController goalCardSceneController = (GoalCardSceneController) getControllerFromName(GOALS);
         Platform.runLater(()->{
@@ -264,7 +273,7 @@ public class GUIManager extends UI {
            case "HowManyPlayersRequest" -> howManyPlayerRequest((String) event.getNewValue());
            case "UpdateTurn" -> updateTurn((Boolean) event.getNewValue());
            case "CustomAnswer" -> customAnswer((String) event.getNewValue());
-           case "RequestWhatToDo" -> initialPhaseOfTheTurn((String) event.getNewValue());
+           case "PickTilesRequest" -> initialPhaseOfTheTurn((String) event.getNewValue());
            case "RequestToPlaceTiles" -> requestWhereToPlaceTiles((String) event.getNewValue());
            case "WrongNum" -> wrongNum((String) event.getNewValue());
            case "BookShelfFilledWithTiles" -> tilesPlaced((String) event.getNewValue());
@@ -274,6 +283,7 @@ public class GUIManager extends UI {
            case "FirstPlayerSelected" -> firstPlayerSelected((String) event.getNewValue());
            case "ChairAssigned" -> chairAssigned((String) event.getNewValue());
            case "GameReady" -> gameReady((String) event.getNewValue());
+           case "UpdatePlayerPoints" -> updatePlayerPoints((String) event.getNewValue());
            //case "PrintCardsAnswer" -> printGoalCards();
         }
     }

@@ -57,6 +57,9 @@ public class MainSceneController implements GUIController{
     @FXML
     private Button goalCardsBtn;
 
+    @FXML
+    private Label points;
+
     private final double bookShelfStartX = 560.0;
     private final double booShelfEndX = 900.0;
     private final double bookShelfStartY = 120.0;
@@ -300,6 +303,10 @@ public class MainSceneController implements GUIController{
     public void printGoalCards(){
         guiManager.popupStage(GOALS,"Goal Cards");
         guiManager.printGoalCards();
+    }
+
+    public void updatePoints(String points){
+        this.points.setText(points);
     }
     public void allowPickTiles(){
         boardGrid.setDisable(false);
