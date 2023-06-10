@@ -13,7 +13,7 @@
 
 ## Implemented Functionalities
 | Functionality      | Status | Percentage |
-|:-------------------|:-----:|:----------:|
+|:-------------------|:-----:|:-----------:|
 | UML                | [⚠️]() |    90%     |
 | Basic rules        | [✅]() |    100%    |
 | Complete rules     | [✅]() |    100%    |
@@ -23,7 +23,7 @@
 | GUI                | [⚠️]() |    50%     |
 | AF: Multiple games | [⛔]() |     0%     |
 | AF: Persistence    | [⛔]() |     0%     |
-| AF: Resilience     | [⛔]() |     0%     |
+| AF: Resilience     | [✅]() |    100%    |
 | AF: Chat           | [⛔]() |     0%     |
 
 #### Legend
