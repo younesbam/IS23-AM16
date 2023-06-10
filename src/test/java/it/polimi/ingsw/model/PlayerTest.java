@@ -51,6 +51,7 @@ class PlayerTest {
     @Test
     void turnsTest(){
         //player.updateNumOfTurns(numTurns);
+        //player.updateNumOfTurns(numTurns);
         assertEquals(numTurns, player.getNumOfTurns());
     }
 
