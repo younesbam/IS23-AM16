@@ -27,7 +27,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
     /**
      * Server interface.
      */
-    private IRMIServer server;
+    private transient IRMIServer server;
 
     /**
      * Parameters from JSON file.
@@ -103,10 +103,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
      */
     @Override
     public void ping() throws RemoteException {
-        System.out.println("Il server ti sta pingandoooooooo");
-        super.pingTimer.cancel();
-        super.pingTimer = new Timer();
-        super.pingTimer.schedule(new PingClientTask(), Const.CLIENT_DISCONNECTION_TIME*1000);
+        handlePingRequest();
     }
 
 
@@ -116,6 +113,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
     @Override
     public void disconnectMe() throws RemoteException {
         server = null;
+        modelView.setConnected(true);
     }
 
 

@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.connection;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.messages.UsernameSetup;
 import it.polimi.ingsw.communications.serveranswers.*;
+import it.polimi.ingsw.communications.serveranswers.requests.PingRequest;
 import it.polimi.ingsw.server.GameHandler;
 import it.polimi.ingsw.server.Server;
 
@@ -64,7 +65,7 @@ public class SocketCSConnection extends CSConnection implements Runnable{
 
 
     /**
-     * This method ends the player's connection.
+     * {@inheritDoc}
      */
     public void disconnect() {
         server.removePlayer(ID);
@@ -77,18 +78,19 @@ public class SocketCSConnection extends CSConnection implements Runnable{
 
 
     /**
-     * Method that sends a message to the server.
-     * @param answer to the client
+     * {@inheritDoc}
      */
     public void sendAnswerToClient(SerializedAnswer answer) {
-        if(alive){
+        if(this.alive){
             try {
                 outputStream.reset();
                 outputStream.writeObject(answer);
                 outputStream.flush();
             } catch (IOException e) {
-                Server.LOGGER.log(Level.SEVERE, "Failed to send message to the client: ", e);
-                disconnect();
+                this.alive = false;
+                Server.LOGGER.log(Level.WARNING, "Failed to send message to the client " + ID);
+                server.suspendClient(this);
+                //disconnect();
             }
         }
     }
@@ -99,7 +101,9 @@ public class SocketCSConnection extends CSConnection implements Runnable{
      */
     @Override
     public void ping() {
-        System.out.println("PING DA IMPLEMENTARE LATO SOCKET!!!!");
+        SerializedAnswer answer = new SerializedAnswer();
+        answer.setAnswer(new PingRequest());
+        sendAnswerToClient(answer);
     }
 
 
@@ -108,23 +112,10 @@ public class SocketCSConnection extends CSConnection implements Runnable{
      */
     public void run() {
         try {
-            while (isAlive()) {
+            while (alive)
                 readStreamFromClient();
-            }
-        } catch(IOException e) {
-            //TODO: A cosa servono questi metodi qui? Il server deve fare queste cose non le singole connessioni
-//            GameHandler game = server.getGameHandlerByID(ID);
-//            String username = server.getUsernameByID(ID);
-//            server.removePlayerFromWaitingList(ID);
-//            if (game.isAlreadyStarted()) {
-//                game.endMatch(username);
-//            }
-        } catch(ClassNotFoundException e) {
+        } catch(IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-//        SerializedAnswer serverDown = new SerializedAnswer();
-//        serverDown.setAnswer(new ErrorAnswer(ErrorClassification.SERVERISDOWN));
-//        sendAnswerToClient(serverDown);
     }
-
 }

@@ -1,5 +1,6 @@
-package it.polimi.ingsw.communications.serveranswers;
+package it.polimi.ingsw.communications.serveranswers.info;
 
+import it.polimi.ingsw.communications.serveranswers.Answer;
 import it.polimi.ingsw.model.Game;
 
 public class GameReplica implements Answer {

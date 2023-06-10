@@ -6,7 +6,7 @@ import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PrintCardsAction;
 import it.polimi.ingsw.communications.serveranswers.Answer;
 import it.polimi.ingsw.communications.serveranswers.CustomAnswer;
-import it.polimi.ingsw.communications.serveranswers.DisconnectPlayer;
+import it.polimi.ingsw.communications.serveranswers.requests.DisconnectPlayer;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
@@ -82,23 +82,20 @@ public class GameHandler {
      * @param answer
      */
     public void sendToEveryone(Answer answer){
-        for(Player p: game.getActivePlayers()){
-            sendToPlayer(answer, server.getIDByUsername(p.getUsername()));
-        }
-
+        for(VirtualPlayer p: server.getConnectedPlayers())
+            sendToPlayer(answer, p.getID());
     }
 
 
     /**
-     * This method is used to send an answer from the server to everyone execpt the
+     * This method is used to send an answer from the server to everyone except the selected player
      * @param answer
      * @param notToHim
      */
     public void sendToEveryoneExcept(Answer answer, int notToHim) {
-        for(Player activePlayers : controller.getGame().getActivePlayers()) {
-            if(server.getIDByUsername(activePlayers.getUsername()) != notToHim) {
-                sendToPlayer(answer, activePlayers.getID());
-            }
+        for(VirtualPlayer p : server.getConnectedPlayers()) {
+            if(p.getID() != notToHim)
+                sendToPlayer(answer, p.getID());
         }
     }
 
@@ -109,7 +106,9 @@ public class GameHandler {
      * @param playerID
      */
     public void sendToPlayer(Answer answer, int playerID){
-        server.getVirtualPlayerByID(playerID).send(answer);
+        VirtualPlayer player = server.getVirtualPlayerByID(playerID);
+        if(player != null)
+            player.send(answer);
     }
 
 
@@ -164,7 +163,7 @@ public class GameHandler {
     public void endMatch(String playerDisconnected) {
         sendToEveryone(new CustomAnswer(false, "Player " + playerDisconnected + " has disconnected :( Game will finish without a winner! Thanks to have played MyShelfie! Hope to see you soon ;)"));
         sendToEveryone(new DisconnectPlayer());
-        for(Player p  : game.getActivePlayers()) {
+        for(Player p  : game.getPlayers()) {
             server.getVirtualPlayerByID(p.getID()).getConnection().disconnect();
         }
     }
@@ -216,5 +215,14 @@ public class GameHandler {
             pcsController.firePropertyChange("PrintCardsAction", null, action);
             return;
         }
+    }
+
+
+    public void suspendClient(int ID){
+        controller.suspendClient(ID);
+    }
+
+    public void restoreClient(int ID){
+        controller.restoreClient(ID);
     }
 }

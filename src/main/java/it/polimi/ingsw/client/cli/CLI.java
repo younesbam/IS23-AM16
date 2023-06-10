@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.*;
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.common.ConnectionType;
-import it.polimi.ingsw.communications.serveranswers.PrintCardsAnswer;
 import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.model.cards.CommonGoalCard;
@@ -332,12 +331,6 @@ public class CLI extends UI implements Runnable{
         // Print personal.
         personal.printCard();
     }
-
-
-    private void incorrectPhaseMessage(String message) {
-        System.out.println(message);
-    }
-
 
 
     public void propertyChange(PropertyChangeEvent event){
