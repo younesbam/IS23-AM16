@@ -103,7 +103,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
      */
     @Override
     public void ping() throws RemoteException {
-        System.out.println("Il server ti sta pingandoooooooo");
+        //System.out.println("Il server ti sta pingandoooooooo");
         super.pingTimer.cancel();
         super.pingTimer = new Timer();
         super.pingTimer.schedule(new PingClientTask(), Const.CLIENT_DISCONNECTION_TIME*1000);

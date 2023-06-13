@@ -7,11 +7,13 @@ import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.communications.serveranswers.CountDown;
 import it.polimi.ingsw.communications.serveranswers.DisconnectPlayer;
+import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
 
 import java.beans.PropertyChangeEvent;
@@ -91,9 +93,6 @@ public class GUIManager extends UI {
             loadingController.resetLoading();
             loadingController.updateStatus(s);
         });
-        System.out.println(loadingController);
-        System.out.println(loadingController.getStatus());
-
     }
 
     private void connectionOutcome(ConnectionOutcome a){
@@ -254,6 +253,26 @@ public class GUIManager extends UI {
         });
 
     }
+
+    private void showMessage(ErrorAnswer a) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Something went wrong!");
+            alert.setContentText(a.getAnswer().toString());
+            alert.showAndWait();
+        });
+        switch (a.getError()){
+            case NOT_ENOUGH_SPACE, TILES_NOT_PICKABLE,
+                    INVALID_ROW_COL,
+                    TILES_NOT_STRAIGHT,
+                    TILES_NOT_ADJACENT -> Platform.runLater(()->{
+                MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
+                mainSceneController.cancelTilesChoise();
+            });
+        }
+
+    }
     public int getPlayerID(){
         return client.getID();
     }
@@ -284,6 +303,7 @@ public class GUIManager extends UI {
            case "ChairAssigned" -> chairAssigned((String) event.getNewValue());
            case "GameReady" -> gameReady((String) event.getNewValue());
            case "UpdatePlayerPoints" -> updatePlayerPoints((String) event.getNewValue());
+           case "ErrorAnswer" -> showMessage((ErrorAnswer) event.getNewValue());
            //case "PrintCardsAnswer" -> printGoalCards();
         }
     }
