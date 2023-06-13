@@ -26,9 +26,11 @@ public class Game implements Serializable {
     private final Bag bag;
     private Player firstPlayer;
 
-
+    /**
+     * Constructor.
+     */
     public Game() {
-        // Only the bag instance, because the board must me created when we know the number of players.
+        // Only the bag instance, because the board must be created when we know the number of players.
         this.bag = new Bag();
     }
 

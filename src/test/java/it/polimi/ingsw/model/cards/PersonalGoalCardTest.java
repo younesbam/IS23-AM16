@@ -1,16 +1,19 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Player;
 import org.junit.jupiter.api.Test;
 
+import java.util.Hashtable;
+
+import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonalGoalCardTest {
 
-    /*
-        Player player = new Player("MarioRossi");
-        CommonGoalCard commonCard = new PersonalGoalCard();
-     */
-
+        Player player = new Player("MarioRossi", 01);
+        PersonalGoalCard personalGoalCard = new PersonalGoalCard(1,new Hashtable<>(), new Cell[MAXBOOKSHELFROW][MAXBOOKSHELFCOL]);
     @Test
     void checkScheme() {
         /*

@@ -21,7 +21,6 @@ public class BookShelf implements Serializable {
      */
     private Cell[][] grid;
 
-
     /**
      * Constructor for the BookShelf.
      * It sets initially BLANK all the cells contained in the BookShelf.
@@ -107,7 +106,6 @@ public class BookShelf implements Serializable {
         }
         return true;
     }
-
 
     /**
      * Method used to print the bookshelf.
