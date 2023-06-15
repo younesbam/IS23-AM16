@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.client.gui.GUI;
+import it.polimi.ingsw.communications.serveranswers.BookShelfCompleted;
 import it.polimi.ingsw.communications.serveranswers.CountDown;
 import it.polimi.ingsw.communications.serveranswers.DisconnectPlayer;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
@@ -33,6 +34,7 @@ public class GUIManager extends UI {
     private static final String SETUP = "joinScene.fxml";
     private static final String CHAT = "chatScene.fxml";
     private static final String COUNTDOWN = "countDown.fxml";
+    private static final String GAME_OVER = "gameOverScene.fxml";
     private static final String PERSONAL_GOAL_CARD_PATH = "/fxml/graphics/personal_goal_cards/";
     private static final String COMMON_GOAL_CARD_PATH = "/fxml/graphics/common_goal_cards/";
     private boolean playingGame = false;
@@ -61,7 +63,7 @@ public class GUIManager extends UI {
         }
     }
     public HashMap<String, Scene> setup() {
-        List<String> fxmList = new ArrayList<>(Arrays.asList(SETUP,LOADER, MAIN_GUI, GOALS, CHAT, COUNTDOWN));
+        List<String> fxmList = new ArrayList<>(Arrays.asList(SETUP,LOADER, MAIN_GUI, GOALS, CHAT, COUNTDOWN, GAME_OVER));
         try {
             for (String path : fxmList) {
                 FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/fxml/" + path));
@@ -254,7 +256,7 @@ public class GUIManager extends UI {
 
     }
 
-    private void showMessage(ErrorAnswer a) {
+    private void errorMessage(ErrorAnswer a) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
@@ -273,6 +275,38 @@ public class GUIManager extends UI {
         }
 
     }
+
+    private void bookShelfCompleted(String message){
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("GAME");
+            alert.setHeaderText("Last turn!");
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
+    }
+
+    private void playerFinalPoints(String message){
+        GameOverController gameOverController = (GameOverController) getControllerFromName(GAME_OVER);
+        Platform.runLater(()->{
+            gui.changeStage(GAME_OVER);
+            gameOverController.setPointsMsg(message);
+        });
+    }
+
+    private void ranking(String ranking){
+        GameOverController gameOverController = (GameOverController) getControllerFromName(GAME_OVER);
+        Platform.runLater(()->{
+            gameOverController.setRanking(ranking);
+        });
+    }
+
+    private void playerFinalResult(String message){
+        GameOverController gameOverController = (GameOverController) getControllerFromName(GAME_OVER);
+        Platform.runLater(()->{
+            gameOverController.setPlayerResult(message);
+        });
+    }
     public int getPlayerID(){
         return client.getID();
     }
@@ -287,6 +321,7 @@ public class GUIManager extends UI {
     }
     public void propertyChange(PropertyChangeEvent event){
        switch (event.getPropertyName()){
+           case "ErrorAnswer" -> errorMessage((ErrorAnswer) event.getNewValue());
            case "ConnectionOutcome" -> connectionOutcome((ConnectionOutcome) event.getNewValue());
            case "CountDown" -> countDown((CountDown) event.getNewValue());
            case "HowManyPlayersRequest" -> howManyPlayerRequest((String) event.getNewValue());
@@ -303,7 +338,10 @@ public class GUIManager extends UI {
            case "ChairAssigned" -> chairAssigned((String) event.getNewValue());
            case "GameReady" -> gameReady((String) event.getNewValue());
            case "UpdatePlayerPoints" -> updatePlayerPoints((String) event.getNewValue());
-           case "ErrorAnswer" -> showMessage((ErrorAnswer) event.getNewValue());
+           case "BookShelfCompleted" -> bookShelfCompleted((String) event.getNewValue());
+           case "PlayerFinalPoints" -> playerFinalPoints((String) event.getNewValue());
+           case "Ranking" -> ranking((String) event.getNewValue());
+           case "PlayerFinalResult" -> playerFinalResult((String) event.getNewValue());
            //case "PrintCardsAnswer" -> printGoalCards();
         }
     }

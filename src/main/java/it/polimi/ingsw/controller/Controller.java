@@ -365,7 +365,9 @@ public class Controller implements PropertyChangeListener {
                 lastTurn = true;
                 counter = counterCalculator();
                 gameHandler.sendToPlayer(new CustomAnswer(false, "\nCongratulations, you have completed your Bookshelf! Now let the remaining players complete their turn in order to complete the round, and than we will reward the winner!\n"), currentPlayer.getID());
+                gameHandler.sendToPlayer(new BookShelfCompleted(), currentPlayer.getID());
                 gameHandler.sendToEveryone(new CustomAnswer(false, "\nPlayer " + currentPlayer.getUsername() + " has completed his Bookshelf!\nNow we will go on with turns until we reach the player that started the match! (The one and only with the majestic chair!)\n"));
+                gameHandler.sendToEveryoneExcept(new BookShelfCompleted(currentPlayer.getUsername()), currentPlayer.getID());
             }
         }
 
@@ -456,15 +458,19 @@ public class Controller implements PropertyChangeListener {
         //Ranking creation
         for (Player p : rightPointsOrder){
             gameHandler.sendToPlayer(new CustomAnswer(false, "You have collected " + p.getTotalPoints() + " points! Congratulations!\n"), p.getID());
+            gameHandler.sendToPlayer(new PlayerFinalPoints("You have collected " + p.getTotalPoints() + " points! Congratulations!\n"), p.getID());
             s = s + "\n" + i + ". " + p.getUsername() + "    " + p.getTotalPoints();
             i++;
         }
 
         //Sending the ranking and the final messages to everyone.
         gameHandler.sendToEveryone(new CustomAnswer(false, s));
+        gameHandler.sendToEveryone(new Ranking(s));
         gameHandler.sendToEveryone(new CustomAnswer(false, "And the winner is... " + rightPointsOrder.get(0).getUsername() + "!!\nCongratulations!"));
         gameHandler.sendToEveryoneExcept(new CustomAnswer(false, "\nUnfortunately you have not won this game, but better luck next time!"), rightPointsOrder.get(0).getID());
+        gameHandler.sendToEveryoneExcept(new PlayerFinalResult("\nUnfortunately you have not won this game, but better luck next time!"), rightPointsOrder.get(0).getID());
         gameHandler.sendToPlayer(new CustomAnswer(false, "\nYou are the undisputed winner! Congratulations again!"), rightPointsOrder.get(0).getID());
+        gameHandler.sendToPlayer(new PlayerFinalResult("\nYou are the undisputed winner! Congratulations again!"), rightPointsOrder.get(0).getID());
         gameHandler.sendToEveryone(new CustomAnswer(false, "\nThe game has come to an end."));
 
         //TODO c'è da chiudere le connessioni e finire gli ultimi messaggi di fine partita, e poi bona.
