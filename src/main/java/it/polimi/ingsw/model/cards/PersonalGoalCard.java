@@ -4,8 +4,8 @@ import it.polimi.ingsw.model.*;
 
 import java.util.Hashtable;
 
-import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
-import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
+import static it.polimi.ingsw.Const.*;
+import static it.polimi.ingsw.Const.RESET_COLOR;
 
 /**
  * Personal goal card
@@ -64,7 +64,32 @@ public class PersonalGoalCard extends Card {
      * {@inheritDoc}
      */
     public void printCard(){
-        System.out.println("This is how you will earn points with your Personal Goal Card: \n"+
+        for(int i=0; i<MAXBOOKSHELFROW; i++){
+            System.out.print(CYAN_BOLD_COLOR + i + RESET_COLOR);
+            System.out.print(" [  ");
+            for (int j=0; j<MAXBOOKSHELFCOL; j++){
+                switch(grid[i][j].getTile().name()) {
+                    case "BLANK" -> System.out.print(BLACK_COLOR + " " + RESET_COLOR + "  ");
+                    case "PINK" -> System.out.print(PURPLE_COLOR + " " + RESET_COLOR + "  ");
+                    case "GREEN" -> System.out.print(GREEN_COLOR + " " + RESET_COLOR + "  ");
+                    case "YELLOW" -> System.out.print(YELLOW_COLOR + " " + RESET_COLOR + "  ");
+                    case "WHITE" -> System.out.print(WHITE_COLOR + " " + RESET_COLOR + "  ");
+                    case "BLUE" -> System.out.print(BLUE_COLOR + " " + RESET_COLOR + "  ");
+                    case "LIGHTBLUE" -> System.out.print(CYAN_COLOR + " " + RESET_COLOR + "  ");
+                }
+            }
+            System.out.print("]");
+            System.out.println();
+        }
+        // Print column numbers
+        System.out.print("     ");
+        for (int k = 0; k < MAXBOOKSHELFCOL; k++) {
+            System.out.print(CYAN_BOLD_COLOR + k + RESET_COLOR);
+            System.out.print("  ");
+        }
+        System.out.println();
+
+        System.out.println("\n This is how you will earn points with your Personal Goal Card: \n"+
                             "\n" +
                 "+-------------------------+---+---+---+---+---+----+\n" +
                 "| Number of correct tiles | 1 | 2 | 3 | 4 | 5 | 6  |\n" +
