@@ -7,9 +7,6 @@ import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.messages.UsernameSetup;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
-import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
-import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
-import it.polimi.ingsw.communications.serveranswers.errors.ErrorClassification;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.common.exceptions.TakenUsername;
 import it.polimi.ingsw.communications.serveranswers.requests.PingRequest;
@@ -23,13 +20,40 @@ import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 
+/**
+ * Socket handler.
+ */
 public class SocketClientHandler extends Client implements Runnable {
+    /**
+     * Output stream.
+     */
     private transient ObjectOutputStream outputStream;
+
+    /**
+     * Input stream.
+     */
     private transient ObjectInputStream inputStream;
+
+    /**
+     * Socket representation.
+     */
     private transient Socket socket;
+
+    /**
+     * Message receiver thread.
+     */
     private transient Thread messageReceiver;
 
 
+    /**
+     * Class constructor.
+     * @param address IP address of the client.
+     * @param port of the client.
+     * @param username of the client.
+     * @param modelView representation of the model.
+     * @param actionHandler server answer handler.
+     * @throws RemoteException
+     */
     public SocketClientHandler(String address, int port, String username, ModelView modelView, ActionHandler actionHandler) throws RemoteException {
         super(address, port, username, modelView, actionHandler);
     }
@@ -40,13 +64,10 @@ public class SocketClientHandler extends Client implements Runnable {
      */
     public void connect(){
         try {
-            if(!setup(username, modelView, actionHandler)) {
-                Client.LOGGER.log(Level.SEVERE, "The entered IP/port doesn't match any active server or the server is not running. Please try again!");
-                CLI.main(null);
-            }
-            //Client.LOGGER.log(Level.INFO, "Connection established!");
-        } catch (TakenUsername e) {
-            CLI.main(null);
+            setup();
+        } catch (IOException e) {
+            System.err.println("Connection establishment error! Check the parameters and try again. Shutting down...");
+            System.exit(-1);
         }
     }
 
@@ -71,43 +92,24 @@ public class SocketClientHandler extends Client implements Runnable {
 
 
     /**
-     * This method instantiates a new socket on client's side, establishing a connection with the server.
-     *
-     * @param username
-     * @param modelView
-     * @param actionHandler
-     * @return
-     * @throws TakenUsername
+     * Instantiates a new socket on client's side, establishing a connection with the server.
      */
-    public boolean setup(String username, ModelView modelView, ActionHandler actionHandler) throws TakenUsername{
-        try {
-            System.out.println("Establishing a connection...\n");
-            try {
-                socket = new Socket(getAddress(), getPort());
-            } catch (SocketException | UnknownHostException e) {
-                return false;
-            }
-            outputStream = new ObjectOutputStream(socket.getOutputStream());
-            inputStream = new ObjectInputStream(socket.getInputStream());
+    private void setup() throws IOException {
+        System.out.println("Establishing a connection...\n");
+        socket = new Socket(getAddress(), getPort());
+        outputStream = new ObjectOutputStream(socket.getOutputStream());
+        inputStream = new ObjectInputStream(socket.getInputStream());
 
-            sendToServer(new UsernameSetup(username));
+        sendToServer(new UsernameSetup(username));
 
-            modelView.setConnected(true);
-            messageReceiver = new Thread(this);
-            messageReceiver.start();
-            return true;
-
-        } catch (IOException e) {
-            System.err.println("Connection establishment error! Shutting down...");
-            System.exit(0);
-            return false;
-        }
+        modelView.setConnected(true);
+        messageReceiver = new Thread(this);
+        messageReceiver.start();
     }
 
 
     /**
-     * Method to put a client -> server communication on the socket output stream (and in doing so send it to the server).
-     * @param c
+     * {@inheritDoc}
      */
     public void sendToServer(Message c) {
         SerializedMessage userInput = new SerializedMessage(getID(), c);
@@ -123,8 +125,7 @@ public class SocketClientHandler extends Client implements Runnable {
 
 
     /**
-     * Method to put a client -> server action communication on the socket output stream (and in doing so send it to the server).
-     * @param a
+     * {@inheritDoc}
      */
     public void sendToServer(GameAction a) {
         SerializedMessage userInput = new SerializedMessage(getID(), a);
@@ -139,7 +140,7 @@ public class SocketClientHandler extends Client implements Runnable {
 
 
     /**
-     * Override of run() method.
+     * Listen for new socket messages through the stream.
      */
     public void run() {
         try {

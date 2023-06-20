@@ -20,8 +20,7 @@ import java.util.Timer;
 import java.util.logging.Level;
 
 /**
- * Client RMI handler.
- * @author Nicolo' Gandini
+ * Class that implements all the methods that the client shows to the server (through RMI).
  */
 public class RMIClientHandler extends Client implements IRMIClient {
     /**
@@ -36,10 +35,12 @@ public class RMIClientHandler extends Client implements IRMIClient {
 
 
     /**
-     *
-     * @param address address of the server.
-     * @param port port of the server.
-     * @param username username of the player
+     * Class constructor.
+     * @param address IP address of the client.
+     * @param port of the client.
+     * @param username of the client.
+     * @param modelView representation of the model.
+     * @param actionHandler server answer handler.
      * @throws RemoteException
      */
     public RMIClientHandler(String address, int port, String username, ModelView modelView, ActionHandler actionHandler) throws RemoteException {
