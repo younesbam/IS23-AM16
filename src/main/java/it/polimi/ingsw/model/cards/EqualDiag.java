@@ -100,7 +100,7 @@ public class EqualDiag extends CommonGoalCard {
      * {@inheritDoc}
      */
     public void printCard(){
-        System.out.println( "    COMMON CARD NUMBER 11: \n"+
+        System.out.println( "COMMON CARD NUMBER 11: \n"+
                             "Five tiles of the same type forming a diagonal. \n" +
                             "++++++++++++++++++++++++++++ \n" +
                             "+  | = |                   + \n" +

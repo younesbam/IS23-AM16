@@ -112,32 +112,7 @@ public class BookShelf implements Serializable {
      * Method used to print the bookshelf.
      */
     public void printBookShelf(){
-        for (int i = 0; i < MAXBOOKSHELFROW; i++) {
-            System.out.print("[  ");
-            for (int j = 0; j < MAXBOOKSHELFCOL; j++) {
-                switch (grid[i][j].getTile().name()) {
-                    case "BLANK" -> System.out.print(BLACK_COLOR + " " + RESET_COLOR + "  ");
-                    case "WHITE" -> System.out.print(WHITE_COLOR + " " + RESET_COLOR + "  ");
-                    case "LIGHTBLUE" -> System.out.print(CYAN_COLOR + " " + RESET_COLOR + "  ");
-                    case "BLUE" -> System.out.print(BLUE_COLOR + " " + RESET_COLOR + "  ");
-                    case "YELLOW" -> System.out.print(YELLOW_COLOR + " " + RESET_COLOR + "  ");
-                    case "GREEN" -> System.out.print(GREEN_COLOR + " " + RESET_COLOR + "  ");
-                    case "PINK" -> System.out.print(PURPLE_COLOR + " " + RESET_COLOR + "  ");
-                    case "RED" -> System.out.print(RED_COLOR + " " + RESET_COLOR + "  ");
-                    case "UNAVAILABLE" -> System.out.print("x  ");
-                }
-            }
-            System.out.print("]");
-            System.out.println();
-        }
-
-        // Print column numbers
-        System.out.print("   ");
-        for (int k = 0; k < MAXBOOKSHELFCOL; k++) {
-            System.out.print(CYAN_BOLD_COLOR + k + RESET_COLOR);
-            System.out.print("  ");
-        }
-        System.out.println();
+        Utils.printGrids(MAXBOOKSHELFROW, MAXBOOKSHELFCOL, grid);
     }
 }
 

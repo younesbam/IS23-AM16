@@ -149,7 +149,7 @@ public class SubMatrix extends CommonGoalCard {
      * {@inheritDoc}
      */
     public void printCard(){
-        System.out.println( "    COMMON CARD NUMBER 12 \n" +
+        System.out.println( "COMMON CARD NUMBER 12 \n" +
                             "Five columns of increasing or decreasing height.\n" +
                             "Starting from the first column on the left or on the right, each next column must \n" +
                             "be made of exactly one more tile. \n" +

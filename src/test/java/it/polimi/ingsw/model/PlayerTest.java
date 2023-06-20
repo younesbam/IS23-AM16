@@ -9,48 +9,53 @@ class PlayerTest {
     BookShelf bs;
     final static String nickName = "MarioRossi";
     final static Boolean chair = true;
-    int numTurns = 5;
+    int numTurns = 0;
+    int points = 0;
+    int common1points = 8;
+    int common2points = 4;
+    static final int ID = 20;
+
+
     @BeforeEach
     void init(){
-        player = new Player(nickName, 20);
+        player = new Player(nickName, ID);
+        player.setUsername(nickName);
         bs = new BookShelf();
-        int points;
+        player.setActive(true);
     }
 
     @Test
-    void nicknameTest() {
+    void playerTest(){
+        // Check for nickname.
         assertEquals(nickName, player.getUsername());
-    }
 
+        // Check for activity.
+        assertTrue(player.isActive());
 
-    @Test
-    void pointsTest() {
-//        player.updateTotalPoints(100);
-//        assertEquals(100, player.getTotalPoints());
-    }
-
-
-    @Test
-    void bookShelfTest() {
-//        List<Tile> tiles = new ArrayList<>();
-//        tiles = Collections.singletonList(Tile.PINK);
-//        bs.placeTiles(1, tiles);
-//        player.setBookShelf(bs);
-//
-//        assertEquals(bs, player.getBookShelf());
-    }
-
-    @Test
-    void chairTest(){
+        // Check for chair.
         player.setChair(chair);
         assertTrue(player.hasChair());
-    }
 
-    @Test
-    void turnsTest(){
-        //player.updateNumOfTurns(numTurns);
+        // Check for number of turns.
         assertEquals(numTurns, player.getNumOfTurns());
+        player.updateNumOfTurns();
+        numTurns++;
+        assertEquals(numTurns, player.getNumOfTurns());
+
+        // Check for points.
+        player.updateTotalPoints();
+        assertEquals(points, player.getTotalPoints());
+        assertEquals(0, player.getCommonCardPointsEarned(0));
+        assertEquals(0, player.getCommonCardPointsEarned(1));
+        player.setCommonCardPointsEarned(0, common1points);
+        assertEquals(common1points, player.getCommonCardPointsEarned(0));
+        player.setCommonCardPointsEarned(1, common2points);
+        assertEquals(common2points, player.getCommonCardPointsEarned(1));
+        points = common1points + common2points;
+        player.updateTotalPoints();
+        assertEquals(points, player.getTotalPoints());
+
+        // Check for ID.
+        assertEquals(ID, player.getID());
     }
-
-
 }
