@@ -107,7 +107,7 @@ public class MaxDiffGroup extends CommonGoalCard {
     public void printCard(){
         switch (cardNumber) {
             case 5 -> {
-                System.out.println(         "COMMON CARD NUMBER 5: \n" +
+                System.out.println( "COMMON CARD NUMBER 5: \n" +
                                     "Three columns each formed by 6 tiles of maximum three different types.\n" +
                                     "One column can show the same or a different combination of another column.\n" +
                                     "++++++++++++++++++++++++++++++++ \n"+
@@ -120,7 +120,7 @@ public class MaxDiffGroup extends CommonGoalCard {
                                     "++++++++++++++++++++++++++++++++ \n");
             }
             case 7 -> {
-                System.out.println( "   COMMON CARD NUMBER 7: \n" +
+                System.out.println( "COMMON CARD NUMBER 7: \n" +
                                     "Four lines each formed by 5 tiles of maximum three different types.\n" +
                                     "One line can show the same or a different combination of another line.\n" +
                                     "++++++++++++++++++++++++++++ \n"+

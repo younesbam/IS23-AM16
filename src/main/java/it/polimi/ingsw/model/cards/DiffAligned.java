@@ -125,7 +125,7 @@ public class DiffAligned extends CommonGoalCard {
                                     "++++++++++++++++++ \n");
             }
             case 6 -> {
-                System.out.println( "       COMMON CARD NUMBER 6:  \n"+
+                System.out.println( "COMMON CARD NUMBER 6:  \n"+
                                     "Two lines each formed by 5 different types of tiles. \n" +
                                     "One line can show the same or a different combination of the other line. \n"+
                                     "++++++++++++++++++++++++++++++++ \n" +
