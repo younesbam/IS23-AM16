@@ -9,16 +9,16 @@ import it.polimi.ingsw.model.Game;
 /**
  * This class contains details about the current game.
  */
-
 public class ModelView {
-
     private String username;
     private final GUI gui;
     private final CLI cli;
     private Answer answerFromServer;
     private boolean isYourTurn = false;
-
     private Game game;
+    /**
+     * Represent if the client is connected to the server.
+     */
     private boolean isConnected;
 
 
@@ -65,7 +65,7 @@ public class ModelView {
 
     /**
      * CLI getter.
-     * @return
+     * @return cli
      */
     public CLI getCli(){
         return this.cli;

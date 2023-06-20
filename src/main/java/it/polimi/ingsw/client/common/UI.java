@@ -7,6 +7,7 @@ import it.polimi.ingsw.client.rmi.RMIClientHandler;
 import it.polimi.ingsw.client.socket.SocketClientHandler;
 import it.polimi.ingsw.common.ConnectionType;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.rmi.NotBoundException;
@@ -14,7 +15,7 @@ import java.rmi.RemoteException;
 import java.util.logging.Level;
 
 /**
- * Manage the game. Listen for messages also.
+ * Manage the game. Listen for messages also. Superclass representing a generic user interface and implemented by {@link it.polimi.ingsw.client.cli.CLI CLI} or {@link it.polimi.ingsw.client.gui.GUI GUI}.
  */
 public abstract class UI implements PropertyChangeListener {
     /**
@@ -33,7 +34,8 @@ public abstract class UI implements PropertyChangeListener {
     protected ModelView modelView;
 
     /**
-     * Property change support.
+     * Dispatcher's property change support.
+     * @see Dispatcher#propertyChange(PropertyChangeEvent)
      */
     protected PropertyChangeSupport pcsDispatcher;
 
@@ -49,7 +51,8 @@ public abstract class UI implements PropertyChangeListener {
      * @param address of the server
      * @param port of the server
      * @param username of the player
-     * @throws Exception
+     * @throws RemoteException exception thrown by RMI methods.
+     * @throws NotBoundException thrown by {@link java.rmi.registry.Registry#lookup(String) lookup} method.
      */
     public void connectToServer(ConnectionType connectionType, String address, int port, String username) throws RemoteException, NotBoundException {
         /*
@@ -90,11 +93,18 @@ public abstract class UI implements PropertyChangeListener {
         System.exit(status);
     }
 
-
+    /**
+     * Get active game status.
+     * @return active game status.
+     */
     public synchronized boolean isActiveGame() {
         return activeGame;
     }
 
+    /**
+     * Set active game bit.
+     * @param activeGame Boolean to set the status of the game
+     */
     public synchronized void setActiveGame(boolean activeGame) {
         this.activeGame = activeGame;
     }
