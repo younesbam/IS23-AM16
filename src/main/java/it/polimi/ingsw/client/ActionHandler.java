@@ -10,17 +10,21 @@ import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersReque
 import it.polimi.ingsw.communications.serveranswers.requests.PickTilesRequest;
 import it.polimi.ingsw.communications.serveranswers.requests.PlaceTilesRequest;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 
 /**
  * Handle the answer from the server.
  */
 public class ActionHandler {
-
     private final ModelView modelView;
     private CLI cli;
     private GUI gui;
 
+    /**
+     * View's property change support. Used by CLI or GUI.
+     * @see CLI#propertyChange(PropertyChangeEvent)
+     */
     private final PropertyChangeSupport pcsView = new PropertyChangeSupport(this);
 
 
@@ -48,7 +52,7 @@ public class ActionHandler {
 
 
     /**
-     * Manage the answer from the server
+     * Manage the answer from the server. Called after a successfully received message from Socket or RMI.
      * @param a Answer, received from the server
      */
     public void answerManager(Answer a){

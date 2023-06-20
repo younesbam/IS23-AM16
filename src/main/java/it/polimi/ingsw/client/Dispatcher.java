@@ -3,21 +3,17 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.actions.PrintCardsAction;
-import it.polimi.ingsw.communications.clientmessages.messages.ExitFromGame;
-import it.polimi.ingsw.communications.clientmessages.messages.Message;
+import it.polimi.ingsw.communications.serveranswers.Answer;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import static it.polimi.ingsw.Const.CLI_INCOMPR_INPUT;
-import static it.polimi.ingsw.Const.CLI_INPUT_ERROR;
 
 /**
- * This class receives the action performed by the user from the CLI, and calls the right method to execute it.
+ * Receives the action performed by the user from the CLI, and calls the right method to execute it.
  */
-
 public class Dispatcher implements PropertyChangeListener {
-
     private final ModelView modelView;
     private final InputValidator inputValidator;
     private final Client client;
@@ -37,7 +33,7 @@ public class Dispatcher implements PropertyChangeListener {
 
     /**
      * ModelView getter.
-     * @return
+     * @return model view.
      */
     public ModelView getModelView() {
         return modelView;
@@ -45,11 +41,11 @@ public class Dispatcher implements PropertyChangeListener {
 
 
     /**
-     * This method is being called by the PropertyChange method, and it handles the dispatch of the action taken by the user, by calling the right methods
+     * Called by the PropertyChange method, and it handles the dispatch of the action taken by the user, by calling the right methods
      * in order to do so. It also makes a check if the user can actually perform that action by calling the InputChecker.
      * @param value
      * @param propertyName
-     * @return
+     * @return true when the client send message to server. False if no message has to send.
      */
     public synchronized boolean dispatchAction(String value, String propertyName){
         SerializedMessage messageToServer = null;
@@ -66,7 +62,7 @@ public class Dispatcher implements PropertyChangeListener {
                 case "PLACETILES" -> messageToServer = new SerializedMessage(client.getID(), inputValidator.placeTiles(splitInput));
 
                 // Miscellaneous
-                case "MAN" -> inputValidator.manual();
+                case "MAN" -> inputValidator.printManual();
                 case "PRINTCARDS" -> messageToServer = new SerializedMessage(client.getID(), new PrintCardsAction());
                 case "EXIT" -> exitGame();
                 default -> System.out.print(CLI_INCOMPR_INPUT);
@@ -89,16 +85,17 @@ public class Dispatcher implements PropertyChangeListener {
      * Quit game command.
      */
     public void exitGame(){
-        Message message = new ExitFromGame();
-        client.sendToServer(message);
-        System.err.println("Disconnected from the server.");
-        //System.exit(0);
-        //cli.disconnectFromServer();
+        //Message message = new ExitFromGame();
+        //client.sendToServer(message);
+        //System.err.println("Disconnected from the server.");
+        modelView.getCli().setActiveGame(false);
     }
 
 
     /**
-     * This method manages the event changes happening in the CLI.
+     * {@inheritDoc}
+     * <p></p>
+     * This method is called by the cli after a command written by the user (client).
      * @param evt A PropertyChangeEvent object describing the event source
      *          and the property that has changed.
      */
