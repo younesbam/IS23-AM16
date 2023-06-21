@@ -9,9 +9,25 @@ import it.polimi.ingsw.server.connection.RMICSConnection;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
+/**
+ * Class that implements all the methods that the server shows to the client (through RMI).
+ */
 public class RMIServerHandler extends UnicastRemoteObject implements IRMIServer {
+    /**
+     * Server reference.
+     */
     private final Server server;
+
+    /**
+     * Generic connection reference.
+     */
     private transient CSConnection connection;
+
+    /**
+     * Constructor.
+     * @param server server reference
+     * @throws RemoteException error during communication.
+     */
     public RMIServerHandler(Server server) throws RemoteException {
         this.server = server;
     }
@@ -24,14 +40,6 @@ public class RMIServerHandler extends UnicastRemoteObject implements IRMIServer 
     public void login(String username, IRMIClient client) {
         connection = new RMICSConnection(server, client);
         server.tryToConnect(username, connection);
-//        SerializedMessage serializedMessage = new SerializedMessage(username, new UsernameSetup(username));
-//        Server.LOGGER.log(Level.INFO, "Connection with " + username + " established");
-//        try{
-//            sendMessageToServer(serializedMessage);
-//            //server.newClientRegistration(username, connection);
-//        }catch (IOException e){
-//            Server.LOGGER.log(Level.SEVERE, "RMI: failed to login", e);
-//        }
     }
 
 

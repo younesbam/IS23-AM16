@@ -5,7 +5,7 @@ import it.polimi.ingsw.common.Coordinate;
 import java.util.List;
 
 /**
- * Pick tiles request from the player
+ * Pick tiles request from the player.
  */
 public class PickTilesAction implements GameAction{
     /**

@@ -10,7 +10,6 @@ import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
  *     Represent card n.8.
  * </p>
  * Equal tiles in corners.
- * @author Nicolo' Gandini
  */
 public class EqualCorners extends CommonGoalCard {
 

@@ -13,7 +13,6 @@ import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
  *     Represent card n.5,7.
  * </p>
  * Maximum 3 different types og tiles in the row/column
- * @author Nicolo' Gandini
  */
 public class MaxDiffGroup extends CommonGoalCard {
     /**

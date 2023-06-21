@@ -17,7 +17,6 @@ import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
  *     there are two diagonals to check. Based on requirements, no preferred diagonal to check is specified.
  * </p>
  *
- * @author Nicolo' Gandini
  */
 public class EqualDiag extends CommonGoalCard {
 

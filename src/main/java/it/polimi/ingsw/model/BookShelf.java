@@ -19,7 +19,7 @@ public class BookShelf implements Serializable {
     /**
      * This attribute specifies the grid's dimensions.
      */
-    private Cell[][] grid;
+    private final Cell[][] grid;
 
     /**
      * Constructor for the BookShelf.
@@ -33,8 +33,8 @@ public class BookShelf implements Serializable {
      * This method controls whether the player can insert the tiles he picked in the column he selects.
      * @param col number of the selected column
      * @param nTiles number of the tiles to insert
-     * @return true if the tiles can be inserted.
      * @throws InvalidParameterException if the number of the column of the tiles are invalid.
+     * @throws NotEmptyColumnException column hasn't enough free cells.
      */
     public void checkColumn(int col, int nTiles) throws InvalidParameterException, NotEmptyColumnException {
 
@@ -79,7 +79,6 @@ public class BookShelf implements Serializable {
             i--;
         }
     }
-
 
 
     /**

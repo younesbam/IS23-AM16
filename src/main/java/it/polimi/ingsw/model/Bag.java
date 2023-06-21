@@ -13,14 +13,18 @@ import static java.util.Collections.shuffle;
  * @author Nicolo' Gandini
  */
 public class Bag implements Serializable {
-
-    private LinkedList<CommonGoalCard> commList;
+    /**
+     * List of common goal cards.
+     */
+    private final LinkedList<CommonGoalCard> commList;
+    /**
+     * List of personal goal cards.
+     */
     private LinkedList<PersonalGoalCard> persList;
 
 
     /**
-     * Initialize all the tiles inside the bag into a Set, in order to have an unordered collection.
-     * Then transform the Set to a Queue, in a random order.
+     * Initialize all the tiles inside the bag to have an unordered collection.
      */
     public Bag() {
 
@@ -61,7 +65,7 @@ public class Bag implements Serializable {
      * Pick from the deck a random common goal card
      * @param playerNum number of players in the actual game
      * @return common goal card
-     * @throws NullPointerException
+     * @throws NullPointerException no cards available.
      */
     public CommonGoalCard pickCommonGoalCard(int playerNum) throws NullPointerException {
         CommonGoalCard comCard;
@@ -75,7 +79,7 @@ public class Bag implements Serializable {
     /**
      * Pick from the deck a random personal goal card
      * @return personal goal card
-     * @throws NullPointerException
+     * @throws NullPointerException no cards available.
      */
     public PersonalGoalCard pickPersonalGoalCard() throws NullPointerException {
         PersonalGoalCard persCard;

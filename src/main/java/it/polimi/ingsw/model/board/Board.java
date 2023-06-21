@@ -18,19 +18,19 @@ import static java.util.Collections.shuffle;
 
 /**
  * This class represents the game's board.
- * @author Francesca Rosa Diz.
  */
 public abstract class Board implements Serializable {
 
-    /*This variable represents the board.
-    The board is composed by cells.*/
+    /**
+     * This variable represents the board.
+     * The board is composed by cells.
+     */
     protected Cell[][] grid = new Cell[MAXBOARDDIM][MAXBOARDDIM];
 
-    // Set of all the tiles.
-    private LinkedList<Tile> initTileList;
-
-    // Queue of the tiles.
-    private Queue<Tile> tiles;
+    /**
+     * List of all tiles.
+     */
+    private final LinkedList<Tile> initTileList;
 
     /**
      * Constructor of the board, used by the subclasses.
@@ -69,7 +69,6 @@ public abstract class Board implements Serializable {
 
     /**
      * This method checks if the board must be refilled (if the tiles in the board are isolated).
-     *
      * @return true if the board must be refilled.
      */
     private boolean refillNeeded() {
@@ -83,10 +82,11 @@ public abstract class Board implements Serializable {
     }
 
     /**
-     * Restore tiles on the board following a picking action and disconnection of the player
-     * @param map containing tiles picked and coordinate of where tiles were picked
-     * @throws WrongTilesException wrong tiles passed
-     * @throws WrongCoordinateException wrong coordinates passed
+     * Restore tiles on the board following a picking action and disconnection of the player.
+     * @param map containing tiles picked and coordinate of where tiles were picked.
+     * @throws WrongTilesException wrong tiles passed.
+     * @throws WrongCoordinateException wrong coordinates passed.
+     * @throws CellNotEmptyException wrong cell selected. The cell is not empty.
      */
     public void restoreTiles(Map<Tile, Coordinate> map) throws WrongTilesException, WrongCoordinateException, CellNotEmptyException {
         Tile tile;
@@ -170,7 +170,6 @@ public abstract class Board implements Serializable {
 
     /**
      * This method removes the tile the player has chosen.
-     *
      * @param row row of the tile the player has chosen.
      * @param col column of the tile the player has chosen.
      * @return the tile the player has picked.
@@ -185,7 +184,6 @@ public abstract class Board implements Serializable {
 
     /**
      * This method removes tiles from the queue to refill the Board when needed.
-     *
      * @return An enumeration of type Tile.
      */
     private Tile insertTile() {
@@ -195,9 +193,8 @@ public abstract class Board implements Serializable {
 
     /**
      * This method returns the tile at the requested coordinates.
-     *
-     * @param row
-     * @param col
+     * @param row row
+     * @param col column
      * @return
      */
     public Tile getTile(int row, int col) {return grid[row][col].getTile();}
@@ -208,6 +205,20 @@ public abstract class Board implements Serializable {
      */
     public void printBoard() {
         Utils.printGrids(MAXBOARDDIM, MAXBOARDDIM, grid);
+    }
+
+    /**
+     * Method used to get the board for GUI.
+     * @return array of strings.
+     */
+    public String[][] getBoardforGUI() {
+        String[][] board = new String[MAXBOARDDIM][MAXBOARDDIM];
+        for (int i = 0; i < MAXBOARDDIM; i++) {
+            for (int j = 0; j < MAXBOARDDIM; j++) {
+                board[i][j] = grid[i][j].getTile().name();
+            }
+        }
+        return board;
     }
 }
 

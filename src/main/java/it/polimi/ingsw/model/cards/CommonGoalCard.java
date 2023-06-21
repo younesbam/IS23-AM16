@@ -9,7 +9,6 @@ import java.util.Queue;
 
 /**
  * Represent a generic common card.
- * @author Nicolo' Gandini
  */
 public abstract class CommonGoalCard extends Card {
     /**
