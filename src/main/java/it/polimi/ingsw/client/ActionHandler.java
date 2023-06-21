@@ -75,11 +75,6 @@ public class ActionHandler {
             return;
         }
 
-        if(a instanceof UpdateTurn){
-            pcsView.firePropertyChange("UpdateTurn", null, ((UpdateTurn) a).isYourTurn());
-            return;
-        }
-
         if(a instanceof ItsYourTurn){
             pcsView.firePropertyChange("ItsYourTurn", null, a.getAnswer());
             return;
