@@ -17,16 +17,29 @@ import static org.junit.jupiter.api.Assertions.*;
 class ControllerTest {
 
     private Controller controller;
+    Game game;
+    Player p1, p2, p3;
 
     @BeforeEach
-    public void setUp() {
-        controller = new Controller(null, null);
+    void testSetup(){
+        game = new Game();
+        p1 = new Player("Pippo", 01);
+        p2 = new Player("Pluto", 02);
+        p3 = new Player("Paperino", 03);
+        game.createPlayer(p1);
+        game.createPlayer(p2);
+        game.createPlayer(p3);
+        controller = new Controller(null, game);
     }
+
     @Test
-    public void testSetup(){
-        Game game = controller.getGame();
+    public void testC(){
+        assertEquals(game, controller.getGame());
+        assertNotNull(game);
+
         int numOfPlayers = game.getNumOfPlayers();
-        assertTrue(numOfPlayers > 0);
+        assertTrue(numOfPlayers >= MINPLAYERS);
+        assertTrue(numOfPlayers <= MAXPLAYERS);
 
         List<Player> players = game.getPlayers();
         assertNotNull(players);
@@ -42,6 +55,7 @@ class ControllerTest {
 
         List<CommonGoalCard> commonGoalCards = game.getCommonGoalCards();
         assertNotNull(commonGoalCards);
+        assertEquals(2, commonGoalCards.size());
 
         for (Player player : players) {
             assertNotNull(player.getPersonalGoalCard());
@@ -50,9 +64,20 @@ class ControllerTest {
 
         assertNotNull(game.getBoard());
     }
+
     @Test
-    public void testGetGame() {
+    void phaseTest(){
+        Phase phase = Phase.LOBBY;
+        controller.setPhase(phase);
+        assertNotNull(controller.getPhase());
+        assertEquals(phase, controller.getPhase());
+    }
+
+    @Test
+    void getterTest(){
+        // Test for game's getter.
         assertNotNull(controller.getGame());
+
     }
 
     @Test

@@ -36,7 +36,9 @@ class PlayerTest {
         player.setChair(chair);
         assertTrue(player.hasChair());
 
-        // Check for number of turns.
+        // Test for turns.
+        player.updateNumOfTurns();
+        numTurns++;
         assertEquals(numTurns, player.getNumOfTurns());
         player.updateNumOfTurns();
         numTurns++;
