@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.MainSceneController">
+<AnchorPane prefHeight="600.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/14.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.MainSceneController">
    <children>
       <ImageView fx:id="mainPane" fitHeight="600.0" fitWidth="960.0" pickOnBounds="true">
          <image>
@@ -52,7 +52,7 @@
       </AnchorPane>
       <AnchorPane fx:id="bookShelfPane" layoutX="530.0" layoutY="135.0" prefHeight="389.0" prefWidth="352.0">
          <children>
-            <GridPane fx:id="bookShelfGrid" alignment="CENTER" hgap="15.0" layoutX="46.0" layoutY="34.0" prefHeight="316.0" prefWidth="294.0" vgap="8.0">
+            <GridPane fx:id="bookShelfGrid" alignment="CENTER" hgap="15.0" layoutX="47.0" layoutY="34.0" prefHeight="316.0" prefWidth="293.0" vgap="8.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.60003662109375" minWidth="10.0" prefWidth="48.2" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.79997558593749" minWidth="10.0" prefWidth="46.79998779296875" />

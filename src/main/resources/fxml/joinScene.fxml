@@ -10,14 +10,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.SetupController">
+<AnchorPane prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/14.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.SetupController">
    <children>
       <ImageView fitHeight="540.0" fitWidth="972.0" pickOnBounds="true">
          <image>
             <Image url="@graphics/bg.jpg" />
          </image>
       </ImageView>
-      <TextField fx:id="username" layoutX="481.0" layoutY="166.0" promptText="Username" text="younes" />
+      <TextField fx:id="username" layoutX="481.0" layoutY="166.0" promptText="Username" text="" />
       <TextField fx:id="ipaddress" layoutX="481.0" layoutY="208.0" promptText="IP Address" text="127.0.0.1" />
       <TextField fx:id="serverport" layoutX="481.0" layoutY="250.0" promptText="Server Port" text="1098" />
       <Button layoutX="406.0" layoutY="340.0" mnemonicParsing="false" onAction="#join" prefHeight="52.0" prefWidth="150.0" text="JOIN" textFill="#ac856e">
