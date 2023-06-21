@@ -178,6 +178,7 @@ public class Controller implements PropertyChangeListener {
         game.nextPlayer();
         this.currentPlayer = game.getCurrentPlayer();
         gameHandler.sendToPlayer(new ItsYourTurn(), currentPlayer.getID());
+        gameHandler.sendToEveryoneExcept(new UpdateTurn(), currentPlayer.getID());
         pickedTiles.clear();
     }
 

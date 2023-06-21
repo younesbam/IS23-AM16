@@ -16,7 +16,7 @@ public class UpdateTurn implements Answer{
      * Class constructor.
      */
     public UpdateTurn(){
-        this.message = "It's now you turn!";
+        this.message = "Wait for your turn!";
         this.yourTurn = false;
     }
 
