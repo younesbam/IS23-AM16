@@ -3,11 +3,9 @@ package it.polimi.ingsw.server.connection;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.server.Server;
 
-import java.rmi.RemoteException;
 
 /**
- * Represent a generic connection client-server
- * @author Nicolo' Gandini
+ * Represent a generic client-server connection used by the server to manage the clients.
  */
 public abstract class CSConnection {
     /**
@@ -37,7 +35,7 @@ public abstract class CSConnection {
     }
 
     /**
-     * ID setter
+     * Set unique client ID
      * @param ID
      */
     public void setID(Integer ID){
@@ -45,8 +43,8 @@ public abstract class CSConnection {
     }
 
     /**
-     * ID getter.
-     * @return
+     * Client ID getter.
+     * @return ID
      */
     public Integer getID() {
         return this.ID;
@@ -67,7 +65,7 @@ public abstract class CSConnection {
 
     /**
      * Send an answer to the client.
-     * @param answer from the server
+     * @param answer answer to the client.
      */
     public abstract void sendAnswerToClient(SerializedAnswer answer);
 

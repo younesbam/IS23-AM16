@@ -14,7 +14,6 @@ import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
  *     Represent card n.9.
  * </p>
  * Eight tiles in random order must me the same.
- * @author Nicolo' Gandini
  */
 public class EqualRand extends CommonGoalCard {
     /**

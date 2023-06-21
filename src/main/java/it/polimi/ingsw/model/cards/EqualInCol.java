@@ -14,7 +14,6 @@ import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
  *     Represent card n.3,4.
  * </p>
  * Equal tiles in a column
- * @author Nicolo' Gandini
  */
 public class EqualInCol extends CommonGoalCard {
     /**

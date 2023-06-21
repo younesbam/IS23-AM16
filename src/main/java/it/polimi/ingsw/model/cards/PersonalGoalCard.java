@@ -9,17 +9,16 @@ import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
 
 /**
  * Personal goal card
- * @author Nicolo' Gandini
  */
 public class PersonalGoalCard extends Card {
     /**
      * Grid that represent the bookshelf of the card
      */
-    private Cell[][] grid;
+    private final Cell[][] grid;
     /**
      * Hashtable of Integer type used to transform the number of matches into points.
      */
-    private Hashtable<Integer, Integer> points;
+    private final Hashtable<Integer, Integer> points;
 
     /**
      * Initialize the personal goal card grid with empty Cells and initialize the hashtable, used to get the points, based on the number of matches.

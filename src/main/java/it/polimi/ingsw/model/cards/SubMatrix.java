@@ -13,7 +13,6 @@ import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
  *     Represent card n.12.
  * </p>
  * All the cells below the main diagonal must be full and not BLANK.
- * @author Nicolo' Gandini
  */
 public class SubMatrix extends CommonGoalCard {
 

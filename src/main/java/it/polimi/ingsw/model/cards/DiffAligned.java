@@ -13,7 +13,6 @@ import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
  *     Represent card n.2,6.
  * </p>
  * Different cards in a row/column
- * @author Nicolo' Gandini
  */
 public class DiffAligned extends CommonGoalCard {
     /**

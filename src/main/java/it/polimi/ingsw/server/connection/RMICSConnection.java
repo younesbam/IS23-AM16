@@ -8,8 +8,7 @@ import java.rmi.RemoteException;
 import java.util.logging.Level;
 
 /**
- * Represent RMI connection to a client
- * @author Nicolo' Gandini
+ * Represent RMI connection. Here all the methods useful for RMI technology.
  */
 public class RMICSConnection extends CSConnection {
     /**
@@ -17,6 +16,11 @@ public class RMICSConnection extends CSConnection {
      */
     private final IRMIClient client;
 
+    /**
+     * Constructor.
+     * @param server server reference.
+     * @param client client reference.
+     */
     public RMICSConnection(Server server, IRMIClient client) {
         this.server = server;
         this.client = client;

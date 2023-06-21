@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 /**
- * Phase of the game
+ * Phase of the game.
  */
 public enum Phase {
     /**
@@ -17,17 +17,17 @@ public enum Phase {
     LOBBY,
 
     /**
-     * Server waits for a tile picking command from the client
+     * Server waits for a tile picking command from the client.
      */
     TILESPICKING,
 
     /**
-     * Server waits for a tile placing command from the client
+     * Server waits for a tile placing command from the client.
      */
     TILESPLACING,
 
     /**
-     * Game is ending. Points calculations and final stuffs
+     * Game is ending. Points calculations and final stuffs.
      */
     ENDGAME,
 
@@ -35,6 +35,5 @@ public enum Phase {
      * No players connected. The game sleeps until at least two player are connected to continue the game.
      */
     STANDBY
-
 
 }

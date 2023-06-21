@@ -4,7 +4,6 @@ import it.polimi.ingsw.common.JSONParser;
 
 /**
  * This is the board for 3 players.
- * @author Francesca Rosa Diz
  */
 public class Board3Players extends Board implements IBoard {
 

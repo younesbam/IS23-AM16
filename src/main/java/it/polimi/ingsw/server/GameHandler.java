@@ -14,10 +14,9 @@ import java.beans.PropertyChangeSupport;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Handles the match, controller and game
+ * Handles the match, controller and game.
  */
 public class GameHandler {
-
     private static Game game;
     private final Server server;
     private final Controller controller;

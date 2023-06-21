@@ -407,7 +407,6 @@ public class Server {
                     p.send(new DisconnectPlayer());
                 }
                 // Close threads
-                serverSideSocket.setIsActive(false);
                 serverSideSocket.shutdown();
                 scheduler.shutdownNow();
                 // Shutdown the server

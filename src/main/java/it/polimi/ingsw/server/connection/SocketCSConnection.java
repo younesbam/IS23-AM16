@@ -14,17 +14,28 @@ import java.net.IDN;
 import java.net.Socket;
 import java.util.logging.Level;
 
+/**
+ * Represent Socket connection. Here all the methods useful for Socket technology.
+ */
 public class SocketCSConnection extends CSConnection implements Runnable{
-
+    /**
+     * Input stream.
+     */
     private ObjectInputStream inputStream;
+    /**
+     * Output stream.
+     */
     private ObjectOutputStream outputStream;
+    /**
+     * Socket reference.
+     */
     private final Socket socket;
 
 
     /**
      * Class constructor.
-     * @param server
-     * @param socket
+     * @param server server reference.
+     * @param socket socket class reference.
      */
     public SocketCSConnection(Server server, Socket socket) {
         this.socket = socket;
@@ -42,7 +53,7 @@ public class SocketCSConnection extends CSConnection implements Runnable{
 
     /**
      * Socket getter.
-     * @return
+     * @return socket
      */
     public Socket getSocket() {
         return socket;
@@ -51,8 +62,8 @@ public class SocketCSConnection extends CSConnection implements Runnable{
 
     /**
      * This method reads and reacts to client's messages, also deserializing them.
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws IOException error during stream reading.
+     * @throws ClassNotFoundException error during stream reading.
      */
     public synchronized void readStreamFromClient() throws IOException, ClassNotFoundException {
         SerializedMessage input = (SerializedMessage) inputStream.readObject();

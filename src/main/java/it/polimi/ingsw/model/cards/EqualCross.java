@@ -16,7 +16,6 @@ import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
  *     Represent card n.1,10.
  * </p>
  * Equal tiles in a diagonal orientation
- * @author Nicolo' Gandini
  */
 public class EqualCross extends CommonGoalCard {
     /**

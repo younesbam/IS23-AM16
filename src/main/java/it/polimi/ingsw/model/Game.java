@@ -14,7 +14,6 @@ import java.util.List;
  * and the bag. The bag contains the decks from which to choose and distribute
  * the common and personal goal cards.
  */
-
 public class Game implements Serializable {
     private Board board;
     private CreationFactory creationFactory;
@@ -25,15 +24,17 @@ public class Game implements Serializable {
     private final Bag bag;
     private Player firstPlayer;
 
-
+    /**
+     * Constructor.
+     */
     public Game() {
         // Only the bag instance, because the board must be created when we know the number of players.
         this.bag = new Bag();
     }
 
     /**
-     * Method createPlayer creates a new player in the current match.
-     * @param player
+     * Creates a new player in the current match.
+     * @param player player to be added.
      */
     public void createPlayer(Player player){
         this.players.add(player);
@@ -41,16 +42,24 @@ public class Game implements Serializable {
 
     /**
      * Method removePlayer removes a player from the current match.
-     * @param player
+     * @param player to be removed
      */
     public void removePlayer(Player player){
         this.players.remove(player);
     }
 
+    /**
+     * Set number of players in the game.
+     * @param numOfPlayers number of players
+     */
     public void setNumOfPlayers(int numOfPlayers){
         this.numOfPlayers = numOfPlayers;
     }
 
+    /**
+     * Get the number of total players in the game.
+     * @return number of total players in the game.
+     */
     public int getNumOfPlayers(){
         return this.numOfPlayers;
     }
@@ -58,7 +67,7 @@ public class Game implements Serializable {
 
     /**
      * First player setter.
-     * @param player
+     * @param player first player.
      */
     public void setFirstPlayer(Player player){
         this.firstPlayer = player;
@@ -67,41 +76,55 @@ public class Game implements Serializable {
 
     /**
      * First player getter.
-     * @return
+     * @return first player.
      */
     public Player getFirstPlayer(){
         return this.firstPlayer;
     }
 
-
-
-    public List<CommonGoalCard> getCommonGoalCards() {return this.commonGoalCards;}
-
-
     /**
      * Method used to set the current player.
-     * @param currentPlayer
+     * @param currentPlayer current player
      */
     public void setCurrentPlayer(Player currentPlayer){
         this.currentPlayer = currentPlayer;
     }
 
+    /**
+     * Get current player.
+     * @return current player.
+     */
     public Player getCurrentPlayer(){
         return this.currentPlayer;
     }
 
+
+    /**
+     * Get common goal cards.
+     * @return list of common goal card.
+     */
+    public List<CommonGoalCard> getCommonGoalCards() {return this.commonGoalCards;}
+
+    /**
+     * Get board.
+     * @return board.
+     */
     public Board getBoard(){
         return this.board;
     }
 
+    /**
+     * Get the bag.
+     * @return bag.
+     */
     public Bag getBag(){
         return this.bag;
     }
 
     /**
      * This method returns the ID corresponding player.
-     * @param id
-     * @return
+     * @param id unique ID of the player.
+     * @return player associated with the passed ID.
      */
     public Player getPlayerByID(int id) {
         for (Player player : players) {
@@ -113,8 +136,8 @@ public class Game implements Serializable {
     }
 
     /**
-     * This method returns the list of active players.
-     * @return
+     * This method returns the list of players.
+     * @return list of players in the game.
      */
     public ArrayList<Player> getPlayers() {
         return players;
@@ -123,6 +146,7 @@ public class Game implements Serializable {
 
     /**
      * Method used to switch to the next player.
+     * @throws NoNextPlayerException not enough players to set the next player.
      */
     public void nextPlayer() throws NoNextPlayerException {
         // If the player is still active it means that he completed the turn successfully. Otherwise, he disconnects during his turn. Do not increment turn counter.
@@ -158,28 +182,22 @@ public class Game implements Serializable {
         }
 
         setCurrentPlayer(nextPlayer);
-
-//        for(int i = 0; i< players.size(); i++){
-//            if(currentPlayer.equals(players.get(i))){
-//                if(i == players.size()-1)
-//                    setCurrentPlayer(players.get(0));
-//                else
-//                    setCurrentPlayer(players.get(i+1));
-//                return;
-//            }
-//        }
     }
 
 
     /**
-     * Board creation method.
+     * Create a new full board based on the number of players
      */
     public void createBoard(){
         this.creationFactory = new CreationFactory();
         this.board = creationFactory.createBoard(numOfPlayers);
     }
 
-
+    /**
+     * Set player as active.
+     * @param ID unique ID of the player.
+     * @param active boolean value that represent if the player is active or not.
+     */
     public void setActivePlayer(int ID, boolean active){
         for(Player p : players){
             if(p.getID() == ID)

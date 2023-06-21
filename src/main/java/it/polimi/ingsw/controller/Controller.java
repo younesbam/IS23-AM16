@@ -1,4 +1,5 @@
 package it.polimi.ingsw.controller;
+import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.common.Coordinate;
 import it.polimi.ingsw.common.exceptions.*;
 import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
@@ -20,8 +21,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.security.InvalidParameterException;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -30,6 +29,9 @@ import static it.polimi.ingsw.Const.*;
 import static it.polimi.ingsw.controller.Phase.SETUP;
 import static it.polimi.ingsw.controller.Phase.STANDBY;
 
+/**
+ * Main controller class. It handles the game progress.
+ */
 public class Controller implements PropertyChangeListener {
     /**
      * Game reference
@@ -80,7 +82,7 @@ public class Controller implements PropertyChangeListener {
 
     /**
      * Game instance getter.
-     * @return
+     * @return game instance.
      */
     public Game getGame() {
         return game;
@@ -89,7 +91,7 @@ public class Controller implements PropertyChangeListener {
 
     /**
      * Phase getter.
-     * @return
+     * @return current game phase.
      */
     public Phase getPhase(){
         return this.phase;
@@ -98,7 +100,7 @@ public class Controller implements PropertyChangeListener {
 
     /**
      * Phase setter.
-     * @param phase
+     * @param phase phase to be set.
      */
     public void setPhase(Phase phase){
         this.phase = phase;
@@ -138,15 +140,15 @@ public class Controller implements PropertyChangeListener {
 
     /**
      * Current player getter.
-     * @return
+     * @return current player.
      */
-    public Player getCurrentPlayer(){
+    private Player getCurrentPlayer(){
         return this.currentPlayer;
     }
 
 
     /**
-     * Method used to ask the player what he wants to do at the start of his turn.
+     * Ask the player to pick the tiles from the board.
      */
     private void askToPickTiles(){
         gameHandler.sendToPlayer(new PickTilesRequest(), currentPlayer.getID());
@@ -155,7 +157,7 @@ public class Controller implements PropertyChangeListener {
 
     /**
      * Method used to remove tiles from the player board.
-     * @param coordinates
+     * @param coordinates coordinates list representing rows and columns of where pick the tiles from the board.
      */
     private void removeTilesFromBoard(List<Coordinate> coordinates){
         Tile removedTile;
@@ -170,13 +172,16 @@ public class Controller implements PropertyChangeListener {
     }
 
 
+    /**
+     * Ask the player to place the tiles in the bookshelf.
+     */
     private void askToPlaceTiles(){
         gameHandler.sendToPlayer(new PlaceTilesRequest(), getCurrentPlayer().getID());
     }
 
 
     /**
-     * Method called after every turn, it checks if the current player has reached any common goal in this turn.
+     * Called after every turn; it checks if the current player has reached any common goal.
      */
     private void checkCommonGoal() {
         int points = 0;
@@ -195,7 +200,7 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
-     * Method called at the end of the game to calculate the points gained by the personal goal.
+     * Called after every turn; it checks if the current player has reached the personal goal.
      */
     private void checkPersonalGoal() {
         currentPlayer.checkPersonalGoalCardScheme();
@@ -203,7 +208,7 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
-     * Method that switches the current player to the next one.
+     * Switches the current player to the next one.
      */
     private void nextPlayer(){
         gameHandler.sendToPlayer(new EndOfYourTurn(), currentPlayer.getID());
@@ -221,24 +226,8 @@ public class Controller implements PropertyChangeListener {
     }
 
 
-//    /**
-//     * Method that after every player's turn checks if he has completely filled its Bookshelf, and so the game has reached an end.
-//     * @return
-//     */
-//    public boolean checkEndGame() {
-//        if(!lastTurn) {
-//            if (game.getCurrentPlayer().getBookShelf().checkEndGame()) {
-//                return true;
-//            } else
-//                return false;
-//        }
-//        else
-//            return false;
-//    }
-
-
     /**
-     * Method that updates current player's points.
+     * Update current player's points.
      */
     public void updateTotalPoints() {
         game.getCurrentPlayer().updateTotalPoints();
@@ -246,8 +235,8 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
-     * Method used to set the current player.
-     * @param player
+     * Set the current player.
+     * @param player current player
      */
     public void setCurrentPlayer(Player player) {
         game.setCurrentPlayer(player);
@@ -256,9 +245,8 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
-     * Method to check if the tiles selected by the player are actually pickable. If so, they are removed from the board.
-     *
-     * @param action list of coordinates where to pick tiles from the board
+     * Check if the tiles selected by the player are actually pickable. If so, they are removed from the board.
+     * @param action pick tiles request message from the client.
      */
     private void pickTilesAction(PickTilesAction action) {
         List<Coordinate> coordinates = action.getCoordinates();
@@ -345,9 +333,8 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
-     * Method used to place the selected tiles in the current player's Bookshelf. It also checks if the selected column has enough free spaces.
-     *
-     * @param action it contains the coordinates of the bookshelf on where to place the tiles and tiles also
+     * Place the selected tiles in the current player's Bookshelf. It also checks if the selected column has enough free spaces.
+     * @param action place tiles action message from the client.
      */
     private void placeTilesAction(PlaceTilesAction action) {
         List<Tile> tiles = action.getTiles();
@@ -393,6 +380,7 @@ public class Controller implements PropertyChangeListener {
         endTurn();
     }
 
+
     /**
      * Handle the end of the player's turn
      */
@@ -416,18 +404,6 @@ public class Controller implements PropertyChangeListener {
             }
         }
 
-//        if (!checkEndGame()) {
-//            setPhase(Phase.TILESPICKING);
-//            nextPlayer();
-//        } else{
-//            if(!lastTurn) {
-//                lastTurn = true;
-//                counter = counterCalculator();
-//                gameHandler.sendToPlayer(new CustomAnswer(false, "\nCongratulations, you have completed your Bookshelf! Now let the remaining players complete their turn in order to complete the round, and than we will reward the winner!\n"), currentPlayer.getID());
-//                gameHandler.sendToEveryone(new CustomAnswer(false, "\nPlayer " + currentPlayer.getUsername() + " has completed his Bookshelf!\nNow we will go on with turns until we reach the player that started the match! (The one and only with the majestic chair!)\n"));
-//            }
-//        }
-
         gameHandler.sendToEveryone(new GameReplica(game));
 
         //if we're in the last round of turns, we call the right method.
@@ -439,7 +415,7 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
-     * This method handles the last turns, after a player has completed his bookshelf.
+     * Handles the last turns, after a player has completed his bookshelf.
      */
     private void lastTurnHandler(){
         if(leftPlayers > 0){
@@ -454,7 +430,7 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
-     * Method that computes and returns the right counter, which represents the number of players that still have to take their turn after the first player completed his bookshelf.
+     * Computes and returns the right counter, which represents the number of players that still have to take their turn after the first player completed his bookshelf.
      * @return
      */
     private int leftPlayersCalc(){
@@ -469,7 +445,7 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
-     * Check the scheme of both commons and personal goal card. ALso update points of the player.
+     * Check the scheme of both commons and personal goal card. Also update player's points.
      */
     private void checkScheme(){
         checkCommonGoal();
@@ -487,12 +463,11 @@ public class Controller implements PropertyChangeListener {
         }
         else
             gameHandler.sendToPlayer(new ErrorAnswer("You cannot play this command in this game phase!", ErrorClassification.INCORRECT_PHASE), currentPlayer.getID());
-
     }
 
 
     /**
-     * Method that terminates the game, crowning the winner.
+     * Terminate the game, crowning the winner.
      */
     private void endGame(){
         //calcolare i punteggi di tutti e assegnare il vincitore!
@@ -536,20 +511,10 @@ public class Controller implements PropertyChangeListener {
     }
 
 
-    public void propertyChange(PropertyChangeEvent evt) {
-        switch (evt.getPropertyName()){
-            case "PickTilesAction" -> pickTilesAction((PickTilesAction) evt.getNewValue());
-            case "PlaceTilesAction" -> placeTilesAction((PlaceTilesAction) evt.getNewValue());
-            case "PrintCardsAction" -> checkPrintAction();
-        }
-
-    }
-
-
     /**
-     * Suspend a client after failed ping request
+     * Suspend a client after failed ping request.
      * @see Server#suspendClient(CSConnection) suspendClient
-     * @param ID of the client
+     * @param ID unique ID of the client
      */
     public synchronized void suspendClient(int ID){
         // Check if the players is already suspended
@@ -580,9 +545,9 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
-     * Restore a suspended client after the client reconnects to the server
-     * @see Server#restoreClient(CSConnection) suspendClient
-     * @param ID of the client
+     * Restore a suspended client after the client reconnects to the server.
+     * @see Server#restoreClient(CSConnection) restoreClient
+     * @param ID unique ID of the client
      */
     public synchronized void restoreClient(int ID){
         // Set player as not active
@@ -595,5 +560,21 @@ public class Controller implements PropertyChangeListener {
         }
 
         gameHandler.sendToEveryone(new CustomAnswer(false, game.getPlayerByID(ID).getUsername() + " reconnects! Now the turns will consider his/her presence"));
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * <p></p>
+     * This method is called by the {@link  GameHandler#dispatchActions game handler} after a successfully received action from the client.
+     * @param evt A PropertyChangeEvent object describing the event source
+     *          and the property that has changed.
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+        switch (evt.getPropertyName()){
+            case "PickTilesAction" -> pickTilesAction((PickTilesAction) evt.getNewValue());
+            case "PlaceTilesAction" -> placeTilesAction((PlaceTilesAction) evt.getNewValue());
+            case "PrintCardsAction" -> checkPrintAction();
+        }
     }
 }
