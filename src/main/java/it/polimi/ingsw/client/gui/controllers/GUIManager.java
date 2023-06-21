@@ -95,7 +95,6 @@ public class GUIManager extends UI {
      * @param s
      */
     private void howManyPlayerRequest(String s){
-        System.out.println(s);
         modelView.setIsYourTurn(true);
         LoadingController loadingController = (LoadingController) getControllerFromName(LOADER);
         Platform.runLater(() ->{
@@ -112,16 +111,7 @@ public class GUIManager extends UI {
         });
 
     }
-
-    private void customAnswer(String answer) {
-        System.out.println(answer);
-    }
-    public void wrongNum(String s){
-        howManyPlayerRequest(s);
-    }
     public void playerNumberChosen(String s){
-        System.out.println(s);
-
         updateTurn(false);
         Platform.runLater(() -> {
             LoadingController loadingController = (LoadingController)getControllerFromName(LOADER);
@@ -138,10 +128,6 @@ public class GUIManager extends UI {
 
     public GUI getGui(){return this.gui;}
     private void tilesPlaced(String string) {
-        System.out.println(string);
-
-        System.out.println("\n\nHere is your new Bookshelf:\n");
-        modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
         MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
         Platform.runLater(()->{
             mainSceneController.printBookShelf();
@@ -159,10 +145,8 @@ public class GUIManager extends UI {
                     mainSceneController.printBookShelf();
                     mainSceneController.printBoard();
                 });
-                System.out.println("It's now your turn!");
             }
             else {
-                System.out.println("\nWait for your next turn now!");
                 Platform.runLater(()->{
                     mainSceneController.printBoard();
                     mainSceneController.disablePickTiles();
@@ -181,28 +165,13 @@ public class GUIManager extends UI {
             mainSceneController.printBookShelf();
             mainSceneController.allowPickTiles();
         });
-
-        System.out.println("\n\nHere is your Bookshelf:\n");
-        modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
-
-        System.out.println("\n\nAnd here is the game board:\n");
-
-        modelView.getGame().getBoard().printBoard();
-        System.out.println("\n");
-
-        //printMAN();
-        System.out.println(request + "\n>");
     }
+
     public void requestWhereToPlaceTiles(String request){
         MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
         Platform.runLater(()->{
             mainSceneController.allowPlaceTiles();
         });
-        modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
-        System.out.println("\n");
-        //printMAN();
-        System.out.println("\n" + request + "\n");
-
     }
 
     public void countDown(CountDown a){
@@ -367,10 +336,8 @@ public class GUIManager extends UI {
            case "CountDown" -> countDown((CountDown) event.getNewValue());
            case "HowManyPlayersRequest" -> howManyPlayerRequest((String) event.getNewValue());
            case "UpdateTurn" -> updateTurn((Boolean) event.getNewValue());
-           case "CustomAnswer" -> customAnswer((String) event.getNewValue());
            case "PickTilesRequest" -> initialPhaseOfTheTurn((String) event.getNewValue());
            case "RequestToPlaceTiles" -> requestWhereToPlaceTiles((String) event.getNewValue());
-           case "WrongNum" -> wrongNum((String) event.getNewValue());
            case "BookShelfFilledWithTiles" -> tilesPlaced((String) event.getNewValue());
            case "ItsYourTurn" -> updateTurn(true);
            case "EndOfYourTurn" -> updateTurn(false);
