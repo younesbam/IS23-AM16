@@ -111,7 +111,7 @@
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button layoutX="123.0" layoutY="7.0" mnemonicParsing="false" text="BOOKSHELFS" textFill="#ac856e">
+            <Button fx:id="bookShelfsBtn" layoutX="123.0" layoutY="7.0" mnemonicParsing="false" onAction="#printBookShelfs" text="BOOKSHELFS" textFill="#ac856e">
                <font>
                   <Font size="16.0" />
                </font>

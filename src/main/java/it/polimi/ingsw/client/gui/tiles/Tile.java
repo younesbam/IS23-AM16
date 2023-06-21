@@ -18,7 +18,6 @@ public class Tile extends Rectangle{
 
     private int abscissa;
     private int ordinate;
-    private final MainSceneController mainSceneController;
     private static final double WIDTH = 45.0;
     private static final double HEIGHT = 45.0;
 
@@ -27,12 +26,10 @@ public class Tile extends Rectangle{
      *
      * @param x of type int - the row of the cell.
      * @param y of type int - the column of the cell.
-     * @param mainSceneController of type MainSceneController - the MainSceneController reference.
      */
-    public Tile(int x, int y, MainSceneController mainSceneController) {
+    public Tile(int x, int y) {
         this.abscissa = x;
         this.ordinate = y;
-        this.mainSceneController = mainSceneController;
         this.setWidth(WIDTH);
         this.setHeight(HEIGHT);
         makeSelectable();
@@ -40,27 +37,8 @@ public class Tile extends Rectangle{
     /** Method makeSelectable makes the tile selectable. */
     public void makeSelectable() {
         setOnMouseEntered(mouseEvent -> setCursor(Cursor.HAND));
-
-        /*setOnMouseClicked(
-                mouseEvent -> {
-                    mainSceneController
-                            .getGuiManager();
-                            //.firePropertyChange();
-                    System.out.println("Mouse clicked on " + abscissa + ", " + ordinate);
-                });*/
     }
 
-
-    /** Method deselects the tile. */
-    public void deselect() {
-        setOnMouseEntered(null);
-        setOnMouseClicked(null);
-    }
-
-    /** Method move handles move action. */
-    public void move() {
-
-    }
 
     /**
      * Method setPosition sets tile's cell.

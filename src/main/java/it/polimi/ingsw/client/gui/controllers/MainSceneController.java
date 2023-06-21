@@ -85,7 +85,7 @@ public class MainSceneController implements GUIController{
         for (int i = 0; i < MAXBOARDDIM; i++) {
             for (int j = 0; j < MAXBOARDDIM; j++) {
                 if(!(board[i][j].equals("BLANK")||board[i][j].equals("UNAVAILABLE"))){
-                    Tile tile = new Tile(i,j, this);
+                    Tile tile = new Tile(i,j);
                     //imageChoise = random.nextInt(1,4);
                     tile.setFill(
                             new ImagePattern(
@@ -109,7 +109,7 @@ public class MainSceneController implements GUIController{
         for (int i = 0; i < MAXBOOKSHELFROW; i++) {
             for (int j = 0; j < MAXBOOKSHELFCOL; j++) {
                 if(!(grid[i][j].getTile().name().equals("BLANK")||grid[i][j].getTile().name().equals("UNAVAILABLE"))){
-                    Tile tile = new Tile(i,j, this);
+                    Tile tile = new Tile(i,j);
                     tile.setFill(
                             new ImagePattern(
                                     new Image(GUI.class.getResourceAsStream(IMAGEPATH
@@ -305,6 +305,9 @@ public class MainSceneController implements GUIController{
         guiManager.printGoalCards();
     }
 
+    public void printBookShelfs(){
+        guiManager.printBookShelfs();
+    }
     public void updatePoints(String points){
         this.points.setText(points);
     }

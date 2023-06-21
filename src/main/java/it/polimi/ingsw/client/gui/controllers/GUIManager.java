@@ -31,6 +31,10 @@ public class GUIManager extends UI {
     private static final String MAIN_GUI = "mainScene.fxml";
     private static final String LOADER = "loadingScene.fxml";
     private static final String GOALS = "goalCardScene.fxml";
+
+    private static final String BOOKSHELFS1 = "bookShelf1PlayerScene.fxml";
+    private static final String BOOKSHELFS2 = "bookShelf2PlayerScene.fxml";
+    private static final String BOOKSHELFS3 = "bookShelf3PlayerScene.fxml";
     private static final String SETUP = "joinScene.fxml";
     private static final String CHAT = "chatScene.fxml";
     private static final String COUNTDOWN = "countDown.fxml";
@@ -63,7 +67,8 @@ public class GUIManager extends UI {
         }
     }
     public HashMap<String, Scene> setup() {
-        List<String> fxmList = new ArrayList<>(Arrays.asList(SETUP,LOADER, MAIN_GUI, GOALS, CHAT, COUNTDOWN, GAME_OVER));
+        List<String> fxmList = new ArrayList<>(Arrays.asList(SETUP,LOADER, MAIN_GUI, GOALS, BOOKSHELFS1, BOOKSHELFS2, BOOKSHELFS3,
+                                                            CHAT, COUNTDOWN, GAME_OVER));
         try {
             for (String path : fxmList) {
                 FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/fxml/" + path));
@@ -218,7 +223,6 @@ public class GUIManager extends UI {
             MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
             mainSceneController.updateTurn(s);
             mainSceneController.showChair();
-
         });
     }
 
@@ -253,7 +257,31 @@ public class GUIManager extends UI {
                 + modelView.getGame().getPlayerByID(getPlayerID()).getPersonalGoalCard().getCardNumber()
                 + ".png");
         });
+    }
 
+    public void printBookShelfs(){
+        int numOfOtherPlayers = modelView.getGame().getNumOfPlayers() - 1 ;
+        String title = "Bookselfs";
+        switch (numOfOtherPlayers){
+            case 1:
+                BookShelf1PlayerController controller1 = (BookShelf1PlayerController) getControllerFromName(BOOKSHELFS1);
+                Platform.runLater(()->{
+                    controller1.setView();
+                });
+                popupStage(BOOKSHELFS1, title); break;
+            case 2:
+                BookShelf2PlayerController controller2 = (BookShelf2PlayerController) getControllerFromName(BOOKSHELFS2);
+                Platform.runLater(()->{
+                    controller2.setView();
+                });
+                popupStage(BOOKSHELFS2, title); break;
+            case 3:
+                BookShelf3PlayerController controller3 = (BookShelf3PlayerController) getControllerFromName(BOOKSHELFS3);
+                Platform.runLater(()->{
+                    controller3.setView();
+                });
+                popupStage(BOOKSHELFS3, title); break;
+        }
     }
 
     private void errorMessage(ErrorAnswer a) {
