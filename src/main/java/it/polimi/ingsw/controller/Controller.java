@@ -558,7 +558,7 @@ public class Controller implements PropertyChangeListener {
                 try{
                     game.getBoard().restoreTiles(pickedTiles);
                 }catch (WrongTilesException | WrongCoordinateException | CellNotEmptyException e){
-                    Server.LOGGER.log(Level.SEVERE, "Error during restore tiles on the board. Game is shutting down", e);
+                    Server.LOGGER.log(Level.SEVERE, "Error during restore tiles on the board. The cell is not empty! Game is shutting down to avoid tiles' loss", e);
                     System.exit(-1);
                 }
             }

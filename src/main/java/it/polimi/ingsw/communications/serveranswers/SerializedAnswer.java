@@ -3,14 +3,14 @@ package it.polimi.ingsw.communications.serveranswers;
 import java.io.Serializable;
 
 /**
- * This class contains the server's answer to the client, as a serializable type of object.
+ * Server's answer to the client, as a serializable type of object.
  */
 public class SerializedAnswer implements Serializable {
     private Answer answer;
 
     /**
      * Answer setter.
-     * @param a
+     * @param a answer to be sent to client.
      */
     public void setAnswer(Answer a) {
         this.answer = a;
@@ -18,6 +18,7 @@ public class SerializedAnswer implements Serializable {
 
     /**
      * Answer getter.
+     * @return answer from the server.
      */
     public Answer getAnswer() {
         return this.answer;

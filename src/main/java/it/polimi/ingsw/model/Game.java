@@ -186,40 +186,4 @@ public class Game implements Serializable {
                 p.setActive(active);
         }
     }
-
-//    /**
-//     * Move player from active to inactive list
-//     * @param ID of the player
-//     * @throws PlayerNotFoundException
-//     */
-//    public void moveActiveToInactive(int ID) throws PlayerNotFoundException {
-//        Player playerToMove = getPlayerByID(ID);
-//        if(playerToMove == null) throw new PlayerNotFoundException();
-//        for(Player p : players){
-//            if(playerToMove.equals(p)){
-//                players.remove(p);
-//                inactivePlayers.add(p);
-//                break;
-//            }
-//        }
-//    }
-
-//    /**
-//     * Move player from inactive to active list
-//     * @param username of the player
-//     * @throws PlayerNotFoundException
-//     */
-//    public void moveInactiveToActive(String username) throws PlayerNotFoundException {
-//        Player playerToMove = null;
-//        for(Player p : inactivePlayers){
-//            if(p.getUsername().equals(username)){
-//                playerToMove = p;
-//                break;
-//            }
-//        }
-//        if(playerToMove == null) throw new PlayerNotFoundException();
-//
-//        inactivePlayers.remove(playerToMove);
-//        players.add(playerToMove);
-//    }
 }

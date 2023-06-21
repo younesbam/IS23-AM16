@@ -1,5 +1,8 @@
 package it.polimi.ingsw.communications.serveranswers.errors;
 
+/**
+ * Specific errors' list that describe the problem themselves.
+ */
 public enum ErrorClassification {
     // Setup errors
     LOBBY_NOT_READY,

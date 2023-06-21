@@ -351,7 +351,6 @@ public class CLI extends UI implements Runnable{
         switch (event.getPropertyName()){
             case "ConnectionOutcome" -> connectionOutcome((ConnectionOutcome) event.getNewValue());
             case "HowManyPlayersRequest" -> howManyPlayerRequest((String) event.getNewValue());
-            case "UpdateTurn" -> updateTurn((Boolean) event.getNewValue());
             case "CustomAnswer" -> customAnswer((String) event.getNewValue());
             case "PickTilesRequest" -> initialPhaseOfTheTurn((String) event.getNewValue());
             case "RequestToPlaceTiles" -> requestWhereToPlaceTiles((String) event.getNewValue());
