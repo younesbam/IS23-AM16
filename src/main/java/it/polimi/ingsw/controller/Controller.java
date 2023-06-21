@@ -211,6 +211,7 @@ public class Controller implements PropertyChangeListener {
             game.nextPlayer();
             this.currentPlayer = game.getCurrentPlayer();
             gameHandler.sendToPlayer(new ItsYourTurn(), currentPlayer.getID());
+            gameHandler.sendToEveryoneExcept(new UpdateTurn(), currentPlayer.getID());
         }catch (NoNextPlayerException e){
             // No players connected
             System.out.println(RED_COLOR + "Not enough players connected. Standby mode activated. I will resume the game when there are at least 2 connected players. zzz..." + RESET_COLOR);

@@ -7,7 +7,7 @@ import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.communications.serveranswers.BookShelfCompleted;
 import it.polimi.ingsw.communications.serveranswers.CountDown;
-import it.polimi.ingsw.communications.serveranswers.DisconnectPlayer;
+import it.polimi.ingsw.communications.serveranswers.requests.DisconnectPlayer;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
