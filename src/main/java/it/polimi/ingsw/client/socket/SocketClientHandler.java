@@ -8,7 +8,6 @@ import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.messages.UsernameSetup;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
-import it.polimi.ingsw.common.exceptions.TakenUsername;
 import it.polimi.ingsw.communications.serveranswers.requests.PingRequest;
 
 import java.io.IOException;

@@ -15,7 +15,6 @@ import static it.polimi.ingsw.Const.MAXBOARDDIM;
 
 /**
  * Easily get what's inside the json file
- * @author Nicolo' Gandini
  */
 public class JSONParser {
     private final String fileName;
@@ -23,7 +22,7 @@ public class JSONParser {
 
     /**
      * Constructor
-     * @param fileName name of the file. If there are subdirectories, specifies them in the string. In case of subdirectories, don't add the initial "/"
+     * @param fileName name of the file. If there are subdirectories, specifies them in the string. In case of subdirectories, don't add the initial "/". All the files must be in "resources" directory
      */
     public JSONParser(String fileName) {
         this.fileName = new String(fileName);
@@ -139,26 +138,10 @@ public class JSONParser {
 
 
     /**
-     * Get port of the server.
-     * @return server IP
-     */
-    public String getServerIP(){ return getJSONObject().getString("IP"); }
-
-
-    /**
      * Get server name.
      * @return server name
      */
     public String getServerName(){ return getJSONObject().getString("ServerName"); }
-
-
-    /**
-     * Get timeout valure to close connection
-     * @return timeout value [ms]
-     */
-     public int getTimeout(){
-         return getJSONObject().getInt("timeout");
-     }
 
 
     /**

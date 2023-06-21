@@ -2,20 +2,21 @@ package it.polimi.ingsw.communications.serveranswers.requests;
 
 import it.polimi.ingsw.communications.serveranswers.Answer;
 
+/**
+ * Request message to client: pick tiles notification.
+ */
 public class PickTilesRequest implements Answer {
-
-    public String request;
+    private final String answer;
 
     public PickTilesRequest(){
-        this.request = "It's your turn now! Follow the blue friendly message instructions to know what you can do. Remember that it's the phase of the turn in which you should pick your tiles!";
+        this.answer = "It's your turn now! Follow the blue friendly message instructions to know what you can do. Remember that it's the phase of the turn in which you should pick your tiles!";
     }
 
 
     /**
-     * Request getter.
-     * @return
+     * {@inheritDoc}
      */
     public String getAnswer() {
-        return request;
+        return answer;
     }
 }

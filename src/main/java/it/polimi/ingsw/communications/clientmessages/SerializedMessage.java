@@ -6,10 +6,9 @@ import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import java.io.Serializable;
 
 /**
- * This class is used to enclose both communications and actions needed to be sent to the server in a single object,
+ * Enclose both communications and actions needed to be sent to the server in a single object,
  * which is as well serializable.
  */
-
 public class SerializedMessage implements Serializable {
     /**
      * Message to the server.
@@ -28,8 +27,9 @@ public class SerializedMessage implements Serializable {
 
 
     /**
-     * Class constructor with a message to the server.
-     * @param message
+     * Class constructor to instantiate a message to the server.
+     * @param playerID ID of the player.
+     * @param message message to be sent to the server.
      */
     public SerializedMessage(Integer playerID, Message message){
         this.playerID = playerID;
@@ -39,12 +39,13 @@ public class SerializedMessage implements Serializable {
 
 
     /**
-     * Class constructor with an action performed by the user.
-     * @param a
+     * Class constructor to instantiate a game action to the server.
+     * @param playerID ID of the player.
+     * @param gameAction game action performed by the user.
      */
-    public SerializedMessage(Integer playerID, GameAction a){
+    public SerializedMessage(Integer playerID, GameAction gameAction){
         this.playerID = playerID;
-        this.gameAction = a;
+        this.gameAction = gameAction;
         this.message = null;
     }
 }

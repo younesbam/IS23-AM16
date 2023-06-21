@@ -3,25 +3,23 @@ package it.polimi.ingsw.communications.serveranswers.requests;
 import it.polimi.ingsw.communications.serveranswers.Answer;
 
 /**
- * Ping request message from server
+ * Ping request message from server.
  */
 public class PingRequest implements Answer {
-
-    private final String request;
+    private final String answer;
 
 
     /**
      * Class constructor.
      */
     public PingRequest(){
-        this.request = "Ping request from server";
+        this.answer = "Ping request from server";
     }
 
     /**
-     * Answer getter.
-     * @return
+     * {@inheritDoc}
      */
     public String getAnswer() {
-        return request;
+        return answer;
     }
 }
