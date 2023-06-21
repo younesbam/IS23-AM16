@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.Const;
-import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.common.JSONParser;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
@@ -13,9 +12,10 @@ import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorClassification;
 import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
 import it.polimi.ingsw.communications.serveranswers.info.PlayerNumberChosen;
+import it.polimi.ingsw.communications.serveranswers.requests.DisconnectPlayer;
 import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
 import it.polimi.ingsw.controller.Phase;
-import it.polimi.ingsw.exceptions.OutOfBoundException;
+import it.polimi.ingsw.common.exceptions.OutOfBoundException;
 import it.polimi.ingsw.server.connection.CSConnection;
 import it.polimi.ingsw.server.rmi.RMIServerHandler;
 import it.polimi.ingsw.server.socket.ServerSideSocket;
@@ -91,10 +91,9 @@ public class Server {
     private final List<VirtualPlayer> playersSuspendedList = new ArrayList<>();
 
     /**
-     * Represent that the first player doesn't answer to the number of players question.
-     * During this mode, new players can't connect, until the server knows the maximum number of players.
+     * Scheduler service
      */
-    private boolean setupMode;
+    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
 
     /**
@@ -138,13 +137,26 @@ public class Server {
         Ping thread to check if clients are still alive
         WARNING: remember to shut down the thread with exec.shutdownNow();
          */
-        ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
-        exec.scheduleAtFixedRate(() -> {
+        scheduler.scheduleAtFixedRate(() -> {
             /*
             Each client registered in the server is pinged. If the client doesn't respond, the ping() method proceed itself to disconnect the client.
              */
-            pingClients();
+            try {
+                pingClients();
+            }catch (Exception e){
+                LOGGER.log(Level.WARNING, "Exception thrown",e);
+            }
+
         }, 1, Const.SERVER_PING_DELAY, TimeUnit.SECONDS);
+    }
+
+
+    /**
+     * Ping every connected client
+     */
+    private synchronized void pingClients(){
+        for(VirtualPlayer p : playersConnectedList)
+            p.getConnection().ping();
     }
 
 
@@ -227,7 +239,7 @@ public class Server {
         try {
             connection.setID(newClientRegistration(usernameChoice, connection));
             if (connection.getID() == null) {
-                connection.disconnect();
+                //connection.disconnect();
                 return;
             }
             lobby(connection);
@@ -243,17 +255,12 @@ public class Server {
     private synchronized Integer newClientRegistration(String username, CSConnection clientConnection) throws IOException{
         SerializedAnswer answer = new SerializedAnswer();
         // Check if the server is in a setup mode. If true it returns null and disconnect the client immediately.
-        if(setupMode){
-            answer.setAnswer(new ErrorAnswer(ErrorClassification.LOBBY_NOT_READY));
-            clientConnection.sendAnswerToClient(answer);
-            return null;
-        }
-
-        //Checks about waiting list and available slot for the game
-        if (numOfPlayers != 0 && (playersWaitingList.size() >= numOfPlayers || playersConnectedList.size() >= numOfPlayers)) {
-            answer.setAnswer(new ErrorAnswer(ErrorClassification.MAX_PLAYERS_REACHED));
-            clientConnection.sendAnswerToClient(answer);
-            return null;
+        if(gameHandler != null){  // Game handler null means no one is connected yet
+            if(gameHandler.getController().getPhase() == SETUP){
+                answer.setAnswer(new ErrorAnswer(ErrorClassification.LOBBY_NOT_READY));
+                clientConnection.sendAnswerToClient(answer);
+                return null;
+            }
         }
 
         // Try to register a new client.
@@ -261,8 +268,15 @@ public class Server {
 
         //checks about nickname
         if (clientID == null) {  // Username not used by another player
+            //Checks about waiting list and available slot for the game
+            if (numOfPlayers != 0 && (playersWaitingList.size() >= numOfPlayers || playersConnectedList.size() >= numOfPlayers)) {
+                answer.setAnswer(new ErrorAnswer(ErrorClassification.MAX_PLAYERS_REACHED));
+                clientConnection.sendAnswerToClient(answer);
+                return null;
+            }
+
             if (playersConnectedList.isEmpty()) {
-                gameHandler = new GameHandler(this);
+                gameHandler = new GameHandler(this);  // This set also the SETUP phase
             }
 
             // Create a new player.
@@ -281,11 +295,20 @@ public class Server {
             }
 
         } else {  // Username already in use.
-            answer.setAnswer(new ErrorAnswer("Username already in use. Try to connect again", ErrorClassification.TAKEN_USERNAME));
-            clientConnection.sendAnswerToClient(answer);
-            return null;
+            // Check if a disconnected player want to reconnect with the same username
+            VirtualPlayer playerToRestore = getVirtualPlayerByID(clientID);
+            if(!playerToRestore.getConnection().isAlive()){
+                clientConnection.setID(clientID);
+                playerToRestore.restorePlayer(clientConnection);  // Assign the actual client-server connection
+                answer.setAnswer(new ConnectionOutcome(true, playerToRestore.getID(), "Welcome back!"));
+                clientConnection.sendAnswerToClient(answer);
+                restoreClient(clientConnection);
+            } else {
+                answer.setAnswer(new ErrorAnswer("Username already in use. Try to connect again", ErrorClassification.TAKEN_USERNAME));
+                clientConnection.sendAnswerToClient(answer);
+                return null;
+            }
         }
-
         return clientID;
     }
 
@@ -301,13 +324,16 @@ public class Server {
         answer.setAnswer(new CustomAnswer(false, BLUE_BOLD_COLOR + "\nType MAN to know all the valid commands\n" + RESET_COLOR));
         connection.sendAnswerToClient(answer);
 
+        // If the game is already started and the player wants to reconnect, skip the lobby phase
+        if(gameHandler.isAlreadyStarted())
+            return;
+
         playersWaitingList.add(getVirtualPlayerByID(connection.getID()));
-        if(playersWaitingList.size() == 1) { //if it's the first player
-            setupMode = true;  // Start the setup mode.
+        if(gameHandler.getController().getPhase() == SETUP) { //if it's the first player
             System.out.println(RED_COLOR + "Setup mode started. Clients are not welcome. Wait for the lobby host to choose the number of players" + RESET_COLOR);
             answer.setAnswer(new HowManyPlayersRequest("Hi " + getWaitingPlayerByID(connection.getID()).getUsername() + ", you are now the host of this lobby.\nPlease choose the number of players you want to play with:"));
             connection.sendAnswerToClient(answer);
-            gameHandler.getController().setCurrentPlayer(gameHandler.getController().getGame().getActivePlayers().get(0));
+            gameHandler.getController().setCurrentPlayer(gameHandler.getController().getGame().getPlayers().get(0));
         } else if(playersWaitingList.size() == numOfPlayers) {  // Game has reached the right number of players. Game is starting
             System.out.println(numOfPlayers + " players are now ready to play. Game is starting...");
             for(int i = 3; i > 0; i--) {
@@ -353,7 +379,6 @@ public class Server {
         this.numOfPlayers = numOfPlayers;
         player.getGameHandler().setNumOfPlayers(numOfPlayers);
         player.send(new PlayerNumberChosen(numOfPlayers));
-        setupMode = false;  // Stop the setup mode. Now the server can accept new players.
         System.out.println(GREEN_COLOR + "Setup mode ended. Clients are now welcome!" + RESET_COLOR);
         gameHandler.getController().setPhase(Phase.LOBBY);
     }
@@ -374,39 +399,21 @@ public class Server {
      * This method closes all the connections to the server.
      */
     private void exit() {
-        //DA MODIFICARE E FARE IN MODO CHE CON "QUIT" DI CHIUDA ANCHE LA CONNESSIONE RMI (IF/ELSE)
         Scanner in = new Scanner(System.in);
         while (true) {
             if (in.next().equalsIgnoreCase("EXIT")) {
-                serverSideSocket.setIsActive(false);
+                // Disconnect players
                 for(VirtualPlayer p : playersConnectedList){
                     p.send(new DisconnectPlayer());
                 }
+                // Close threads
+                serverSideSocket.setIsActive(false);
+                serverSideSocket.shutdown();
+                scheduler.shutdownNow();
+                // Shutdown the server
                 System.exit(0);
-                break;
             }
         }
-    }
-
-
-    /**
-     * Ping every connected client
-     */
-    private synchronized void pingClients(){
-        for (VirtualPlayer p : playersConnectedList) {
-            p.getConnection().ping();
-        }
-    }
-
-
-    public void suspendClient(CSConnection connection){
-        VirtualPlayer suspendedPlayer = getVirtualPlayerByID(connection.getID());
-        if(suspendedPlayer == null){
-            System.out.println("Player doesn't exist. Impossible to suspend it");
-            return;
-        }
-        removePlayer(connection.getID());
-        playersSuspendedList.add(suspendedPlayer);
     }
 
 
@@ -486,6 +493,14 @@ public class Server {
         return null;
     }
 
+    /**
+     * Get connected virtual player list
+     * @return
+     */
+    public List<VirtualPlayer> getConnectedPlayers(){
+        return playersConnectedList;
+    }
+
 
     /**
      * This method removes a player from the current server.
@@ -505,6 +520,36 @@ public class Server {
         }catch (NullPointerException e){
             //
         }
+    }
+
+
+    /**
+     * Suspend a client after failed ping {@link CSConnection#ping() ping} request
+     * @param connection
+     */
+    public void suspendClient(CSConnection connection){
+        VirtualPlayer suspendedClient = getVirtualPlayerByID(connection.getID());
+        if(suspendedClient == null){
+            System.out.println("Player doesn't exist. Impossible to suspend it");
+            return;
+        }
+        System.out.println("Suspending player " + suspendedClient.getUsername() + " ...");
+        gameHandler.suspendClient(suspendedClient.getID());
+        System.out.println("Player suspended successfully");
+    }
+
+
+    /**
+     * Restore client after a {@link Server#suspendClient(CSConnection) suspension} from the server
+     * <p></p>
+     * Note: in order to properly restore the client, username must be the same of the disconnected client
+     * @param connection
+     */
+    public void restoreClient(CSConnection connection){
+        VirtualPlayer restoredClient = getVirtualPlayerByID(connection.getID());
+        System.out.println("Restoring player " + restoredClient.getUsername() + " ...");
+        gameHandler.restoreClient(restoredClient.getID());
+        System.out.println("Player restored successfully");
     }
 
 

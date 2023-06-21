@@ -7,21 +7,27 @@ import it.polimi.ingsw.communications.serveranswers.*;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
 import it.polimi.ingsw.communications.serveranswers.info.PlayerNumberChosen;
+import it.polimi.ingsw.communications.serveranswers.info.*;
+import it.polimi.ingsw.communications.serveranswers.requests.DisconnectPlayer;
 import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.requests.PickTilesRequest;
 import it.polimi.ingsw.communications.serveranswers.requests.PlaceTilesRequest;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 
 /**
  * Handle the answer from the server.
  */
 public class ActionHandler {
-
     private final ModelView modelView;
     private CLI cli;
     private GUIManager guiManager;
 
+    /**
+     * View's property change support. Used by CLI or GUI.
+     * @see CLI#propertyChange(PropertyChangeEvent)
+     */
     private final PropertyChangeSupport pcsView = new PropertyChangeSupport(this);
 
 
@@ -49,7 +55,7 @@ public class ActionHandler {
 
 
     /**
-     * Manage the answer from the server
+     * Manage the answer from the server. Called after a successfully received message from Socket or RMI.
      * @param a Answer, received from the server
      */
     public void answerManager(Answer a){

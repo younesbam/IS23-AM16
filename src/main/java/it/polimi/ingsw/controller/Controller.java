@@ -1,39 +1,71 @@
 package it.polimi.ingsw.controller;
 import it.polimi.ingsw.common.Coordinate;
-import it.polimi.ingsw.common.exceptions.NotEmptyColumnException;
+import it.polimi.ingsw.common.exceptions.*;
 import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
 import it.polimi.ingsw.communications.serveranswers.*;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorClassification;
+import it.polimi.ingsw.communications.serveranswers.info.*;
+import it.polimi.ingsw.communications.serveranswers.requests.DisconnectPlayer;
 import it.polimi.ingsw.communications.serveranswers.requests.PickTilesRequest;
 import it.polimi.ingsw.communications.serveranswers.requests.PlaceTilesRequest;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.CommonGoalCard;
 import it.polimi.ingsw.server.GameHandler;
+import it.polimi.ingsw.server.Server;
+import it.polimi.ingsw.server.connection.CSConnection;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
-import static it.polimi.ingsw.Const.MAXBOARDDIM;
-import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Const.*;
 import static it.polimi.ingsw.controller.Phase.SETUP;
+import static it.polimi.ingsw.controller.Phase.STANDBY;
 
 public class Controller implements PropertyChangeListener {
+    /**
+     * Game reference
+     */
     private final Game game;
+
+    /**
+     * Game handler reference
+     */
     private final GameHandler gameHandler;
+
+    /**
+     * Current player
+     */
     private Player currentPlayer;
-    private final List<Tile> pickedTiles = new ArrayList<>();
+
+    /**
+     * Represent picked tiles from the board, and coordinate of the board from which the tiles were taken
+     */
+    private final Map<Tile, Coordinate> pickedTiles = new LinkedHashMap<>();
+
+    /**
+     * Phase of the game.
+     */
     private Phase phase;
+
+    /**
+     * Last turn
+     */
     private boolean lastTurn = false;
-    private int counter = 0;
+
+    /**
+     * Left players that have to complete the turn when a player filled its board
+     */
+    private int leftPlayers = 0;
+
 
 
     /**
@@ -94,7 +126,7 @@ public class Controller implements PropertyChangeListener {
         game.createBoard();
         game.getBoard().updateBoard();
         setCurrentPlayer(game.getCurrentPlayer());
-        this.counter = game.getNumOfPlayers() - 1;
+        this.leftPlayers = game.getNumOfPlayers() - 1;
 
         gameHandler.sendToEveryone(new GameReplica(game));
 
@@ -129,7 +161,7 @@ public class Controller implements PropertyChangeListener {
         Tile removedTile;
         for(Coordinate c : coordinates){
             removedTile = game.getBoard().removeTile(c.getRow(), c.getCol());
-            pickedTiles.add(removedTile);
+            pickedTiles.put(removedTile, c);
             gameHandler.sendToPlayer(new CustomAnswer(false, "\nYou picked the following tile:" + removedTile.name()), currentPlayer.getID());
         }
 
@@ -175,28 +207,33 @@ public class Controller implements PropertyChangeListener {
      */
     private void nextPlayer(){
         gameHandler.sendToPlayer(new EndOfYourTurn(), currentPlayer.getID());
-        game.nextPlayer();
-        this.currentPlayer = game.getCurrentPlayer();
-        gameHandler.sendToPlayer(new ItsYourTurn(), currentPlayer.getID());
-        gameHandler.sendToEveryoneExcept(new UpdateTurn(), currentPlayer.getID());
-        pickedTiles.clear();
-    }
-
-
-    /**
-     * Method that after every player's turn checks if he has completely filled its Bookshelf, and so the game has reached an end.
-     * @return
-     */
-    public boolean checkEndGame() {
-        if(!lastTurn) {
-            if (game.getCurrentPlayer().getBookShelf().checkEndGame()) {
-                return true;
-            } else
-                return false;
+        try {
+            game.nextPlayer();
+            this.currentPlayer = game.getCurrentPlayer();
+            gameHandler.sendToPlayer(new ItsYourTurn(), currentPlayer.getID());
+        }catch (NoNextPlayerException e){
+            // No players connected
+            System.out.println(RED_COLOR + "Not enough players connected. Standby mode activated. I will resume the game when there are at least 2 connected players. zzz..." + RESET_COLOR);
+            gameHandler.sendToEveryone(new CustomAnswer(false, "Not enough players connected. Standby mode activated. You cannot play until at least one more player is connected"));
+            setPhase(STANDBY);
         }
-        else
-            return false;
     }
+
+
+//    /**
+//     * Method that after every player's turn checks if he has completely filled its Bookshelf, and so the game has reached an end.
+//     * @return
+//     */
+//    public boolean checkEndGame() {
+//        if(!lastTurn) {
+//            if (game.getCurrentPlayer().getBookShelf().checkEndGame()) {
+//                return true;
+//            } else
+//                return false;
+//        }
+//        else
+//            return false;
+//    }
 
 
     /**
@@ -240,7 +277,7 @@ public class Controller implements PropertyChangeListener {
                 canPick = true;
                 break;
             }catch (NotEmptyColumnException e){
-               // do nothing
+                // do nothing
             }
         }
         if(!canPick){
@@ -281,17 +318,13 @@ public class Controller implements PropertyChangeListener {
         if(straightRow){
             // Sort coordinates (only columns)
             values = coordinates.stream()
-                    .map(c -> {
-                        return c.getCol();
-                    })
+                    .map(Coordinate::getCol)
                     .sorted()
                     .toList();
         } else {
             // Sort coordinates (only rows)
             values = coordinates.stream()
-                    .map(c -> {
-                        return c.getRow();
-                    })
+                    .map(Coordinate::getRow)
                     .sorted()
                     .toList();
         }
@@ -326,7 +359,8 @@ public class Controller implements PropertyChangeListener {
         }
 
         // Check if the selected tiles correspond with the picked tiles
-        if(!tiles.containsAll(pickedTiles) || !pickedTiles.containsAll(tiles)){
+        List<Tile> pickedTilesList = new ArrayList<>(pickedTiles.keySet());
+        if(!tiles.containsAll(pickedTilesList) || !pickedTilesList.containsAll(tiles)){
             gameHandler.sendToPlayer(new ErrorAnswer("Wrong tiles selected, please try again!", ErrorClassification.WRONG_TILES_SELECTED), currentPlayer.getID());
             return;
         }
@@ -354,23 +388,44 @@ public class Controller implements PropertyChangeListener {
         gameHandler.sendToPlayer(new CustomAnswer(false, "Total points earned until now: " + game.getCurrentPlayer().getTotalPoints()), currentPlayer.getID());
         gameHandler.sendToPlayer(new UpdatePlayerPoints(game.getCurrentPlayer().getTotalPoints()), currentPlayer.getID());
 
+        // End of the turn handler
+        endTurn();
+    }
+
+    /**
+     * Handle the end of the player's turn
+     */
+    private void endTurn(){
+        // Lists flush
+        pickedTiles.clear();
         // Update game board
         game.getBoard().updateBoard();
-
         // Check if a player has completed his bookshelf, otherwise it sets lastTurn to true, in order to start the last turns for the remaining players.
-        if (!checkEndGame()) {
-            setPhase(Phase.TILESPICKING);
-            nextPlayer();
-        } else{
-            if(!lastTurn) {
+        if(!lastTurn){
+            if(!game.getCurrentPlayer().getBookShelf().checkEndGame()){
+                setPhase(Phase.TILESPICKING);
+                nextPlayer();
+            } else {
                 lastTurn = true;
-                counter = counterCalculator();
+                leftPlayers = leftPlayersCalc();
                 gameHandler.sendToPlayer(new CustomAnswer(false, "\nCongratulations, you have completed your Bookshelf! Now let the remaining players complete their turn in order to complete the round, and than we will reward the winner!\n"), currentPlayer.getID());
                 gameHandler.sendToPlayer(new BookShelfCompleted(), currentPlayer.getID());
                 gameHandler.sendToEveryone(new CustomAnswer(false, "\nPlayer " + currentPlayer.getUsername() + " has completed his Bookshelf!\nNow we will go on with turns until we reach the player that started the match! (The one and only with the majestic chair!)\n"));
                 gameHandler.sendToEveryoneExcept(new BookShelfCompleted(currentPlayer.getUsername()), currentPlayer.getID());
             }
         }
+
+//        if (!checkEndGame()) {
+//            setPhase(Phase.TILESPICKING);
+//            nextPlayer();
+//        } else{
+//            if(!lastTurn) {
+//                lastTurn = true;
+//                counter = counterCalculator();
+//                gameHandler.sendToPlayer(new CustomAnswer(false, "\nCongratulations, you have completed your Bookshelf! Now let the remaining players complete their turn in order to complete the round, and than we will reward the winner!\n"), currentPlayer.getID());
+//                gameHandler.sendToEveryone(new CustomAnswer(false, "\nPlayer " + currentPlayer.getUsername() + " has completed his Bookshelf!\nNow we will go on with turns until we reach the player that started the match! (The one and only with the majestic chair!)\n"));
+//            }
+//        }
 
         gameHandler.sendToEveryone(new GameReplica(game));
 
@@ -385,12 +440,11 @@ public class Controller implements PropertyChangeListener {
     /**
      * This method handles the last turns, after a player has completed his bookshelf.
      */
-    public void lastTurnHandler(){
-        if(counter > 0){
+    private void lastTurnHandler(){
+        if(leftPlayers > 0){
+            leftPlayers--;
             setPhase(Phase.TILESPICKING);
             nextPlayer();
-
-            counter--;
             askToPickTiles();
         }
         else
@@ -402,19 +456,14 @@ public class Controller implements PropertyChangeListener {
      * Method that computes and returns the right counter, which represents the number of players that still have to take their turn after the first player completed his bookshelf.
      * @return
      */
-    public int counterCalculator(){
-        int c;
-
-            if(game.getFirstPlayer().getID() > currentPlayer.getID()){
-                c = game.getFirstPlayer().getID() - currentPlayer.getID() - 1;
-            }
-            else if(game.getFirstPlayer().getID() < currentPlayer.getID()){
-                c = (game.getNumOfPlayers() - currentPlayer.getID() - 1) + game.getFirstPlayer().getID();
-            }
-            else
-                c = game.getNumOfPlayers() - 1;
-
-        return c;
+    private int leftPlayersCalc(){
+        if(game.getFirstPlayer().getID() > currentPlayer.getID()){
+            return game.getFirstPlayer().getID() - currentPlayer.getID() - 1;
+        }
+        if(game.getFirstPlayer().getID() < currentPlayer.getID()){
+            return  (game.getNumOfPlayers() - currentPlayer.getID() - 1) + game.getFirstPlayer().getID();
+        }
+        return game.getNumOfPlayers() - 1;
     }
 
 
@@ -431,7 +480,7 @@ public class Controller implements PropertyChangeListener {
     /**
      * Check if you're in the right game phase to print the cards.
      */
-    public void checkPrintAction(){
+    private void checkPrintAction(){
         if(phase == Phase.TILESPLACING || phase == Phase.TILESPICKING){
             gameHandler.sendToPlayer(new PrintCardsAnswer(), currentPlayer.getID());
         }
@@ -444,7 +493,7 @@ public class Controller implements PropertyChangeListener {
     /**
      * Method that terminates the game, crowning the winner.
      */
-    public void endGame(){
+    private void endGame(){
         //calcolare i punteggi di tutti e assegnare il vincitore!
         setPhase(Phase.ENDGAME);
 
@@ -453,7 +502,9 @@ public class Controller implements PropertyChangeListener {
         int i = 1;
 
         //Players being ordered by descending points.
-        rightPointsOrder = game.getActivePlayers().stream().sorted(Comparator.comparingInt(Player::getTotalPoints).reversed()).collect(Collectors.toList());
+        rightPointsOrder = game.getPlayers().stream()
+                .sorted(Comparator.comparingInt(Player::getTotalPoints).reversed())
+                .collect(Collectors.toList());
 
         //TODO gestire il caso di parità.
         //Ranking creation
@@ -478,7 +529,7 @@ public class Controller implements PropertyChangeListener {
 
         //chiusura connessioni.
         gameHandler.sendToEveryone(new DisconnectPlayer());
-        for(Player p  : game.getActivePlayers()) {
+        for(Player p  : game.getPlayers()) {
             gameHandler.getServer().getVirtualPlayerByID(p.getID()).getConnection().disconnect();
         }
     }
@@ -491,5 +542,57 @@ public class Controller implements PropertyChangeListener {
             case "PrintCardsAction" -> checkPrintAction();
         }
 
+    }
+
+
+    /**
+     * Suspend a client after failed ping request
+     * @see Server#suspendClient(CSConnection) suspendClient
+     * @param ID of the client
+     */
+    public synchronized void suspendClient(int ID){
+        // Check if the players is already suspended
+        for(Player p : game.getPlayers())
+            if(p.getID() == ID && !p.isActive())
+                return;
+
+        // Set player as not active
+        game.setActivePlayer(ID, false);
+        // Disconnected player is the current player.
+        if(currentPlayer.getID() == ID){
+            // The player has picked tiles but never placed them
+            if(!pickedTiles.isEmpty()){
+                try{
+                    game.getBoard().restoreTiles(pickedTiles);
+                }catch (WrongTilesException | WrongCoordinateException | CellNotEmptyException e){
+                    Server.LOGGER.log(Level.SEVERE, "Error during restore tiles on the board. The cell is not empty! Game is shutting down to avoid tiles' loss", e);
+                    System.exit(-1);
+                }
+            }
+            // End of the turn
+            endTurn();
+        }
+
+        gameHandler.sendToEveryone(new CustomAnswer(false, game.getPlayerByID(ID).getUsername() + " is disconnected. Every potential tile picked from the board will be replaced on the board\n" +
+                "The game proceeds anyway. Turns of " + game.getPlayerByID(ID).getUsername() + " will be skipped until it connects again"));
+    }
+
+
+    /**
+     * Restore a suspended client after the client reconnects to the server
+     * @see Server#restoreClient(CSConnection) suspendClient
+     * @param ID of the client
+     */
+    public synchronized void restoreClient(int ID){
+        // Set player as not active
+        game.setActivePlayer(ID, true);
+
+        // Check if in standby mode and try to switch to the next player
+        if(getPhase() == STANDBY){
+            gameHandler.sendToEveryone(new CustomAnswer(false, "We are still waiting for another player to restart the game"));
+            endTurn();
+        }
+
+        gameHandler.sendToEveryone(new CustomAnswer(false, game.getPlayerByID(ID).getUsername() + " reconnects! Now the turns will consider his/her presence"));
     }
 }

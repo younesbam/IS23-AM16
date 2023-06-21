@@ -9,8 +9,6 @@ import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
 import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
 import it.polimi.ingsw.model.Tile;
-import it.polimi.ingsw.model.cards.CommonGoalCard;
-import it.polimi.ingsw.model.cards.PersonalGoalCard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.List;
 import static it.polimi.ingsw.Const.*;
 
 /**
- * This class is used to check if the action performed by the user is actually feasible and, if so, returns the action to the dispatcher.
+ * Check if the action performed by the user is actually feasible and, if so, returns the action to the dispatcher.
  */
 public class InputValidator {
 
@@ -55,8 +53,8 @@ public class InputValidator {
 
     /**
      * Check if the maximum number of players written is a number
-     * @param s
-     * @return
+     * @param s String written by the user
+     * @return message ready to be sent to the server.
      */
     public HowManyPlayersResponse players(String[] s){
         int numOfPlayers;
@@ -74,9 +72,9 @@ public class InputValidator {
 
 
     /**
-     * Method used to check if the input of the tiles requested makes sense.
-     * @param s
-     * @return
+     * Check if the input of the tiles requested makes sense. Wrap the coordinates written by the user into a class, ready to be sent.
+     * @param s String written by the user
+     * @return message ready to be sent to the server.
      */
     public PickTilesAction pickTiles(String[] s){
         int row, col;
@@ -130,9 +128,9 @@ public class InputValidator {
 
 
     /**
-     * Method used to check if the coordinates chosen where to place the tiles actually make sense.
-     * @param s
-     * @return
+     * Check if the coordinates chosen where to place the tiles actually make sense.
+     * @param s String written by the user
+     * @return message ready to be sent to the server.
      */
     public PlaceTilesAction placeTiles(String[] s) {
         List<Tile> tiles = new ArrayList<>();
@@ -173,7 +171,7 @@ public class InputValidator {
     /**
      * Shows user manual. List all the possible commands.
      */
-    public void manual(){
+    public void printManual(){
         String man = """
                 Here all the possible commands:
                 - PLAYERS <num_of_players> : use this command when the server asks for the number of players you want to play with. Numeric format.
@@ -196,6 +194,7 @@ public class InputValidator {
     /**
      * Quit game command.
      */
+    //TODO: eliminare il metodo se non serve!
     public void exitGame(){
         System.err.println("Disconnected from the server.");
         System.exit(0);
