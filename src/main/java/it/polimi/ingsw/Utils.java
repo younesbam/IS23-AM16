@@ -10,14 +10,13 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * Utilities class used to keep most used methods that don't have a specific class
+ * Utilities class used to keep most used methods that don't belong to a specific class.
  */
 public final class Utils {
     /**
      * Convert file into a string. Note: the file must be in src/main/resources/
      * @param fileName name of the file. If there are subdirectories, specifies them in the string. In case of subdirectories, don't add the initial "/"
      * @return String
-     * @author Nicolo' Gandini
      */
     public static String convertFileIntoString(String fileName) {
         String result=null;
@@ -39,7 +38,7 @@ public final class Utils {
 
     /**
      * Create an empty grid, with all the Cells filled with BLANK tiles
-     * @param rows numbers of rows
+     * @param rows number of rows
      * @param columns number of columns
      * @return empty bi-dimensional array of Cell
      */
