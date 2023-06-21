@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.gui.controllers;
 import com.sun.tools.javac.Main;
 import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.client.ModelView;
+import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.communications.serveranswers.BookShelfCompleted;
@@ -21,6 +22,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import it.polimi.ingsw.client.gui.controllers.LoadingController;
@@ -286,10 +288,11 @@ public class GUIManager extends UI {
 
     private void errorMessage(ErrorAnswer a) {
         Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Something went wrong!");
-            alert.setContentText(a.getAnswer().toString());
+            if(a.getAnswer()!=null)
+                alert.setContentText(a.getAnswer().toString());
             alert.showAndWait();
         });
         switch (a.getError()){
@@ -300,8 +303,18 @@ public class GUIManager extends UI {
                 MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
                 mainSceneController.cancelTilesChoise();
             });
+            case LOBBY_NOT_READY, MAX_PLAYERS_REACHED, TAKEN_USERNAME ->{
+                    Client.LOGGER.log(Level.INFO, a.getError().name());
+                    endGame();
+            }
         }
 
+    }
+
+    public void endGame() {
+        System.out.println("Thanks for playing MyShelfie! Shutting down...");
+        Platform.exit();
+        System.exit(0);
     }
 
     private void bookShelfCompleted(String message){

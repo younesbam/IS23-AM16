@@ -58,6 +58,6 @@
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></RadioButton>
-      <Label fx:id="message" layoutX="467.0" layoutY="430.0" textFill="RED" />
+      <Label fx:id="message" alignment="CENTER" layoutX="311.0" layoutY="410.0" prefHeight="18.0" prefWidth="349.0" textAlignment="CENTER" textFill="RED" />
    </children>
 </AnchorPane>

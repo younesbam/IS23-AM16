@@ -31,7 +31,7 @@ public class SetupController implements GUIController{
     @FXML private Label message;
     @FXML private RadioButton rmiRadioBtn;
     @FXML private RadioButton socketRadioBtn;
-    private static final String LOADER = "loadingScene.fxml";
+    private static final String SETUP = "joinScene.fxml";
     public void join() {
         ConnectionType connectionType;
         if (username.getText().equals("")
@@ -51,41 +51,11 @@ public class SetupController implements GUIController{
             //LoaderController loaderController;
             try {
                 guiManager.connectToServer(connectionType, ipaddress.getText(), parseInt(serverport.getText()), username.getText());
-                Client.LOGGER.log(Level.INFO, "Client successfully connected");
+                //Client.LOGGER.log(Level.INFO, "Client successfully connected");
             } catch (RemoteException | NotBoundException e) {
                 Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e);
                 System.exit(-1);
             }
-
-            guiManager.getModelView().setIsYourTurn(true);
-            //guiManager.firePC("PLAYERS 2");
-
-            //guiManager.changeStage(LOADER);
-                //LoadingController loadingController = (LoadingController) gui.getControllerFromName("loadingScene.fxml");
-
-                /*gui.getListeners()
-                        .addPropertyChangeListener(
-                                "action", new ActionParser(connection, gui.getModelView()));*/
-
-
-
-             /*catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Duplicate nickname");
-                alert.setHeaderText("Duplicate nickname!");
-                alert.setContentText("This nickname is already in use! Please choose another one.");
-                alert.showAndWait();
-                gui.changeStage("joinScene.fxml");
-            } /*catch (InvalidNicknameException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Invalid character nickname");
-                alert.setHeaderText("Special character contained in nickname!");
-                alert.setContentText(
-                        "Nickname can't contain - special character! Please choose another one");
-                alert.showAndWait();
-                gui.changeStage("joinScene.fxml");
-            }*/
-
         }
     }
 

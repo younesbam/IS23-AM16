@@ -166,6 +166,7 @@ public class ActionHandler {
 
         if(a instanceof DisconnectPlayer){
             if(guiManager != null) {
+                guiManager.endGame();
             } else if(cli != null) {
                 cli.endGameMessage();
             }
