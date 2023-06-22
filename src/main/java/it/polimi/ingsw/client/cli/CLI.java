@@ -333,7 +333,7 @@ public class CLI extends UI implements Runnable{
         for(int i=0; i < commons.size(); i++){
             commons.get(i).printCard();
         }
-        System.out.println("");
+        System.out.println();
 
         // Print personal.
         personal.printCard();

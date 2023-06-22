@@ -25,7 +25,7 @@ class PlayerTest {
     }
 
     @Test
-    void playerTest(){
+    void playerTest() {
         // Check for nickname.
         assertEquals(nickName, player.getUsername());
 
@@ -39,6 +39,11 @@ class PlayerTest {
         // Test for turns.
         player.updateNumOfTurns();
         numTurns++;
+    }
+
+    @Test
+    void turnsTest(){
+        //player.updateNumOfTurns(numTurns);
         assertEquals(numTurns, player.getNumOfTurns());
         player.updateNumOfTurns();
         numTurns++;
