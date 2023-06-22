@@ -238,7 +238,7 @@ public class CLI extends UI implements Runnable{
 
         System.out.println("\nAnd here your total points earned until now:");
         System.out.println(modelView.getGame().getCurrentPlayer().getTotalPoints());
-        
+
         printManMessage();
         System.out.print(request + "\n>");
     }
