@@ -165,9 +165,9 @@ public class CLI extends UI implements Runnable{
         /*
         Set port, IP address, username.
          */
-        ConnectionType connectionType = ConnectionType.RMI; // askConnectionType();
-        String ipAddress = "127.0.0.1";    //askIpAddress();
-        int numOfPort = 1098;  //askPort();
+        ConnectionType connectionType = ConnectionType.SOCKET; // askConnectionType();
+        String ipAddress = "192.168.0.251";    //askIpAddress();
+        int numOfPort = 2345;  //askPort();
         String username = askUsername();
 
         /*
