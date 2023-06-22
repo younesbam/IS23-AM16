@@ -166,7 +166,7 @@ public class CLI extends UI implements Runnable{
         Set port, IP address, username.
          */
         ConnectionType connectionType = ConnectionType.SOCKET; // askConnectionType();
-        String ipAddress = "192.168.0.251";    //askIpAddress();
+        String ipAddress = "localhost";    //askIpAddress();
         int numOfPort = 2345;  //askPort();
         String username = askUsername();
 
@@ -230,14 +230,15 @@ public class CLI extends UI implements Runnable{
     private void initialPhaseOfTheTurn(String request){
         modelView.setIsYourTurn(true);
 
-        System.out.println("\n\nHere is your Bookshelf:\n");
+        System.out.println("\nHere is your Bookshelf:\n");
         modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
 
-        System.out.println("\n\nAnd here is the game board:\n");
-
+        System.out.println("\nHere is the game board:\n");
         modelView.getGame().getBoard().printBoard();
-        System.out.println("\n");
 
+        System.out.println("\nAnd here your total points earned until now:");
+        System.out.println(modelView.getGame().getCurrentPlayer().getTotalPoints());
+        
         printManMessage();
         System.out.print(request + "\n>");
     }
