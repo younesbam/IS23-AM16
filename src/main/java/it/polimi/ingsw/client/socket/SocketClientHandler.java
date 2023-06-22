@@ -84,7 +84,6 @@ public class SocketClientHandler extends Client implements Runnable {
             System.exit(1);
         }catch (IOException e){
             System.out.println("Error occurred while closing connection.");
-            e.printStackTrace();
         }
         System.out.println("Ending connection...");
     }

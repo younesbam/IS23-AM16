@@ -238,8 +238,8 @@ public class Server {
     public void tryToConnect(String usernameChoice, CSConnection connection){
         try {
             connection.setID(newClientRegistration(usernameChoice, connection));
+            // If null, simply return. New clients will be added to the active list if the ID is not null.
             if (connection.getID() == null) {
-                //connection.disconnect();
                 return;
             }
             lobby(connection);
@@ -257,7 +257,7 @@ public class Server {
         // Check if the server is in a setup mode. If true it returns null and disconnect the client immediately.
         if(gameHandler != null){  // Game handler null means no one is connected yet
             if(gameHandler.getController().getPhase() == SETUP){
-                answer.setAnswer(new ErrorAnswer(ErrorClassification.LOBBY_NOT_READY));
+                answer.setAnswer(new ErrorAnswer("Lobby not ready to receive new players. The first player must choose the number of players.", ErrorClassification.LOBBY_NOT_READY));
                 clientConnection.sendAnswerToClient(answer);
                 return null;
             }
@@ -270,7 +270,7 @@ public class Server {
         if (clientID == null) {  // Username not used by another player
             //Checks about waiting list and available slot for the game
             if (numOfPlayers != 0 && (playersWaitingList.size() >= numOfPlayers || playersConnectedList.size() >= numOfPlayers)) {
-                answer.setAnswer(new ErrorAnswer(ErrorClassification.MAX_PLAYERS_REACHED));
+                answer.setAnswer(new ErrorAnswer("The game already started and the maximum number of players has been reached. Try again when te actual game ends.", ErrorClassification.MAX_PLAYERS_REACHED));
                 clientConnection.sendAnswerToClient(answer);
                 return null;
             }
