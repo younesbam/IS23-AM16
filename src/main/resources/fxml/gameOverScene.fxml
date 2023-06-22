@@ -10,7 +10,7 @@
    <children>
       <ImageView fx:id="mainPane" fitHeight="600.0" fitWidth="960.0" pickOnBounds="true">
          <image>
-            <Image url="@graphics/bg.jpg" />
+            <Image url="@graphics/bg2.jpg" />
          </image>
       </ImageView>
       <ImageView fitHeight="98.0" fitWidth="427.0" layoutX="267.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
@@ -18,9 +18,9 @@
             <Image url="@graphics/GameOver.png" />
          </image>
       </ImageView>
-      <Label fx:id="points" layoutX="232.0" layoutY="150.0" text="You have collected 0 points! Congratulations!" textFill="WHITE">
+      <Label fx:id="points" layoutX="235.0" layoutY="150.0" text="You have collected 0 points! Congratulations!" textFill="WHITE">
          <font>
-            <Font size="28.0" />
+            <Font name="System Bold" size="26.0" />
          </font>
       </Label>
       <AnchorPane fx:id="ranking" layoutX="232.0" layoutY="217.0" prefHeight="189.0" prefWidth="562.0">
@@ -47,9 +47,9 @@
             </Label>
          </children>
       </AnchorPane>
-      <Label fx:id="playerResult" layoutX="131.0" layoutY="467.0" text="Unfortunately you have not won this game, but better luck next time!" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="playerResult" layoutX="102.0" layoutY="473.0" text="Unfortunately you have not won this game, but better luck next time!" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font size="25.0" />
+            <Font name="System Bold" size="25.0" />
          </font>
       </Label>
       <ImageView fx:id="trophy" fitHeight="66.0" fitWidth="88.0" layoutX="480.0" layoutY="407.0" pickOnBounds="true" preserveRatio="true">

@@ -150,7 +150,7 @@ public class GUIManager extends UI {
                 Platform.runLater(()->{
                     mainSceneController.printBoard();
                     mainSceneController.disablePickTiles();
-                    mainSceneController.updateTurn("Turn: " + modelView.getGame().getCurrentPlayer().getUsername());
+                    mainSceneController.updateTurn(modelView.getGame().getCurrentPlayer().getUsername());
                 });
             }
         }
@@ -185,7 +185,7 @@ public class GUIManager extends UI {
     public void firstPlayerSelected(String s){
         Platform.runLater(()->{
             MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
-            mainSceneController.updateTurn("Turn: "+s);
+            mainSceneController.updateTurn(s);
         });
     }
 
