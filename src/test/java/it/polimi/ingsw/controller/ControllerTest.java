@@ -1,9 +1,12 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.Bag;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Tile;
 import it.polimi.ingsw.model.cards.CommonGoalCard;
+import it.polimi.ingsw.server.GameHandler;
+import it.polimi.ingsw.server.Server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,33 +21,68 @@ class ControllerTest {
 
     private Controller controller;
     Game game;
+    GameHandler gameHandler;
+    Bag bag;
     Player p1, p2, p3;
+    ArrayList<Player> players = new ArrayList<>();
 
     @BeforeEach
     void testSetup(){
-        game = new Game();
+        game = new Game(); // Game's creation.
+        gameHandler = new GameHandler(new Server());
+        controller = new Controller(gameHandler, game); // Controller's creation.
+
+        // Players' creation.
         p1 = new Player("Pippo", 01);
         p2 = new Player("Pluto", 02);
         p3 = new Player("Paperino", 03);
         game.createPlayer(p1);
         game.createPlayer(p2);
         game.createPlayer(p3);
-        controller = new Controller(null, game);
+        players = game.getPlayers();
+        game.setNumOfPlayers(players.size());
+        p1.setChair(true);
+        p2.setChair(false);
+        p3.setChair(false);
+        game.setFirstPlayer(p1);
+        controller.setCurrentPlayer(p1);
+
+        // Every player is active.
+        for(int i=0; i< players.size(); i++)
+            game.getPlayers().get(i).setActive(true);
+
+        // Common goal cards' creation.
+        game.getCommonGoalCards().add(game.getBag().pickCommonGoalCard(players.size()));
+        game.getCommonGoalCards().add(game.getBag().pickCommonGoalCard(players.size()));
+
+        // Personal goal cards' creation.
+        for(int i=0; i<players.size(); i++)
+            game.getPlayers().get(i).setPersonalGoalCard(game.getBag().pickPersonalGoalCard());
+
+        // Board's creation.
+        game.createBoard();
     }
 
     @Test
-    public void testC(){
+    public void setTest(){
+        // getGame() check.
+        assertNotNull(controller.getGame());
         assertEquals(game, controller.getGame());
-        assertNotNull(game);
 
+        // Tests on players.
+        assertNotNull(players);
         int numOfPlayers = game.getNumOfPlayers();
         assertTrue(numOfPlayers >= MINPLAYERS);
         assertTrue(numOfPlayers <= MAXPLAYERS);
+        for (Player player : players) {
+            assertNotNull(player.getPersonalGoalCard());
+            assertNotNull(player.getBookShelf());
+        }
+        assertEquals(p1, controller.getCurrentPlayer());
+        assertNotEquals(p2, controller.getCurrentPlayer());
+        assertNotEquals(p3, controller.getCurrentPlayer());
 
-        List<Player> players = game.getPlayers();
-        assertNotNull(players);
-        assertEquals(numOfPlayers, players.size());
-
+        // Tests on chair.
         int numChairs = 0;
         for (Player player : players) {
             if (player.hasChair()) {
@@ -52,17 +90,52 @@ class ControllerTest {
             }
         }
         assertEquals(1, numChairs);
+        assertNotEquals(0, numChairs);
 
+        // Tests on common goal cards.
         List<CommonGoalCard> commonGoalCards = game.getCommonGoalCards();
         assertNotNull(commonGoalCards);
         assertEquals(2, commonGoalCards.size());
 
-        for (Player player : players) {
-            assertNotNull(player.getPersonalGoalCard());
-            assertNotNull(player.getBookShelf());
-        }
-
+        // getBoard() check.
         assertNotNull(game.getBoard());
+
+        // Tests on points.
+        controller.updateTotalPoints();
+        assertEquals(0, controller.getCurrentPlayer().getTotalPoints());
+
+        // Tests on current player.
+        assertEquals(game.getCurrentPlayer(), controller.getCurrentPlayer());
+    }
+
+    @Test
+    void suspensionTest() {
+        controller.suspendClient(01);
+        assertFalse(p1.isActive());
+        assertTrue(p2.isActive());
+        assertTrue(p3.isActive());
+
+        controller.suspendClient(02);
+        assertFalse(p2.isActive());
+        assertTrue(p3.isActive());
+
+        controller.suspendClient(03);
+        assertFalse(p3.isActive());
+
+        controller.restoreClient(01);
+        assertTrue(p1.isActive());
+        assertFalse(p2.isActive());
+        assertFalse(p3.isActive());
+
+        controller.restoreClient(02);
+        assertTrue(p1.isActive());
+        assertTrue(p2.isActive());
+        assertFalse(p3.isActive());
+
+        controller.restoreClient(03);
+        assertTrue(p1.isActive());
+        assertTrue(p2.isActive());
+        assertTrue(p3.isActive());
     }
 
     @Test
@@ -71,13 +144,11 @@ class ControllerTest {
         controller.setPhase(phase);
         assertNotNull(controller.getPhase());
         assertEquals(phase, controller.getPhase());
-    }
 
-    @Test
-    void getterTest(){
-        // Test for game's getter.
-        assertNotNull(controller.getGame());
-
+        phase = Phase.SETUP;
+        controller.setPhase(phase);
+        assertNotNull(controller.getPhase());
+        assertEquals(phase, controller.getPhase());
     }
 
     @Test
@@ -106,7 +177,6 @@ class ControllerTest {
         tiles.add(Tile.PINK);
         tiles.add(Tile.WHITE);
         tiles.add(Tile.GREEN);
-//        controller.placeTiles(0, tiles.size(), tiles);
 
         // Check if the tiles have been added to the correct column of the bookshelf
         for(int i = 0; i<tiles.size(); i++)
@@ -141,7 +211,6 @@ class ControllerTest {
         }
 
         // Check if the game has ended
-//        assertTrue(controller.checkEndGame());
     }
 
     @Test
