@@ -126,7 +126,7 @@ public class SocketCSConnection extends CSConnection implements Runnable{
             while (alive)
                 readStreamFromClient();
         } catch(IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            Server.LOGGER.log(Level.WARNING, "Failed to read the stream from client  " + ID);
         }
     }
 }

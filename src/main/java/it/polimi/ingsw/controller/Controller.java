@@ -220,7 +220,7 @@ public class Controller implements PropertyChangeListener {
         }catch (NoNextPlayerException e){
             // No players connected
             System.out.println(RED_COLOR + "Not enough players connected. Standby mode activated. I will resume the game when there are at least 2 connected players. zzz..." + RESET_COLOR);
-            gameHandler.sendToEveryone(new CustomAnswer(false, "Not enough players connected. Standby mode activated. You cannot play until at least one more player is connected"));
+            gameHandler.sendToEveryone(new CustomAnswer(false, RED_COLOR + "Not enough players connected. Standby mode activated. You cannot play until at least one more player is connected" + RESET_COLOR));
             setPhase(STANDBY);
         }
     }
