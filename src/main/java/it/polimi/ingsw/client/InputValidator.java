@@ -190,14 +190,4 @@ public class InputValidator {
         System.out.println(BLUE_BOLD_COLOR + man + RESET_COLOR);
         System.out.print(">");
     }
-
-    /**
-     * Quit game command.
-     */
-    //TODO: eliminare il metodo se non serve!
-    public void exitGame(){
-        System.err.println("Disconnected from the server.");
-        System.exit(0);
-        //cli.disconnectFromServer();
-    }
 }

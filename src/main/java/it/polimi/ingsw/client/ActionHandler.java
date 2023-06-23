@@ -27,6 +27,7 @@ public class ActionHandler {
     /**
      * View's property change support. Used by CLI or GUI.
      * @see CLI#propertyChange(PropertyChangeEvent)
+     * @see GUIManager#propertyChange(PropertyChangeEvent)
      */
     private final PropertyChangeSupport pcsView = new PropertyChangeSupport(this);
 
@@ -163,7 +164,7 @@ public class ActionHandler {
             pcsView.firePropertyChange("PlayerFinalResult", null, ((PlayerFinalResult) a).getAnswer());
             return;
         }
-
+        //TODO: manca la chiusura del gioco per la gui.
         if(a instanceof DisconnectPlayer){
             if(guiManager != null) {
                 //guiManager.endGame();

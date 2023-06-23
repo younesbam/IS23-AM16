@@ -13,7 +13,7 @@ public class Board2Players extends Board implements IBoard {
     public Board2Players() {
         super();
 
-        JSONParser jsonParser = new JSONParser("json/initSetup.json");
+        JSONParser jsonParser = new JSONParser("initSetup.json");
         this.grid = jsonParser.getBoard(2);
     }
 

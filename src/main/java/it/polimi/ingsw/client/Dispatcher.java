@@ -88,9 +88,6 @@ public class Dispatcher implements PropertyChangeListener {
      * Quit game command.
      */
     public void exitGame(){
-        //Message message = new ExitFromGame();
-        //client.sendToServer(message);
-        //System.err.println("Disconnected from the server.");
         modelView.getCli().setActiveGame(false);
     }
 
@@ -103,6 +100,13 @@ public class Dispatcher implements PropertyChangeListener {
      *          and the property that has changed.
      */
     public void propertyChange(PropertyChangeEvent evt) {
+        // Exit command. Shutdown of the client NOT based on game turns.
+        if(evt.getNewValue().toString().equalsIgnoreCase("exit")){
+            exitGame();
+            return;
+        }
+
+        // Dispatch the command from the user.
         if (!modelView.getIsYourTurn()) {
             System.out.println("Unable to complete the action, wait for your turn!");
         } else {

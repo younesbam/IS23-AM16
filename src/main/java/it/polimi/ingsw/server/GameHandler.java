@@ -5,29 +5,55 @@ import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PrintCardsAction;
 import it.polimi.ingsw.communications.serveranswers.*;
-import it.polimi.ingsw.communications.serveranswers.requests.DisconnectPlayer;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Handles the match, controller and game.
+ * It's a middle man between server and controller.
+ * It dispatches also the actions, received from the client, to the controller.
  */
 public class GameHandler {
+    /**
+     * Game reference.
+     */
     private static Game game;
+
+    /**
+     * Server reference
+     */
     private final Server server;
+
+    /**
+     * Controller reference.
+     */
     private final Controller controller;
+
+    /**
+     * Number of players in the game.
+     */
     private int numOfPlayers;
+
+    /**
+     * Controller's property change support.
+     * @see Controller#propertyChange(PropertyChangeEvent)
+     */
     private final PropertyChangeSupport pcsController = new PropertyChangeSupport(this);
-    private boolean alreadyStarted;
+
+    /**
+     * Game started.
+     */
+    private boolean gameStarted;
 
 
     /**
      * GameHandler constructor.
-     * @param server
+     * @param server server reference.
      */
     public GameHandler(Server server){
         this.server = server;
@@ -39,7 +65,7 @@ public class GameHandler {
 
     /**
      * Method used to remove a player from the game.
-     * @param playerID
+     * @param playerID ID of the player.
      */
     public void removePlayer(int playerID){
         game.removePlayer(game.getPlayerByID(playerID));
@@ -47,9 +73,9 @@ public class GameHandler {
 
 
     /**
-     * Method used to add a player to the game.
-     * @param username
-     * @param clientID
+     * Add a player to the game.
+     * @param username username of the player.
+     * @param clientID ID of the client.
      */
     public void createPlayer(String username, Integer clientID){
         game.createPlayer(new Player(username, clientID));
@@ -57,8 +83,8 @@ public class GameHandler {
 
 
     /**
-     * Method used to set this match' number of players.
-     * @param numOfPlayers
+     * Set this match' number of players.
+     * @param numOfPlayers number of player for this match.
      */
     public void setNumOfPlayers(int numOfPlayers){
         this.numOfPlayers = numOfPlayers;
@@ -68,7 +94,7 @@ public class GameHandler {
 
     /**
      * Server getter.
-     * @return
+     * @return server.
      */
     public Server getServer(){
         return this.server;
@@ -76,8 +102,8 @@ public class GameHandler {
 
 
     /**
-     * This method is used to send a message to every player.
-     * @param answer
+     * Send a message to every player.
+     * @param answer answer to be sent to every player.
      */
     public void sendToEveryone(Answer answer){
         for(VirtualPlayer p: server.getConnectedPlayers())
@@ -86,9 +112,9 @@ public class GameHandler {
 
 
     /**
-     * This method is used to send an answer from the server to everyone except the selected player
-     * @param answer
-     * @param notToHim
+     * Send an answer to every player except the selected player
+     * @param answer answer to be sent to every player except a specific player.
+     * @param notToHim ID of the excluded player.
      */
     public void sendToEveryoneExcept(Answer answer, int notToHim) {
         for(VirtualPlayer p : server.getConnectedPlayers()) {
@@ -99,9 +125,9 @@ public class GameHandler {
 
 
     /**
-     * This method sends the server's answer to the player.
-     * @param answer
-     * @param playerID
+     * Sends the server's answer to the player.
+     * @param answer answer to be sent.
+     * @param playerID ID of the player whom you want to send the message.
      */
     public void sendToPlayer(Answer answer, int playerID){
         VirtualPlayer player = server.getVirtualPlayerByID(playerID);
@@ -111,21 +137,21 @@ public class GameHandler {
 
 
     /**
-     * Method used to start the actual game.
+     * Start the actual game.
      */
     public void startGame(){
-        sendToEveryone(new CustomAnswer(false, "The game is on!\n"));
-        setIsStarted(true);
+        sendToEveryone(new CustomAnswer("The game is on!\n"));
+        setGameStarted(true);
 
         initialSetup();
     }
 
 
     /**
-     * This method selects the first player and sets up the game parameters for a new match.
+     * Selects the first player and sets up the game parameters for a new match.
      */
     public void initialSetup(){
-        sendToEveryone(new CustomAnswer(false, "Now the first player to play is being randomly selected, be ready, it could be you!"));
+        sendToEveryone(new CustomAnswer("Now the first player to play is being randomly selected, be ready, it could be you!"));
 
         int firstPlayer = 0;
         int randomNum = ThreadLocalRandom.current().nextInt(0, numOfPlayers + 1);
@@ -140,9 +166,9 @@ public class GameHandler {
             firstPlayer = game.getPlayers().get(i).getID();
         }
 
-        sendToEveryoneExcept(new CustomAnswer(false, "The first player is: " + server.getUsernameByID(firstPlayer) + "!"), firstPlayer);
+        sendToEveryoneExcept(new CustomAnswer("The first player is: " + server.getUsernameByID(firstPlayer) + "!"), firstPlayer);
         sendToEveryoneExcept(new FirstPlayerSelected(server.getUsernameByID(firstPlayer)), firstPlayer);
-        sendToPlayer(new CustomAnswer(false, "You are the first player! Here's your chair! \n " +
+        sendToPlayer(new CustomAnswer("You are the first player! Here's your chair! \n " +
                 "  __________.\n" +
                 "  /_/-----/_/|   \n" +
                 "  ( ( ' ' ( (| \n" +
@@ -159,50 +185,41 @@ public class GameHandler {
 
 
     /**
-     * This method ends the current match for all the players, after a player disconnection.
+     * This method terminates the game.
      */
-    public void endMatch(String playerDisconnected) {
-        sendToEveryone(new CustomAnswer(false, "Player " + playerDisconnected + " has disconnected :( Game will finish without a winner! Thanks to have played MyShelfie! Hope to see you soon ;)"));
-        sendToEveryone(new DisconnectPlayer());
-        for(Player p  : game.getPlayers()) {
-            server.getVirtualPlayerByID(p.getID()).getConnection().disconnect();
-        }
-    }
-
-
-    /**
-     * This method terminates a game when it ends correctly.
-     */
-    public void endMatch(){
-
+    public void shutdownServer(){
+        server.exit();
     }
 
     /**
-     * alreadyStarted setter.
-     * @param bool
+     * Set match as stared.
+     * @param gameStarted game started bit.
      */
-    public void setIsStarted(boolean bool){
-        this.alreadyStarted = bool;
+    public void setGameStarted(boolean gameStarted){
+        this.gameStarted = gameStarted;
     }
 
 
     /**
      * alreadyStarted getter.
      */
-    public boolean isAlreadyStarted(){
-        return this.alreadyStarted;
+    public boolean isGameStarted(){
+        return this.gameStarted;
     }
 
 
     /**
      * Controller getter.
-     * @return
+     * @return controller.
      */
     public Controller getController(){
         return this.controller;
     }
 
-
+    /**
+     * Dispatch the action received from the client to the controller.
+     * @param action action received from the client.
+     */
     public void dispatchActions(GameAction action){
         if (action instanceof PickTilesAction){
             pcsController.firePropertyChange("PickTilesAction", null, action);
@@ -218,11 +235,18 @@ public class GameHandler {
         }
     }
 
-
+    /**
+     * Suspend the selected client after a disconnection. It acts on controller.
+     * @param ID Unique ID of the player to be suspended.
+     */
     public void suspendClient(int ID){
         controller.suspendClient(ID);
     }
 
+    /**
+     * Restore the selected client after a disconnection and a reconnection. It acts on controller.
+     * @param ID Unique ID of the player that was suspended
+     */
     public void restoreClient(int ID){
         controller.restoreClient(ID);
     }

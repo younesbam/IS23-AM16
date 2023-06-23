@@ -67,6 +67,7 @@ public class CLI extends UI implements Runnable{
         Disconnect from server when the game is ended.
          */
         disconnectFromServer();
+        endGameMessage();
     }
 
 
@@ -165,9 +166,9 @@ public class CLI extends UI implements Runnable{
         /*
         Set port, IP address, username.
          */
-        ConnectionType connectionType = ConnectionType.SOCKET; // askConnectionType();
-        String ipAddress = "localhost";    //askIpAddress();
-        int numOfPort = 2345;  //askPort();
+        ConnectionType connectionType = askConnectionType();
+        String ipAddress = askIpAddress();
+        int numOfPort = askPort();
         String username = askUsername();
 
         /*
@@ -288,6 +289,7 @@ public class CLI extends UI implements Runnable{
      */
     public void endGameMessage() {
         System.out.println("Thanks for playing MyShelfie! Shutting down...");
+        Thread.currentThread().interrupt();
         System.exit(0);
     }
 

@@ -1,5 +1,4 @@
 package it.polimi.ingsw.controller;
-import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.common.Coordinate;
 import it.polimi.ingsw.common.exceptions.*;
 import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
@@ -164,7 +163,7 @@ public class Controller implements PropertyChangeListener {
         for(Coordinate c : coordinates){
             removedTile = game.getBoard().removeTile(c.getRow(), c.getCol());
             pickedTiles.put(removedTile, c);
-            gameHandler.sendToPlayer(new CustomAnswer(false, "\nYou picked the following tile:" + removedTile.name()), currentPlayer.getID());
+            gameHandler.sendToPlayer(new CustomAnswer("\nYou picked the following tile:" + removedTile.name()), currentPlayer.getID());
         }
 
         setPhase(Phase.TILESPLACING);
@@ -215,12 +214,15 @@ public class Controller implements PropertyChangeListener {
         try {
             game.nextPlayer();
             this.currentPlayer = game.getCurrentPlayer();
+            if(phase == STANDBY)
+                System.out.println(GREEN_COLOR + "Game successfully restored!" + RESET_COLOR);
+            setPhase(Phase.TILESPICKING);
             gameHandler.sendToPlayer(new ItsYourTurn(), currentPlayer.getID());
             gameHandler.sendToEveryoneExcept(new UpdateTurn(), currentPlayer.getID());
         }catch (NoNextPlayerException e){
             // No players connected
             System.out.println(RED_COLOR + "Not enough players connected. Standby mode activated. I will resume the game when there are at least 2 connected players. zzz..." + RESET_COLOR);
-            gameHandler.sendToEveryone(new CustomAnswer(false, RED_COLOR + "Not enough players connected. Standby mode activated. You cannot play until at least one more player is connected" + RESET_COLOR));
+            gameHandler.sendToEveryone(new CustomAnswer(RED_COLOR + "Not enough players connected. Standby mode activated. You cannot play until at least one more player is connected" + RESET_COLOR));
             setPhase(STANDBY);
         }
     }
@@ -373,7 +375,7 @@ public class Controller implements PropertyChangeListener {
 
         // Check scheme of personal and common cards. Also update points.
         checkScheme();
-        gameHandler.sendToPlayer(new CustomAnswer(false, "Total points earned until now: " + game.getCurrentPlayer().getTotalPoints()), currentPlayer.getID());
+        gameHandler.sendToPlayer(new CustomAnswer("Total points earned until now: " + game.getCurrentPlayer().getTotalPoints()), currentPlayer.getID());
         gameHandler.sendToPlayer(new UpdatePlayerPoints(game.getCurrentPlayer().getTotalPoints()), currentPlayer.getID());
 
         // End of the turn handler
@@ -392,14 +394,18 @@ public class Controller implements PropertyChangeListener {
         // Check if a player has completed his bookshelf, otherwise it sets lastTurn to true, in order to start the last turns for the remaining players.
         if(!lastTurn){
             if(!game.getCurrentPlayer().getBookShelf().checkEndGame()){
-                setPhase(Phase.TILESPICKING);
+                if(phase == STANDBY){
+                    gameHandler.sendToEveryone(new CustomAnswer("Trying to restore the game..."));
+                    System.out.println("Trying to restore the game...");
+                }
+
                 nextPlayer();
             } else {
                 lastTurn = true;
                 leftPlayers = leftPlayersCalc();
-                gameHandler.sendToPlayer(new CustomAnswer(false, "\nCongratulations, you have completed your Bookshelf! Now let the remaining players complete their turn in order to complete the round, and than we will reward the winner!\n"), currentPlayer.getID());
+                gameHandler.sendToPlayer(new CustomAnswer("\nCongratulations, you have completed your Bookshelf! Now let the remaining players complete their turn in order to complete the round, and than we will reward the winner!\n"), currentPlayer.getID());
                 gameHandler.sendToPlayer(new BookShelfCompleted(), currentPlayer.getID());
-                gameHandler.sendToEveryone(new CustomAnswer(false, "\nPlayer " + currentPlayer.getUsername() + " has completed his Bookshelf!\nNow we will go on with turns until we reach the player that started the match! (The one and only with the majestic chair!)\n"));
+                gameHandler.sendToEveryone(new CustomAnswer("\nPlayer " + currentPlayer.getUsername() + " has completed his Bookshelf!\nNow we will go on with turns until we reach the player that started the match! (The one and only with the majestic chair!)\n"));
                 gameHandler.sendToEveryoneExcept(new BookShelfCompleted(currentPlayer.getUsername()), currentPlayer.getID());
             }
         }
@@ -470,11 +476,12 @@ public class Controller implements PropertyChangeListener {
      * Terminate the game, crowning the winner.
      */
     private void endGame(){
-        //calcolare i punteggi di tutti e assegnare il vincitore!
+        //TODO: controllare la fine del gioco!
         setPhase(Phase.ENDGAME);
 
+        // Points calculator.
         List<Player> rightPointsOrder;
-        String s = "This is the final ranking:\n";
+        String finalRanking = "This is the final ranking:\n";
         int i = 1;
 
         //Players being ordered by descending points.
@@ -482,32 +489,32 @@ public class Controller implements PropertyChangeListener {
                 .sorted(Comparator.comparingInt(Player::getTotalPoints).reversed())
                 .collect(Collectors.toList());
 
-        //TODO gestire il caso di parità.
         //Ranking creation
         for (Player p : rightPointsOrder){
-            gameHandler.sendToPlayer(new CustomAnswer(false, "You have collected " + p.getTotalPoints() + " points! Congratulations!\n"), p.getID());
+            gameHandler.sendToPlayer(new CustomAnswer("You have collected " + p.getTotalPoints() + " points! Congratulations!\n"), p.getID());
             gameHandler.sendToPlayer(new PlayerFinalPoints("You have collected " + p.getTotalPoints() + " points! Congratulations!\n"), p.getID());
-            s = s + "\n" + i + ". " + p.getUsername() + "    " + p.getTotalPoints();
+            finalRanking = finalRanking + "\n" + i + ". " + p.getUsername() + "    " + p.getTotalPoints();
             i++;
         }
 
-        //Sending the ranking and the final messages to everyone.
-        gameHandler.sendToEveryone(new CustomAnswer(false, s));
-        gameHandler.sendToEveryone(new Ranking(s));
-        gameHandler.sendToEveryone(new CustomAnswer(false, "And the winner is... " + rightPointsOrder.get(0).getUsername() + "!!\nCongratulations!"));
-        gameHandler.sendToEveryoneExcept(new CustomAnswer(false, "\nUnfortunately you have not won this game, but better luck next time!"), rightPointsOrder.get(0).getID());
+        // Sending the ranking and the final messages to everyone.
+        gameHandler.sendToEveryone(new CustomAnswer(finalRanking));
+        gameHandler.sendToEveryone(new Ranking(finalRanking));
+        gameHandler.sendToEveryone(new CustomAnswer("And the winner is... " + rightPointsOrder.get(0).getUsername() + "!!\nCongratulations!"));
+        gameHandler.sendToEveryoneExcept(new CustomAnswer("\nUnfortunately you have not won this game, but better luck next time!"), rightPointsOrder.get(0).getID());
         gameHandler.sendToEveryoneExcept(new PlayerFinalResult("\nUnfortunately you have not won this game, but better luck next time!"), rightPointsOrder.get(0).getID());
-        gameHandler.sendToPlayer(new CustomAnswer(false, "\nYou are the undisputed winner! Congratulations again!"), rightPointsOrder.get(0).getID());
+        gameHandler.sendToPlayer(new CustomAnswer("\nYou are the undisputed winner! Congratulations again!"), rightPointsOrder.get(0).getID());
         gameHandler.sendToPlayer(new PlayerFinalResult("\nYou are the undisputed winner! Congratulations again!"), rightPointsOrder.get(0).getID());
-        gameHandler.sendToEveryone(new CustomAnswer(false, "\nThe game has come to an end."));
+        gameHandler.sendToEveryone(new CustomAnswer("\nThe game has come to an end."));
 
-        //TODO c'è da chiudere le connessioni e finire gli ultimi messaggi di fine partita, e poi bona.
-
-        //chiusura connessioni.
+        // Disconnect all the players.
         gameHandler.sendToEveryone(new DisconnectPlayer());
         for(Player p  : game.getPlayers()) {
             gameHandler.getServer().getVirtualPlayerByID(p.getID()).getConnection().disconnect();
         }
+
+        // Shutdown the server.
+        gameHandler.shutdownServer();
     }
 
 
@@ -539,8 +546,8 @@ public class Controller implements PropertyChangeListener {
             endTurn();
         }
 
-        gameHandler.sendToEveryone(new CustomAnswer(false, game.getPlayerByID(ID).getUsername() + " is disconnected. Every potential tile picked from the board will be replaced on the board\n" +
-                "The game proceeds anyway. Turns of " + game.getPlayerByID(ID).getUsername() + " will be skipped until it connects again"));
+        gameHandler.sendToEveryone(new CustomAnswer(game.getPlayerByID(ID).getUsername() + " is disconnected. Every potential tile picked from the board will be replaced on the board\n" +
+                "Turns of " + game.getPlayerByID(ID).getUsername() + " will be skipped until it connects again"));
     }
 
 
@@ -555,11 +562,10 @@ public class Controller implements PropertyChangeListener {
 
         // Check if in standby mode and try to switch to the next player
         if(getPhase() == STANDBY){
-            gameHandler.sendToEveryone(new CustomAnswer(false, "We are still waiting for another player to restart the game"));
             endTurn();
         }
 
-        gameHandler.sendToEveryone(new CustomAnswer(false, game.getPlayerByID(ID).getUsername() + " reconnects! Now the turns will consider his/her presence"));
+        gameHandler.sendToEveryone(new CustomAnswer(game.getPlayerByID(ID).getUsername() + " reconnects! Now the turns will consider his/her presence"));
     }
 
 
