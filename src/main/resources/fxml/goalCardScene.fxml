@@ -10,7 +10,7 @@
    <children>
       <ImageView fitHeight="475.0" fitWidth="643.0" pickOnBounds="true">
          <image>
-            <Image url="@graphics/bg.jpg" />
+            <Image url="@../graphics/bg.jpg" />
          </image>
       </ImageView>
       <Label layoutX="69.0" layoutY="58.0" text="Personal Goal Card" textFill="WHITE">
@@ -22,7 +22,7 @@
          <children>
             <ImageView fx:id="personalGoalCard" fitHeight="312.0" fitWidth="205.0" layoutX="4.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@graphics/personal_goal_cards/front_EMPTY.jpg" />
+                  <Image url="@../graphics/personal_goal_cards/front_EMPTY.jpg" />
                </image>
             </ImageView>
          </children>
@@ -36,12 +36,12 @@
          <children>
             <ImageView fx:id="commonGoalCard1" fitHeight="182.0" fitWidth="272.0" layoutX="29.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@graphics/common_goal_cards/1.jpg" />
+                  <Image url="@../graphics/common_goal_cards/1.jpg" />
                </image>
             </ImageView>
             <ImageView fx:id="commonGoalCard2" fitHeight="182.0" fitWidth="272.0" layoutX="29.0" layoutY="194.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@graphics/common_goal_cards/2.jpg" />
+                  <Image url="@../graphics/common_goal_cards/2.jpg" />
                </image>
             </ImageView>
          </children>

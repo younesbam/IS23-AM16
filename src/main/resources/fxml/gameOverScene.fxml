@@ -10,12 +10,12 @@
    <children>
       <ImageView fx:id="mainPane" fitHeight="600.0" fitWidth="960.0" pickOnBounds="true">
          <image>
-            <Image url="@graphics/bg2.jpg" />
+            <Image url="@../graphics/bg2.jpg" />
          </image>
       </ImageView>
       <ImageView fitHeight="98.0" fitWidth="427.0" layoutX="267.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@graphics/GameOver.png" />
+            <Image url="@../graphics/GameOver.png" />
          </image>
       </ImageView>
       <Label fx:id="points" layoutX="235.0" layoutY="150.0" text="You have collected 0 points! Congratulations!" textFill="WHITE">
@@ -54,7 +54,7 @@
       </Label>
       <ImageView fx:id="trophy" fitHeight="66.0" fitWidth="88.0" layoutX="480.0" layoutY="407.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@graphics/trophy.png" />
+            <Image url="@../graphics/trophy.png" />
          </image>
       </ImageView>
       <Label layoutX="452.0" layoutY="196.0" text="FINAL RANKING" textFill="WHITE">

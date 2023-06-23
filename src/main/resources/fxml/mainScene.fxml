@@ -15,14 +15,14 @@
    <children>
       <ImageView fx:id="mainPane" fitHeight="600.0" fitWidth="960.0" pickOnBounds="true">
          <image>
-            <Image url="@graphics/bg1.jpg" />
+            <Image url="@../graphics/bg1.jpg" />
          </image>
       </ImageView>
       <AnchorPane layoutX="68.0" layoutY="66.0" prefHeight="461.0" prefWidth="471.0" visible="false">
          <children>
             <ImageView fitHeight="474.0" fitWidth="621.0" layoutX="-1.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@graphics/boards/livingroom.png" />
+                  <Image url="@../graphics/boards/livingroom.png" />
                </image>
             </ImageView>
             <GridPane fx:id="boardGrid2" layoutX="19.0" layoutY="19.0" prefHeight="427.0" prefWidth="430.0">
@@ -72,34 +72,34 @@
             </GridPane>
             <ImageView fitHeight="390.0" fitWidth="386.0" layoutY="7.0" pickOnBounds="true">
                <image>
-                  <Image url="@graphics/boards/bookshelf_orth.png" />
+                  <Image url="@../graphics/boards/bookshelf_orth.png" />
                </image>
             </ImageView>
             <AnchorPane fx:id="highlightPane" layoutX="5.0" layoutY="11.0" prefHeight="347.0" prefWidth="376.0">
                <children>
                   <ImageView fx:id="highlight0" fitHeight="368.0" fitWidth="76.0" layoutX="26.0" layoutY="-18.0" pickOnBounds="true" visible="false">
                      <image>
-                        <Image url="@graphics/boards/column_highlight.png" />
+                        <Image url="@../graphics/boards/column_highlight.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="highlight01" fitHeight="368.0" fitWidth="76.0" layoutX="88.0" layoutY="-18.0" pickOnBounds="true" visible="false">
                      <image>
-                        <Image url="@graphics/boards/column_highlight.png" />
+                        <Image url="@../graphics/boards/column_highlight.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="highlight02" fitHeight="368.0" fitWidth="76.0" layoutX="150.0" layoutY="-18.0" pickOnBounds="true" visible="false">
                      <image>
-                        <Image url="@graphics/boards/column_highlight.png" />
+                        <Image url="@../graphics/boards/column_highlight.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="highlight011" fitHeight="368.0" fitWidth="76.0" layoutX="212.0" layoutY="-18.0" pickOnBounds="true" visible="false">
                      <image>
-                        <Image url="@graphics/boards/column_highlight.png" />
+                        <Image url="@../graphics/boards/column_highlight.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="highlight0111" fitHeight="368.0" fitWidth="76.0" layoutX="274.0" layoutY="-18.0" pickOnBounds="true" visible="false">
                      <image>
-                        <Image url="@graphics/boards/column_highlight.png" />
+                        <Image url="@../graphics/boards/column_highlight.png" />
                      </image>
                   </ImageView>
                </children>
@@ -164,7 +164,7 @@
       </AnchorPane>
       <ImageView fx:id="chair" fitHeight="50.0" fitWidth="48.0" layoutX="821.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@graphics/chair.png" />
+            <Image url="@../graphics/chair.png" />
          </image>
       </ImageView>
       <AnchorPane layoutX="530.0" layoutY="64.0" prefHeight="76.0" prefWidth="386.0">

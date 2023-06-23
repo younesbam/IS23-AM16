@@ -5,9 +5,7 @@ import it.polimi.ingsw.client.gui.tiles.Tile;
 import it.polimi.ingsw.common.exceptions.NotEmptyColumnException;
 import it.polimi.ingsw.model.BookShelf;
 import it.polimi.ingsw.model.Cell;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -17,16 +15,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.control.Label;
-import javafx.scene.Cursor;
-import javafx.stage.Popup;
-
-import java.util.ArrayList;
 
 import static it.polimi.ingsw.Const.*;
 
 public class MainSceneController implements GUIController{
     private GUIManager guiManager;
-    private static final String IMAGEPATH = "/fxml/graphics/item_tiles/";
+    private static final String IMAGEPATH = "/graphics/item_tiles/";
     private static final int MAX_CHOOSABLE_TILES = 3;
     private Tile[] chosenTiles = new Tile[MAX_CHOOSABLE_TILES];
     private static final String GOALS = "goalCardScene.fxml";

@@ -15,7 +15,7 @@
    <children>
       <ImageView fitHeight="540.0" fitWidth="972.0" pickOnBounds="true">
          <image>
-            <Image url="@graphics/bg3.jpg" />
+            <Image url="@../graphics/bg3.jpg" />
          </image>
       </ImageView>
       <TextField fx:id="username" layoutX="381.0" layoutY="156.0" prefHeight="31.0" prefWidth="210.0" promptText="Username" text="">
@@ -52,7 +52,7 @@
          </font></Label>
       <ImageView fitHeight="117.0" fitWidth="377.0" layoutX="293.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@graphics/Title.png" />
+            <Image url="@../graphics/Title.png" />
          </image>
       </ImageView>
       <Label layoutX="381.0" layoutY="298.0" text="Connection:" textFill="WHITE">

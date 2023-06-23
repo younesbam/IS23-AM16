@@ -15,12 +15,12 @@
    <children>
       <ImageView fitHeight="540.0" fitWidth="960.0" pickOnBounds="true">
          <image>
-            <Image url="@graphics/bg2.jpg" />
+            <Image url="@../graphics/bg2.jpg" />
          </image>
       </ImageView>
       <ImageView fitHeight="99.0" fitWidth="322.0" layoutX="320.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@graphics/Lobby.png" />
+            <Image url="@../graphics/Lobby.png" />
          </image>
       </ImageView>
       <AnchorPane fx:id="playersNumberPane" layoutX="280.0" layoutY="192.0" prefHeight="93.0" prefWidth="400.0" visible="false">

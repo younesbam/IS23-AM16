@@ -14,7 +14,7 @@ import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
 public abstract class BookShelfSceneController implements GUIController{
     protected GUIManager guiManager;
     protected int imageChoise;
-    private static final String IMAGEPATH = "/fxml/graphics/item_tiles/";
+    private static final String IMAGEPATH = "/graphics/item_tiles/";
 
     @Override
     public void setGuiManger(GUIManager guiManager) {
