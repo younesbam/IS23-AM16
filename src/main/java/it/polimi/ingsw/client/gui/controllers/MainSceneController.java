@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.BookShelf;
 import it.polimi.ingsw.model.Cell;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -161,8 +162,6 @@ public class MainSceneController implements GUIController{
             for (Node n:chosenTilesGrid.getChildren()) {
                 cmd.append(" " + ((Tile)n).getAbscissa() + " " + ((Tile)n).getOrdinate());
             }
-            System.out.println(chosenTilesGrid.getChildren().size());
-            System.out.println(cmd.toString());
             this.getGuiManager().firePC("action", null, cmd.toString());
         }
         disablePickTiles();
@@ -176,10 +175,8 @@ public class MainSceneController implements GUIController{
             try{
                 bookShelf.checkColumn(i, numOfChosenTiles);
                 n.setVisible(true);
-                System.out.println("Column " + i + " allowed because num of chosen tiles is " + numOfChosenTiles);
             }
             catch (NotEmptyColumnException e){
-                System.out.println("Column " + i + " NOT allowed because num of chosen tiles is " + numOfChosenTiles);
                 n.setVisible(false);
             }
             finally {
@@ -208,8 +205,6 @@ public class MainSceneController implements GUIController{
         //chosenTilesGrid.getChildren().remove(tile);
         mouseAnchorX = mouseEvent.getSceneX() - tile.getTranslateX();
         mouseAnchorY = mouseEvent.getSceneY() - tile.getTranslateY();
-        System.out.println(" mouse press in X: " + mouseEvent.getSceneX());
-        System.out.println(" mouse press in Y: " + mouseEvent.getSceneY());
     }
     private void tileDragged(MouseEvent mouseEvent, Tile tile){
         tile.setTranslateX(mouseEvent.getSceneX()-mouseAnchorX);
@@ -220,7 +215,6 @@ public class MainSceneController implements GUIController{
         /* CASE TILE DROPPED OUTSIDE THE BOOKSHELF*/
         if(mouseEvent.getSceneX()<bookShelfStartX || mouseEvent.getSceneX()>booShelfEndX
             || mouseEvent.getSceneY()<bookShelfStartY || mouseEvent.getSceneY()>booShelfEndY){
-            System.out.println("tile dropped outside bookshelf");
         }
         else{ /* CASE TILE DROPPED INSIDE THE BOOKSHELF*/
             int tryColumn = (int) ((mouseEvent.getSceneX() - bookShelfStartX) / dropSpace);
@@ -245,7 +239,6 @@ public class MainSceneController implements GUIController{
             if(bookShelf.getGrid()[i][columnChosen].getTile().name().equals("BLANK")
             || bookShelf.getGrid()[i][columnChosen].getTile().name().equals("UNAVAILABLE")){
                 bookShelfGrid.add(tile, columnChosen, i - numOfTilesPlaced);
-                System.out.println("tile dropped in "+(i-numOfTilesPlaced)+ ", "+ columnChosen);
                 /* ORDER chosenTiles based on column order */
                 for (int j = 0; j < numOfChosenTiles; j++) {
                     if(chosenTiles[j].equals(tile))
@@ -267,7 +260,6 @@ public class MainSceneController implements GUIController{
                 chosenTiles[i]=null;
             }
             cmd.append(columnChosen);
-            System.out.println(cmd);
             guiManager.firePC("action", null, cmd.toString());
             highlightPane.getChildren().get(columnChosen).setVisible(false);
             confirmPlacementBtn.setVisible(false);
@@ -275,10 +267,14 @@ public class MainSceneController implements GUIController{
             chosenTilesGrid.getChildren().clear();
             numOfChosenTiles = 0;
         }
-        else
-            System.out.println("You have to place all chosen tiles in the bookshelf!");
-        System.out.println(numOfChosenTiles);
-        System.out.println(numOfTilesPlaced);
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("Not allowed");
+            alert.setContentText("You have to place all chosen tiles in the bookshelf!");
+            alert.showAndWait();
+        }
+
     }
 
     public void cancelPlacement(){
