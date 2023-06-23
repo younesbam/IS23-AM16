@@ -27,9 +27,9 @@ public class GUIManager extends UI {
     private static final String LOADER = "loadingScene.fxml";
     private static final String GOALS = "goalCardScene.fxml";
 
-    private static final String BOOKSHELFS1 = "bookShelf1PlayerScene.fxml";
-    private static final String BOOKSHELFS2 = "bookShelf2PlayerScene.fxml";
-    private static final String BOOKSHELFS3 = "bookShelf3PlayerScene.fxml";
+    private static final String BOOKSHELFS1 = "bookshelf1PlayerScene.fxml";
+    private static final String BOOKSHELFS2 = "bookshelf2PlayerScene.fxml";
+    private static final String BOOKSHELFS3 = "bookshelf3PlayerScene.fxml";
     private static final String SETUP = "joinScene.fxml";
     private static final String CHAT = "chatScene.fxml";
     private static final String COUNTDOWN = "countDown.fxml";
