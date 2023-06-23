@@ -176,34 +176,7 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
-     * Method called after every turn, it checks if the current player has reached any common goal in this turn.
-     */
-    private void checkCommonGoal() {
-        int points = 0;
-        /*
-        Iterate all the common cards in the game and check the related scheme.
-        If respected, add points to the current player.
-        Check also if the player has already earned points from the card. If true, skip control.
-         */
-        for(int i=0; i<game.getCommonGoalCards().size(); i++){
-            CommonGoalCard card = game.getCommonGoalCards().get(i);
-            points = currentPlayer.getCommonCardPointsEarned(i);
-            if(points <= 0)
-                currentPlayer.setCommonCardPointsEarned(i, card.checkScheme(currentPlayer));
-        }
-    }
-
-
-    /**
-     * Method called at the end of the game to calculate the points gained by the personal goal.
-     */
-    private void checkPersonalGoal() {
-        currentPlayer.checkPersonalGoalCardScheme();
-    }
-
-
-    /**
-     * Method that switches the current player to the next one.
+     * Switches the current player to the next one.
      */
     private void nextPlayer(){
         gameHandler.sendToPlayer(new EndOfYourTurn(), currentPlayer.getID());
@@ -387,7 +360,7 @@ public class Controller implements PropertyChangeListener {
         gameHandler.sendToPlayer(new BookShelfFilledWithTiles(), currentPlayer.getID());
 
         // Check scheme of personal and common cards. Also update points.
-        checkScheme();
+        checkSchemes();
         gameHandler.sendToPlayer(new CustomAnswer("Total points earned until now: " + game.getCurrentPlayer().getTotalPoints()), currentPlayer.getID());
         gameHandler.sendToPlayer(new UpdatePlayerPoints(game.getCurrentPlayer().getTotalPoints()), currentPlayer.getID());
 
@@ -445,7 +418,52 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
-     * This method handles the last turns, after a player has completed his bookshelf.
+     * Check the scheme of both commons and personal goal card. Also update player's points.
+     */
+    private void checkSchemes(){
+        checkCommonGoal();
+        checkPersonalGoal();
+        checkAdjacentTiles();
+        checkFullBookshelf();
+        updateTotalPoints();
+    }
+
+    /**
+     * Called after every turn; it checks if the current player has reached any common goal.
+     */
+    private void checkCommonGoal() {
+        int points = 0;
+        /*
+        Iterate all the common cards in the game and check the related scheme.
+        If respected, add points to the current player.
+        Check also if the player has already earned points from the card. If true, skip control.
+         */
+        for(int i=0; i<game.getCommonGoalCards().size(); i++){
+            CommonGoalCard card = game.getCommonGoalCards().get(i);
+            points = currentPlayer.getCommonCardPoints(i);
+            if(points <= 0)
+                currentPlayer.setCommonCardPoints(i, card.checkScheme(currentPlayer));
+        }
+    }
+
+    /**
+     * Called after every turn; it checks if the current player has reached the personal goal.
+     */
+    private void checkPersonalGoal() {
+        currentPlayer.checkPersonalGoalCardScheme();
+    }
+
+    private void checkAdjacentTiles(){
+        currentPlayer.checkAdjacentTiles();
+    }
+
+    private void checkFullBookshelf(){
+
+    }
+
+
+    /**
+     * Handles the last turns, after a player has completed his bookshelf.
      */
     private void lastTurnHandler(){
         if(leftPlayers > 0){
@@ -471,16 +489,6 @@ public class Controller implements PropertyChangeListener {
             return  (game.getNumOfPlayers() - currentPlayer.getID() - 1) + game.getFirstPlayer().getID();
         }
         return game.getNumOfPlayers() - 1;
-    }
-
-
-    /**
-     * Check the scheme of both commons and personal goal card. ALso update points of the player.
-     */
-    private void checkScheme(){
-        checkCommonGoal();
-        checkPersonalGoal();
-        updateTotalPoints();
     }
 
 

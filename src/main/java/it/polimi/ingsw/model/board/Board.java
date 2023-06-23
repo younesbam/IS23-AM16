@@ -42,8 +42,9 @@ public abstract class Board implements Serializable {
         initTileList = new LinkedList<>();
         for (Tile tile : Tile.values())
             if (!tile.name().equals("BLANK") && !tile.name().equals("UNAVAILABLE")) {
-                for (int i = 0; i < MAXTILES; i++)
+                for (int i = 0; i < MAXTILES; i++){
                     initTileList.add(tile);
+                }
             }
 
         shuffle(initTileList);
