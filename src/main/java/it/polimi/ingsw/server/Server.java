@@ -4,7 +4,6 @@ import it.polimi.ingsw.Const;
 import it.polimi.ingsw.common.JSONParser;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
-import it.polimi.ingsw.communications.clientmessages.messages.ExitFromGame;
 import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
 import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.serveranswers.*;
@@ -86,11 +85,6 @@ public class Server {
     private final List<VirtualPlayer> playersConnectedList = new ArrayList<>();
 
     /**
-     * List of suspended players. Here all the crashed clients. Use this list to avoid ping disconnected clients.
-     */
-    private final List<VirtualPlayer> playersSuspendedList = new ArrayList<>();
-
-    /**
      * Scheduler service
      */
     ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -105,7 +99,7 @@ public class Server {
         /*
         Load parameters: socket and rmi port
          */
-        jsonParser = new JSONParser("json/network.json");
+        jsonParser = new JSONParser("network.json");
         this.rmiPort = jsonParser.getServerRmiPort();
         this.socketPort = jsonParser.getServerSocketPort();
         LOGGER.log(Level.INFO, "RMI port: " + rmiPort);
@@ -130,8 +124,8 @@ public class Server {
         System.out.println("Type EXIT to end connection.");
 
 
-        Thread thread = new Thread(this::exit);
-        thread.start();
+        Thread exitThread = new Thread(this::exitListener);
+        exitThread.start();
 
         /*
         Ping thread to check if clients are still alive
@@ -210,13 +204,8 @@ public class Server {
                 answer.setAnswer(new HowManyPlayersRequest("Wrong number of players. Please choose the number of players you want to play with. Type MAN if you dont' know the syntax!"));
                 currentPlayer.send(answer.getAnswer());
             }
+            return;
         }
-        else if(message instanceof ExitFromGame){
-            getGameHandlerByID(currentPlayer.getID()).sendToEveryoneExcept(new CustomAnswer(false, "Player " + getUsernameByID(currentPlayer.getID()) + " has disconnected from the game!"), currentPlayer.getID());
-            getGameHandlerByID(currentPlayer.getID()).endMatch(getUsernameByID(currentPlayer.getID()));
-            getVirtualPlayerByID(currentPlayer.getID()).getConnection().disconnect();
-        }
-
     }
 
     /**
@@ -291,7 +280,7 @@ public class Server {
             clientConnection.sendAnswerToClient(answer);
 
             if (playersConnectedList.size() > 1) {
-                gameHandler.sendToEveryoneExcept(new CustomAnswer(false,"We have a new mate! Please call him: " + newPlayer.getUsername() + " :)"), clientID);
+                gameHandler.sendToEveryoneExcept(new CustomAnswer("We have a new mate! Please call him: " + newPlayer.getUsername() + " :)"), clientID);
             }
 
         } else {  // Username already in use.
@@ -321,11 +310,11 @@ public class Server {
     private synchronized void lobby(CSConnection connection) throws InterruptedException {
         SerializedAnswer answer = new SerializedAnswer();
 
-        answer.setAnswer(new CustomAnswer(false, BLUE_BOLD_COLOR + "\nType MAN to know all the valid commands\n" + RESET_COLOR));
+        answer.setAnswer(new CustomAnswer(BLUE_BOLD_COLOR + "\nType MAN to know all the valid commands\n" + RESET_COLOR));
         connection.sendAnswerToClient(answer);
 
         // If the game is already started and the player wants to reconnect, skip the lobby phase
-        if(gameHandler.isAlreadyStarted())
+        if(gameHandler.isGameStarted())
             return;
 
         playersWaitingList.add(getVirtualPlayerByID(connection.getID()));
@@ -337,7 +326,8 @@ public class Server {
         } else if(playersWaitingList.size() == numOfPlayers) {  // Game has reached the right number of players. Game is starting
             System.out.println(numOfPlayers + " players are now ready to play. Game is starting...");
             for(int i = 3; i > 0; i--) {
-                gameHandler.sendToEveryone(new CustomAnswer(false, "Game will start in " + i));
+                gameHandler.sendToEveryone(new CountDown(i));
+                gameHandler.sendToEveryone(new CustomAnswer("Game will start in " + i));
                 TimeUnit.MILLISECONDS.sleep(1000);
             }
 
@@ -346,8 +336,8 @@ public class Server {
             playersWaitingList.clear();
 
         } else {
-            getWaitingPlayerByID(connection.getID()).send(new CustomAnswer(false, "You're now connected\n"));
-            gameHandler.sendToEveryone(new CustomAnswer(false, "There are " + (numOfPlayers - playersWaitingList.size()) + " slots left!"));
+            getWaitingPlayerByID(connection.getID()).send(new CustomAnswer("You're now connected\n"));
+            gameHandler.sendToEveryone(new CustomAnswer("There are " + (numOfPlayers - playersWaitingList.size()) + " slots left!"));
         }
     }
 
@@ -395,24 +385,33 @@ public class Server {
 
 
     /**
-     * This method closes all the connections to the server.
+     * Listen for exit command. In that case, shutdown the server.
      */
-    private void exit() {
+    private void exitListener() {
         Scanner in = new Scanner(System.in);
         while (true) {
             if (in.next().equalsIgnoreCase("EXIT")) {
-                // Disconnect players
-                for(VirtualPlayer p : playersConnectedList){
-                    p.send(new DisconnectPlayer());
-                }
-                // Close threads
-                serverSideSocket.setIsActive(false);
-                serverSideSocket.shutdown();
-                scheduler.shutdownNow();
-                // Shutdown the server
-                System.exit(0);
+                exit();
             }
         }
+    }
+
+    /**
+     * Exit command to close all the connection and shutdown the server properly.
+     */
+    public void exit(){
+        // Disconnect players
+        synchronized (playersConnectedList){
+            for(VirtualPlayer p : playersConnectedList){
+                p.send(new DisconnectPlayer());
+            }
+        }
+        // Close threads
+        serverSideSocket.shutdown();
+        scheduler.shutdownNow();
+        // Shutdown the server
+        System.out.println("Thanks for playing MyShelfie! Shutting down...");
+        System.exit(0);
     }
 
 

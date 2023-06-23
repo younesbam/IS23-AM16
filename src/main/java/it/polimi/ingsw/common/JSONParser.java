@@ -25,7 +25,7 @@ public class JSONParser {
      * @param fileName name of the file. If there are subdirectories, specifies them in the string. In case of subdirectories, don't add the initial "/". All the files must be in "resources" directory
      */
     public JSONParser(String fileName) {
-        this.fileName = new String(fileName);
+        this.fileName = "/json/" + fileName;
     }
 
 

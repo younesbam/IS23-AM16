@@ -81,16 +81,12 @@ public abstract class UI implements PropertyChangeListener {
      * Disconnect from server.
      */
     public void disconnectFromServer() {
-        int status;
         try {
             client.disconnect();
             Client.LOGGER.log(Level.INFO, "Client successfully disconnected from the server");
-            status = 0;
         } catch (RemoteException e) {
             Client.LOGGER.log(Level.WARNING, "Error while properly disconnect the server. Client will be shut down in any case");
-            status = -1;
         }
-        System.exit(status);
     }
 
     /**

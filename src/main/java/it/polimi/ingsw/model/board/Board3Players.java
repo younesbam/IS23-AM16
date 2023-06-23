@@ -11,7 +11,7 @@ public class Board3Players extends Board implements IBoard {
     public Board3Players() {
         super();
 
-        JSONParser jsonParser = new JSONParser("json/initSetup.json");
+        JSONParser jsonParser = new JSONParser("initSetup.json");
         this.grid = jsonParser.getBoard(3);
     }
 

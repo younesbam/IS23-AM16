@@ -5,9 +5,12 @@ import it.polimi.ingsw.model.Tile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Scanner;
 
 import static it.polimi.ingsw.Const.*;
 
@@ -16,7 +19,7 @@ import static it.polimi.ingsw.Const.*;
  */
 public final class Utils {
     /**
-     * Convert file into a string. Note: the file must be in src/main/resources/
+     * Convert file into a string. Note: the file must be in resources/
      * @param fileName name of the file. If there are subdirectories, specifies them in the string. In case of subdirectories, don't add the initial "/"
      * @return String
      * @author Nicolo' Gandini
@@ -28,11 +31,15 @@ public final class Utils {
         We use the get() method of Paths to get the file data.
         We use readAllBytes() method of Files to read byted data from the files.
          */
-        File directory = new File("src/main/resources/" + fileName);
+        //File directory = new File("src/main/resources/" + fileName);
         try{
-            result = new String(Files.readAllBytes(Paths.get(directory.getAbsolutePath())));
-        } catch (IOException e){
+            Reader reader = new InputStreamReader(MyShelfie.class.getResourceAsStream(fileName));
+            Scanner s = new Scanner(reader).useDelimiter("\\A");
+            result = s.hasNext() ? s.next() : "";
+            //result = new String(Files.readAllBytes(Paths.get(directory.getAbsolutePath())));
+        } catch (NullPointerException e){
             e.printStackTrace();
+            System.err.println("Failed to load " + fileName + " file from filesystem");
             System.exit(-1);
         }
         return result;

@@ -47,7 +47,7 @@ public class Bag implements Serializable {
         /*
         Personal card read from json
          */
-        JSONParser jsonParser = new JSONParser("json/initSetup.json");
+        JSONParser jsonParser = new JSONParser("initSetup.json");
         persList = jsonParser.getPersonalGoalCards();
 
         // Shuffle the cards

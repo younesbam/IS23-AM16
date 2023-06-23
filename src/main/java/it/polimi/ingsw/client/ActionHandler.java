@@ -24,6 +24,7 @@ public class ActionHandler {
     /**
      * View's property change support. Used by CLI or GUI.
      * @see CLI#propertyChange(PropertyChangeEvent)
+     * @see GUIManager#propertyChange(PropertyChangeEvent)
      */
     private final PropertyChangeSupport pcsView = new PropertyChangeSupport(this);
 
@@ -116,6 +117,51 @@ public class ActionHandler {
             return;
         }
 
+        if(a instanceof CountDown){
+            pcsView.firePropertyChange("CountDown", null, a);
+            return;
+        }
+
+        if(a instanceof FirstPlayerSelected){
+            pcsView.firePropertyChange("FirstPlayerSelected", null, ((FirstPlayerSelected) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof ChairAssigned){
+            pcsView.firePropertyChange("ChairAssigned", null, ((ChairAssigned) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof GameReady){
+            pcsView.firePropertyChange("GameReady", null, ((GameReady) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof UpdatePlayerPoints){
+            pcsView.firePropertyChange("UpdatePlayerPoints", null, ((UpdatePlayerPoints) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof BookShelfCompleted){
+            pcsView.firePropertyChange("BookShelfCompleted", null, ((BookShelfCompleted) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof PlayerFinalPoints){
+            pcsView.firePropertyChange("PlayerFinalPoints", null, ((PlayerFinalPoints) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof Ranking){
+            pcsView.firePropertyChange("Ranking", null, ((Ranking) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof PlayerFinalResult){
+            pcsView.firePropertyChange("PlayerFinalResult", null, ((PlayerFinalResult) a).getAnswer());
+            return;
+        }
+        //TODO: manca la chiusura del gioco per la gui.
         if(a instanceof DisconnectPlayer){
             if(gui != null) {
             } else if(cli != null) {

@@ -45,7 +45,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
      */
     public RMIClientHandler(String address, int port, String username, ModelView modelView, ActionHandler actionHandler) throws RemoteException {
         super(address, port, username, modelView, actionHandler);
-        jsonParser = new JSONParser("json/network.json");
+        jsonParser = new JSONParser("network.json");
     }
 
 
