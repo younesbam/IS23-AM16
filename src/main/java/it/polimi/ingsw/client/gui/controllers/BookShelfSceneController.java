@@ -29,6 +29,7 @@ public abstract class BookShelfSceneController implements GUIController{
             for (int j = 0; j < MAXBOOKSHELFCOL; j++) {
                 if(!(grid[i][j].getTile().name().equals("BLANK")||grid[i][j].getTile().name().equals("UNAVAILABLE"))){
                     Tile tile = new Tile(i,j);
+                    //imageChoise = (i*j)%3+1;
                     tile.setFill(
                             new ImagePattern(
                                     new Image(GUI.class.getResourceAsStream(IMAGEPATH

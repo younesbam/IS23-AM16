@@ -291,7 +291,11 @@ public class Server {
                 playerToRestore.restorePlayer(clientConnection);  // Assign the actual client-server connection
                 answer.setAnswer(new ConnectionOutcome(true, playerToRestore.getID(), "Welcome back!"));
                 clientConnection.sendAnswerToClient(answer);
+
                 restoreClient(clientConnection);
+
+                answer.setAnswer(new RestorePlayer());
+                clientConnection.sendAnswerToClient(answer);
             } else {
                 answer.setAnswer(new ErrorAnswer("Username already in use. Try to connect again", ErrorClassification.TAKEN_USERNAME));
                 clientConnection.sendAnswerToClient(answer);

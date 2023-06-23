@@ -1,10 +1,15 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.common.Coordinate;
 import it.polimi.ingsw.model.cards.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static it.polimi.ingsw.Const.*;
 
 /**
  * This class represent the PLAYER model.
@@ -39,12 +44,14 @@ public class Player implements Serializable {
     /**
      * Map that contains the points earned during the game from the related common card.
      */
-    private final List<Integer> commonCardPointsEarned;
+    private final List<Integer> commonCardPoints;
 
     /**
      * Points earned during the game from the related personal card.
      */
-    private int personalGoalCardPointsEarned = 0;
+    private int personalGoalCardPoints = 0;
+
+    private int adjacentTilesPoints = 0;
 
     /**
      * Saves number of turns played. Useful to save the state of the game.
@@ -81,10 +88,10 @@ public class Player implements Serializable {
         this.bookShelf = new BookShelf();
         this.username = username;
         this.ID = ID;
-        this.commonCardPointsEarned = new ArrayList<>();
+        this.commonCardPoints = new ArrayList<>();
         // Add 2 common goal card points.
-        this.commonCardPointsEarned.add(0);
-        this.commonCardPointsEarned.add(0);
+        this.commonCardPoints.add(0);
+        this.commonCardPoints.add(0);
         this.active = true;
         this.numOfTurns = 0;
     }
@@ -104,7 +111,6 @@ public class Player implements Serializable {
     public void setUsername(String nickname) {
         this.username = nickname;
     }
-
 
     /**
      * Chair getter.
@@ -127,7 +133,8 @@ public class Player implements Serializable {
      * @return player's bookshelf.
      */
     public BookShelf getBookShelf() {
-        return bookShelf; }
+        return bookShelf;
+    }
 
     /**
      * Number of turns getter.
@@ -157,10 +164,11 @@ public class Player implements Serializable {
      */
     public void updateTotalPoints() {
         int total=0;
-        for(int i=0; i<commonCardPointsEarned.size(); i++){
-            total += commonCardPointsEarned.get(i);
+        for(int i = 0; i< commonCardPoints.size(); i++){
+            total += commonCardPoints.get(i);
         }
-        total += personalGoalCardPointsEarned;
+        total += personalGoalCardPoints;
+        total += adjacentTilesPoints;
         this.totalPoints = total;
     }
 
@@ -170,8 +178,8 @@ public class Player implements Serializable {
      * @param i index of the card.  This is strictly related to the index of the common goal card in Game class.
      * @return points earned from that common goal card.
      */
-    public int getCommonCardPointsEarned(int i) {
-        return this.commonCardPointsEarned.get(i);
+    public int getCommonCardPoints(int i) {
+        return this.commonCardPoints.get(i);
     }
 
 
@@ -180,8 +188,8 @@ public class Player implements Serializable {
      * @param i index of the card.  This is strictly related to the index of the common goal card in Game class.
      * @param value points earned from that common goal card.
      */
-    public void setCommonCardPointsEarned(int i, int value) {
-        this.commonCardPointsEarned.set(i, value);
+    public void setCommonCardPoints(int i, int value) {
+        this.commonCardPoints.set(i, value);
     }
 
 
@@ -189,7 +197,34 @@ public class Player implements Serializable {
      * Check personal goal card scheme and automatically update points.
      */
     public void checkPersonalGoalCardScheme(){
-        personalGoalCardPointsEarned = personalGoalCard.checkScheme(this);
+        personalGoalCardPoints = personalGoalCard.checkScheme(this);
+    }
+
+    /**
+     * Check adjacent tiles in order to assign extra points.
+     */
+    public void checkAdjacentTiles(){
+        Map<Integer, Integer> assignablePoints = new HashMap<>();
+        assignablePoints.put(3, 2);  // group of 3 adjacent tiles, 2 points.
+        assignablePoints.put(4, 3);  // group of 4 adjacent tiles, 3 points.
+        assignablePoints.put(5, 5);  // group of 5 adjacent tiles, 5 points.
+        assignablePoints.put(6, 8);  // group of 3 adjacent tiles, 8 points.
+        for(int i=7; i<MAXTILES; i++){  // group of 6+ tiles, 8 points.
+            assignablePoints.put(i, 8);  // group of i adjacent tiles, 8 points.
+        }
+
+        Boolean[][] visited = new Boolean[MAXBOOKSHELFROW][MAXBOOKSHELFCOL];
+        Map<Tile, List<Coordinate>> tiles = new HashMap<>();
+        for(Tile tile : Tile.values()){
+            if(tile != Tile.UNAVAILABLE && tile != Tile.BLANK)
+                tiles.put(tile, new ArrayList<>());
+        }
+
+        for (int i = 0; i< MAXBOOKSHELFROW; i++) {
+            for(int j = 0; j< MAXBOOKSHELFCOL; j++) {
+                //
+            }
+        }
     }
 
 
