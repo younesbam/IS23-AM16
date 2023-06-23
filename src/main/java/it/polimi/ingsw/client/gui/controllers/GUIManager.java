@@ -73,7 +73,7 @@ public class GUIManager extends UI {
                                                             CHAT, COUNTDOWN, GAME_OVER));
         try {
             for (String path : fxmList) {
-                FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/fxml/" + path));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + path));
                 nameMapScene.put(path, new Scene(loader.load()));
                 GUIController controller = loader.getController();
                 controller.setGuiManger(this);
