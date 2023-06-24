@@ -5,10 +5,7 @@ import it.polimi.ingsw.common.Graph;
 import it.polimi.ingsw.model.cards.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static it.polimi.ingsw.Const.*;
 
@@ -53,6 +50,8 @@ public class Player implements Serializable {
     private int personalGoalCardPoints = 0;
 
     private int adjacentTilesPoints = 0;
+
+    private int firstCompletedPoints = 0;
 
     /**
      * Saves number of turns played. Useful to save the state of the game.
@@ -170,6 +169,7 @@ public class Player implements Serializable {
         }
         total += personalGoalCardPoints;
         total += adjacentTilesPoints;
+        total += firstCompletedPoints;
         this.totalPoints = total;
     }
 
@@ -205,54 +205,95 @@ public class Player implements Serializable {
      * Check adjacent tiles in order to assign extra points.
      */
     public void checkAdjacentTiles(){
+        List<Integer> totalMatches = new ArrayList<>();  // Total matches
+        totalMatches.add(0);
+        int partialCount = 0;
+        int totalColorMatches = 0;
         Map<Integer, Integer> assignablePoints = new HashMap<>();
+
+        // Assign points based on the number of color matches.
+        assignablePoints.put(0, 0);  // group of 0 adjacent tiles, 0 points.
+        assignablePoints.put(1, 0);  // group of 1 adjacent tiles, 0 points.
+        assignablePoints.put(2, 0);  // group of 2 adjacent tiles, 0 points.
         assignablePoints.put(3, 2);  // group of 3 adjacent tiles, 2 points.
         assignablePoints.put(4, 3);  // group of 4 adjacent tiles, 3 points.
         assignablePoints.put(5, 5);  // group of 5 adjacent tiles, 5 points.
         assignablePoints.put(6, 8);  // group of 3 adjacent tiles, 8 points.
-        for(int i=7; i<MAXTILES; i++){  // group of 6+ tiles, 8 points.
-            assignablePoints.put(i, 8);  // group of i adjacent tiles, 8 points.
+        for(int i=7; i<=MAXTILES; i++){  // group of 6+ tiles, 8 points.
+            assignablePoints.put(i, 8);
         }
 
-        // Create map for each tile's type.
-        Map<Tile, List<Coordinate>> tiles = new HashMap<>();
+        // Initialize map for each tile's type. Value of each key represent a list of coordinates of where that color is in the bookshelf.
+        Map<Tile, List<Coordinate>> map = new HashMap<>();
         for(Tile tile : Tile.values()){
             if(tile != Tile.UNAVAILABLE && tile != Tile.BLANK){
-                tiles.put(tile, new ArrayList<>());
+                map.put(tile, new ArrayList<>());
             }
         }
 
-        // Insert all the coordinates of each tile, grouped by colors.
+        // Insert all the coordinates of where each color is in the bookshelf.
         for(int i = 0; i< MAXBOOKSHELFROW; i++) {
             for(int j = 0; j< MAXBOOKSHELFCOL; j++) {
                 Tile tile = bookShelf.getGrid()[i][j].getTile();
                 if(tile != Tile.UNAVAILABLE && tile != Tile.BLANK){
-                    List<Coordinate> coordinateList = tiles.get(tile);
+                    List<Coordinate> coordinateList = map.get(tile);
                     coordinateList.add(new Coordinate(i, j));
                 }
             }
         }
 
-        // Check group of equal tiles.
+        // Create an undirected graph.
         Graph<Coordinate> graph = new Graph<>();
 
-        for(Tile tile : tiles.keySet()) {
-            List<Coordinate> coordinates = tiles.get(tile);
+        // For each color get the list of coordinates in the bookshelf.
+        // Iterate all the coordinates. Given 2 pointer compare one coordinate with the others (from i+1 to the end of the list) and check if they are "close" together.
+        // Add to the graph only the tiles that are close together.
+        for(Tile tile : map.keySet()) {
+            List<Coordinate> coordinates = map.get(tile);
             for(int i=0; i<coordinates.size()-1; i++){
                 for(int j=i+1; j<coordinates.size(); j++){
                     Coordinate c1 = coordinates.get(i);
                     Coordinate c2 = coordinates.get(j);
-                    graph.addVertex(c1);
-                    graph.addVertex(c2);
                     if(checkAdjacentCoordinates(c1, c2))
                         graph.addEdge(c1, c2, true);
                 }
             }
+
+            // Count all connected vertex. If they are connected it means that they follow a path in the bookshelf (that means they are close).
+            for(Coordinate c : coordinates){
+                partialCount = 0;
+                try{
+                    partialCount = graph.DFS(c);
+                }catch (NullPointerException e){
+                    // Do noting if the vertex doesn't exist. Maybe there are no available edges.
+                }
+
+                // Consider the group with the highest number of close tiles (of the same color).
+                if(partialCount > totalColorMatches)
+                    totalColorMatches = partialCount;
+            }
+            // Add to the list of maximum matches for each color.
+            totalMatches.add(totalColorMatches);
+            totalColorMatches = 0;
         }
+
+        partialCount = 0;
+        // Iterate all the matches of each color and replace the previous adjacent tiles' points.S
+        for(Integer i : totalMatches){
+            partialCount += assignablePoints.get(i);
+        }
+        adjacentTilesPoints = partialCount;
     }
 
     private boolean checkAdjacentCoordinates(Coordinate c1, Coordinate c2){
         return Math.abs(c1.getRow() - c2.getRow()) == 0 && Math.abs(c1.getCol() - c2.getCol()) == 1 || Math.abs(c1.getCol() - c2.getCol()) == 0 && Math.abs(c1.getRow() - c2.getRow()) == 1;
+    }
+
+    public void checkFullBookshelf(){
+        if(bookShelf.checkEndGame())
+            firstCompletedPoints = 1;
+        else
+            firstCompletedPoints = 0;
     }
 
 

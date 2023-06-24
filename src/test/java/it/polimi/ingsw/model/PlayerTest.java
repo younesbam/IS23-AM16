@@ -45,12 +45,12 @@ class PlayerTest {
         // Check for points.
         player.updateTotalPoints();
         assertEquals(points, player.getTotalPoints());
-        assertEquals(0, player.getCommonCardPointsEarned(0));
-        assertEquals(0, player.getCommonCardPointsEarned(1));
-        player.setCommonCardPointsEarned(0, common1points);
-        assertEquals(common1points, player.getCommonCardPointsEarned(0));
-        player.setCommonCardPointsEarned(1, common2points);
-        assertEquals(common2points, player.getCommonCardPointsEarned(1));
+        assertEquals(0, player.getCommonCardPoints(0));
+        assertEquals(0, player.getCommonCardPoints(1));
+        player.setCommonCardPoints(0, common1points);
+        assertEquals(common1points, player.getCommonCardPoints(0));
+        player.setCommonCardPoints(1, common2points);
+        assertEquals(common2points, player.getCommonCardPoints(1));
         points = common1points + common2points;
         player.updateTotalPoints();
         assertEquals(points, player.getTotalPoints());

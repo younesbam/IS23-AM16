@@ -202,14 +202,6 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
-     * Update current player's points.
-     */
-    public void updateTotalPoints() {
-        game.getCurrentPlayer().updateTotalPoints();
-    }
-
-
-    /**
      * Set the current player.
      * @param player current player
      */
@@ -434,7 +426,14 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void checkFullBookshelf(){
+        currentPlayer.checkFullBookshelf();
+    }
 
+    /**
+     * Update current player's points.
+     */
+    public void updateTotalPoints() {
+        game.getCurrentPlayer().updateTotalPoints();
     }
 
 
