@@ -1,31 +1,24 @@
 package it.polimi.ingsw.client.gui.controllers;
 
-import com.sun.tools.javac.Main;
 import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.client.gui.GUI;
-import it.polimi.ingsw.communications.serveranswers.BookShelfCompleted;
 import it.polimi.ingsw.communications.serveranswers.CountDown;
-import it.polimi.ingsw.communications.serveranswers.requests.DisconnectPlayer;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
-import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.Pane;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import it.polimi.ingsw.client.gui.controllers.LoadingController;
 
 public class GUIManager extends UI {
 
@@ -41,8 +34,8 @@ public class GUIManager extends UI {
     private static final String CHAT = "chatScene.fxml";
     private static final String COUNTDOWN = "countDown.fxml";
     private static final String GAME_OVER = "gameOverScene.fxml";
-    private static final String PERSONAL_GOAL_CARD_PATH = "/fxml/graphics/personal_goal_cards/";
-    private static final String COMMON_GOAL_CARD_PATH = "/fxml/graphics/common_goal_cards/";
+    private static final String PERSONAL_GOAL_CARD_PATH = "/graphics/personal_goal_cards/";
+    private static final String COMMON_GOAL_CARD_PATH = "/graphics/common_goal_cards/";
     private boolean playingGame = false;
     private final Logger logger = Logger.getLogger(getClass().getName());
     private final HashMap<String, Scene> nameMapScene = new HashMap<>();
