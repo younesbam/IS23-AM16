@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.common.Coordinate;
+import it.polimi.ingsw.common.Graph;
 import it.polimi.ingsw.model.cards.*;
 
 import java.io.Serializable;
@@ -213,18 +214,45 @@ public class Player implements Serializable {
             assignablePoints.put(i, 8);  // group of i adjacent tiles, 8 points.
         }
 
-        Boolean[][] visited = new Boolean[MAXBOOKSHELFROW][MAXBOOKSHELFCOL];
+        // Create map for each tile's type.
         Map<Tile, List<Coordinate>> tiles = new HashMap<>();
         for(Tile tile : Tile.values()){
-            if(tile != Tile.UNAVAILABLE && tile != Tile.BLANK)
+            if(tile != Tile.UNAVAILABLE && tile != Tile.BLANK){
                 tiles.put(tile, new ArrayList<>());
-        }
-
-        for (int i = 0; i< MAXBOOKSHELFROW; i++) {
-            for(int j = 0; j< MAXBOOKSHELFCOL; j++) {
-                //
             }
         }
+
+        // Insert all the coordinates of each tile, grouped by colors.
+        for(int i = 0; i< MAXBOOKSHELFROW; i++) {
+            for(int j = 0; j< MAXBOOKSHELFCOL; j++) {
+                Tile tile = bookShelf.getGrid()[i][j].getTile();
+                if(tile != Tile.UNAVAILABLE && tile != Tile.BLANK){
+                    List<Coordinate> coordinateList = tiles.get(tile);
+                    coordinateList.add(new Coordinate(i, j));
+                }
+            }
+        }
+
+        // Check group of equal tiles.
+        Graph<Coordinate> graph = new Graph<>();
+
+        for(Tile tile : tiles.keySet()) {
+            List<Coordinate> coordinates = tiles.get(tile);
+            for(int i=0; i<coordinates.size()-1; i++){
+                for(int j=i+1; j<coordinates.size(); j++){
+                    Coordinate c1 = coordinates.get(i);
+                    Coordinate c2 = coordinates.get(j);
+                    graph.addVertex(c1);
+                    graph.addVertex(c2);
+                    if(checkAdjacentCoordinates(c1, c2))
+                        graph.addEdge(c1, c2, true);
+                }
+            }
+        }
+    }
+
+    private boolean checkAdjacentCoordinates(Coordinate c1, Coordinate c2){
+        return Math.abs(c1.getRow() - c2.getRow()) == 0 && Math.abs(c1.getCol() - c2.getCol()) == 1 || Math.abs(c1.getCol() - c2.getCol()) == 0 && Math.abs(c1.getRow() - c2.getRow()) == 1;
     }
 
 
