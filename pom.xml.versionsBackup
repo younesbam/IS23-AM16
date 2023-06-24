@@ -22,62 +22,62 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.2</version>
+      <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
     <!-- junit 5 -->
       <dependency>
           <groupId>org.junit.jupiter</groupId>
           <artifactId>junit-jupiter</artifactId>
-          <version>5.10.0-M1</version>
+          <version>RELEASE</version>
           <scope>test</scope>
       </dependency>
     <!-- https://mvnrepository.com/artifact/org.json/json -->
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
-      <version>20230618</version>
+      <version>20230227</version>
     </dependency>
     <!-- JavaFX -->
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics</artifactId>
-      <version>21-ea+21</version>
+      <version>14.0.1</version>
       <classifier>win</classifier>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics</artifactId>
-      <version>21-ea+21</version>
+      <version>14.0.1</version>
       <classifier>linux</classifier>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics</artifactId>
-      <version>21-ea+21</version>
+      <version>14.0.1</version>
       <classifier>mac</classifier>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
-      <version>21-ea+21</version>
+      <version>14.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-media</artifactId>
-      <version>21-ea+21</version>
+      <version>14.0.1</version>
       <classifier>win</classifier>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-media</artifactId>
-      <version>21-ea+21</version>
+      <version>14.0.1</version>
       <classifier>linux</classifier>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-media</artifactId>
-      <version>21-ea+21</version>
+      <version>14.0.1</version>
       <classifier>mac</classifier>
     </dependency>
   </dependencies>
