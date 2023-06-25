@@ -89,7 +89,10 @@ class PlayerTest {
         player.setCommonCardPoints(0, common1points);
         player.setCommonCardPoints(1, common2points);
         player.updateTotalPoints();
-        points = common1points + common2points;
+        player.checkFullBookshelf();
+        // The bookshelf isn't full so the game doesn't end.
+        int firstPoint = 0;
+        points = common1points + common2points + firstPoint;
         assertEquals(points, player.getTotalPoints());
         assertEquals(common1points, player.getCommonCardPoints(0));
         assertEquals(common2points, player.getCommonCardPoints(1));
@@ -146,12 +149,15 @@ class PlayerTest {
         // The personal goal card's scheme is respected, so the player should earn 12 points.
         int persPoints = 12;
         // The player has also earned 3 points for adjacent tiles.
-        int adPoints = 32;
+        int adPoints = 30;
+        // Assuming that the player is the first who finishes.
+        int firstPoint = 1;
         // Setting also common points.
         player.setCommonCardPoints(0, common1points);
         player.setCommonCardPoints(1, common2points);
-        points = persPoints + adPoints + common2points + common1points;
+        points = persPoints + adPoints + common2points + common1points + firstPoint;
         player.checkPersonalGoalCardScheme();
+        player.checkFullBookshelf();
         player.checkAdjacentTiles();
         player.updateTotalPoints();
         assertEquals(points, player.getTotalPoints());
@@ -159,6 +165,6 @@ class PlayerTest {
 
     @Test
     void idTest(){
-
+        assertEquals(ID, player.getID());
     }
 }
