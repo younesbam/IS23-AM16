@@ -136,8 +136,7 @@ public class Server {
             Each client registered in the server is pinged. If the client doesn't respond, the ping() method proceed itself to disconnect the client.
              */
             try {
-                //TODO: ripristinare ping
-                //pingClients();
+                pingClients();
             }catch (Exception e){
                 LOGGER.log(Level.WARNING, "Exception thrown",e);
             }
