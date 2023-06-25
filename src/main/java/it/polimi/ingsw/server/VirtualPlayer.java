@@ -4,19 +4,29 @@ import it.polimi.ingsw.communications.serveranswers.Answer;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.server.connection.CSConnection;
 
+/**
+ * Represent a virtual connected player. This not represent a real client, but a virtual one, distinguish by the connection type.
+ */
 public class VirtualPlayer {
-
+    /**
+     * Username of the player.
+     */
     private final String username;
+    /**
+     * Game handler of the player.
+     */
     private final GameHandler gameHandler;
+    /**
+     * Client-server connection of the player.
+     */
     private CSConnection connection;
 
 
     /**
      * Class constructor.
-     *
-     * @param username
-     * @param c connection
-     * @param g game handler
+     * @param username username of the player.
+     * @param c Client-server connection of the player.
+     * @param g Game handler of the player.
      */
     public VirtualPlayer(String username, CSConnection c, GameHandler g) {
         this.username = username;
@@ -24,14 +34,17 @@ public class VirtualPlayer {
         this.gameHandler = g;
     }
 
+    /**
+     * Restore the player by assign a new client-server connection.
+     * @param connection Client-server connection of the player.
+     */
     public void restorePlayer(CSConnection connection){
         this.connection = connection;
     }
 
     /**
-     * ID getter.
-     *
-     * @return
+     * Unique ID getter.
+     * @return ID of the player.
      */
     public int getID() {
         return connection.getID();
@@ -39,17 +52,15 @@ public class VirtualPlayer {
 
     /**
      * Username getter.
-     *
-     * @return
+     * @return username of the player.
      */
     public String getUsername() {
         return this.username;
     }
 
     /**
-     * ClientSocketConnection getter.
-     *
-     * @return
+     * Client-server getter.
+     * @return Client-server connection of the player.
      */
     public CSConnection getConnection() {
         return this.connection;
@@ -57,8 +68,7 @@ public class VirtualPlayer {
 
     /**
      * GameHandler getter.
-     *
-     * @return
+     * @return game handler of the player.
      */
     public GameHandler getGameHandler() {
         return this.gameHandler;
@@ -66,7 +76,7 @@ public class VirtualPlayer {
 
     /**
      * This method is used to send the server's answer to the proper client.
-     * @param a
+     * @param a answer to be sent to the plauer.
      */
     public void send(Answer a) {
         SerializedAnswer answer = new SerializedAnswer();
