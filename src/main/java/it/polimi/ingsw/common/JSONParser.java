@@ -143,6 +143,16 @@ public class JSONParser {
      */
     public String getServerName(){ return getJSONObject().getString("ServerName"); }
 
+    /**
+     * Get server IP.
+     * <p></p>
+     * Warning: this IP must be the same of the server machine!
+     * @return server IP.
+     */
+    public String getServerIP(){
+        return getJSONObject().getString("ServerIP");
+    }
+
 
     /**
      * Get the initial JSONObject, that start with the first {}

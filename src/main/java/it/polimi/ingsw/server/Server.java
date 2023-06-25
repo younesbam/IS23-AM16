@@ -163,7 +163,7 @@ public class Server {
      * @throws AlreadyBoundException thrown if the name is already bound.
      */
     private void RMIInit() throws RemoteException, AlreadyBoundException {
-        System.setProperty("java.rmi.server.hostname", "168.5.32.1");
+        System.setProperty("java.rmi.server.hostname", jsonParser.getServerIP());
         Registry registry = LocateRegistry.createRegistry(this.rmiPort);
         registry.bind(jsonParser.getServerName(), new RMIServerHandler(this));
     }
