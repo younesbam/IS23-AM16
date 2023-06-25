@@ -245,7 +245,7 @@ public class Controller implements PropertyChangeListener {
         // Check also the validity of the parameters
         for(Coordinate c : coordinates){
             try{
-                canPick = c.getRow()>=0 && c.getCol()>=0 && game.getBoard().isPickable(c.getRow(), c.getCol());
+                canPick = game.getBoard().isPickable(c.getRow(), c.getCol());
             } catch (InvalidParameterException e){
                 gameHandler.sendToPlayer(new ErrorAnswer("You selected an invalid row/col, please try again", ErrorClassification.INVALID_ROW_COL), currentPlayer.getID());
                 return;
