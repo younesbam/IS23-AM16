@@ -105,8 +105,9 @@ public class Server {
         jsonParser = new JSONParser("network.json");
         this.rmiPort = jsonParser.getServerRmiPort();
         this.socketPort = jsonParser.getServerSocketPort();
-        LOGGER.log(Level.INFO, "RMI port: " + rmiPort);
-        LOGGER.log(Level.INFO, "Socket port: " + socketPort);
+        System.out.println("RMI port: " + rmiPort);
+        System.out.println("Socket port: " + socketPort);
+        System.out.println("Server IP: " + jsonParser.getServerIP());
 
         try {
             socketInit(this);
