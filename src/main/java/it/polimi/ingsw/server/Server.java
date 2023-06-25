@@ -42,20 +42,23 @@ public class Server {
      */
     public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 
+    /**
+     * Socket representation class.
+     */
     private ServerSideSocket serverSideSocket;
 
     /**
-     * Rmi port, read from json file
+     * Rmi port, read from json file.
      */
     private final int rmiPort;
 
     /**
-     * Socket port, read from json file
+     * Socket port, read from json file.
      */
     private final int socketPort;
 
     /**
-     * Easily get what's inside the json file
+     * Easily get what's inside the json file.
      */
     private final JSONParser jsonParser;
 
@@ -85,7 +88,7 @@ public class Server {
     private final List<VirtualPlayer> playersConnectedList = new ArrayList<>();
 
     /**
-     * Scheduler service
+     * Scheduler service. It executes tasks every n seconds, specified below.
      */
     ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
@@ -123,7 +126,7 @@ public class Server {
 
         System.out.println("Type EXIT to end connection.");
 
-
+        // Run a thread to listen for the "exit" command.
         Thread exitThread = new Thread(this::exitListener);
         exitThread.start();
 
@@ -146,7 +149,7 @@ public class Server {
 
 
     /**
-     * Ping every connected client
+     * Ping every connected client.
      */
     private synchronized void pingClients(){
         for(VirtualPlayer p : playersConnectedList)
@@ -156,8 +159,8 @@ public class Server {
 
     /**
      * Initialize RMI communication.
-     * @throws RemoteException
-     * @throws AlreadyBoundException
+     * @throws RemoteException thrown if the registry cannot be exported.
+     * @throws AlreadyBoundException thrown if the name is already bound.
      */
     private void RMIInit() throws RemoteException, AlreadyBoundException {
         Registry registry = LocateRegistry.createRegistry(this.rmiPort);
@@ -167,7 +170,7 @@ public class Server {
 
     /**
      * Initialize Socket communication.
-     * @throws Exception
+     * @throws Exception thrown if socket cannot be initialized.
      */
     private void socketInit(Server server) throws Exception {
         serverSideSocket = new ServerSideSocket(this, this.socketPort);
@@ -179,7 +182,7 @@ public class Server {
 
     /**
      * Dispatch the message to the right action handler, based on the type of the serialized message.
-     * @param serializedMessage
+     * @param serializedMessage message received from client.
      */
     public void onClientMessage(SerializedMessage serializedMessage) {
         VirtualPlayer currentPlayer = getVirtualPlayerByID(serializedMessage.playerID);
@@ -239,7 +242,10 @@ public class Server {
 
 
     /**
-     * This method is the one that registers the new client to the match. It also checks if the username chosen by the player is not already taken.
+     * Register the new client to the match. It also checks if the username chosen by the player is not already taken.
+     * @param username username of the client that want to register.
+     * @param clientConnection Already created connection between client-server
+     * @throws IOException thrown if there are communication problem.
      */
     private synchronized Integer newClientRegistration(String username, CSConnection clientConnection) throws IOException{
         SerializedAnswer answer = new SerializedAnswer();
@@ -308,8 +314,8 @@ public class Server {
 
     /**
      * This is the lobby. Here the players wait for other players to connect, in order to reach the number chosen from the games's host.
-     * @param connection
-     * @throws InterruptedException
+     * @param connection Already created connection between client-server
+     * @throws InterruptedException thrown if an error occurs during thread sleep.
      */
     private synchronized void lobby(CSConnection connection) throws InterruptedException {
         SerializedAnswer answer = new SerializedAnswer();
@@ -347,9 +353,10 @@ public class Server {
 
 
     /**
-     * Method used to verify if the number of players chosen by the player is in the possible range.
-     * @param numOfPlayers
-     * @throws OutOfBoundException
+     * Verify if the number of players chosen by the player is in the possible range.
+     * @param player player that send to the server the request to set the number of players.
+     * @param numOfPlayers number of players in the game.
+     * @throws OutOfBoundException thrown if the range of players is not correct.
      */
     private void setNumOfPlayers(VirtualPlayer player, int numOfPlayers) throws OutOfBoundException{
         /*
@@ -364,7 +371,7 @@ public class Server {
         /*
         Check if the players are in the right range.
          */
-        if (numOfPlayers > 4 || numOfPlayers < 2)
+        if (numOfPlayers > MAXPLAYERS || numOfPlayers < MINPLAYERS)
             throw new OutOfBoundException();
         /*
         Set number of players (also in GameHandler)
@@ -379,7 +386,7 @@ public class Server {
     
     /**
      * This method generates a new client ID.
-     * @return
+     * @return generated client ID.
      */
     public synchronized int newClientID() {
         int newID = currentPlayerID;
@@ -421,9 +428,8 @@ public class Server {
 
     /**
      * This method returns the gameHandler belonging to the clientID parameter passed.
-     *
-     * @param ID
-     * @return
+     * @param ID Unique ID of the player.
+     * @return game handler reference.
      * */
     public synchronized GameHandler getGameHandlerByID(int ID) {
         List<VirtualPlayer> list = List.copyOf(playersConnectedList);
@@ -437,8 +443,8 @@ public class Server {
 
     /**
      * This method returns the VirtualPlayer instance corresponding to the passed ID.
-     * @param ID
-     * @return
+     * @param ID Unique ID of the player.
+     * @return virtual player corresponding to the passed ID.
      */
     public synchronized VirtualPlayer getVirtualPlayerByID(int ID) {
         List<VirtualPlayer> list = List.copyOf(playersConnectedList);
@@ -452,8 +458,8 @@ public class Server {
 
     /**
      * This method returns the corresponding ID of the player with that username.
-     * @param username
-     * @return
+     * @param username username of the player
+     * @return Unique ID of the player corresponding to the passed username.
      */
     public synchronized Integer getIDByUsername(String username) {
         List<VirtualPlayer> list = List.copyOf(playersConnectedList);
@@ -467,8 +473,8 @@ public class Server {
 
     /**
      * This method returns the corresponding username of the player with that ID.
-     * @param ID
-     * @return
+     * @param ID Unique ID of the player.
+     * @return username of the player with the corresponding ID.
      */
     public synchronized String getUsernameByID(int ID) {
         List<VirtualPlayer> list = List.copyOf(playersConnectedList);
@@ -481,9 +487,9 @@ public class Server {
     }
 
     /**
-     * Get a waiting player by ID
-     * @param ID
-     * @return
+     * Get a waiting player by ID.
+     * @param ID Unique ID of the player.
+     * @return virtual player related to the passed ID.
      */
     public synchronized VirtualPlayer getWaitingPlayerByID(int ID) {
         List<VirtualPlayer> list = List.copyOf(playersWaitingList);
@@ -496,8 +502,8 @@ public class Server {
     }
 
     /**
-     * Get connected virtual player list
-     * @return
+     * Get connected virtual player list.
+     * @return list of connected players.
      */
     public List<VirtualPlayer> getConnectedPlayers(){
         return playersConnectedList;
@@ -505,8 +511,8 @@ public class Server {
 
 
     /**
-     * This method removes a player from the current server.
-     * @param ID
+     * This method removes a player from the current server, both from connected list and waiting list (if it exists).
+     * @param ID Unique ID of the player.
      */
     public synchronized void removePlayer(int ID) {
         System.out.println("Removing player " + getUsernameByID(ID));
@@ -527,7 +533,7 @@ public class Server {
 
     /**
      * Suspend a client after failed ping {@link CSConnection#ping() ping} request
-     * @param connection
+     * @param connection client-server connection of the client to be suspended.
      */
     public void suspendClient(CSConnection connection){
         VirtualPlayer suspendedClient = getVirtualPlayerByID(connection.getID());
@@ -542,10 +548,10 @@ public class Server {
 
 
     /**
-     * Restore client after a {@link Server#suspendClient(CSConnection) suspension} from the server
+     * Restore client after a {@link Server#suspendClient(CSConnection) suspension} from the server.
      * <p></p>
      * Note: in order to properly restore the client, username must be the same of the disconnected client
-     * @param connection
+     * @param connection client-server connection of the client to be restored.
      */
     public void restoreClient(CSConnection connection){
         VirtualPlayer restoredClient = getVirtualPlayerByID(connection.getID());

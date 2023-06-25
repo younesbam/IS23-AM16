@@ -2,19 +2,35 @@ package it.polimi.ingsw.common;
 
 import java.util.*;
 
+/**
+ * Graph data structure of generic type T.
+ * @param <T> generic type of each vertex.
+ */
 public class Graph<T> {
+    /**
+     * Visited vertex during DFS search.
+     */
     private int visitedVertex = 0;
 
-    // We use Hashmap to store the edges in the graph
+    /**
+     * Map to store vertex and edges in the graph.
+     */
     private final Map<T, List<T> > map = new HashMap<>();
 
-    // This function adds a new vertex to the graph
+    /**
+     * Adds a new vertex to the graph
+     * @param s Vertex to be added.
+     */
     private void addVertex(T s) {
         map.put(s, new LinkedList<T>());
     }
 
-    // This function adds the edge
-    // between source to destination
+    /**
+     * Adds edge between source and destination. If one of the two vertex is not present in the map, it will be added automatically.
+     * @param source vertex source.
+     * @param destination vertex destination.
+     * @param bidirectional true if undirected graph.
+     */
     public void addEdge(T source, T destination, boolean bidirectional) {
 
         if (!map.containsKey(source))
@@ -30,14 +46,17 @@ public class Graph<T> {
     }
 
 
-    // A function used by DFS
+    /**
+     * A function used by DFS to perform a DFS.
+     * @param v starting vertex.
+     * @param visited visited map to know if each vertex was visited.
+     */
     private void DFSUtil(T v, Map<T, Boolean> visited) {
-        // Mark the current node as visited and print it
+        // Mark the current node as visited.
         visited.put(v, true);
         visitedVertex++;
 
-        // Recur for all the vertices adjacent to this
-        // vertex
+        // Recur for all the vertices adjacent to this vertex.
         Iterator<T> i = map.get(v).listIterator();
         while (i.hasNext()) {
             T next = i.next();
@@ -46,24 +65,25 @@ public class Graph<T> {
         }
     }
 
-    // The function to do DFS traversal.
+    /**
+     * Do DFS traversal.
+     * @param v starting vertex
+     * @return integer representing the number of visited vertex.
+     * @throws NullPointerException thrown if the map doesn't contain the starting vertex.
+     */
     // It uses recursive DFSUtil()
     public int DFS(T v) throws NullPointerException{
         if(!map.containsKey(v))
             throw new NullPointerException();
         visitedVertex = 0;
-        // Mark all the vertices as
-        // not visited(set as
-        // false by default in java)
-        //boolean[] visited = new boolean[map.size()];
+
+        // Mark all vertex as not visited.
         Map<T, Boolean> visited = new HashMap<>();
         for (T key : map.keySet()) {
             visited.put(key, false);
         }
 
-        // Call the recursive helper
-        // function to print DFS
-        // traversal
+        // Call the recursive helper function to print DFS traversal
         DFSUtil(v, visited);
 
         return visitedVertex;
