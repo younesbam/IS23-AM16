@@ -35,8 +35,14 @@ public class Player implements Serializable {
      */
     private int personalGoalCardPoints = 0;
 
+    /**
+     * Points earned during the game from adjacent tiles in the bookshelf.
+     */
     private int adjacentTilesPoints = 0;
 
+    /**
+     * Additional point to the first player that complete the bookshelf.
+     */
     private int firstCompletedPoints = 0;
 
     /**
@@ -139,8 +145,8 @@ public class Player implements Serializable {
      */
     public void updateTotalPoints() {
         int total=0;
-        for(int i = 0; i< commonCardPoints.size(); i++){
-            total += commonCardPoints.get(i);
+        for (Integer commonCardPoint : commonCardPoints) {
+            total += commonCardPoint;
         }
         total += personalGoalCardPoints;
         total += adjacentTilesPoints;
@@ -177,7 +183,7 @@ public class Player implements Serializable {
     }
 
     /**
-     * Check adjacent tiles in order to assign extra points.
+     * Check adjacent tiles in order to assign extra points, based on requirements.
      */
     public void checkAdjacentTiles(){
         List<Integer> totalMatches = new ArrayList<>();  // Total matches
@@ -260,10 +266,19 @@ public class Player implements Serializable {
         adjacentTilesPoints = partialCount;
     }
 
+    /**
+     * Check adjacent coordinates on the same row/column. If they are in diagonal, return false.
+     * @param c1 first coordinate.
+     * @param c2 second coordinate.
+     * @return true if they are adjacent. Return false if they are in a diagonal position.
+     */
     private boolean checkAdjacentCoordinates(Coordinate c1, Coordinate c2){
         return Math.abs(c1.getRow() - c2.getRow()) == 0 && Math.abs(c1.getCol() - c2.getCol()) == 1 || Math.abs(c1.getCol() - c2.getCol()) == 0 && Math.abs(c1.getRow() - c2.getRow()) == 1;
     }
 
+    /**
+     * Check if the bookshelf is full to assign the additional point.
+     */
     public void checkFullBookshelf(){
         if(bookShelf.checkEndGame())
             firstCompletedPoints = 1;
