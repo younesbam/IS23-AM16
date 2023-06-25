@@ -1,17 +1,34 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.common.Coordinate;
+import it.polimi.ingsw.common.JSONParser;
+import it.polimi.ingsw.common.exceptions.NotEmptyColumnException;
+import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
+import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
+import it.polimi.ingsw.communications.clientmessages.actions.PrintCardsAction;
 import it.polimi.ingsw.communications.serveranswers.Answer;
+import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
+import it.polimi.ingsw.communications.serveranswers.errors.ErrorClassification;
 import it.polimi.ingsw.model.Bag;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Tile;
 import it.polimi.ingsw.model.cards.CommonGoalCard;
+import it.polimi.ingsw.model.cards.EqualCorners;
+import it.polimi.ingsw.model.cards.EqualCross;
+import it.polimi.ingsw.model.cards.PersonalGoalCard;
 import it.polimi.ingsw.server.GameHandler;
 import it.polimi.ingsw.server.Server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeSupport;
+import java.lang.reflect.Array;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -20,28 +37,27 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
 
-    ControllerHint controller;
+    Controller controller;
     Game game;
     Player p1, p2, p3;
     ArrayList<Player> players = new ArrayList<>();
+    List<CommonGoalCard> commCards = new ArrayList<>();
+    LinkedList<PersonalGoalCard> persCards = new LinkedList<>();
+    int numOfPlayers = 3;
+    PropertyChangeSupport pcsController = new PropertyChangeSupport(this);
+    Phase phase;
 
-    private static class ServerHint extends Server{
-        public ServerHint(){
-            System.out.println("Patate");
-        }
-    }
-
-    private static class ControllerHint extends Controller{
-        public ControllerHint(GameHandler gameHandler, Game model) {super(gameHandler, model);}
-    }
-
+    /**
+     * This class represents a hint of the GameHandler.
+     * It's used to run tests without using communication tools.
+     */
     private static class GameHandlerHint extends GameHandler{
         /**
          * GameHandler constructor.
          *
          * @param server
          */
-        public GameHandlerHint(ServerHint server) {
+        public GameHandlerHint(Server server) {
             super(server);
         }
 
@@ -61,85 +77,118 @@ class ControllerTest {
         }
     }
 
+    /**
+     * This class is used to create a game in which personal and common goal cards are known in order to
+     * run the tests.
+     */
+    private static class GameHint extends Game {
+        /**
+         * GameHint constructor.
+         */
+        public GameHint(){super();};
+
+        /**
+         * In this case we choose common goal cards 1 and 8 to be the goals to achieve.
+         * @return Cards 1 and 8 in a list.
+         */
+        @Override
+        public List<CommonGoalCard> getCommonGoalCards(){
+            List<CommonGoalCard> list = new ArrayList<>();
+            list.add(new EqualCorners(8));
+            list.add(new EqualCross(1));
+
+            return list;
+        }
+    }
+
     @BeforeEach
     void testSetup(){
         game = new Game(); // Game's creation.
-        controller = new ControllerHint(new GameHandlerHint(null), game); // Controller's creation.
+        controller = new Controller(new GameHandlerHint(null), game); // Controller's creation.
 
-        // Players' creation.
+        // Player 1 creation.
         p1 = new Player("Pippo", 01);
-        p2 = new Player("Pluto", 02);
-        p3 = new Player("Paperino", 03);
         game.createPlayer(p1);
+        p1.setChair(true);
+
+        // Player 2 creation.
+        p2 = new Player("Pluto", 02);
         game.createPlayer(p2);
+        p2.setChair(false);
+
+        // Player 3 creation.
+        p3 = new Player("Paperino", 03);
         game.createPlayer(p3);
+        p3.setChair(false);
+
+        // Creation of players' list.
         players = game.getPlayers();
         game.setNumOfPlayers(players.size());
-        p1.setChair(true);
-        p2.setChair(false);
-        p3.setChair(false);
+
+        // First player and current player are player 1, who has the chair.
         game.setFirstPlayer(p1);
         controller.setCurrentPlayer(p1);
 
-        // Every player is active.
+        // Setting all players as active.
         for(int i=0; i< players.size(); i++)
             game.getPlayers().get(i).setActive(true);
 
         // Common goal cards' creation.
-        game.getCommonGoalCards().add(game.getBag().pickCommonGoalCard(players.size()));
-        game.getCommonGoalCards().add(game.getBag().pickCommonGoalCard(players.size()));
+        commCards = game.getCommonGoalCards();
 
-        // Personal goal cards' creation.
+        /*
+        Personal goal card's creation.
+        Player 1 has card 1, player 2 has card 2 and player 3 has card 3.
+         */
+        JSONParser jsonParser = new JSONParser("initSetup.json");
+        persCards = jsonParser.getPersonalGoalCards();
         for(int i=0; i<players.size(); i++)
-            game.getPlayers().get(i).setPersonalGoalCard(game.getBag().pickPersonalGoalCard());
+            game.getPlayers().get(i).setPersonalGoalCard(persCards.get(i));
 
         // Board's creation.
         game.createBoard();
+
+        // Property change listener declaration.
+        pcsController.addPropertyChangeListener(controller);
     }
 
     @Test
-    public void setTest(){
-        // getGame() check.
+    public void getGameTest(){
         assertNotNull(controller.getGame());
         assertEquals(game, controller.getGame());
+    }
 
-        // Tests on players.
-        assertNotNull(players);
-        int numOfPlayers = game.getNumOfPlayers();
-        assertTrue(numOfPlayers >= MINPLAYERS);
-        assertTrue(numOfPlayers <= MAXPLAYERS);
-        for (Player player : players) {
-            assertNotNull(player.getPersonalGoalCard());
-            assertNotNull(player.getBookShelf());
-        }
-        assertEquals(p1, controller.getCurrentPlayer());
+    @Test
+    void phaseTest(){
+        Phase phase = Phase.LOBBY;
+        controller.setPhase(phase);
+        assertNotNull(controller.getPhase());
+        assertEquals(phase, controller.getPhase());
+
+        phase = Phase.SETUP;
+        controller.setPhase(phase);
+        assertNotNull(controller.getPhase());
+        assertEquals(phase, controller.getPhase());
+    }
+
+    @Test
+    void currentPlayerTest(){
+        // Check that player 1 is current player.
+        assertEquals(game.getCurrentPlayer(), controller.getCurrentPlayer());
         assertNotEquals(p2, controller.getCurrentPlayer());
         assertNotEquals(p3, controller.getCurrentPlayer());
 
-        // Tests on chair.
-        int numChairs = 0;
-        for (Player player : players) {
-            if (player.hasChair()) {
-                numChairs++;
-            }
-        }
-        assertEquals(1, numChairs);
-        assertNotEquals(0, numChairs);
+        controller.setCurrentPlayer(p2);
+        assertEquals(game.getCurrentPlayer(), controller.getCurrentPlayer());
 
-        // Tests on common goal cards.
-        List<CommonGoalCard> commonGoalCards = game.getCommonGoalCards();
-        assertNotNull(commonGoalCards);
-        assertEquals(2, commonGoalCards.size());
+        controller.setCurrentPlayer(p3);
+        assertEquals(game.getCurrentPlayer(), controller.getCurrentPlayer());
+    }
 
-        // getBoard() check.
-        assertNotNull(game.getBoard());
-
-        // Tests on points.
+    @Test
+    public void pointsTest(){
         controller.updateTotalPoints();
         assertEquals(0, controller.getCurrentPlayer().getTotalPoints());
-
-        // Tests on current player.
-        assertEquals(game.getCurrentPlayer(), controller.getCurrentPlayer());
     }
 
     @Test
@@ -173,110 +222,77 @@ class ControllerTest {
     }
 
     @Test
-    void phaseTest(){
-        Phase phase = Phase.LOBBY;
-        controller.setPhase(phase);
-        assertNotNull(controller.getPhase());
-        assertEquals(phase, controller.getPhase());
+    void pickTilesActionTest(){
+        phase = Phase.TILESPICKING;
 
-        phase = Phase.SETUP;
-        controller.setPhase(phase);
-        assertNotNull(controller.getPhase());
-        assertEquals(phase, controller.getPhase());
+        // Coordinates of tiles that can be picked.
+        List<Coordinate> coordinates = new ArrayList<>();
+        coordinates.add(new Coordinate(0, 3));
+        coordinates.add(new Coordinate(1,3));
+        pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates));
+
+        // Invalid row and col.
+        coordinates.clear();
+        coordinates.add(new Coordinate(-1, -1));
+        pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates));
+
+        // Coordinates of a tile that can't be picked.
+        coordinates.clear();
+        coordinates.add(new Coordinate(4,4));
+        pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates));
+
+        // Coordinates of not adjacent tiles.
+        coordinates.clear();
+        coordinates.add(new Coordinate(1,3));
+        coordinates.add(new Coordinate(8,5));
+
+        // Invalid phase.
+        phase = phase.LOBBY;
+        coordinates.clear();
+        coordinates.add(new Coordinate(1,3));
+
+        // Aggiungere il caso in cui la bookshelf del giocatore non è piena.
+
+        // Dividere tutto in sottometodi.
     }
 
     @Test
-    public void testPickTiles() {
-        controller.getGame().getBoard().updateBoard();
-        // Select a random tile
-        Random random = new Random();
-        int x = random.nextInt(MAXBOARDDIM);
-        int y = random.nextInt(MAXBOARDDIM);
-        while(controller.getGame().getBoard().isPickable(x,y)){
-            x = random.nextInt(MAXBOARDDIM);
-            y = random.nextInt(MAXBOARDDIM);
-        }
-        int[][] coordinates = {{x, y}};
-//        controller.pickTilesAction(coordinates);
-
-        // Check if the tile has been removed from the board
-        assertFalse(controller.getGame().getBoard().isPickable(x,y));
-    }
-
-    @Test
-    void testPlaceTiles() {
-        // Add 4 tiles to the current player's bookshelf
+    void placeTilesAction(){
+        phase = phase.TILESPLACING;
         List<Tile> tiles = new ArrayList<>();
+        int col = 0;
+        final int invalidCol = 10;
+
+        // Valid number of column and list of tiles.
         tiles.add(Tile.BLUE);
         tiles.add(Tile.PINK);
-        tiles.add(Tile.WHITE);
-        tiles.add(Tile.GREEN);
+        tiles.add(Tile.PINK);
+        pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(tiles, col));
 
-        // Check if the tiles have been added to the correct column of the bookshelf
-        for(int i = MAXBOOKSHELFROW; i<MAXBOOKSHELFROW-tiles.size(); i--)
-            assertEquals(tiles.get(i), controller.getGame().getCurrentPlayer().getBookShelf().getGrid()[i][0]);
+        // Invalid number of column.
+        pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(tiles, invalidCol));
+        assertDoesNotThrow(()->pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(tiles, 0)));
+
+        // Filling the column to have no space for other tiles.
+        game.getCurrentPlayer().getBookShelf().placeTiles(col, tiles);
+        game.getCurrentPlayer().getBookShelf().placeTiles(col, tiles);
+        pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(tiles, col));
+        assertDoesNotThrow(()->pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(tiles, 0)));
+
+        // Incorrect phase.
+        phase = phase.TILESPLACING;
+        pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(tiles, col));
     }
 
     @Test
-    void testCheckCommonGoal() {
-        Player player = controller.getGame().getCurrentPlayer();
-        int prevPoints = player.getTotalPoints();
-        /* TO DO complete a common goal and check if points update */
-    }
+    void printCardsTest(){
+        phase = phase.TILESPLACING;
+        pcsController.firePropertyChange("PrintCardsAction", null, new PrintCardsAction());
 
-    @Test
-    void testCheckPersonalGoal() {
-        Player player = controller.getGame().getCurrentPlayer();
-        int prevPoints = player.getTotalPoints();
-        /* TO DO complete personal goal */
-        // assertEquals(player.getPersonalGoalCard().checkScheme(player), player.getPoints()- prevPoints);
-    }
+        phase = phase.TILESPICKING;
+        pcsController.firePropertyChange("PrintCardsAction", null, new PrintCardsAction());
 
-    @Test
-    void testCheckEndGame() {
-        // Fill the current player's bookshelf to end the game
-        List<Tile> tiles = new ArrayList<>();
-        for (int i = 0; i < MAXBOOKSHELFROW; i++) {
-            tiles.add(Tile.GREEN);
-        }
-        for (int i = 0; i < MAXBOOKSHELFCOL; i++) {
-            controller.getGame().getCurrentPlayer().getBookShelf().placeTiles(i,tiles);
-        }
-
-        // Check if the game has ended
-    }
-
-    @Test
-    void testUpdatePoints() {
-//        // store previous points
-//        int prevPoints = controller.getGame().getCurrentPlayer().getTotalPoints();
-//        // Add random points to the current player's score
-//        Random random = new Random();
-//        int pointsAdded = random.nextInt(0);
-//        controller.updateTotalPoints();//controller.updateTotalPoints(pointsAdded);
-//
-//        // Check if the current player's score has been updated correctly
-//        assertEquals(pointsAdded, controller.getGame().getCurrentPlayer().getTotalPoints()- prevPoints);
-    }
-
-    @Test
-    void testSetCurrentPlayer() {
-        Player firstPlayer = controller.getGame().getPlayers().get(0);
-        controller.setCurrentPlayer(firstPlayer);
-        assertEquals(firstPlayer, controller.getGame().getCurrentPlayer());
-    }
-
-    @Test
-    void
-    testNextPlayer() {
-        List<Player> players = controller.getGame().getPlayers();
-        int numOfPlayers = players.size();
-        // Last player is the current player
-        controller.getGame().setCurrentPlayer(players.get(numOfPlayers-1));
-        // Now NextPlayer() should follow the order of the list of players -> the first next is the first player and so on
-        for(int i = 0 ; i < numOfPlayers-1; i++){
-            players.get(i).setActive(false);
-            assertEquals(players.get(i+1), controller.getGame().getCurrentPlayer());
-        }
+        phase = phase.LOBBY;
+        pcsController.firePropertyChange("PrintCardsAction", null, new PrintCardsAction());
     }
 }

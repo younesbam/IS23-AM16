@@ -2,8 +2,11 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.gui.GUI;
+import it.polimi.ingsw.client.gui.controllers.GUIManager;
 import it.polimi.ingsw.communications.serveranswers.*;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
+import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
+import it.polimi.ingsw.communications.serveranswers.info.PlayerNumberChosen;
 import it.polimi.ingsw.communications.serveranswers.info.*;
 import it.polimi.ingsw.communications.serveranswers.requests.DisconnectPlayer;
 import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
@@ -19,7 +22,7 @@ import java.beans.PropertyChangeSupport;
 public class ActionHandler {
     private final ModelView modelView;
     private CLI cli;
-    private GUI gui;
+    private GUIManager guiManager;
 
     /**
      * View's property change support. Used by CLI or GUI.
@@ -42,13 +45,13 @@ public class ActionHandler {
 
     /**
      * Constructor in case of a GUI match
-     * @param gui GUI instance
+     * @param guiManager GUIManager instance
      * @param modelView modelView instance
      */
-    public ActionHandler(GUI gui, ModelView modelView) {
-        this.gui = gui;
+    public ActionHandler(GUIManager guiManager, ModelView modelView) {
+        this.guiManager = guiManager;
         this.modelView = modelView;
-        //pcsView.addPropertyChangeListener(gui);
+        pcsView.addPropertyChangeListener(guiManager);
     }
 
 
@@ -163,7 +166,8 @@ public class ActionHandler {
         }
         //TODO: manca la chiusura del gioco per la gui.
         if(a instanceof DisconnectPlayer){
-            if(gui != null) {
+            if(guiManager != null) {
+                //guiManager.endGame();
             } else if(cli != null) {
                 cli.endGameMessage();
             }

@@ -13,7 +13,9 @@ public abstract class Card implements Serializable {
      */
     protected int cardNumber;
 
-
+    public int getCardNumber(){
+        return this.cardNumber;
+    }
     /**
      * Check the scheme to observe in order to get points.
      * @param player actual player

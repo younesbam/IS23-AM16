@@ -5,16 +5,18 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Board3Players;
 import it.polimi.ingsw.model.board.Board4Players;
 import it.polimi.ingsw.model.board.CreationFactory;
+import it.polimi.ingsw.model.cards.CommonGoalCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
-    Game g = new Game();
+    Game g;
     Player p1, p2, p3;
     ArrayList<Player> ps = new ArrayList<>();
     static final int NUMPLAYERS = 3;
@@ -24,6 +26,17 @@ class GameTest {
 
     @BeforeEach
     void init() {
+        // Creating game's instance.
+        g = new Game();
+
+        // Creating the board.
+        Bag bag = new Bag();
+        bag = g.getBag();
+
+        // Creating the common goal cards.
+        List<CommonGoalCard> cards = new ArrayList<>();
+        cards = g.getCommonGoalCards();
+
         // Creation of the players.
         p1 = new Player("Pippo", P1ID);
         p2 = new Player("Paperino", P2ID);
@@ -33,66 +46,86 @@ class GameTest {
         g.createPlayer(p2);
         g.createPlayer(p3);
 
+        // Setting all players as active.
+        g.setActivePlayer(P1ID, true);
+        g.setActivePlayer(P2ID, true);
+        g.setActivePlayer(P3ID, true);
+
         g.setNumOfPlayers(NUMPLAYERS);
 
         g.setFirstPlayer(p2);
+
+        g.setCurrentPlayer(p2);
     }
 
     @Test
-    void gameTest(){
-        // Test for number of players.
-        assertEquals(NUMPLAYERS, g.getNumOfPlayers());
+    void testsOnPlayers() throws NoNextPlayerException {
+        // Tests on players' list.
+        ps = g.getPlayers();
+        assertNotNull(ps);
+        assertEquals(NUMPLAYERS, ps.size());
+        assertEquals(g.getNumOfPlayers(), ps.size());
 
-        // Test for the first player.
+        // Tests on first player.
         assertEquals(p2, g.getFirstPlayer());
         assertNotEquals(p1, g.getFirstPlayer());
         assertNotEquals(p3, g.getFirstPlayer());
 
-        // Test for current player.
-        g.setCurrentPlayer(p1);
-        assertEquals(p1, g.getCurrentPlayer());
-        assertNotEquals(p2, g.getCurrentPlayer());
+        // Tests on current player.
+        assertEquals(p2, g.getCurrentPlayer());
+        assertNotEquals(p1, g.getCurrentPlayer());
         assertNotEquals(p3, g.getCurrentPlayer());
 
-        // Test for first player.
-        assertEquals(p2, g.getFirstPlayer());
-        assertNotEquals(p1, g.getFirstPlayer());
-        assertNotEquals(p3, g.getFirstPlayer());
-
-        // Test for ID.
-        assertEquals(p1, g.getPlayerByID(P1ID));
+        // Tests on playerID.
         assertEquals(p2, g.getPlayerByID(P2ID));
         assertEquals(p3, g.getPlayerByID(P3ID));
-        assertNotEquals(p3, g.getPlayerByID(P1ID));
-        assertNotEquals(p2, g.getPlayerByID(P3ID));
-        assertNotEquals(p1, g.getPlayerByID(P2ID));
+        assertEquals(p1, g.getPlayerByID(P1ID));
 
-        // Test for players' getter.
-        ps.add(p1);
-        ps.add(p2);
-        ps.add(p3);
-        assertEquals(ps, g.getPlayers());
+        // Check that all players have played 0 turns.
+        assertEquals(0, g.getPlayerByID(P2ID).getNumOfTurns());
+        assertEquals(0, g.getPlayerByID(P1ID).getNumOfTurns());
+        assertEquals(0, g.getPlayerByID(P3ID).getNumOfTurns());
 
-        // Test for players' activity.
-        g.setActivePlayer(P1ID, true);
-        assertTrue(p1.isActive());
+        // Check that after nextPlayer() P2 has played 1 turn and that P3 is next player.
+        g.nextPlayer();
+        assertEquals(1, g.getPlayerByID(P2ID).getNumOfTurns());
+        assertEquals(p3, g.getCurrentPlayer());
+
+        // Check that now both P2 and P3 have played 1 turn.
+        g.nextPlayer();
+        assertEquals(1, g.getPlayerByID(P3ID).getNumOfTurns());
+        assertEquals(p1, g.getCurrentPlayer());
+
+        // Check that now all players have played 1 turn and current player is P2 again.
+        g.nextPlayer();
+        assertEquals(1, g.getPlayerByID(P1ID).getNumOfTurns());
+        assertEquals(p2, g.getCurrentPlayer());
+
+        // Setting p2 as inactive to check that now current player is P3.
         g.setActivePlayer(P2ID, false);
-        assertFalse(p2.isActive());
-        g.setActivePlayer(P1ID, false);
-        g.setActivePlayer(P3ID, false);
-        assertFalse(p1.isActive());
-        assertFalse(p3.isActive());
+        g.nextPlayer();
+        assertEquals(1, g.getPlayerByID(P2ID).getNumOfTurns());
+        assertEquals(p3, g.getCurrentPlayer());
 
+        // P3 now has played 2 turns, P2 has still played only 1 turn and P1 is current player.
+        g.nextPlayer();
+        assertEquals(1, g.getPlayerByID(P2ID).getNumOfTurns());
+        assertEquals(2, g.getPlayerByID(P3ID).getNumOfTurns());
+        assertEquals(p1, g.getCurrentPlayer());
+
+        // Setting also p1 as inactive in order to check that the method throws an exception.
+        g.setActivePlayer(P1ID, false);
         assertThrows(NoNextPlayerException.class, ()->g.nextPlayer());
 
-        // Test for players' removal.
+        // Tests on player's removal.
         g.removePlayer(p1);
         g.removePlayer(p2);
         g.removePlayer(p3);
-        assertEquals(null, g.getPlayerByID(P1ID));
-        assertEquals(null, g.getPlayerByID(P2ID));
-        assertEquals(null, g.getPlayerByID(P3ID));
-        assertThrows(NoNextPlayerException.class, ()-> g.nextPlayer());
+        ps = g.getPlayers();
+        assertEquals(0, ps.size());
+        assertNull(g.getPlayerByID(P1ID));
+        assertNull(g.getPlayerByID(P2ID));
+        assertNull(g.getPlayerByID(P3ID));
     }
 
     @Test

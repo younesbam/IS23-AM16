@@ -29,7 +29,7 @@ class CardTest {
     Questo permette di usare il metodo placeTiles per inserire le tessere lette da json.
      */
     JSONArray getBookshelfFromJSON(int cardID) {
-        String jsonString = Utils.convertFileIntoString("json/testCommonCard.json");
+        String jsonString = Utils.convertFileIntoString("/json/testCommonCard.json");
         // Get the json object from the string
         JSONObject obj = new JSONObject(jsonString);
         // Get cardTests array
