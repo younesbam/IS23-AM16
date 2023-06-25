@@ -105,9 +105,10 @@ public class Server {
         jsonParser = new JSONParser("network.json");
         this.rmiPort = jsonParser.getServerRmiPort();
         this.socketPort = jsonParser.getServerSocketPort();
-        LOGGER.log(Level.INFO, "RMI port: " + rmiPort);
-        LOGGER.log(Level.INFO, "Socket port: " + socketPort);
-        
+        System.out.println("RMI port: " + rmiPort);
+        System.out.println("Socket port: " + socketPort);
+        System.out.println("Server IP: " + jsonParser.getServerIP());
+
         try {
             socketInit(this);
         } catch (Exception e){
@@ -115,7 +116,7 @@ public class Server {
             System.exit(-1);
         }
         LOGGER.log(Level.INFO, "Socket setup complete");
-        
+
         try {
             RMIInit();
         } catch (RemoteException | AlreadyBoundException e){
@@ -384,7 +385,7 @@ public class Server {
         gameHandler.getController().setPhase(Phase.LOBBY);
     }
 
-    
+
     /**
      * This method generates a new client ID.
      * @return generated client ID.
@@ -439,7 +440,7 @@ public class Server {
                 return p.getGameHandler();
             }
         }
-            return null;
+        return null;
     }
 
     /**
