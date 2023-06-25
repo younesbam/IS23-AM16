@@ -51,8 +51,8 @@ public class RMIClientHandler extends Client implements IRMIClient {
      */
     @Override
     public void connect() throws RemoteException, NotBoundException {
-        System.setProperty("java.rmi.server.hostname", jsonParser.getServerName());
-        Registry registry = LocateRegistry.getRegistry(jsonParser.getServerName(), getPort());
+        System.setProperty("java.rmi.server.hostname", getAddress());
+        Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
         server = (IRMIServer) registry.lookup(jsonParser.getServerName());
         server.login(getUsername(), this);
         modelView.setConnected(true);
