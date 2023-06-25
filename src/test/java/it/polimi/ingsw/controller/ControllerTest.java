@@ -13,6 +13,9 @@ import it.polimi.ingsw.model.Bag;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Tile;
+import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.Board3Players;
+import it.polimi.ingsw.model.board.CreationFactory;
 import it.polimi.ingsw.model.cards.CommonGoalCard;
 import it.polimi.ingsw.model.cards.EqualCorners;
 import it.polimi.ingsw.model.cards.EqualCross;
@@ -25,8 +28,8 @@ import org.junit.jupiter.api.function.Executable;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
-import java.lang.reflect.Array;
 import java.security.InvalidParameterException;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,14 +41,21 @@ import static org.junit.jupiter.api.Assertions.*;
 class ControllerTest {
 
     Controller controller;
-    Game game;
+    GameHint game;
     Player p1, p2, p3;
     ArrayList<Player> players = new ArrayList<>();
     List<CommonGoalCard> commCards = new ArrayList<>();
     LinkedList<PersonalGoalCard> persCards = new LinkedList<>();
     int numOfPlayers = 3;
     PropertyChangeSupport pcsController = new PropertyChangeSupport(this);
-    Phase phase;
+    Phase phase = null;
+    List<Coordinate> coordinates = new ArrayList<>();
+    List<Tile> tiles3 = new ArrayList<>();
+    List<Tile> tiles2 = new ArrayList<>();
+    List<Tile> tiles1 = new ArrayList<>();
+    int col = 0;
+    ArrayList<Tile> pickedTiles = new ArrayList<>();
+
 
     /**
      * This class represents a hint of the GameHandler.
@@ -82,6 +92,9 @@ class ControllerTest {
      * run the tests.
      */
     private static class GameHint extends Game {
+        private CreationFactory creationFactory;
+        private Board board;
+
         /**
          * GameHint constructor.
          */
@@ -99,11 +112,20 @@ class ControllerTest {
 
             return list;
         }
+
+        @Override
+        public void createBoard(){
+            this.creationFactory = new CreationFactory();
+            this.board = creationFactory.createBoard(3);
+        }
+
+        @Override
+        public Board getBoard(){return this.board;}
     }
 
     @BeforeEach
     void testSetup(){
-        game = new Game(); // Game's creation.
+        game = new GameHint(); // Game's creation.
         controller = new Controller(new GameHandlerHint(null), game); // Controller's creation.
 
         // Player 1 creation.
@@ -150,6 +172,26 @@ class ControllerTest {
 
         // Property change listener declaration.
         pcsController.addPropertyChangeListener(controller);
+
+        // Creation of a list of 3 tiles.
+        tiles3.add(Tile.PINK);
+        tiles3.add(Tile.PINK);
+        tiles3.add(Tile.PINK);
+
+        // Creation of a list of 2 tiles.
+        tiles2.add(Tile.GREEN);
+        tiles2.add(Tile.GREEN);
+
+        // Creation of a list of 1 tile.
+        tiles1.add(Tile.YELLOW);
+
+        game.getBoard().updateBoard();
+
+        // Assigning all players a personal goal card.
+        jsonParser = new JSONParser("initSetup.json");
+        persCards = jsonParser.getPersonalGoalCards();
+        for (Player player : players)
+            player.setPersonalGoalCard(persCards.get(0));
     }
 
     @Test
@@ -174,21 +216,21 @@ class ControllerTest {
     @Test
     void currentPlayerTest(){
         // Check that player 1 is current player.
-        //assertEquals(game.getCurrentPlayer(), controller.getCurrentPlayer());
-        //assertNotEquals(p2, controller.getCurrentPlayer());
-        //assertNotEquals(p3, controller.getCurrentPlayer());
+        assertEquals(p1, game.getCurrentPlayer());
+        assertNotEquals(p2, game.getCurrentPlayer());
+        assertNotEquals(p3, game.getCurrentPlayer());
 
         controller.setCurrentPlayer(p2);
-        //assertEquals(game.getCurrentPlayer(), controller.getCurrentPlayer());
+        assertEquals(p2, game.getCurrentPlayer());
 
         controller.setCurrentPlayer(p3);
-        //assertEquals(game.getCurrentPlayer(), controller.getCurrentPlayer());
+        assertEquals(p3, game.getCurrentPlayer());
     }
 
     @Test
     public void pointsTest(){
         controller.updateTotalPoints();
-        //assertEquals(0, controller.getCurrentPlayer().getTotalPoints());
+        assertEquals(0, game.getCurrentPlayer().getTotalPoints());
     }
 
     @Test
@@ -221,78 +263,183 @@ class ControllerTest {
         assertTrue(p3.isActive());
     }
 
+    // Test with the wrong phase.
     @Test
-    void pickTilesActionTest(){
-        phase = Phase.TILESPICKING;
-
-        // Coordinates of tiles that can be picked.
-        List<Coordinate> coordinates = new ArrayList<>();
-        coordinates.add(new Coordinate(0, 3));
+    void pickTilesActionWrongPhaseTest(){
+        controller.setPhase(Phase.LOBBY);
         coordinates.add(new Coordinate(1,3));
+        coordinates.add(new Coordinate(0,3));
         pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates));
+    }
 
-        // Invalid row and col.
-        coordinates.clear();
-        coordinates.add(new Coordinate(-1, -1));
+    // Test in which cells are aligned in column.
+    @Test
+    void pickTilesActionTestInCol(){
+        controller.setPhase(Phase.TILESPICKING);
+        coordinates.add(new Coordinate(1,3));
+        coordinates.add(new Coordinate (0,3));
         pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates));
+    }
 
-        // Coordinates of a tile that can't be picked.
-        coordinates.clear();
+    // Test in which cells are aligned in row.
+    @Test
+    void pickTilesActionTestInRow(){
+        controller.setPhase(Phase.TILESPICKING);
+
+        coordinates.add(new Coordinate(2,5));
+        coordinates.add(new Coordinate(2,6));
+        pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates));
+    }
+
+    // Test with an invalid parameter for row.
+    @Test
+    void pickTilesActionTestInvalidRow(){
+        controller.setPhase(Phase.TILESPICKING);
+
+        coordinates.add(new Coordinate(-1, 0));
+        pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates));
+    }
+
+    //Test with an invalid parameter for column.
+    @Test
+    void pickTilesActionInvalidCol(){
+        controller.setPhase(Phase.TILESPICKING);
+
+        coordinates.add(new Coordinate(0, -1));
+        pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates));
+    }
+
+    // Test with coordinates that can't be picked.
+    @Test
+    void pickTilesActionTestUnpickableCells(){
+        controller.setPhase(Phase.TILESPICKING);
+
         coordinates.add(new Coordinate(4,4));
         pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates));
+    }
 
-        // Coordinates of not adjacent tiles.
-        coordinates.clear();
-        coordinates.add(new Coordinate(1,3));
+    // Test with coordinates of not adjacent tiles.
+    @Test
+    void pickTilesActionTestNotAdjacentCells(){
+        controller.setPhase(Phase.TILESPICKING);
+
+        coordinates.add(new Coordinate(5,0));
         coordinates.add(new Coordinate(8,5));
-
-        // Invalid phase.
-        phase = phase.LOBBY;
-        coordinates.clear();
-        coordinates.add(new Coordinate(1,3));
-
-        // Aggiungere il caso in cui la bookshelf del giocatore non è piena.
-
-        // Dividere tutto in sottometodi.
+        pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates));
     }
 
+    // Test with a not empty bookshelf.
     @Test
-    void placeTilesAction(){
-        phase = phase.TILESPLACING;
-        List<Tile> tiles = new ArrayList<>();
-        int col = 0;
-        final int invalidCol = 10;
+    void pickTilesActionTestNotEmptyBookshelf(){
+        controller.setPhase(Phase.TILESPICKING);
 
-        // Valid number of column and list of tiles.
-        tiles.add(Tile.BLUE);
-        tiles.add(Tile.PINK);
-        tiles.add(Tile.PINK);
-        pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(tiles, col));
+        // Filling the player's bookshelf.
+        for(int i=0; i<MAXBOOKSHELFCOL; i++){
+            game.getCurrentPlayer().getBookShelf().placeTiles(i, tiles2);
+            game.getCurrentPlayer().getBookShelf().placeTiles(i, tiles3);
+        }
 
-        // Invalid number of column.
-        pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(tiles, invalidCol));
-        assertDoesNotThrow(()->pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(tiles, 0)));
-
-        // Filling the column to have no space for other tiles.
-        game.getCurrentPlayer().getBookShelf().placeTiles(col, tiles);
-        game.getCurrentPlayer().getBookShelf().placeTiles(col, tiles);
-        pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(tiles, col));
-        assertDoesNotThrow(()->pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(tiles, 0)));
-
-        // Incorrect phase.
-        phase = phase.TILESPLACING;
-        pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(tiles, col));
+        coordinates.add(new Coordinate(7,5));
+        coordinates.add(new Coordinate(8,5));
+        pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates));
     }
 
+    // Test in which all should be done correctly.
     @Test
-    void printCardsTest(){
-        phase = phase.TILESPLACING;
-        pcsController.firePropertyChange("PrintCardsAction", null, new PrintCardsAction());
+    void pickAndPlaceTilesActionTest(){
+        controller.setPhase(Phase.TILESPICKING);
+        coordinates.add(new Coordinate(3,7));
+        coordinates.add(new Coordinate(3,8));
+        pickedTiles.add(game.getBoard().getTile(3,7));
+        pickedTiles.add(game.getBoard().getTile(3,8));
+        pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates));
 
-        phase = phase.TILESPICKING;
-        pcsController.firePropertyChange("PrintCardsAction", null, new PrintCardsAction());
 
-        phase = phase.LOBBY;
+        controller.setPhase(Phase.TILESPLACING);
+        pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(pickedTiles, col));
+    }
+
+    // Test in which the phase is wrong.
+    @Test
+    void placeTilesActionTestWrongPhase(){
+        controller.setPhase(Phase.TILESPICKING);
+
+        pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(tiles2, col));
+    }
+
+    // Test with an invalid number for the column.
+    @Test
+    void placeTilesActionTestWrongCol(){
+        controller.setPhase(Phase.TILESPICKING);
+        pickedTiles.add(game.getBoard().getTile(0,5));
+        coordinates.add(new Coordinate(5,0));
+        pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates));
+
+        controller.setPhase(Phase.TILESPLACING);
+        pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(pickedTiles, -1));
+    }
+
+    // Test passing the method different tiles from the picked ones.
+    @Test
+    void placeTilesActionDifferentTiles(){
+        controller.setPhase(Phase.TILESPLACING);
+
+        pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(tiles1, col));
+    }
+
+    // Test trying to fill a not empty column.
+    @Test
+    void placeTilesActionTestNotEmptyCol(){
+        game.getCurrentPlayer().getBookShelf().placeTiles(col, tiles3);
+        game.getCurrentPlayer().getBookShelf().placeTiles(col, tiles3);
+
+        controller.setPhase(Phase.TILESPICKING);
+        coordinates.add(new Coordinate(4,7));
+        pickedTiles.add(game.getBoard().getTile(4,7));
+        pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates));
+
+        controller.setPhase(Phase.TILESPLACING);
+        pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(pickedTiles, col));
+    }
+
+    // Test with an action that fills the board in order to end the game.
+    @Test
+    void placeTilesActionTestEndGame(){
+        // Filling all bookshelf's columns in order to leave 1 space free for the last tile.
+        for(int i=1; i<MAXBOOKSHELFCOL; i++){
+            controller.getGame().getCurrentPlayer().getBookShelf().placeTiles(i, tiles3);
+            controller.getGame().getCurrentPlayer().getBookShelf().placeTiles(i, tiles3);
+        }
+        controller.getGame().getCurrentPlayer().getBookShelf().placeTiles(col, tiles3);
+        controller.getGame().getCurrentPlayer().getBookShelf().placeTiles(col, tiles2);
+
+        controller.setPhase(Phase.TILESPICKING);
+        coordinates.add(new Coordinate(7,4));
+        pickedTiles.add(game.getBoard().getTile(7,4));
+        pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates));
+
+        controller.setPhase(Phase.TILESPLACING);
+        pcsController.firePropertyChange("PlaceTilesAction", null, new PlaceTilesAction(pickedTiles, col));
+    }
+
+    // Test of the printing action for tilesplacing.
+    @Test
+    void printCardsActionTestTilesPlacing(){
+        controller.setPhase(Phase.TILESPLACING);
+        pcsController.firePropertyChange("PrintCardsAction", null, new PrintCardsAction());
+    }
+
+    // Test of the printing action for tilespicking.
+    @Test
+    void printCardsActionTestTilesPicking(){
+        controller.setPhase(Phase.TILESPICKING);
+        pcsController.firePropertyChange("PrintCardsAction", null, new PrintCardsAction());
+    }
+
+    // Test of the printing action with a not allowed phase.
+    @Test
+    void printCardsActionTestNotAllowed(){
+        controller.setPhase(Phase.LOBBY);
         pcsController.firePropertyChange("PrintCardsAction", null, new PrintCardsAction());
     }
 }

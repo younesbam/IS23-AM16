@@ -90,6 +90,7 @@ class PlayerTest {
         player.setCommonCardPoints(1, common2points);
         player.updateTotalPoints();
         player.checkFullBookshelf();
+
         // The bookshelf isn't full so the game doesn't end.
         int firstPoint = 0;
         points = common1points + common2points + firstPoint;
