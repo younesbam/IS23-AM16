@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
 
 /**
  * Socket handler.
@@ -47,7 +48,7 @@ public class ServerSideSocket implements Runnable{
                 SocketCSConnection clientSocket = new SocketCSConnection(server, serverSocket.accept());
                 executorService.submit(clientSocket);
             } catch (IOException e) {
-                System.err.println("An error has occurred while trying to establish a connection. Shutting down..." + e.getMessage());
+                Server.LOGGER.log(Level.SEVERE, "An error has occurred while trying to establish a connection. Shutting down...");
             }
         }
     }
@@ -70,7 +71,7 @@ public class ServerSideSocket implements Runnable{
             ServerSocket serverSocket = new ServerSocket(numOfPort);
             newConnection(serverSocket);
         } catch(IOException e) {
-            System.err.println("An error has occurred while trying to establish a connection. Shutting down...");
+            Server.LOGGER.log(Level.SEVERE, "An error has occurred while trying to establish a connection. Shutting down...");
             System.exit(0);
         }
     }
