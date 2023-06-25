@@ -150,7 +150,7 @@ public class EqualCross extends CommonGoalCard {
     public void printCard(){
         switch (cardNumber) {
             case 1 -> {
-                System.out.println( "   COMMON CARD NUMBER 1: \n"+
+                System.out.println( "COMMON CARD NUMBER 1: \n"+
                                     "Two groups each containing 4 tiles of the same type in a 2x2 square.\n" +
                                     "The tiles of one square can be different from those of the other square.\n" +
                                     "++++++++++++++++++++++++ \n" +

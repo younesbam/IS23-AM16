@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.common.Coordinate;
 import it.polimi.ingsw.common.exceptions.CellNotEmptyException;
 import it.polimi.ingsw.common.exceptions.WrongCoordinateException;
@@ -203,33 +204,7 @@ public abstract class Board implements Serializable {
      * Method used to print the board.
      */
     public void printBoard() {
-        for (int i = 0; i < MAXBOARDDIM; i++) {
-            System.out.print(CYAN_BOLD_COLOR + i + RESET_COLOR);
-            System.out.print(" [  ");
-            for (int j = 0; j < MAXBOARDDIM; j++) {
-                switch (grid[i][j].getTile().name()) {
-                    case "BLANK" -> System.out.print(BLACK_COLOR + " " + RESET_COLOR + "  ");
-                    case "WHITE" -> System.out.print(WHITE_COLOR + " " + RESET_COLOR + "  ");
-                    case "LIGHTBLUE" -> System.out.print(CYAN_COLOR + " " + RESET_COLOR + "  ");
-                    case "BLUE" -> System.out.print(BLUE_COLOR + " " + RESET_COLOR + "  ");
-                    case "YELLOW" -> System.out.print(YELLOW_COLOR + " " + RESET_COLOR + "  ");
-                    case "GREEN" -> System.out.print(GREEN_COLOR + " " + RESET_COLOR + "  ");
-                    case "PINK" -> System.out.print(PURPLE_COLOR + " " + RESET_COLOR + "  ");
-                    case "RED" -> System.out.print(RED_COLOR + " " + RESET_COLOR + "  ");
-                    case "UNAVAILABLE" -> System.out.print("x  ");
-                }
-            }
-            System.out.print("]");
-            System.out.println();
-        }
-
-        // Print column numbers
-        System.out.print("     ");
-        for (int k = 0; k < MAXBOARDDIM; k++) {
-            System.out.print(CYAN_BOLD_COLOR + k + RESET_COLOR);
-            System.out.print("  ");
-        }
-        System.out.println();
+        Utils.printGrids(MAXBOARDDIM, MAXBOARDDIM, grid);
     }
 
     /**

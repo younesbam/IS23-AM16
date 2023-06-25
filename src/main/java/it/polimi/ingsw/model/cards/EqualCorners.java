@@ -45,7 +45,7 @@ public class EqualCorners extends CommonGoalCard {
      * {@inheritDoc}
      */
     public void printCard(){
-        System.out.println( "     COMMON CARD NUMBER 8: \n"+
+        System.out.println( "COMMON CARD NUMBER 8: \n"+
                             "Four tiles of the same type in the four corners of the bookshelf. \n" +
                             "+++++++++++++++++++++++++++++ \n"   +
                             "+   | = |   |   |   | = |   + \n" +

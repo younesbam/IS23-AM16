@@ -12,6 +12,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
 
+import static it.polimi.ingsw.Const.*;
+
 /**
  * Utilities class used to keep most used methods that don't belong to a specific class.
  */
@@ -61,5 +63,43 @@ public final class Utils {
         }
 
         return grid;
+    }
+
+    /**
+     * This method prints the board, the bookshelf and the bookshelf on the personal goal card.
+     * @param rows number of rows of the considered grid
+     * @param cols number of columns of the considered grid
+     */
+    public static void printGrids(int rows, int cols, Cell[][] grid){
+        for(int i=0; i<rows; i++){
+            // Print rows numbers
+            System.out.print(CYAN_BOLD_COLOR + i + RESET_COLOR);
+            System.out.print(" [  ");
+
+            for(int j=0; j<cols; j++){
+                switch(grid[i][j].getTile().name()) {
+                    case "BLANK" -> System.out.print(BLACK_COLOR + " " + RESET_COLOR + "  ");
+                    case "WHITE" -> System.out.print(WHITE_COLOR + " " + RESET_COLOR + "  ");
+                    case "LIGHTBLUE" -> System.out.print(CYAN_COLOR + " " + RESET_COLOR + "  ");
+                    case "BLUE" -> System.out.print(BLUE_COLOR + " " + RESET_COLOR + "  ");
+                    case "YELLOW" -> System.out.print(YELLOW_COLOR + " " + RESET_COLOR + "  ");
+                    case "GREEN" -> System.out.print(GREEN_COLOR + " " + RESET_COLOR + "  ");
+                    case "PINK" -> System.out.print(PURPLE_COLOR + " " + RESET_COLOR + "  ");
+                    case "RED" -> System.out.print(RED_COLOR + " " + RESET_COLOR + "  ");
+                    case "UNAVAILABLE" -> System.out.print("x  ");
+                }
+            }
+            System.out.print("]");
+            System.out.println();
+        }
+
+        // Print column numbers
+        System.out.print("     ");
+        for(int k=0; k<cols; k++){
+            System.out.print(CYAN_BOLD_COLOR + k + RESET_COLOR);
+            System.out.print("  ");
+        }
+
+        System.out.println();
     }
 }

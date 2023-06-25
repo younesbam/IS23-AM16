@@ -202,14 +202,6 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
-     * Update current player's points.
-     */
-    public void updateTotalPoints() {
-        game.getCurrentPlayer().updateTotalPoints();
-    }
-
-
-    /**
      * Set the current player.
      * @param player current player
      */
@@ -375,6 +367,7 @@ public class Controller implements PropertyChangeListener {
                 nextPlayer();
             } else {
                 lastTurn = true;
+                checkFullBookshelf();  // Add one additional point to the first player that complete the bookshelf.
                 leftPlayers = leftPlayersCalc();
                 gameHandler.sendToPlayer(new CustomAnswer("\nCongratulations, you have completed your Bookshelf! Now let the remaining players complete their turn in order to complete the round, and than we will reward the winner!\n"), currentPlayer.getID());
                 gameHandler.sendToPlayer(new BookShelfCompleted(), currentPlayer.getID());
@@ -400,7 +393,6 @@ public class Controller implements PropertyChangeListener {
         checkCommonGoal();
         checkPersonalGoal();
         checkAdjacentTiles();
-        checkFullBookshelf();
         updateTotalPoints();
     }
 
@@ -429,12 +421,25 @@ public class Controller implements PropertyChangeListener {
         currentPlayer.checkPersonalGoalCardScheme();
     }
 
+    /**
+     * Check adjacent tiles for additional points.
+     */
     private void checkAdjacentTiles(){
         currentPlayer.checkAdjacentTiles();
     }
 
+    /**
+     * Check if the bookshelf is full to assign 1 point to the first player that complete the bookshelf.
+     */
     private void checkFullBookshelf(){
+        currentPlayer.checkFullBookshelf();
+    }
 
+    /**
+     * Update current player's points.
+     */
+    public void updateTotalPoints() {
+        game.getCurrentPlayer().updateTotalPoints();
     }
 
 

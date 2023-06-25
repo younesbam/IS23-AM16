@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.model.*;
 
 import java.util.Hashtable;
@@ -63,7 +64,9 @@ public class PersonalGoalCard extends Card {
      * {@inheritDoc}
      */
     public void printCard(){
-        System.out.println("This is how you will earn points with your Personal Goal Card: \n"+
+        Utils.printGrids(MAXBOOKSHELFROW, MAXBOOKSHELFCOL, grid);
+
+        System.out.println("\n This is how you will earn points with your Personal Goal Card: \n"+
                             "\n" +
                 "+-------------------------+---+---+---+---+---+----+\n" +
                 "| Number of correct tiles | 1 | 2 | 3 | 4 | 5 | 6  |\n" +
