@@ -8,6 +8,7 @@ import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.communications.serveranswers.network.ConnectionOutcome;
 import it.polimi.ingsw.communications.serveranswers.info.PlayerNumberChosen;
 import it.polimi.ingsw.communications.serveranswers.info.*;
+import it.polimi.ingsw.communications.serveranswers.network.RestorePlayer;
 import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.requests.PickTilesRequest;
 import it.polimi.ingsw.communications.serveranswers.requests.PlaceTilesRequest;
@@ -165,6 +166,11 @@ public class ActionHandler {
 
         if(a instanceof PlayerFinalResult){
             pcsView.firePropertyChange("PlayerFinalResult", null, ((PlayerFinalResult) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof RestorePlayer){
+            pcsView.firePropertyChange("RestorePlayer", null, ((RestorePlayer) a).getAnswer());
             return;
         }
 
