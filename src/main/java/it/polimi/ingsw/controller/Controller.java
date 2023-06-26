@@ -553,6 +553,8 @@ public class Controller implements PropertyChangeListener {
 
         gameHandler.sendToEveryone(new CustomAnswer(game.getPlayerByID(ID).getUsername() + " is disconnected. Every potential tile picked from the board will be replaced on the board\n" +
                 "Turns of " + game.getPlayerByID(ID).getUsername() + " will be skipped until it connects again"));
+        gameHandler.sendToEveryone(new PlayerDisconnection(game.getPlayerByID(ID).getUsername() + " is disconnected. Every potential tile picked from the board will be replaced on the board\n" +
+                "Turns of " + game.getPlayerByID(ID).getUsername() + " will be skipped until it connects again"));
     }
 
 
