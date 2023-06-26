@@ -73,7 +73,10 @@ public abstract class UI implements PropertyChangeListener {
          */
         pcsDispatcher.addPropertyChangeListener(new Dispatcher(modelView, client));
 
+        client.activateConnectionTimeout();  // Activate a timer to close the client if it can't connect to server.
         client.connect();
+        client.deactivateConnectionTimeout();  // Deactivate the timer due to successfully connection.
+
     }
 
 
