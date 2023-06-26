@@ -1,6 +1,8 @@
-package it.polimi.ingsw.communications.serveranswers;
+package it.polimi.ingsw.communications.serveranswers.end;
 
-public class PlayerFinalResult implements Answer{
+import it.polimi.ingsw.communications.serveranswers.Answer;
+
+public class PlayerFinalResult implements Answer {
     public String answer;
 
     public PlayerFinalResult(String message){

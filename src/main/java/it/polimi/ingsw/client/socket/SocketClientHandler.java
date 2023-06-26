@@ -1,23 +1,19 @@
 package it.polimi.ingsw.client.socket;
 
 import it.polimi.ingsw.client.*;
-import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.messages.UsernameSetup;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
-import it.polimi.ingsw.communications.serveranswers.requests.PingRequest;
+import it.polimi.ingsw.communications.serveranswers.network.PingRequest;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.rmi.RemoteException;
-import java.util.logging.Level;
 
 /**
  * Socket handler.
@@ -81,7 +77,6 @@ public class SocketClientHandler extends Client implements Runnable {
         try{
             inputStream.close();
             socket.close();
-            System.exit(1);
         }catch (IOException e){
             System.out.println("Error occurred while closing connection.");
         }

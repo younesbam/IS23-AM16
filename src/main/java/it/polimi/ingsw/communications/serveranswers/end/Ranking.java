@@ -1,6 +1,8 @@
-package it.polimi.ingsw.communications.serveranswers;
+package it.polimi.ingsw.communications.serveranswers.end;
 
-public class Ranking implements Answer{
+import it.polimi.ingsw.communications.serveranswers.Answer;
+
+public class Ranking implements Answer {
     public String answer;
 
     public Ranking(String ranking){

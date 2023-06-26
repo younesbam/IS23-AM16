@@ -3,14 +3,12 @@ package it.polimi.ingsw.server.connection;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.messages.UsernameSetup;
 import it.polimi.ingsw.communications.serveranswers.*;
-import it.polimi.ingsw.communications.serveranswers.requests.PingRequest;
-import it.polimi.ingsw.server.GameHandler;
+import it.polimi.ingsw.communications.serveranswers.network.PingRequest;
 import it.polimi.ingsw.server.Server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.IDN;
 import java.net.Socket;
 import java.util.logging.Level;
 

@@ -1,4 +1,6 @@
-package it.polimi.ingsw.communications.serveranswers;
+package it.polimi.ingsw.communications.serveranswers.start;
+
+import it.polimi.ingsw.communications.serveranswers.Answer;
 
 public class CountDown implements Answer {
     private String answer;

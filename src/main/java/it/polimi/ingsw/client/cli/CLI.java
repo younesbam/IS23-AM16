@@ -5,7 +5,7 @@ import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.common.ConnectionType;
 import it.polimi.ingsw.communications.serveranswers.Answer;
-import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
+import it.polimi.ingsw.communications.serveranswers.network.ConnectionOutcome;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.model.cards.CommonGoalCard;
 import it.polimi.ingsw.model.cards.PersonalGoalCard;
@@ -342,6 +342,42 @@ public class CLI extends UI implements Runnable{
         personal.printCard();
     }
 
+    /**
+     * Final points message.
+     * @param answer message from server.
+     */
+    private void finalPoints(String answer){
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println(answer);
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    }
+
+    /**
+     * Final ranking message.
+     * @param answer message from server.
+     */
+    private void ranking(String answer){
+        System.out.println(answer);
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    }
+
+    /**
+     * Final results message.
+     * @param answer message from server.
+     */
+    private void playerFinalResult(String answer){
+        System.out.println(answer);
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    }
+
+    /**
+     * End game message from server.
+     * @param answer message from server.
+     */
+    private void endGame(String answer){
+        System.out.println(answer);
+        setActiveGame(false);
+    }
 
     /**
      * {@inheritDoc}
@@ -362,9 +398,12 @@ public class CLI extends UI implements Runnable{
             case "EndOfYourTurn" -> updateTurn(false);
             case "PlayerNumberChosen" -> playerNumberChosen((String) event.getNewValue());
             case "PrintCardsAnswer" -> printCards();
+            case "PlayerFinalPoints" -> finalPoints((String) event.getNewValue());
+            case "Ranking" -> ranking((String) event.getNewValue());
+            case "PlayerFinalResult" -> playerFinalResult((String) event.getNewValue());
+            case "EndGame" -> endGame((String) event.getNewValue());
 
             case "ErrorAnswer" -> errorAnswer((ErrorAnswer) event.getNewValue());
-
         }
     }
 

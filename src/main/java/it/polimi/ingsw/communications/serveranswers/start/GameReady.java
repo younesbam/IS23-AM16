@@ -1,6 +1,8 @@
-package it.polimi.ingsw.communications.serveranswers;
+package it.polimi.ingsw.communications.serveranswers.start;
 
-public class GameReady implements Answer{
+import it.polimi.ingsw.communications.serveranswers.Answer;
+
+public class GameReady implements Answer {
     private String answer;
 
     public GameReady(){

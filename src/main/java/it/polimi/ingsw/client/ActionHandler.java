@@ -1,17 +1,21 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CLI;
-import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.client.gui.controllers.GUIManager;
 import it.polimi.ingsw.communications.serveranswers.*;
+import it.polimi.ingsw.communications.serveranswers.end.*;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
-import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
+import it.polimi.ingsw.communications.serveranswers.network.ConnectionOutcome;
 import it.polimi.ingsw.communications.serveranswers.info.PlayerNumberChosen;
 import it.polimi.ingsw.communications.serveranswers.info.*;
 import it.polimi.ingsw.communications.serveranswers.requests.DisconnectPlayer;
 import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.requests.PickTilesRequest;
 import it.polimi.ingsw.communications.serveranswers.requests.PlaceTilesRequest;
+import it.polimi.ingsw.communications.serveranswers.start.ChairAssigned;
+import it.polimi.ingsw.communications.serveranswers.start.CountDown;
+import it.polimi.ingsw.communications.serveranswers.start.FirstPlayerSelected;
+import it.polimi.ingsw.communications.serveranswers.start.GameReady;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
@@ -162,6 +166,11 @@ public class ActionHandler {
 
         if(a instanceof PlayerFinalResult){
             pcsView.firePropertyChange("PlayerFinalResult", null, ((PlayerFinalResult) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof EndGame){
+            pcsView.firePropertyChange("EndGame", null, ((EndGame) a).getAnswer());
             return;
         }
         //TODO: manca la chiusura del gioco per la gui.
