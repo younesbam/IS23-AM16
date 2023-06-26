@@ -12,7 +12,6 @@ import it.polimi.ingsw.communications.serveranswers.errors.ErrorClassification;
 import it.polimi.ingsw.communications.serveranswers.network.ConnectionOutcome;
 import it.polimi.ingsw.communications.serveranswers.info.PlayerNumberChosen;
 import it.polimi.ingsw.communications.serveranswers.network.RestorePlayer;
-import it.polimi.ingsw.communications.serveranswers.requests.DisconnectPlayer;
 import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.start.CountDown;
 import it.polimi.ingsw.controller.Phase;

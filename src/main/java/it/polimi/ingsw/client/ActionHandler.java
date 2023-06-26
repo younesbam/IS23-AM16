@@ -8,7 +8,6 @@ import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.communications.serveranswers.network.ConnectionOutcome;
 import it.polimi.ingsw.communications.serveranswers.info.PlayerNumberChosen;
 import it.polimi.ingsw.communications.serveranswers.info.*;
-import it.polimi.ingsw.communications.serveranswers.requests.DisconnectPlayer;
 import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.requests.PickTilesRequest;
 import it.polimi.ingsw.communications.serveranswers.requests.PlaceTilesRequest;
@@ -173,15 +172,5 @@ public class ActionHandler {
             pcsView.firePropertyChange("EndGame", null, ((EndGame) a).getAnswer());
             return;
         }
-        //TODO: manca la chiusura del gioco per la gui.
-        if(a instanceof DisconnectPlayer){
-            if(guiManager != null) {
-                //guiManager.endGame();
-            } else if(cli != null) {
-                cli.endGameMessage();
-            }
-        }
     }
-
-
 }

@@ -3,7 +3,8 @@ package it.polimi.ingsw.client.common;
 import it.polimi.ingsw.Const;
 import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.client.ModelView;
-import it.polimi.ingsw.client.utils.PingClientTask;
+import it.polimi.ingsw.client.utils.ConnectionTimeoutTask;
+import it.polimi.ingsw.client.utils.PingTimeoutTask;
 import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 
@@ -45,9 +46,14 @@ public abstract class Client extends UnicastRemoteObject {
     protected Integer ID;
 
     /**
-     * Ping timer. Used to start a timer
+     * Ping timer. It closes the client if it doesn't receive the ping command from the server.
      */
     protected Timer pingTimer = new Timer();
+
+    /**
+     * Connection timer. It closes the client if can't connect to the server.
+     */
+    protected Timer connectionTimer = new Timer();
 
     /**
      * Client's action handler.
@@ -117,12 +123,37 @@ public abstract class Client extends UnicastRemoteObject {
     }
 
     /**
-     * Handle ping request by cancelling a timer that shut the client down after {@link Const#CLIENT_DISCONNECTION_TIME x} seconds.
+     * Activate ping request by cancelling a timer that shut the client down after {@link Const#CLIENT_DISCONNECTION_TIME x} seconds.
      */
-    protected void handlePingRequest(){
+    protected synchronized void activatePingTimeout(){
         pingTimer.cancel();
         pingTimer = new Timer();
-        pingTimer.schedule(new PingClientTask(), Const.CLIENT_DISCONNECTION_TIME*1000);
+        pingTimer.schedule(new PingTimeoutTask(), Const.CLIENT_DISCONNECTION_TIME*1000);
+    }
+
+    /**
+     * Activate ping request by cancelling a timer that shut the client down after {@link Const#CLIENT_DISCONNECTION_TIME x} seconds.
+     */
+    protected synchronized void deactivatePingTimeout(){
+        pingTimer.cancel();
+    }
+
+    /**
+     * Activate connection timeout request by cancelling a timer that shut the client down after {@link Const#CLIENT_DISCONNECTION_TIME x} seconds.
+     * @see Client#deactivateConnectionTimeout()
+     */
+    protected synchronized void activateConnectionTimeout(){
+        connectionTimer.cancel();
+        connectionTimer = new Timer();
+        connectionTimer.schedule(new ConnectionTimeoutTask(), Const.CLIENT_DISCONNECTION_TIME*1000);
+    }
+
+    /**
+     * Permanently deactivate connection timeout task.
+     * @see Client#activateConnectionTimeout()
+     */
+    protected synchronized void deactivateConnectionTimeout(){
+        connectionTimer.cancel();
     }
 
     /**

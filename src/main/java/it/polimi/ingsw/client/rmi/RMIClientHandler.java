@@ -66,7 +66,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
     public void disconnect() throws RemoteException {
         server.logout();
         disconnectMe();
-        pingTimer.cancel();
+        deactivatePingTimeout();
     }
 
 
@@ -103,7 +103,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
      */
     @Override
     public void ping() throws RemoteException {
-        handlePingRequest();
+        activatePingTimeout();
     }
 
 

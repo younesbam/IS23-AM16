@@ -74,6 +74,7 @@ public class SocketClientHandler extends Client implements Runnable {
     public void disconnect() {
         messageReceiver.interrupt();
         modelView.setConnected(false);
+        deactivatePingTimeout();
         try{
             inputStream.close();
             socket.close();
@@ -141,7 +142,7 @@ public class SocketClientHandler extends Client implements Runnable {
                 SerializedAnswer serializedAnswer = (SerializedAnswer) inputStream.readObject();
                 // If the request is a ping request
                 if(serializedAnswer.getAnswer() instanceof PingRequest){
-                    handlePingRequest();
+                    activatePingTimeout();
                 } else {
                     modelView.setAnswerFromServer(serializedAnswer.getAnswer());
                     actionHandler.answerManager(modelView.getAnswerFromServer());

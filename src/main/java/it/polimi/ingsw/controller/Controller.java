@@ -8,7 +8,6 @@ import it.polimi.ingsw.communications.serveranswers.end.*;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorClassification;
 import it.polimi.ingsw.communications.serveranswers.info.*;
-import it.polimi.ingsw.communications.serveranswers.requests.DisconnectPlayer;
 import it.polimi.ingsw.communications.serveranswers.requests.PickTilesRequest;
 import it.polimi.ingsw.communications.serveranswers.requests.PlaceTilesRequest;
 import it.polimi.ingsw.model.*;
@@ -490,7 +489,6 @@ public class Controller implements PropertyChangeListener {
      * Terminate the game, crowning the winner.
      */
     private void endGame(){
-        //TODO: controllare la fine del gioco!
         setPhase(Phase.ENDGAME);
 
         // Points calculator.
