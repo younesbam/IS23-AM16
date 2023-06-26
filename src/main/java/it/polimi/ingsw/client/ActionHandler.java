@@ -174,6 +174,11 @@ public class ActionHandler {
             return;
         }
 
+        if(a instanceof PlayerDisconnection){
+            pcsView.firePropertyChange("PlayerDisconnection", null, ((PlayerDisconnection) a).getAnswer());
+            return;
+        }
+
         if(a instanceof EndGame){
             pcsView.firePropertyChange("EndGame", null, ((EndGame) a).getAnswer());
             return;

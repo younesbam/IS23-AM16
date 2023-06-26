@@ -322,6 +322,16 @@ public class GUIManager extends UI {
             ((MainSceneController)getControllerFromName(MAIN_GUI)).updateTurn(modelView.getGame().getCurrentPlayer().getUsername());
         }
     }
+
+    private void playerDisconnection(String message){
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("INFORMATION");
+            alert.setHeaderText("A player disconnected.");
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
+    }
     public int getPlayerID(){
         return client.getID();
     }
@@ -356,6 +366,7 @@ public class GUIManager extends UI {
            case "Ranking" -> ranking((String) event.getNewValue());
            case "PlayerFinalResult" -> playerFinalResult((String) event.getNewValue());
            case "RestorePlayer" -> restorePlayer((String) event.getNewValue());
+           case "PlayerDisconnection" -> playerDisconnection((String) event.getNewValue());
            //case "PrintCardsAnswer" -> printGoalCards();
         }
     }
