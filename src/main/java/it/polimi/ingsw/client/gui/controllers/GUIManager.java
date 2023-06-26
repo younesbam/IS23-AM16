@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui.controllers;
 
+import com.sun.tools.javac.Main;
 import it.polimi.ingsw.client.ActionHandler;
 import it.polimi.ingsw.client.ModelView;
 import it.polimi.ingsw.client.common.Client;
@@ -281,6 +282,10 @@ public class GUIManager extends UI {
 
     private void bookShelfCompleted(String message){
         Platform.runLater(() -> {
+            if(message.contains("Congratulations")){
+                MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
+                mainSceneController.showEndGameToken();
+            }
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("GAME");
             alert.setHeaderText("Last turn!");
@@ -309,6 +314,13 @@ public class GUIManager extends UI {
         Platform.runLater(()->{
             gameOverController.setPlayerResult(message);
         });
+    }
+
+    private void restorePlayer(String message){
+        if(isActiveGame()){
+            gameReady(message);
+            ((MainSceneController)getControllerFromName(MAIN_GUI)).updateTurn(modelView.getGame().getCurrentPlayer().getUsername());
+        }
     }
     public int getPlayerID(){
         return client.getID();
@@ -343,6 +355,7 @@ public class GUIManager extends UI {
            case "PlayerFinalPoints" -> playerFinalPoints((String) event.getNewValue());
            case "Ranking" -> ranking((String) event.getNewValue());
            case "PlayerFinalResult" -> playerFinalResult((String) event.getNewValue());
+           case "RestorePlayer" -> restorePlayer((String) event.getNewValue());
            //case "PrintCardsAnswer" -> printGoalCards();
         }
     }

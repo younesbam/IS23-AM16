@@ -54,6 +54,8 @@ public class MainSceneController implements GUIController{
 
     @FXML
     private Label points;
+    @FXML
+    private ImageView endGameToken;
 
     private final double bookShelfStartX = 560.0;
     private final double booShelfEndX = 900.0;
@@ -295,7 +297,9 @@ public class MainSceneController implements GUIController{
         guiManager.popupStage(GOALS,"Goal Cards");
         guiManager.printGoalCards();
     }
-
+    public void showEndGameToken(){
+        endGameToken.setVisible(true);
+    }
     public void printBookShelfs(){
         guiManager.printBookShelfs();
     }
