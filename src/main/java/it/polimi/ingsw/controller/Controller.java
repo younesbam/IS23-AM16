@@ -4,6 +4,7 @@ import it.polimi.ingsw.common.exceptions.*;
 import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
 import it.polimi.ingsw.communications.serveranswers.*;
+import it.polimi.ingsw.communications.serveranswers.end.*;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorClassification;
 import it.polimi.ingsw.communications.serveranswers.info.*;
@@ -504,27 +505,20 @@ public class Controller implements PropertyChangeListener {
 
         //Ranking creation
         for (Player p : rightPointsOrder){
-            gameHandler.sendToPlayer(new CustomAnswer("You have collected " + p.getTotalPoints() + " points! Congratulations!\n"), p.getID());
             gameHandler.sendToPlayer(new PlayerFinalPoints("You have collected " + p.getTotalPoints() + " points! Congratulations!\n"), p.getID());
             finalRanking = finalRanking + "\n" + i + ". " + p.getUsername() + "    " + p.getTotalPoints();
             i++;
         }
 
         // Sending the ranking and the final messages to everyone.
-        gameHandler.sendToEveryone(new CustomAnswer(finalRanking));
         gameHandler.sendToEveryone(new Ranking(finalRanking));
         gameHandler.sendToEveryone(new CustomAnswer("And the winner is... " + rightPointsOrder.get(0).getUsername() + "!!\nCongratulations!"));
-        gameHandler.sendToEveryoneExcept(new CustomAnswer("\nUnfortunately you have not won this game, but better luck next time!"), rightPointsOrder.get(0).getID());
         gameHandler.sendToEveryoneExcept(new PlayerFinalResult("\nUnfortunately you have not won this game, but better luck next time!"), rightPointsOrder.get(0).getID());
-        gameHandler.sendToPlayer(new CustomAnswer("\nYou are the undisputed winner! Congratulations again!"), rightPointsOrder.get(0).getID());
         gameHandler.sendToPlayer(new PlayerFinalResult("\nYou are the undisputed winner! Congratulations again!"), rightPointsOrder.get(0).getID());
         gameHandler.sendToEveryone(new CustomAnswer("\nThe game has come to an end."));
 
         // Disconnect all the players.
-        gameHandler.sendToEveryone(new DisconnectPlayer());
-        for(Player p  : game.getPlayers()) {
-            gameHandler.getServer().getVirtualPlayerByID(p.getID()).getConnection().disconnect();
-        }
+        gameHandler.sendToEveryone(new EndGame());
 
         // Shutdown the server.
         gameHandler.shutdownServer();

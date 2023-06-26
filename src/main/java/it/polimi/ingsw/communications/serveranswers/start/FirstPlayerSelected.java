@@ -1,6 +1,8 @@
-package it.polimi.ingsw.communications.serveranswers;
+package it.polimi.ingsw.communications.serveranswers.start;
 
-public class FirstPlayerSelected implements Answer{
+import it.polimi.ingsw.communications.serveranswers.Answer;
+
+public class FirstPlayerSelected implements Answer {
     private String answer;
 
     public FirstPlayerSelected(String username){

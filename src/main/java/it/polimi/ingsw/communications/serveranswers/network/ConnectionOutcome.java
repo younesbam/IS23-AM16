@@ -1,4 +1,4 @@
-package it.polimi.ingsw.communications.serveranswers.info;
+package it.polimi.ingsw.communications.serveranswers.network;
 
 import it.polimi.ingsw.communications.serveranswers.Answer;
 

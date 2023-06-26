@@ -1,4 +1,6 @@
-package it.polimi.ingsw.communications.serveranswers;
+package it.polimi.ingsw.communications.serveranswers.end;
+
+import it.polimi.ingsw.communications.serveranswers.Answer;
 
 public class BookShelfCompleted implements Answer {
     public String answer;

@@ -9,10 +9,12 @@ import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.serveranswers.*;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorClassification;
-import it.polimi.ingsw.communications.serveranswers.info.ConnectionOutcome;
+import it.polimi.ingsw.communications.serveranswers.network.ConnectionOutcome;
 import it.polimi.ingsw.communications.serveranswers.info.PlayerNumberChosen;
+import it.polimi.ingsw.communications.serveranswers.network.RestorePlayer;
 import it.polimi.ingsw.communications.serveranswers.requests.DisconnectPlayer;
 import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
+import it.polimi.ingsw.communications.serveranswers.start.CountDown;
 import it.polimi.ingsw.controller.Phase;
 import it.polimi.ingsw.common.exceptions.OutOfBoundException;
 import it.polimi.ingsw.server.connection.CSConnection;
@@ -413,12 +415,6 @@ public class Server {
      * Exit command to close all the connection and shutdown the server properly.
      */
     public void exit(){
-        // Disconnect players
-        synchronized (playersConnectedList){
-            for(VirtualPlayer p : playersConnectedList){
-                p.send(new DisconnectPlayer());
-            }
-        }
         // Close threads
         serverSideSocket.shutdown();
         scheduler.shutdownNow();
