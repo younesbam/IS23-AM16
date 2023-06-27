@@ -1,6 +1,8 @@
 package it.polimi.ingsw.server.connection;
 
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
+import it.polimi.ingsw.communications.clientmessages.messages.CreateGameMessage;
+import it.polimi.ingsw.communications.clientmessages.messages.JoinGameMessage;
 import it.polimi.ingsw.communications.clientmessages.messages.UsernameSetup;
 import it.polimi.ingsw.communications.serveranswers.*;
 import it.polimi.ingsw.communications.serveranswers.network.PingRequest;
@@ -63,11 +65,16 @@ public class SocketCSConnection extends CSConnection implements Runnable{
      * @throws IOException error during stream reading.
      * @throws ClassNotFoundException error during stream reading.
      */
-    public synchronized void readStreamFromClient() throws IOException, ClassNotFoundException {
+    public synchronized void readStreamFromClient() throws IOException, ClassNotFoundException, InterruptedException {
         SerializedMessage input = (SerializedMessage) inputStream.readObject();
         if(input.message instanceof UsernameSetup){
             server.tryToConnect(((UsernameSetup) input.message).getUsername(), this);
-        } else {
+        } else if(input.message instanceof CreateGameMessage){
+            server.createNewMatch(this, ((CreateGameMessage) input.message).getMatchName());
+        }
+        else if(input.message instanceof JoinGameMessage){
+            server.joinMatch(((JoinGameMessage) input.message).getMatchName(), this);
+        }else {
             server.onClientMessage(input);
         }
     }
@@ -123,7 +130,7 @@ public class SocketCSConnection extends CSConnection implements Runnable{
         try {
             while (alive)
                 readStreamFromClient();
-        } catch(IOException | ClassNotFoundException e) {
+        } catch(IOException | ClassNotFoundException | InterruptedException e) {
             Server.LOGGER.log(Level.WARNING, "Failed to read the stream from client " + ID);
         }
     }

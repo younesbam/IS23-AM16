@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.actions.PrintCardsAction;
+import it.polimi.ingsw.communications.clientmessages.messages.CreateGameMessage;
 import it.polimi.ingsw.communications.serveranswers.Answer;
 
 import java.beans.PropertyChangeEvent;
@@ -56,6 +57,8 @@ public class Dispatcher implements PropertyChangeListener {
         if("action".equals(propertyName)){
             switch (cmd.toUpperCase()){
                 // Messages
+                case "CREATE" -> messageToServer = new SerializedMessage(client.getID(), inputValidator.createGame(splitInput));
+                case "JOIN" -> messageToServer = new SerializedMessage(client.getID(), inputValidator.joinGame(splitInput));
                 case "PLAYERS" -> messageToServer = new SerializedMessage(client.getID(), inputValidator.players(splitInput));
                 // Actions
                 case "PICKTILES" -> messageToServer = new SerializedMessage(client.getID(), inputValidator.pickTiles(splitInput));

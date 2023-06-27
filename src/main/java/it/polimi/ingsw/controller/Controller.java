@@ -215,7 +215,7 @@ public class Controller implements PropertyChangeListener {
      * Check if the tiles selected by the player are actually pickable. If so, they are removed from the board.
      * @param action pick tiles request message from the client.
      */
-    private void pickTilesAction(PickTilesAction action) {
+    private void pickTilesAction(PickTilesAction action) throws Exception{
         List<Coordinate> coordinates = action.getCoordinates();
         boolean canPick;
 
@@ -585,7 +585,13 @@ public class Controller implements PropertyChangeListener {
      */
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()){
-            case "PickTilesAction" -> pickTilesAction((PickTilesAction) evt.getNewValue());
+            case "PickTilesAction" -> {
+                try {
+                    pickTilesAction((PickTilesAction) evt.getNewValue());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
             case "PlaceTilesAction" -> placeTilesAction((PlaceTilesAction) evt.getNewValue());
             case "PrintCardsAction" -> checkPrintAction();
         }

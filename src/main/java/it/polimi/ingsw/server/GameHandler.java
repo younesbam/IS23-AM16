@@ -1,20 +1,37 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.common.exceptions.OutOfBoundException;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PrintCardsAction;
 import it.polimi.ingsw.communications.serveranswers.*;
+import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
+import it.polimi.ingsw.communications.serveranswers.errors.ErrorClassification;
+import it.polimi.ingsw.communications.serveranswers.info.PlayerNumberChosen;
+import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.start.ChairAssigned;
+import it.polimi.ingsw.communications.serveranswers.start.CountDown;
 import it.polimi.ingsw.communications.serveranswers.start.FirstPlayerSelected;
 import it.polimi.ingsw.communications.serveranswers.start.GameReady;
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.controller.Phase;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.server.connection.CSConnection;
+import java.util.Random;
+
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
+
+import static it.polimi.ingsw.Const.*;
+import static it.polimi.ingsw.Const.RESET_COLOR;
+import static it.polimi.ingsw.controller.Phase.SETUP;
 
 /**
  * Handles the match, controller and game.
@@ -25,7 +42,7 @@ public class GameHandler {
     /**
      * Game reference.
      */
-    private static Game game;
+    private Game game;
 
     /**
      * Server reference
@@ -55,6 +72,24 @@ public class GameHandler {
 
 
     /**
+     * List of players waiting for game to start. List cleared when game start.
+     */
+    private final List<VirtualPlayer> playersWaitingList = new ArrayList<>();
+
+    /**
+     * List of connected players to this match.
+     */
+    private final List<VirtualPlayer> playersConnected = new ArrayList<>();
+
+
+    /**
+     * Name of this match
+     */
+    private String nameOfTheMatch;
+
+
+
+    /**
      * GameHandler constructor.
      * @param server server reference.
      */
@@ -76,6 +111,15 @@ public class GameHandler {
 
 
     /**
+     * Method used to remove a player from the players' waiting list.
+     * @param playerID
+     */
+    public void removeWaitingPlayer(int playerID){
+        playersWaitingList.remove(getWaitingPlayerByID(playerID));
+    }
+
+
+    /**
      * Add a player to the game.
      * @param username username of the player.
      * @param clientID ID of the client.
@@ -86,12 +130,21 @@ public class GameHandler {
 
 
     /**
-     * Set this match' number of players.
+     * Set this match's number of players.
      * @param numOfPlayers number of player for this match.
      */
     public void setNumOfPlayers(int numOfPlayers){
         this.numOfPlayers = numOfPlayers;
         game.setNumOfPlayers(numOfPlayers);
+    }
+
+
+    /**
+     * Set this match's name.
+     * @param name
+     */
+    public void setNameOfTheMatch(String name){
+        this.nameOfTheMatch = name;
     }
 
 
@@ -109,7 +162,7 @@ public class GameHandler {
      * @param answer answer to be sent to every player.
      */
     public void sendToEveryone(Answer answer){
-        for(VirtualPlayer p: server.getConnectedPlayers())
+        for(VirtualPlayer p: playersConnected)
             sendToPlayer(answer, p.getID());
     }
 
@@ -120,7 +173,7 @@ public class GameHandler {
      * @param notToHim ID of the excluded player.
      */
     public void sendToEveryoneExcept(Answer answer, int notToHim) {
-        for(VirtualPlayer p : server.getConnectedPlayers()) {
+        for(VirtualPlayer p : playersConnected) {
             if(p.getID() != notToHim)
                 sendToPlayer(answer, p.getID());
         }
@@ -156,21 +209,26 @@ public class GameHandler {
     public void initialSetup(){
         sendToEveryone(new CustomAnswer("Now the first player to play is being randomly selected, be ready, it could be you!"));
 
-        int firstPlayer = 0;
-        int randomNum = ThreadLocalRandom.current().nextInt(0, numOfPlayers + 1);
+        int firstPlayerID = 0;
 
+        //genera numero casuale tra 0 e il n° di giocatori - 1.
+        Random random = new Random();
+        int randomNumber =  random.nextInt(numOfPlayers - 1);
+
+        //do la sedia al primo giocatore scelto.
         for (int i = 0; i < numOfPlayers; i++) {
-            if (i != randomNum) {
+            if (i != randomNumber) {
                 game.getPlayers().get(i).setChair(false);
             }
-            game.getPlayers().get(i).setChair(true);
-            game.setFirstPlayer(game.getPlayers().get(i));
-            game.setCurrentPlayer(game.getPlayers().get(i));
-            firstPlayer = game.getPlayers().get(i).getID();
+            else {
+                game.getPlayers().get(i).setChair(true);
+                game.setCurrentPlayer(game.getPlayers().get(i));
+                firstPlayerID = game.getPlayers().get(i).getID();
+            }
         }
 
-        sendToEveryoneExcept(new CustomAnswer("The first player is: " + server.getUsernameByID(firstPlayer) + "!"), firstPlayer);
-        sendToEveryoneExcept(new FirstPlayerSelected(server.getUsernameByID(firstPlayer)), firstPlayer);
+        sendToEveryoneExcept(new CustomAnswer("The first player is: " + server.getUsernameByID(firstPlayerID) + "!"), firstPlayerID);
+        sendToEveryoneExcept(new FirstPlayerSelected(server.getUsernameByID(firstPlayerID)), firstPlayerID);
         sendToPlayer(new CustomAnswer("You are the first player! Here's your chair! \n " +
                 "  __________.\n" +
                 "  /_/-----/_/|   \n" +
@@ -179,9 +237,57 @@ public class GameHandler {
                 "  / /=====/ /| \n" +
                 " /_//____/_/ | \n" +
                 "(o|:.....|o) | \n" +
-                "|_|:_____|_|/' \n"), firstPlayer);
+                "|_|:_____|_|/' \n"), firstPlayerID);
 
+        sendToPlayer(new ChairAssigned(), firstPlayerID);
         controller.setup();
+        sendToEveryone(new GameReady());
+    }
+
+
+    /**
+     * This is the lobby. Here the players wait for other players to connect, in order to reach the number chosen from the games's host.
+     * @param connection Already created connection between client-server
+     * @throws InterruptedException thrown if an error occurs during thread sleep.
+     */
+    public synchronized void lobby(CSConnection connection) throws InterruptedException {
+        SerializedAnswer answer = new SerializedAnswer();
+
+        answer.setAnswer(new CustomAnswer(BLUE_BOLD_COLOR + "\nType MAN to know all the valid commands\n" + RESET_COLOR));
+        connection.sendAnswerToClient(answer);
+
+        // If the game is already started and the player wants to reconnect, skip the lobby phase
+        if(isGameStarted())
+            return;
+
+
+        playersWaitingList.add(server.getVirtualPlayerByID(connection.getID()));
+        playersConnected.add(server.getVirtualPlayerByID(connection.getID()));
+        if(getController().getPhase() == SETUP && playersWaitingList.size() == 1) { //if it's the first player
+            System.out.println(RED_COLOR + "Setup mode started for game " + nameOfTheMatch + ". Clients are not welcome. Wait for the lobby host to choose the number of players." + RESET_COLOR);
+            answer.setAnswer(new HowManyPlayersRequest("Hi " + getWaitingPlayerByID(connection.getID()).getUsername() + ", you are now the host of this lobby.\nPlease choose the number of players you want to play with:"));
+            connection.sendAnswerToClient(answer);
+            getController().setCurrentPlayer(getController().getGame().getPlayers().get(0));
+        } else if(playersWaitingList.size() == numOfPlayers) {  // Game has reached the right number of players. Game is starting.
+            System.out.println(numOfPlayers + " players are now ready to play. Game " + nameOfTheMatch + " is starting...");
+            for(int i = 3; i > 0; i--) {
+                sendToEveryone(new CountDown(i));
+                sendToEveryone(new CustomAnswer("Game will start in " + i));
+                TimeUnit.MILLISECONDS.sleep(1000);
+            }
+
+            // Start the game.
+            startGame();
+            playersWaitingList.clear();
+
+        }else if(numOfPlayers != 0 && (playersWaitingList.size() > numOfPlayers)) {
+                answer.setAnswer(new ErrorAnswer("The game already started and the maximum number of players has been reached. Try again when te actual game ends.", ErrorClassification.MAX_PLAYERS_REACHED));
+                connection.sendAnswerToClient(answer);
+
+            }else {
+            getWaitingPlayerByID(connection.getID()).send(new CustomAnswer("You're now connected\n"));
+            sendToEveryone(new CustomAnswer("There are " + (numOfPlayers - playersWaitingList.size()) + " slots left!"));
+        }
     }
 
 
@@ -222,18 +328,18 @@ public class GameHandler {
      * @param action action received from the client.
      */
     public void dispatchActions(GameAction action){
-        if (action instanceof PickTilesAction){
-            pcsController.firePropertyChange("PickTilesAction", null, action);
-            return;
-        }
-        if(action instanceof PlaceTilesAction){
-            pcsController.firePropertyChange("PlaceTilesAction", null, action);
-            return;
-        }
-        if(action instanceof PrintCardsAction){
-            pcsController.firePropertyChange("PrintCardsAction", null, action);
-            return;
-        }
+            if (action instanceof PickTilesAction) {
+                pcsController.firePropertyChange("PickTilesAction", null, action);
+                return;
+            }
+            if (action instanceof PlaceTilesAction) {
+                pcsController.firePropertyChange("PlaceTilesAction", null, action);
+                return;
+            }
+            if (action instanceof PrintCardsAction) {
+                pcsController.firePropertyChange("PrintCardsAction", null, action);
+                return;
+            }
     }
 
     /**
@@ -250,5 +356,53 @@ public class GameHandler {
      */
     public void restoreClient(int ID){
         controller.restoreClient(ID);
+    }
+
+
+    /**
+     * Get a waiting player by ID.
+     * @param ID Unique ID of the player.
+     * @return virtual player related to the passed ID.
+     */
+    public synchronized VirtualPlayer getWaitingPlayerByID(int ID) {
+        List<VirtualPlayer> list = List.copyOf(playersWaitingList);
+        for(VirtualPlayer p : list){
+            if(ID == p.getID()){
+                return p;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * Verify if the number of players chosen by the player is in the possible range.
+     * @param player player that send to the server the request to set the number of players.
+     * @param numOfPlayers number of players in the game.
+     * @throws OutOfBoundException thrown if the range of players is not correct.
+     */
+    public void setNumOfPlayers(VirtualPlayer player, int numOfPlayers) throws OutOfBoundException{
+        /*
+        Check if we are in the setup phase, which is true just for the first player. After the first player chooses the number of players, the phase is set to LOBBY,
+        and if other players will try to use the PLAYERS command, they will receive an incorrect phase message.
+         */
+        if(getController().getPhase() != SETUP){
+            player.send(new ErrorAnswer("You cannot play this command in this game phase!", ErrorClassification.INCORRECT_PHASE));
+            return;
+        }
+
+        /*
+        Check if the players are in the right range.
+         */
+        if (numOfPlayers > MAXPLAYERS || numOfPlayers < MINPLAYERS)
+            throw new OutOfBoundException();
+        /*
+        Set number of players (also in GameHandler)
+         */
+        this.numOfPlayers = numOfPlayers;
+        player.getGameHandler().setNumOfPlayers(numOfPlayers);
+        player.send(new PlayerNumberChosen(numOfPlayers));
+        System.out.println(GREEN_COLOR + "Setup mode ended for game " + nameOfTheMatch + ". Clients are now welcome!" + RESET_COLOR);
+        getController().setPhase(Phase.LOBBY);
     }
 }

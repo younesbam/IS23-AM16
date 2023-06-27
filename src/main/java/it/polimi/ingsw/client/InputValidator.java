@@ -5,7 +5,9 @@ import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.common.Coordinate;
 import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
+import it.polimi.ingsw.communications.clientmessages.messages.CreateGameMessage;
 import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
+import it.polimi.ingsw.communications.clientmessages.messages.JoinGameMessage;
 import it.polimi.ingsw.model.Tile;
 
 import java.util.ArrayList;
@@ -32,6 +34,42 @@ public class InputValidator {
         this.cli = cli;
         this.modelView = modelView;
         this.client = client;
+    }
+
+
+    /**
+     * Check if the input for the CreateGameMessage is valid.
+     * @param s
+     * @return
+     */
+    public CreateGameMessage createGame(String[] s){
+        String nameOfTheGame;
+        if(s.length > 2){
+            System.out.print(CLI_INPUT_ERROR);
+            return null;
+        }
+        else {
+            nameOfTheGame = s[1];
+            return new CreateGameMessage(nameOfTheGame);
+        }
+    }
+
+
+    /**
+     * Check if the input for the JoinGameMessage is valid.
+     * @param s
+     * @return
+     */
+    public JoinGameMessage joinGame(String[] s){
+        String nameOfTheGame;
+        if(s.length > 2){
+            System.out.print(CLI_INPUT_ERROR);
+            return null;
+        }
+        else {
+            nameOfTheGame = s[1];
+            return new JoinGameMessage(nameOfTheGame);
+        }
     }
 
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.Const;
 import it.polimi.ingsw.common.JSONParser;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
+import it.polimi.ingsw.communications.clientmessages.messages.CreateGameMessage;
 import it.polimi.ingsw.communications.clientmessages.messages.HowManyPlayersResponse;
 import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.serveranswers.*;
@@ -66,7 +67,7 @@ public class Server {
     /**
      * Game handler.
      */
-    private GameHandler gameHandler;
+    //private GameHandler gameHandler;
 
     /**
      * Number of players for this match, chosen by the host in the initial phase of the game.
@@ -78,10 +79,10 @@ public class Server {
      */
     private int currentPlayerID;
 
-    /**
-     * List of players waiting for game to start. List cleared when game start.
-     */
-    private final List<VirtualPlayer> playersWaitingList = new ArrayList<>();
+//    /**
+//     * List of players waiting for game to start. List cleared when game start.
+//     */
+    //private final List<VirtualPlayer> playersWaitingList = new ArrayList<>();
 
     /**
      * List of connected players. Use this to ping all connected clients
@@ -92,6 +93,12 @@ public class Server {
      * Scheduler service. It executes tasks every n seconds, specified below.
      */
     ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+
+    /**
+     * HashMap used to associate each Match to its name.
+     */
+    private final Map<String, GameHandler> matchMap = new HashMap<>();
 
 
     /**
@@ -136,6 +143,7 @@ public class Server {
         Ping thread to check if clients are still alive
         WARNING: remember to shut down the thread with exec.shutdownNow();
          */
+        //TODO da togliere i commenti.
         scheduler.scheduleAtFixedRate(() -> {
             /*
             Each client registered in the server is pinged. If the client doesn't respond, the ping() method proceed itself to disconnect the client.
@@ -191,8 +199,12 @@ public class Server {
         VirtualPlayer currentPlayer = getVirtualPlayerByID(serializedMessage.playerID);
         if (serializedMessage.message != null) {
             actionHandler(currentPlayer, serializedMessage.message);
-        } else if (serializedMessage.gameAction != null) {
+        } else if (serializedMessage.gameAction != null && currentPlayer.getGameHandler() != null) {
             actionHandler(currentPlayer, serializedMessage.gameAction);
+        } else{
+            SerializedAnswer answer = new SerializedAnswer();
+            answer.setAnswer(new ErrorAnswer("You cannot play this command in this game phase!", ErrorClassification.INCORRECT_PHASE));
+            currentPlayer.send(answer.getAnswer());
         }
     }
 
@@ -200,25 +212,34 @@ public class Server {
      * Handles the possible messages that can arrive from client's side.
      * @param message message from client
      */
-    private void actionHandler(VirtualPlayer currentPlayer, Message message){
-        if(message instanceof HowManyPlayersResponse){
-            try{
-                setNumOfPlayers(currentPlayer, ((HowManyPlayersResponse) message).getNumChoice());
+    private void actionHandler(VirtualPlayer currentPlayer, Message message) {
+        if (message instanceof HowManyPlayersResponse) {
+            try {
+                getGameHandlerByID(currentPlayer.getID()).setNumOfPlayers(currentPlayer, ((HowManyPlayersResponse) message).getNumChoice());
             } catch (OutOfBoundException e) {
                 Server.LOGGER.log(Level.INFO, "Wrong number of players received from client");
                 SerializedAnswer answer = new SerializedAnswer();
                 answer.setAnswer(new HowManyPlayersRequest("Wrong number of players. Please choose the number of players you want to play with. Type MAN if you dont' know the syntax!"));
                 currentPlayer.send(answer.getAnswer());
+            } catch(Exception e){
+                SerializedAnswer answer = new SerializedAnswer();
+                answer.setAnswer(new ErrorAnswer("You cannot play this command in this game phase!", ErrorClassification.INCORRECT_PHASE));
+                currentPlayer.send(answer.getAnswer());
             }
             return;
+        } else {
+            Answer answer = new ErrorAnswer("You cannot play this command in this game phase!", ErrorClassification.INCORRECT_PHASE);
+            currentPlayer.send(answer);
         }
     }
+
 
     /**
      * Handles the possible game action that can arrive from client's side.
      * @param action game action from client
      */
     private void actionHandler(VirtualPlayer currentPlayer, GameAction action){
+        //qua non ha ancora il game handler!
         getGameHandlerByID(currentPlayer.getID()).dispatchActions(action);
     }
 
@@ -237,8 +258,13 @@ public class Server {
             if (connection.getID() == null) {
                 return;
             }
-            lobby(connection);
-        } catch (IOException | InterruptedException e) {
+            SerializedAnswer answer = new SerializedAnswer();
+            answer.setAnswer(new CustomAnswer("\nType CREATE <Name_Of_The_Game> if you want to create a new game, or type JOIN <Name_Of_The_Game> if you want to join an existing one.\n>"));
+            connection.sendAnswerToClient(answer);
+
+            //TODO qua poi sarà ancora da chiamare il metodo lobby.
+            //lobby(connection);
+        } catch (IOException e){//| InterruptedException e) {
             Server.LOGGER.log(Level.SEVERE, "Failed to register the new client", e);
         }
     }
@@ -253,13 +279,13 @@ public class Server {
     private synchronized Integer newClientRegistration(String username, CSConnection clientConnection) throws IOException{
         SerializedAnswer answer = new SerializedAnswer();
         // Check if the server is in a setup mode. If true it returns null and disconnect the client immediately.
-        if(gameHandler != null){  // Game handler null means no one is connected yet
-            if(gameHandler.getController().getPhase() == SETUP){
-                answer.setAnswer(new ErrorAnswer("Lobby not ready to receive new players. The first player must choose the number of players.", ErrorClassification.LOBBY_NOT_READY));
-                clientConnection.sendAnswerToClient(answer);
-                return null;
-            }
-        }
+//        if(gameHandler != null){  // Game handler null means no one is connected yet
+//            if(gameHandler.getController().getPhase() == SETUP){
+//                answer.setAnswer(new ErrorAnswer("Lobby not ready to receive new players. The first player must choose the number of players.", ErrorClassification.LOBBY_NOT_READY));
+//                clientConnection.sendAnswerToClient(answer);
+//                return null;
+//            }
+//        }
 
         // Try to register a new client.
         Integer clientID = getIDByUsername(username);
@@ -267,33 +293,29 @@ public class Server {
         //checks about nickname
         if (clientID == null) {  // Username not used by another player
             //Checks about waiting list and available slot for the game
-            if (numOfPlayers != 0 && (playersWaitingList.size() >= numOfPlayers || playersConnectedList.size() >= numOfPlayers)) {
-                answer.setAnswer(new ErrorAnswer("The game already started and the maximum number of players has been reached. Try again when te actual game ends.", ErrorClassification.MAX_PLAYERS_REACHED));
-                clientConnection.sendAnswerToClient(answer);
-                return null;
-            }
-
-            if (playersConnectedList.isEmpty()) {
-                gameHandler = new GameHandler(this);  // This set also the SETUP phase
-            }
+//            if (numOfPlayers != 0 && (playersWaitingList.size() >= numOfPlayers || playersConnectedList.size() >= numOfPlayers)) {
+//                answer.setAnswer(new ErrorAnswer("The game already started and the maximum number of players has been reached. Try again when te actual game ends.", ErrorClassification.MAX_PLAYERS_REACHED));
+//                clientConnection.sendAnswerToClient(answer);
+//                return null;
+//            }
 
             // Create a new player.
             clientID = newClientID();
-            gameHandler.createPlayer(username, clientID);
             clientConnection.setID(clientID);
-            VirtualPlayer newPlayer = new VirtualPlayer(username, clientConnection, gameHandler);
+            clientConnection.setUsername(username);
+            VirtualPlayer newPlayer = new VirtualPlayer(username, clientConnection);
             playersConnectedList.add(newPlayer);
 
-            System.out.println(newPlayer.getUsername() + " is now connected, his ID is " + newPlayer.getID());
-            answer.setAnswer(new ConnectionOutcome(true, newPlayer.getID(), "Welcome! You have been associated with the following ID " + newPlayer.getID()));
+            System.out.println(username + " is now connected, his ID is " + clientID);
+            answer.setAnswer(new ConnectionOutcome(true, clientID, "Welcome! You have been associated with the following ID " + clientID));
             clientConnection.sendAnswerToClient(answer);
 
-            if (playersConnectedList.size() > 1) {
-                gameHandler.sendToEveryoneExcept(new CustomAnswer("We have a new mate! Please call him: " + newPlayer.getUsername() + " :)"), clientID);
-            }
+//            if (playersConnectedList.size() > 1) {
+//                gameHandler.sendToEveryoneExcept(new CustomAnswer("We have a new mate! Please call him: " + newPlayer.getUsername() + " :)"), clientID);
+//            }
 
         } else {  // Username already in use.
-            // Check if a disconnected player want to reconnect with the same username
+            // Check if a disconnected player wants to reconnect with the same username
             VirtualPlayer playerToRestore = getVirtualPlayerByID(clientID);
             if(!playerToRestore.getConnection().isAlive()){
                 clientConnection.setID(clientID);
@@ -316,75 +338,165 @@ public class Server {
 
 
     /**
-     * This is the lobby. Here the players wait for other players to connect, in order to reach the number chosen from the games's host.
-     * @param connection Already created connection between client-server
-     * @throws InterruptedException thrown if an error occurs during thread sleep.
+     * Method used in order to create a new match.
+     * @param connection
+     * @param matchName
+     * @throws InterruptedException
      */
-    private synchronized void lobby(CSConnection connection) throws InterruptedException {
-        SerializedAnswer answer = new SerializedAnswer();
+    public void createNewMatch(CSConnection connection, String matchName) throws InterruptedException {
+        boolean newPlayer = false;
 
-        answer.setAnswer(new CustomAnswer(BLUE_BOLD_COLOR + "\nType MAN to know all the valid commands\n" + RESET_COLOR));
-        connection.sendAnswerToClient(answer);
-
-        // If the game is already started and the player wants to reconnect, skip the lobby phase
-        if(gameHandler.isGameStarted())
-            return;
-
-        playersWaitingList.add(getVirtualPlayerByID(connection.getID()));
-        if(gameHandler.getController().getPhase() == SETUP) { //if it's the first player
-            System.out.println(RED_COLOR + "Setup mode started. Clients are not welcome. Wait for the lobby host to choose the number of players" + RESET_COLOR);
-            answer.setAnswer(new HowManyPlayersRequest("Hi " + getWaitingPlayerByID(connection.getID()).getUsername() + ", you are now the host of this lobby.\nPlease choose the number of players you want to play with:"));
-            connection.sendAnswerToClient(answer);
-            gameHandler.getController().setCurrentPlayer(gameHandler.getController().getGame().getPlayers().get(0));
-        } else if(playersWaitingList.size() == numOfPlayers) {  // Game has reached the right number of players. Game is starting
-            System.out.println(numOfPlayers + " players are now ready to play. Game is starting...");
-            for(int i = 3; i > 0; i--) {
-                gameHandler.sendToEveryone(new CountDown(i));
-                gameHandler.sendToEveryone(new CustomAnswer("Game will start in " + i));
-                TimeUnit.MILLISECONDS.sleep(1000);
+        //check if the player hasn't already joined a match.
+        for(VirtualPlayer p : playersConnectedList){
+            if(p.getUsername() == connection.getUsername() && p.getGameHandler() == null){
+                newPlayer = true;
             }
+        }
 
-            // Start the game.
-            gameHandler.startGame();
-            playersWaitingList.clear();
+        //if he hasn't joined a match yet, he can create a new one.
+        if(newPlayer) {
+            GameHandler gameHandler = new GameHandler(this);
+            gameHandler.setNameOfTheMatch(matchName);
+            gameHandler.createPlayer(connection.getUsername(), connection.getID());
 
-        } else {
-            getWaitingPlayerByID(connection.getID()).send(new CustomAnswer("You're now connected\n"));
-            gameHandler.sendToEveryone(new CustomAnswer("There are " + (numOfPlayers - playersWaitingList.size()) + " slots left!"));
+            //set the player's game handler
+            for (int i = 0; i < playersConnectedList.size(); i++) {
+                if (playersConnectedList.get(i).getID() == connection.getID()) {
+                    playersConnectedList.get(i).setGameHandler(gameHandler);
+                }
+            }
+            matchMap.put(matchName, gameHandler);
+
+            gameHandler.lobby(connection);
+        }
+        else{
+            SerializedAnswer answer = new SerializedAnswer();
+            answer.setAnswer(new ErrorAnswer("You cannot play this command in this game phase!", ErrorClassification.INCORRECT_PHASE));
+            connection.sendAnswerToClient(answer);
         }
     }
 
 
     /**
-     * Verify if the number of players chosen by the player is in the possible range.
-     * @param player player that send to the server the request to set the number of players.
-     * @param numOfPlayers number of players in the game.
-     * @throws OutOfBoundException thrown if the range of players is not correct.
+     * Method used to join an already existing match.
+     * @param matchName
+     * @param connection
+     * @throws InterruptedException
      */
-    private void setNumOfPlayers(VirtualPlayer player, int numOfPlayers) throws OutOfBoundException{
-        /*
-        Check if we are in the setup phase, which is true just for the first player. After the first player chooses the number of players, the phase is set to LOBBY,
-        and if other players will try to use the PLAYERS command, they will receive an incorrect phase message.
-         */
-        if(gameHandler.getController().getPhase() != SETUP){
-            player.send(new ErrorAnswer("You cannot play this command in this game phase!", ErrorClassification.INCORRECT_PHASE));
-            return;
+    public void joinMatch(String matchName, CSConnection connection) throws InterruptedException {
+        GameHandler gameHandler = matchMap.get(matchName);
+        boolean newPlayer = false;
+
+        //check if the player hasn't already joined a match.
+        for(VirtualPlayer p : playersConnectedList){
+            if(p.getUsername() == connection.getUsername() && p.getGameHandler() == null){
+                newPlayer = true;
+            }
         }
 
-        /*
-        Check if the players are in the right range.
-         */
-        if (numOfPlayers > MAXPLAYERS || numOfPlayers < MINPLAYERS)
-            throw new OutOfBoundException();
-        /*
-        Set number of players (also in GameHandler)
-         */
-        this.numOfPlayers = numOfPlayers;
-        player.getGameHandler().setNumOfPlayers(numOfPlayers);
-        player.send(new PlayerNumberChosen(numOfPlayers));
-        System.out.println(GREEN_COLOR + "Setup mode ended. Clients are now welcome!" + RESET_COLOR);
-        gameHandler.getController().setPhase(Phase.LOBBY);
+        //if he hasn't joined a match yet, he can join one.
+        if(newPlayer) {
+            if (gameHandler != null) {
+                if (gameHandler.getController().getPhase() == SETUP) {
+                    SerializedAnswer answer = new SerializedAnswer();
+                    answer.setAnswer(new ErrorAnswer("Lobby not ready to receive new players. The first player must choose the number of players.", ErrorClassification.LOBBY_NOT_READY));
+                    connection.sendAnswerToClient(answer);
+                } else {
+                    gameHandler.createPlayer(connection.getUsername(), connection.getID());
+
+                    //set player's game handler.
+                    for (int i = 0; i < playersConnectedList.size(); i++) {
+                        if (playersConnectedList.get(i).getID() == connection.getID()) {
+                            playersConnectedList.get(i).setGameHandler(gameHandler);
+                        }
+                    }
+
+                    gameHandler.sendToEveryoneExcept(new CustomAnswer("We have a new mate! Please call him: " + connection.getUsername() + " :)"), connection.getID());
+                    gameHandler.lobby(connection);
+                }
+            } else {
+                SerializedAnswer answer = new SerializedAnswer();
+                answer.setAnswer(new ErrorAnswer("This match doesn't exist yet! You can create a new match or wait for others to create one.", ErrorClassification.INVALID_PARAMETERS));
+                connection.sendAnswerToClient(answer);
+            }
+        }else{
+            SerializedAnswer answer = new SerializedAnswer();
+            answer.setAnswer(new ErrorAnswer("You cannot play this command in this game phase!", ErrorClassification.INCORRECT_PHASE));
+            connection.sendAnswerToClient(answer);
+        }
     }
+
+
+//    /**
+//     * This is the lobby. Here the players wait for other players to connect, in order to reach the number chosen from the games's host.
+//     * @param connection Already created connection between client-server
+//     * @throws InterruptedException thrown if an error occurs during thread sleep.
+//     */
+//    private synchronized void lobby(CSConnection connection) throws InterruptedException {
+//        SerializedAnswer answer = new SerializedAnswer();
+//
+//        answer.setAnswer(new CustomAnswer(BLUE_BOLD_COLOR + "\nType MAN to know all the valid commands\n" + RESET_COLOR));
+//        connection.sendAnswerToClient(answer);
+//
+//        // If the game is already started and the player wants to reconnect, skip the lobby phase
+//        if(gameHandler.isGameStarted())
+//            return;
+//
+//        playersWaitingList.add(getVirtualPlayerByID(connection.getID()));
+//        if(gameHandler.getController().getPhase() == SETUP) { //if it's the first player
+//            System.out.println(RED_COLOR + "Setup mode started. Clients are not welcome. Wait for the lobby host to choose the number of players" + RESET_COLOR);
+//            answer.setAnswer(new HowManyPlayersRequest("Hi " + getWaitingPlayerByID(connection.getID()).getUsername() + ", you are now the host of this lobby.\nPlease choose the number of players you want to play with:"));
+//            connection.sendAnswerToClient(answer);
+//            gameHandler.getController().setCurrentPlayer(gameHandler.getController().getGame().getPlayers().get(0));
+//        } else if(playersWaitingList.size() == numOfPlayers) {  // Game has reached the right number of players. Game is starting
+//            System.out.println(numOfPlayers + " players are now ready to play. Game is starting...");
+//            for(int i = 3; i > 0; i--) {
+//                gameHandler.sendToEveryone(new CountDown(i));
+//                gameHandler.sendToEveryone(new CustomAnswer("Game will start in " + i));
+//                TimeUnit.MILLISECONDS.sleep(1000);
+//            }
+//
+//            // Start the game.
+//            gameHandler.startGame();
+//            playersWaitingList.clear();
+//
+//        } else {
+//            getWaitingPlayerByID(connection.getID()).send(new CustomAnswer("You're now connected\n"));
+//            gameHandler.sendToEveryone(new CustomAnswer("There are " + (numOfPlayers - playersWaitingList.size()) + " slots left!"));
+//        }
+//    }
+
+
+//    /**
+//     * Verify if the number of players chosen by the player is in the possible range.
+//     * @param player player that send to the server the request to set the number of players.
+//     * @param numOfPlayers number of players in the game.
+//     * @throws OutOfBoundException thrown if the range of players is not correct.
+//     */
+//    private void setNumOfPlayers(VirtualPlayer player, int numOfPlayers) throws OutOfBoundException{
+//        /*
+//        Check if we are in the setup phase, which is true just for the first player. After the first player chooses the number of players, the phase is set to LOBBY,
+//        and if other players will try to use the PLAYERS command, they will receive an incorrect phase message.
+//         */
+//        if(gameHandler.getController().getPhase() != SETUP){
+//            player.send(new ErrorAnswer("You cannot play this command in this game phase!", ErrorClassification.INCORRECT_PHASE));
+//            return;
+//        }
+//
+//        /*
+//        Check if the players are in the right range.
+//         */
+//        if (numOfPlayers > MAXPLAYERS || numOfPlayers < MINPLAYERS)
+//            throw new OutOfBoundException();
+//        /*
+//        Set number of players (also in GameHandler)
+//         */
+//        this.numOfPlayers = numOfPlayers;
+//        player.getGameHandler().setNumOfPlayers(numOfPlayers);
+//        player.send(new PlayerNumberChosen(numOfPlayers));
+//        System.out.println(GREEN_COLOR + "Setup mode ended. Clients are now welcome!" + RESET_COLOR);
+//        gameHandler.getController().setPhase(Phase.LOBBY);
+//    }
 
 
     /**
@@ -483,20 +595,20 @@ public class Server {
         return null;
     }
 
-    /**
-     * Get a waiting player by ID.
-     * @param ID Unique ID of the player.
-     * @return virtual player related to the passed ID.
-     */
-    public synchronized VirtualPlayer getWaitingPlayerByID(int ID) {
-        List<VirtualPlayer> list = List.copyOf(playersWaitingList);
-        for(VirtualPlayer p : list){
-            if(ID == p.getID()){
-                return p;
-            }
-        }
-        return null;
-    }
+//    /**
+//     * Get a waiting player by ID.
+//     * @param ID Unique ID of the player.
+//     * @return virtual player related to the passed ID.
+//     */
+//    public synchronized VirtualPlayer getWaitingPlayerByID(int ID) {
+//        List<VirtualPlayer> list = List.copyOf(playersWaitingList);
+//        for(VirtualPlayer p : list){
+//            if(ID == p.getID()){
+//                return p;
+//            }
+//        }
+//        return null;
+//    }
 
     /**
      * Get connected virtual player list.
@@ -521,7 +633,7 @@ public class Server {
         }
 
         try{
-            playersWaitingList.remove(getWaitingPlayerByID(ID));
+            getGameHandlerByID(ID).removeWaitingPlayer(ID);
         }catch (NullPointerException e){
             //
         }
@@ -539,7 +651,7 @@ public class Server {
             return;
         }
         System.out.println("Suspending player " + suspendedClient.getUsername() + " ...");
-        gameHandler.suspendClient(suspendedClient.getID());
+        getGameHandlerByID(connection.getID()).suspendClient(suspendedClient.getID());
         System.out.println("Player suspended successfully");
     }
 
@@ -553,7 +665,7 @@ public class Server {
     public void restoreClient(CSConnection connection){
         VirtualPlayer restoredClient = getVirtualPlayerByID(connection.getID());
         System.out.println("Restoring player " + restoredClient.getUsername() + " ...");
-        gameHandler.restoreClient(restoredClient.getID());
+        getGameHandlerByID(connection.getID()).restoreClient(restoredClient.getID());
         System.out.println("Player restored successfully");
     }
 
