@@ -112,4 +112,13 @@ class Board3PlayersTest extends BoardTest{
         assertNotEquals(Tile.UNAVAILABLE, b.getTile(3,3));
         assertNotEquals(Tile.UNAVAILABLE, b.getTile(7,4));
     }
+
+    /**
+     * This method tests method printBoard() in Board class.
+     * @see Board#printBoard()
+     */
+    @Test
+    void printBoard3PlayersTest(){
+        b.printBoard();
+    }
 }

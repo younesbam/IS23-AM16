@@ -10,8 +10,20 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * EqualInColTest class tests EqualInCol class in model.
+ * @see EqualInCol
+ */
 class EqualInColTest extends CardTest{
 
+    CommonGoalCard common3 = new EqualInCol(3);
+    CommonGoalCard common4 = new EqualInCol(4);
+
+    /**
+     * This method tests whether the algorithm recognizes properly the scheme.
+     * Tested schemes are saved in testCommonCard.json
+     * @param cardID card to test (3 or 4).
+     */
     @ParameterizedTest
     @ValueSource(ints = {3, 4})
     public void checkAlgorithm(int cardID) {
@@ -56,5 +68,60 @@ class EqualInColTest extends CardTest{
             else
                 assertEquals(0, commonCard.checkScheme(player));
         }
+    }
+
+    /**
+     * This method tests method getCardNumber() in Card class.
+     * @see Card#getCardNumber()
+     */
+    @Test
+    void getCardNumberTest(){
+        assertEquals(3, common3.getCardNumber());
+        assertEquals(4, common4.getCardNumber());
+    }
+
+    /**
+     * This method tests method checkScheme() in Card class.
+     * @see Card#checkScheme(Player)
+     */
+    @Test
+    void checkSchemeTest(){
+        Player player = new Player("Pippo", 1);
+
+        assertNotNull(common3.checkScheme(player));
+        assertNotNull(common4.checkScheme(player));
+    }
+
+    /**
+     * This method tests methods getScore() and placePoints() in CommonGoalCard class.
+     * @see CommonGoalCard#placePoints(int)
+     * @see CommonGoalCard#getScore()
+     */
+    @Test
+    void pointsTest(){
+        // Returns null because game hasn't been instantiated.
+        assertNull(common3.getScore());
+        assertNull(common4.getScore());
+
+        common3.placePoints(4);
+        assertEquals(8, common3.getScore());
+        assertEquals(6, common3.getScore());
+        assertEquals(4, common3.getScore());
+        assertEquals(2, common3.getScore());
+
+        common4.placePoints(3);
+        assertEquals(8, common4.getScore());
+        assertEquals(6, common4.getScore());
+        assertEquals(4, common4.getScore());
+    }
+
+    /**
+     * This method tests the method printCard() in EqualInCol class.
+     * @see EqualInCol#printCard()
+     */
+    @Test
+    void printCardTest(){
+        common3.printCard();
+        common4.printCard();
     }
 }

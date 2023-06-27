@@ -10,8 +10,20 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * EqualCrossTest class tests EqualCross class in model.
+ * @see EqualCross
+ */
 class EqualCrossTest extends CardTest{
 
+    CommonGoalCard common1 = new EqualCross(1);
+    CommonGoalCard common10 = new EqualCross(10);
+
+    /**
+     * This method tests whether the algorithm recognizes properly the scheme.
+     * Tested schemes are saved in testCommonCard.json
+     * @param cardID card to test (1 or 10).
+     */
     @ParameterizedTest
     @ValueSource(ints = {1, 10})
     public void checkAlgorithm(int cardID) {
@@ -56,5 +68,59 @@ class EqualCrossTest extends CardTest{
             else
                 assertEquals(0, commonCard.checkScheme(player));
         }
+    }
+
+    /**
+     * This method tests method getCardNumber() in Card class.
+     * @see Card#getCardNumber()
+     */
+    @Test
+    void getCardNumberTest(){
+        assertEquals(1, common1.getCardNumber());
+        assertEquals(10, common10.getCardNumber());
+    }
+
+    /**
+     * This method tests method checkScheme() in Card class.
+     * @see Card#checkScheme(Player)
+     */
+    @Test
+    void checkSchemeTest(){
+        Player player = new Player("Pippo", 1);
+
+        assertNotNull(common10.checkScheme(player));
+        assertNotNull(common1.checkScheme(player));
+    }
+
+    /**
+     * This method tests methods getScore() and placePoints() in CommonGoalCard class.
+     * @see CommonGoalCard#placePoints(int)
+     * @see CommonGoalCard#getScore()
+     */
+    @Test
+    void pointsTest(){
+        // Returns null because game hasn't been instantiated.
+        assertNull(common1.getScore());
+        assertNull(common10.getScore());
+
+        common1.placePoints(4);
+        assertEquals(8, common1.getScore());
+        assertEquals(6, common1.getScore());
+        assertEquals(4, common1.getScore());
+        assertEquals(2, common1.getScore());
+
+        common10.placePoints(2);
+        assertEquals(8, common10.getScore());
+        assertEquals(4, common10.getScore());
+    }
+
+    /**
+     * This method tests the method printCard() in EqualCross class.
+     * @see EqualCross#printCard()
+     */
+    @Test
+    void printCardTest(){
+        common1.printCard();
+        common10.printCard();
     }
 }

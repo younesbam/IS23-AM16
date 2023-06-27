@@ -20,7 +20,7 @@ import java.util.List;
  * @see BookShelf
  */
 class BookShelfTest {
-    BookShelf bookShelf = new BookShelf();
+    BookShelf bookShelf;
     Cell[][] grid = new Cell[MAXBOOKSHELFROW][MAXBOOKSHELFCOL];
     List<Tile> tilesList1 = new ArrayList<>();  // One element.
     List<Tile> tilesList2 = new ArrayList<>();  // Two elements.
@@ -35,6 +35,8 @@ class BookShelfTest {
      */
     @BeforeEach
     void init(){
+        bookShelf = new BookShelf();
+
         // This cycle fills list validColumns with the columns' values in the bookshelf.
         for(int i=0; i<MAXBOOKSHELFCOL; i++)
             validColumns.add(i);
@@ -131,5 +133,21 @@ class BookShelfTest {
         for (int col : validColumns)
             bookShelf.placeTiles(col, tilesList1);
         assertTrue(bookShelf.checkEndGame());
+    }
+
+    /**
+     * This method tests method printBookshelf() in Bookshelf class.
+     * @see BookShelf#printBookShelf()
+     */
+    @Test
+    void printBookShelfTest(){
+        // Filling randomly the bookshelf.
+        bookShelf.placeTiles(0, tilesList3);
+        bookShelf.placeTiles(1, tilesList1);
+        bookShelf.placeTiles(2, tilesList2);
+        bookShelf.placeTiles(3, tilesList3);
+        bookShelf.placeTiles(4, tilesList1);
+
+        bookShelf.printBookShelf();
     }
 }

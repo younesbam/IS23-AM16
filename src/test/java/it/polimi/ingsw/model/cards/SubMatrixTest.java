@@ -10,8 +10,19 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * SubMatrixTest class tests SubMatrix class in model.
+ * @see SubMatrix
+ */
 class SubMatrixTest extends CardTest {
 
+    CommonGoalCard common12 = new SubMatrix(12);
+
+    /**
+     * This method tests whether the algorithm recognizes properly the scheme.
+     * Tested schemes are saved in testCommonCard.json
+     * @param cardID card to test (12).
+     */
     @ParameterizedTest
     @ValueSource(ints = {12})
     public void checkAlgorithm(int cardID) {
@@ -55,5 +66,51 @@ class SubMatrixTest extends CardTest {
             else
                 assertEquals(0, commonCard.checkScheme(player));
         }
+    }
+
+    /**
+     * This method tests method getCardNumber() in Card class.
+     * @see Card#getCardNumber()
+     */
+    @Test
+    void getCardNumberTest(){
+        assertEquals(12, common12.getCardNumber());
+    }
+
+    /**
+     * This method tests method checkScheme() in Card class.
+     * @see Card#checkScheme(Player)
+     */
+    @Test
+    void checkSchemeTest(){
+        Player player = new Player("Pippo", 1);
+
+        assertNotNull(common12.checkScheme(player));
+    }
+
+    /**
+     * This method tests methods getScore() and placePoints() in CommonGoalCard class.
+     * @see CommonGoalCard#placePoints(int)
+     * @see CommonGoalCard#getScore()
+     */
+    @Test
+    void pointsTest(){
+        // Returns null because game hasn't been instantiated.
+        assertNull(common12.getScore());
+
+        common12.placePoints(4);
+        assertEquals(8, common12.getScore());
+        assertEquals(6, common12.getScore());
+        assertEquals(4, common12.getScore());
+        assertEquals(2, common12.getScore());
+    }
+
+    /**
+     * This method tests the method printCard() in SubMatrix class.
+     * @see SubMatrix#printCard()
+     */
+    @Test
+    void printCardTest(){
+        common12.printCard();
     }
 }

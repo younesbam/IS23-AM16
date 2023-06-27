@@ -198,4 +198,13 @@ class Board2PlayersTest extends BoardTest{
     void getBoardForGUITest(){
         assertNotNull(b.getBoardforGUI());
     }
+
+    /**
+     * This method tests method printBoard() in Board class.
+     * @see Board#printBoard()
+     */
+    @Test
+    void printBoard2PlayersTest(){
+        b.printBoard();
+    }
 }

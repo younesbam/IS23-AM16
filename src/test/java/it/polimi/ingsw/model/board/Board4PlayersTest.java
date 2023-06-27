@@ -109,4 +109,13 @@ class Board4PlayersTest extends BoardTest{
         assertNotEquals(Tile.BLANK, b.getTile(4,4));
         assertNotEquals(Tile.BLANK, b.getTile(3,6));
     }
+
+    /**
+     * This method tests method printBoard() in Board class.
+     * @see Board#printBoard()
+     */
+    @Test
+    void printBoard4PlayersTest(){
+        b.printBoard();
+    }
 }

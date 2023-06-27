@@ -10,8 +10,19 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * EqualDiagTest class tests EqualDiag class in model.
+ * @see EqualDiag
+ */
 class EqualDiagTest extends CardTest{
 
+    CommonGoalCard common11 = new EqualDiag(11);
+
+    /**
+     * This method tests whether the algorithm recognizes properly the scheme.
+     * Tested schemes are saved in testCommonCard.json
+     * @param cardID card to test (11).
+     */
     @ParameterizedTest
     @ValueSource(ints = {11})
     public void checkAlgorithm(int cardID) {
@@ -56,5 +67,51 @@ class EqualDiagTest extends CardTest{
             else
                 assertEquals(0, commonCard.checkScheme(player));
         }
+    }
+
+    /**
+     * This method tests method getCardNumber() in Card class.
+     * @see Card#getCardNumber()
+     */
+    @Test
+    void getCardNumberTest(){
+        assertEquals(11, common11.getCardNumber());
+    }
+
+    /**
+     * This method tests method checkScheme() in Card class.
+     * @see Card#checkScheme(Player)
+     */
+    @Test
+    void checkSchemeTest(){
+        Player player = new Player("Pippo", 1);
+
+        assertNotNull(common11.checkScheme(player));
+    }
+
+    /**
+     * This method tests methods getScore() and placePoints() in CommonGoalCard class.
+     * @see CommonGoalCard#placePoints(int)
+     * @see CommonGoalCard#getScore()
+     */
+    @Test
+    void pointsTest(){
+        // Returns null because game hasn't been instantiated.
+        assertNull(common11.getScore());
+
+        common11.placePoints(4);
+        assertEquals(8, common11.getScore());
+        assertEquals(6, common11.getScore());
+        assertEquals(4, common11.getScore());
+        assertEquals(2, common11.getScore());
+    }
+
+    /**
+     * This method tests the method printCard() in EqualDiag class.
+     * @see EqualDiag#printCard()
+     */
+    @Test
+    void printCardTest(){
+        common11.printCard();
     }
 }
