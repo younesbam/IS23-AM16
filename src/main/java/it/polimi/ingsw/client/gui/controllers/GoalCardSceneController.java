@@ -10,6 +10,8 @@ public class GoalCardSceneController implements GUIController{
     @FXML private ImageView personalGoalCard;
     @FXML private ImageView commonGoalCard1;
     @FXML private ImageView commonGoalCard2;
+    @FXML private ImageView goalCardToken1;
+    @FXML private ImageView goalCardToken2;
     @Override
     public void setGuiManger(GUIManager guiManager) {
         this.guiManager = guiManager;
@@ -25,6 +27,16 @@ public class GoalCardSceneController implements GUIController{
 
     public void setCommonGoalCard2(String path){
         commonGoalCard2.setImage(new Image(GUI.class.getResourceAsStream(path)));
+    }
+
+    public void setToken1(String path){
+        goalCardToken1.setImage(new Image(GUI.class.getResourceAsStream(path)));
+        goalCardToken1.setVisible(true);
+    }
+
+    public void setToken2(String path){
+        goalCardToken2.setImage(new Image(GUI.class.getResourceAsStream(path)));
+        goalCardToken2.setVisible(true);
     }
 
 }

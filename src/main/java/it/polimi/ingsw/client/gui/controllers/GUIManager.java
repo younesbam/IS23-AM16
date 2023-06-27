@@ -37,6 +37,7 @@ public class GUIManager extends UI {
     private static final String GAME_OVER = "gameOverScene.fxml";
     private static final String PERSONAL_GOAL_CARD_PATH = "/graphics/personal_goal_cards/";
     private static final String COMMON_GOAL_CARD_PATH = "/graphics/common_goal_cards/";
+    private static final String GOAL_CARD_TOKEN_PATH = "/graphics/tokens/scoring";
     private boolean playingGame = false;
     private final Logger logger = Logger.getLogger(getClass().getName());
     private final HashMap<String, Scene> nameMapScene = new HashMap<>();
@@ -207,6 +208,13 @@ public class GUIManager extends UI {
         Platform.runLater(()->{
             MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
             mainSceneController.updatePoints(points);
+            GoalCardSceneController goalCardSceneController = (GoalCardSceneController) getControllerFromName(GOALS);
+            goalCardSceneController.setToken1(GOAL_CARD_TOKEN_PATH +
+                    modelView.getGame().getPlayerByID(getPlayerID()).getCommonCardPoints(0)
+                    + ".jpg");
+            goalCardSceneController.setToken2(GOAL_CARD_TOKEN_PATH +
+                    modelView.getGame().getPlayerByID(getPlayerID()).getCommonCardPoints(1)
+                    + ".jpg");
         });
     }
     public void printGoalCards(){
