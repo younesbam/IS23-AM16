@@ -27,6 +27,12 @@ public abstract class CSConnection {
 
 
     /**
+     * Client's username.
+     */
+    protected String username;
+
+
+    /**
      * Check if the connection is alive.
      * @return connection status.
      */
@@ -48,6 +54,24 @@ public abstract class CSConnection {
      */
     public Integer getID() {
         return this.ID;
+    }
+
+
+    /**
+     * Username setter.
+     * @param username
+     */
+    public void setUsername(String username){
+        this.username = username;
+    }
+
+
+    /**
+     * Username getter.
+     * @return
+     */
+    public String getUsername(){
+        return this.username;
     }
 
 

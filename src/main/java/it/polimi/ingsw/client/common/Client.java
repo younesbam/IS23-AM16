@@ -173,12 +173,12 @@ public abstract class Client extends UnicastRemoteObject {
      * Send message to the server.
      * @param message message to be sent.
      */
-    public abstract void sendToServer(Message message);
+    public abstract void sendToServer(Message message) throws RemoteException;
 
     /**
      * Send a game action to the server.
      * @param gameAction game action to be sent.
      */
-    public abstract void sendToServer(GameAction gameAction);
+    public abstract void sendToServer(GameAction gameAction) throws RemoteException;
 
 }

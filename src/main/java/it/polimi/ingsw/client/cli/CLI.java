@@ -19,6 +19,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.Const.*;
+import static it.polimi.ingsw.common.ConnectionType.SOCKET;
 
 /**
  * Command line interface. It allows interacting with the game with commands from a client
@@ -91,11 +92,11 @@ public class CLI extends UI implements Runnable{
             System.out.println("Choose your username:");
             System.out.print(">");
             username = input.nextLine();
-            System.out.println("You username choice is: " + username);
-            System.out.println("Are you happy with your choice? [y/n] ");
-            System.out.print(">");
+//            System.out.println("You username choice is: " + username);
+  //          System.out.println("Are you happy with your choice? [y/n] ");
+    //        System.out.print(">");
 
-            if (input.nextLine().equalsIgnoreCase("y"))
+ //           if (input.nextLine().equalsIgnoreCase("y"))
                 nameChosen = true;
         }
         return username;
@@ -166,9 +167,9 @@ public class CLI extends UI implements Runnable{
         /*
         Set port, IP address, username.
          */
-        ConnectionType connectionType = askConnectionType();
-        String ipAddress = askIpAddress();
-        int numOfPort = askPort();
+        ConnectionType connectionType = ConnectionType.RMI;//askConnectionType();
+        String ipAddress = "127.0.0.1";
+        int numOfPort = 2099;
         String username = askUsername();
 
         /*
@@ -195,6 +196,7 @@ public class CLI extends UI implements Runnable{
     private void connectionOutcome(ConnectionOutcome a){
         System.out.println(a.getAnswer());
         client.setID(a.getID());
+        modelView.setIsYourTurn(true);
     }
 
 

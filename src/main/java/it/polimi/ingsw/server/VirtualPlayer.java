@@ -15,7 +15,7 @@ public class VirtualPlayer {
     /**
      * Game handler of the player.
      */
-    private final GameHandler gameHandler;
+    private GameHandler gameHandler;
     /**
      * Client-server connection of the player.
      */
@@ -28,10 +28,9 @@ public class VirtualPlayer {
      * @param c Client-server connection of the player.
      * @param g Game handler of the player.
      */
-    public VirtualPlayer(String username, CSConnection c, GameHandler g) {
+    public VirtualPlayer(String username, CSConnection c) {
         this.username = username;
         this.connection = c;
-        this.gameHandler = g;
     }
 
     /**
@@ -65,6 +64,16 @@ public class VirtualPlayer {
     public CSConnection getConnection() {
         return this.connection;
     }
+
+
+    /**
+     * GameHandler setter.
+     * @param gameHandler
+     */
+    public void setGameHandler(GameHandler gameHandler){
+        this.gameHandler = gameHandler;
+    }
+
 
     /**
      * GameHandler getter.
