@@ -41,6 +41,16 @@
                   <Image url="@graphics/common_goal_cards/2.jpg" />
                </image>
             </ImageView>
+            <ImageView fx:id="goalCardToken1" fitHeight="80.0" fitWidth="80.0" layoutX="187.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true" rotate="352.0" visible="false">
+               <image>
+                  <Image url="@../graphics/tokens/scoring8.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="goalCardToken2" fitHeight="80.0" fitWidth="80.0" layoutX="187.0" layoutY="237.0" pickOnBounds="true" preserveRatio="true" rotate="352.0" visible="false">
+               <image>
+                  <Image url="@../graphics/tokens/scoring8.jpg" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <Button layoutX="376.0" layoutY="469.0" mnemonicParsing="false" text="BACK TO THE GAME">
