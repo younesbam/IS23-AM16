@@ -17,7 +17,7 @@ import static it.polimi.ingsw.Const.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * GameTest class tests class Game in model.
+ * GameTest class tests Game class in model.
  * @see Game
  */
 class GameTest {
@@ -306,6 +306,7 @@ class GameTest {
 
     /**
      * This method tests the creation factory method.
+     * @see CreationFactory
      */
     @Test
     void creationFactoryTest(){

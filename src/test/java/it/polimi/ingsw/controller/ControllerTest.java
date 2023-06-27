@@ -64,6 +64,7 @@ class ControllerTest {
     /**
      * This class represents a hint of the GameHandler.
      * It's used to run tests without using communication tools.
+     * @see GameHandler
      */
     private static class GameHandlerHint extends GameHandler{
         /**
@@ -103,6 +104,7 @@ class ControllerTest {
     /**
      * This class represents a hint of the Game.
      * It's used to instantiate a board for 3 players to run the tests.
+     * @see Game
      */
     private static class GameHint extends Game {
         private CreationFactory creationFactory;
@@ -197,6 +199,7 @@ class ControllerTest {
 
     /**
      * This method tests the method getGame() in Controller class.
+     * @see Controller#getGame()
      */
     @Test
     public void getGameTest(){
@@ -206,6 +209,8 @@ class ControllerTest {
 
     /**
      * This method tests the methods getPhase() and setPhase() in Controller class.
+     * @see Controller#getPhase()
+     * @see Controller#setPhase(Phase)
      */
     @Test
     void phaseTest(){
@@ -221,7 +226,8 @@ class ControllerTest {
     }
 
     /**
-     * This method tests method setcurrentPlayer() in Controller class.
+     * This method tests method setCurrentPlayer() in Controller class.
+     * @see Controller#setCurrentPlayer(Player)
      */
     @Test
     void currentPlayerTest(){
@@ -239,6 +245,7 @@ class ControllerTest {
 
     /**
      * This method tests that at the beginning of the game every player has 0 points.
+     * @see Controller#updateTotalPoints()
      */
     @Test
     public void pointsTest(){
@@ -255,7 +262,10 @@ class ControllerTest {
     }
 
     /**
-     * This method tests methods suspendClient() and restoreClient() in Controller class when the phase is different from Standby.
+     * This method tests methods suspendClient() and restoreClient() in Controller class
+     * when the phase is different from Standby.
+     * @see Controller#restoreClient(int)
+     * @see Controller#suspendClient(int)
      */
     @Test
     void suspensionTest() {
@@ -302,10 +312,13 @@ class ControllerTest {
     }
 
     /**
-     * This method tests method restoreClient() when the phase is Standby.
+     * This method tests methods suspendClient() restoreClient() in Controller class
+     * when the phase is Standby.
+     * @see Controller#suspendClient(int)
+     * @see Controller#restoreClient(int)
      */
     @Test
-    void suspensionTestWithStandby(){
+    void suspensionTestInStandby(){
         controller.suspendClient(01);
         assertFalse(p1.isActive());
         assertTrue(p2.isActive());
@@ -317,6 +330,7 @@ class ControllerTest {
 
     /**
      * This method tests method pickTilesAction() in Controller class when the phase is different from TilesPicking.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void pickTilesActionWrongPhaseTest(){
@@ -328,6 +342,7 @@ class ControllerTest {
 
     /**
      * This method tests method pickTilesAction() in Controller class when the player selects tiles aligned in column.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void pickTilesActionTestInCol(){
@@ -339,6 +354,7 @@ class ControllerTest {
 
     /**
      * This method tests method pickTilesAction() in Controller class when the player selects tiles aligned in row.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void pickTilesActionTestInRow(){
@@ -352,6 +368,7 @@ class ControllerTest {
     /**
      * This method tests method PickTilesAction() in Controller class when the selected tiles are on the same row but
      * not close together.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void pickTilesActionTestRowNotClose(){
@@ -365,6 +382,7 @@ class ControllerTest {
     /**
      * This method tests method PickTilesAction() in Controller class when the selected tiles are on the same column
      * but not close together.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void pickTilesActionTestColNotClose(){
@@ -377,6 +395,7 @@ class ControllerTest {
 
     /**
      * This method tests method PickTilesAction() in Controller class when the row is an invalid parameter.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void pickTilesActionTestInvalidRow(){
@@ -388,6 +407,7 @@ class ControllerTest {
 
     /**
      * This method tests method PickTilesAction() in Controller class when the column is an invalid parameter.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void pickTilesActionInvalidCol(){
@@ -399,6 +419,7 @@ class ControllerTest {
 
     /**
      * This method tests method PickTilesAction() in Controller class when the player selects tiles that can't be picked.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void pickTilesActionTestUnpickableCells(){
@@ -411,6 +432,7 @@ class ControllerTest {
 
     /**
      * This method tests method PickTilesAction() in Controller class when the player selects not adjacent cells.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void pickTilesActionTestNotAdjacentCells(){
@@ -424,6 +446,7 @@ class ControllerTest {
     /**
      * This method tests method PickTilesAction() in Controller class when the player's bookshelf doesn't have enough free space
      * in any column for the selected tiles.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void pickTilesActionTestNotEmptyBookshelf(){
@@ -443,6 +466,7 @@ class ControllerTest {
     /**
      * This method tests methods PickTilesAction() and PlaceTilesAction() in Controller class when coordinates
      * are right and then the player places the picked tiles in a valid column.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void pickAndPlaceTilesActionTest(){
@@ -460,6 +484,7 @@ class ControllerTest {
 
     /**
      * This method tests method PlaceTilesAction() in Controller class when the phase is different from TilesPlacing.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void placeTilesActionTestWrongPhase(){
@@ -471,6 +496,7 @@ class ControllerTest {
     /**
      * This method tests method PlaceTilesAction() in Controller class when the player inserts an invalid parameter for
      * bookshelf's column.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void placeTilesActionTestWrongCol(){
@@ -486,6 +512,7 @@ class ControllerTest {
     /**
      * This method tests method PlaceTilesAction() in Controller class when the tiles passed as parameter to the method
      * are different from the ones picked.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void placeTilesActionDifferentTiles(){
@@ -497,6 +524,7 @@ class ControllerTest {
     /**
      * This method tests method PlaceTilesAction() in Controller class when the player chooses a column that doesn't have
      * enough free space for the tiles picked.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void placeTilesActionTestNotEmptyCol(){
@@ -515,6 +543,7 @@ class ControllerTest {
     /**
      * This method tests method PlaceTilesAction() in Controller class when the player fills the last free space
      * in his bookshelf and then the game ends.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void placeTilesActionTestEndGame(){
@@ -539,6 +568,8 @@ class ControllerTest {
     /**
      * This method tests method PlaceTilesAction() in Controller class when the player disconnects during his turn
      * so the tiles he picked must be placed back in the board.
+     * @see Controller#propertyChange(PropertyChangeEvent)
+     * @see Controller#suspendClient(int)
      */
     @Test
     void suspensionTestDuringTurn(){
@@ -557,6 +588,7 @@ class ControllerTest {
     /**
      * This method tests methods PickTilesAction() and PlaceTilesAction() when the current player is the only active
      * playe and he fills all his bookshelf.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void placeTilesActionTestOnePlayerActiveAndEndGame(){
@@ -584,6 +616,7 @@ class ControllerTest {
     /**
      * This method tests methods PickTilesAction() and PlaceTilesAction() in Controller class when the current player
      * is the only active player but he doesn't fill his bookshelf.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void placeTilesActionTestOnePlayerActive(){
@@ -602,6 +635,7 @@ class ControllerTest {
 
     /**
      * This method tests method PrintCardsAction() in Controller class when the phase is TilesPlacing.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void printCardsActionTestTilesPlacing(){
@@ -611,6 +645,7 @@ class ControllerTest {
 
     /**
      * This method tests method PrintCardsAction() in Controller class when the phase is TilesPicking.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void printCardsActionTestTilesPicking(){
@@ -621,6 +656,7 @@ class ControllerTest {
     /**
      * This method tests method PrintCardsAction() in Controller class when the phase is different from
      * TilesPlacing and TilesPicking.
+     * @see Controller#propertyChange(PropertyChangeEvent)
      */
     @Test
     void printCardsActionTestNotAllowed(){

@@ -28,7 +28,7 @@ class EqualInColTest extends CardTest{
     @ValueSource(ints = {3, 4})
     public void checkAlgorithm(int cardID) {
         JSONArray test = getBookshelfFromJSON(cardID);
-        // Iterate all the objects in the array. Each element is an object of boh, it's hidden now.
+        // Iterate all the objects in the array. Each element is an object hidden at the moment.
         for(int j=0; j< test.length(); j++){
             // New player.
             player = new Player("MarioRossi", 20);
@@ -43,7 +43,7 @@ class EqualInColTest extends CardTest{
             System.out.println(objInTest.getString("descr"));
             // Get coordinates.
             JSONArray coordinates = objInTest.getJSONArray("coordinates");
-            // Iterate all the objects in the array. Each element is an object of boh, it's hidden now.
+            // Iterate all the objects in the array. Each element is an object hidden at the moment.
             for(int k=0; k< coordinates.length(); k++){
                 // Get each object in a variable. Now we don't know what's inside
                 JSONObject objInCoordinates = coordinates.getJSONObject(k);
@@ -55,18 +55,11 @@ class EqualInColTest extends CardTest{
 
                 player.getBookShelf().placeTiles(col, list);
             }
-            /*
-             * Se lo schema è rispettato:
-             * assertEquals(commonCard.checkScheme(player), commonCard.getScore());
-             *
-             * Se lo schema non è rispettato:
-             * assertEquals(commonCard.checkScheme(player), 0);
-             */
             boolean valid = objInTest.getBoolean("valid");
             if(valid)
-                assertEquals(8, commonCard.checkScheme(player));
+                assertEquals(8, commonCard.checkScheme(player));        // Valid scheme.
             else
-                assertEquals(0, commonCard.checkScheme(player));
+                assertEquals(0, commonCard.checkScheme(player));        // Invalid scheme.
         }
     }
 
@@ -99,7 +92,6 @@ class EqualInColTest extends CardTest{
      */
     @Test
     void pointsTest(){
-        // Returns null because game hasn't been instantiated.
         assertNull(common3.getScore());
         assertNull(common4.getScore());
 

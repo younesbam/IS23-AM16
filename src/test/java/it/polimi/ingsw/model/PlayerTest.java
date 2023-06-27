@@ -86,6 +86,7 @@ class PlayerTest {
 
     /**
      * This method tests method getBookShelf() in Player class.
+     * @see Player#getBookShelf()
      */
     @Test
     void getBookShelfTest(){
@@ -112,7 +113,7 @@ class PlayerTest {
      * @see Player#getPersonalGoalCard()
      */
     @Test
-    void persCardTest(){
+    void personalGoalCardTests(){
         assertEquals(persCard, player.getPersonalGoalCard());
 
         player.setPersonalGoalCard(persCards.get(3));

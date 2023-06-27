@@ -25,8 +25,6 @@ class PersonalGoalCardTest {
 
     Player player;
     PersonalGoalCard personalGoalCard;
-    BookShelf bs;
-
     List<Tile> pinkTiles = new ArrayList<>();
     List<Tile> yellowTiles = new ArrayList<>();
     List<Tile> greenTiles = new ArrayList<>();
@@ -49,7 +47,7 @@ class PersonalGoalCardTest {
         persCards = jsonParser.getPersonalGoalCards();
         personalGoalCard = persCards.get(0);
 
-        // Creation of tiles' lists.
+        // Creation of tiles' lists to fill the bookshelf.
         pinkTiles.add(Tile.PINK);
         pinkTiles.add(Tile.PINK);
         pinkTiles.add(Tile.PINK);
@@ -89,16 +87,19 @@ class PersonalGoalCardTest {
     }
 
     /**
-     * This method tests method checkScheme() in PersonalGoalCardClass when 1 cell is respected.
+     * This method tests method checkScheme() in PersonalGoalCardClass when 0 and 1 cell are respected.
      * @see PersonalGoalCard#checkScheme(Player)
      */
     @Test
     void checkSchemeTest1Cell() {
-        int oneCell = 1;
+        // At the beginning the bookshelf is empty, so the player has 0 points.
+        assertEquals(0, personalGoalCard.checkScheme(player));
+
+        int oneCellPoints = 1;
         player.getBookShelf().placeTiles(0, yellowTiles);
         player.getBookShelf().placeTiles(0, pinkTiles);
 
-        assertEquals(oneCell, personalGoalCard.checkScheme(player));
+        assertEquals(oneCellPoints, personalGoalCard.checkScheme(player));
     }
 
     /**
@@ -107,7 +108,8 @@ class PersonalGoalCardTest {
      */
     @Test
     void checkSchemeTest2Cells(){
-        int twoCells = 2 ;
+        int twoCellsPoints = 2 ;
+
         // First column.
         player.getBookShelf().placeTiles(0, yellowTiles);
         player.getBookShelf().placeTiles(0, pinkTiles);
@@ -116,7 +118,7 @@ class PersonalGoalCardTest {
         player.getBookShelf().placeTiles(1, yellowTiles);
         player.getBookShelf().placeTiles(1, pinkTiles);
 
-        assertEquals(twoCells, personalGoalCard.checkScheme(player));
+        assertEquals(twoCellsPoints, personalGoalCard.checkScheme(player));
     }
 
     /**
@@ -125,7 +127,8 @@ class PersonalGoalCardTest {
      */
     @Test
     void checkSchemeTest3Cells(){
-        int threeCells = 4;
+        int threeCellsPoints = 4;
+
         // First column.
         player.getBookShelf().placeTiles(0, yellowTiles);
         player.getBookShelf().placeTiles(0, pinkTiles);
@@ -137,7 +140,7 @@ class PersonalGoalCardTest {
         // Third column.
         player.getBookShelf().placeTiles(2, lightblueTiles);
 
-        assertEquals(threeCells, personalGoalCard.checkScheme(player));
+        assertEquals(threeCellsPoints, personalGoalCard.checkScheme(player));
     }
 
     /**
@@ -146,7 +149,8 @@ class PersonalGoalCardTest {
      */
     @Test
     void checkSchemeTest4Cells(){
-        int fourCells = 6;
+        int fourCellsPoints = 6;
+
         // First column.
         player.getBookShelf().placeTiles(0, yellowTiles);
         player.getBookShelf().placeTiles(0, pinkTiles);
@@ -159,7 +163,7 @@ class PersonalGoalCardTest {
         player.getBookShelf().placeTiles(2, lightblueTiles);
         player.getBookShelf().placeTiles(2, blueTiles);
 
-        assertEquals(fourCells, personalGoalCard.checkScheme(player));
+        assertEquals(fourCellsPoints, personalGoalCard.checkScheme(player));
     }
 
     /**
@@ -168,7 +172,8 @@ class PersonalGoalCardTest {
      */
     @Test
     void checkSchemeTest5Cells(){
-        int fiveCells = 9;
+        int fiveCellsPoints = 9;
+
         // First column.
         player.getBookShelf().placeTiles(0, yellowTiles);
         player.getBookShelf().placeTiles(0, pinkTiles);
@@ -185,7 +190,7 @@ class PersonalGoalCardTest {
         player.getBookShelf().placeTiles(3, whiteTiles);
         player.getBookShelf().placeTiles(3,  whiteTiles);
 
-        assertEquals(fiveCells, personalGoalCard.checkScheme(player));
+        assertEquals(fiveCellsPoints, personalGoalCard.checkScheme(player));
     }
 
     /**
@@ -194,7 +199,8 @@ class PersonalGoalCardTest {
      */
     @Test
     void checkSchemeTest6Cells(){
-        int sixCells = 12;
+        int sixCellsPoints = 12;
+
         // First column.
         player.getBookShelf().placeTiles(0, yellowTiles);
         player.getBookShelf().placeTiles(0, pinkTiles);
@@ -215,7 +221,7 @@ class PersonalGoalCardTest {
         player.getBookShelf().placeTiles(4, greenTiles);
         player.getBookShelf().placeTiles(4, greenTiles);
 
-        assertEquals(sixCells, personalGoalCard.checkScheme(player));
+        assertEquals(sixCellsPoints, personalGoalCard.checkScheme(player));
     }
 
     /**
