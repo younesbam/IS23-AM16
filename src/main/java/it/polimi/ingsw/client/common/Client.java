@@ -8,9 +8,11 @@ import it.polimi.ingsw.client.utils.PingTimeoutTask;
 import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 
+import java.io.Serial;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.logging.Logger;
 
@@ -20,18 +22,20 @@ import java.util.logging.Logger;
  * @see it.polimi.ingsw.client.socket.SocketClientHandler socketHandler
  */
 public abstract class Client extends UnicastRemoteObject {
+    @Serial
+    private static final long serialVersionUID = -5831202245262756797L;
     /**
      * Logger of the client.
      */
     public static final Logger LOGGER = Logger.getLogger(Client.class.getName());
 
     /**
-     * Address of the client.
+     * Address of the server.
      */
     private final String address;
 
     /**
-     * Port of the client.
+     * Port of the server.
      */
     private final int port;
 
@@ -83,7 +87,7 @@ public abstract class Client extends UnicastRemoteObject {
     }
 
     /**
-     * Get client's address.
+     * Get server address.
      * @return client's address.
      */
     public String getAddress() {
@@ -91,7 +95,7 @@ public abstract class Client extends UnicastRemoteObject {
     }
 
     /**
-     * Get client's port.
+     * Get server port.
      * @return client's port.
      */
     public int getPort() {
@@ -181,4 +185,25 @@ public abstract class Client extends UnicastRemoteObject {
      */
     public abstract void sendToServer(GameAction gameAction);
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Client client = (Client) o;
+        return Objects.equals(address, client.address) &&
+                Objects.equals(port, client.port) &&
+                Objects.equals(username, client.username) &&
+                Objects.equals(ID, client.ID) &&
+                Objects.equals(pingTimer, client.pingTimer) &&
+                Objects.equals(connectionTimer, client.connectionTimer) &&
+                Objects.equals(actionHandler, client.actionHandler) &&
+                Objects.equals(modelView, client.modelView);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), address, port, username, ID, pingTimer, connectionTimer, actionHandler, modelView);
+    }
 }

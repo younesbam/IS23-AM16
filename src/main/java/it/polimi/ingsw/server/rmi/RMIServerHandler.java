@@ -9,13 +9,17 @@ import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.connection.CSConnection;
 import it.polimi.ingsw.server.connection.RMICSConnection;
 
+import java.io.Serial;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Objects;
 
 /**
  * Class that implements all the methods that the server shows to the client (through RMI).
  */
 public class RMIServerHandler extends UnicastRemoteObject implements IRMIServer {
+    @Serial
+    private static final long serialVersionUID = 7973004963846163594L;
     /**
      * Server reference.
      */
@@ -69,5 +73,21 @@ public class RMIServerHandler extends UnicastRemoteObject implements IRMIServer 
         } else {
             server.onClientMessage(mess);
         }
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        RMIServerHandler that = (RMIServerHandler) o;
+        return Objects.equals(server, that.server) &&
+                Objects.equals(connection, that.connection);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), server, connection);
     }
 }

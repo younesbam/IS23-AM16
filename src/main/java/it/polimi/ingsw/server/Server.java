@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.Const;
+import it.polimi.ingsw.MyShelfie;
 import it.polimi.ingsw.common.JSONParser;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
@@ -50,6 +51,11 @@ public class Server {
     private ServerSideSocket serverSideSocket;
 
     /**
+     * Server IP address.
+     */
+    private final String serverIP;
+
+    /**
      * Rmi port, read from json file.
      */
     private final int rmiPort;
@@ -60,19 +66,9 @@ public class Server {
     private final int socketPort;
 
     /**
-     * Easily get what's inside the json file.
-     */
-    private final JSONParser jsonParser;
-
-    /**
-     * Game handler.
-     */
-    //private GameHandler gameHandler;
-
-    /**
      * Number of players for this match, chosen by the host in the initial phase of the game.
      */
-    private int numOfPlayers;
+    private int numOfPlayers = 0;
 
     /**
      * Current player ID, progressive order.
@@ -99,18 +95,12 @@ public class Server {
     /**
      * Class constructor
      */
-    public Server() {
-        numOfPlayers = 0;
+    public Server(String serverIP, int rmiPort, int socketPort) {
+        System.out.print("Welcome to the server of MyShelfie!\n");
 
-        /*
-        Load parameters: socket and rmi port
-         */
-        jsonParser = new JSONParser("network.json");
-        this.rmiPort = jsonParser.getServerRmiPort();
-        this.socketPort = jsonParser.getServerSocketPort();
-        System.out.println("RMI port: " + rmiPort);
-        System.out.println("Socket port: " + socketPort);
-        System.out.println("Server IP: " + jsonParser.getServerIP());
+        this.serverIP = serverIP;
+        this.rmiPort = rmiPort;
+        this.socketPort = socketPort;
 
         try {
             socketInit(this);
@@ -146,7 +136,7 @@ public class Server {
             try {
                 pingClients();
             }catch (Exception e){
-                LOGGER.log(Level.WARNING, "Exception thrown",e);
+                LOGGER.log(Level.SEVERE, "Exception thrown while pinging clients");
             }
 
         }, 1, Const.SERVER_PING_DELAY, TimeUnit.SECONDS);
@@ -168,9 +158,9 @@ public class Server {
      * @throws AlreadyBoundException thrown if the name is already bound.
      */
     private void RMIInit() throws RemoteException, AlreadyBoundException {
-        System.setProperty("java.rmi.server.hostname", jsonParser.getServerIP());
+        System.setProperty("java.rmi.server.hostname", this.serverIP);
         Registry registry = LocateRegistry.createRegistry(this.rmiPort);
-        registry.bind(jsonParser.getServerName(), new RMIServerHandler(this));
+        registry.bind("MyShelfieServer", new RMIServerHandler(this));
     }
 
 
@@ -585,7 +575,39 @@ public class Server {
      * @param args
      */
     public static void main(String[] args) {
-        System.out.print("Welcome to the server of MyShelfie!\n");
-        new Server();
+        Scanner in = new Scanner(System.in);
+        String serverIP;
+        int rmiPort;
+        int socketPort;
+
+        while(true){
+            // IP address
+            System.out.println("Insert the IP Address of the server");
+            System.out.print(">");
+            serverIP = in.nextLine();
+            // RMI port
+            System.out.println("Insert the RMI port number of the server, it should be a number between 1024 and 65565");
+            System.out.print(">");
+            try {
+                rmiPort = Integer.parseInt(in.nextLine());
+            } catch (NumberFormatException e) {
+                rmiPort = -1;
+            }
+            // Socket port
+            System.out.println("Insert the SOCKET port number of the server, it should be a number between 1024 and 65565");
+            System.out.print(">");
+            try {
+                socketPort = Integer.parseInt(in.nextLine());
+            } catch (NumberFormatException e) {
+                socketPort = -1;
+            }
+            if(!serverIP.equals("") && rmiPort>0 && socketPort>0)
+                break;
+            System.out.println("Wrong input");
+        }
+        // Reset input
+        in.reset();
+
+        new Server(serverIP, rmiPort, socketPort);
     }
 }

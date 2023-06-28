@@ -92,11 +92,11 @@ public class CLI extends UI implements Runnable{
             System.out.println("Choose your username:");
             System.out.print(">");
             username = input.nextLine();
-//            System.out.println("You username choice is: " + username);
-  //          System.out.println("Are you happy with your choice? [y/n] ");
-    //        System.out.print(">");
+            System.out.println("You username choice is: " + username);
+            System.out.println("Are you happy with your choice? [y/n] ");
+            System.out.print(">");
 
- //           if (input.nextLine().equalsIgnoreCase("y"))
+            if (input.nextLine().equalsIgnoreCase("y"))
                 nameChosen = true;
         }
         return username;
@@ -167,7 +167,7 @@ public class CLI extends UI implements Runnable{
         /*
         Set port, IP address, username.
          */
-        ConnectionType connectionType = askConnectionType();//askConnectionType();
+        ConnectionType connectionType = askConnectionType();
         String ipAddress = askIpAddress();
         int numOfPort = askPort();
         String username = askUsername();
