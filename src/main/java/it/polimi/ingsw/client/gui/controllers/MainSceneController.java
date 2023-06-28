@@ -56,6 +56,8 @@ public class MainSceneController implements GUIController{
     private Label points;
     @FXML
     private ImageView endGameToken;
+    @FXML
+    private ImageView userIcon;
 
     private final double bookShelfStartX = 560.0;
     private final double booShelfEndX = 900.0;
@@ -319,10 +321,7 @@ public class MainSceneController implements GUIController{
 
     public void showChair(){
         chair.setVisible(true);
-    }
-
-    public void hideChair(){
-        chair.setVisible(false);
+        userIcon.setVisible(false);
     }
 
     public void setUsername(String username){

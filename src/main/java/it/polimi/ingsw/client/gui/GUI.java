@@ -30,14 +30,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GUI extends Application {
-    private static final String MAIN_GUI = "mainScene.fxml";
-    private static final String LOADER = "loadingScene.fxml";
-    private static final String GOALS = "goalCardScene.fxml";
-    private static final String SETUP = "joinScene.fxml";
-    private static final String CHAT = "chatScene.fxml";
-    private static final String COUNTDOWN = "countDown.fxml";
-    private final PropertyChangeSupport listeners = new PropertyChangeSupport(this);
-    private final Logger logger = Logger.getLogger(getClass().getName());
     private HashMap<String, Scene> nameMapScene = new HashMap<>();
     /**
      * Maps each scene controller's name to the effective controller object, in order to get the correct controller
