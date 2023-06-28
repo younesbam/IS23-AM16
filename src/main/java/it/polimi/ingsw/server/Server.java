@@ -391,6 +391,8 @@ public class Server {
                 SerializedAnswer answer = new SerializedAnswer();
                 answer.setAnswer(new ErrorAnswer("This match doesn't exist yet! You can create a new match or wait for others to create one.", ErrorClassification.INVALID_PARAMETERS));
                 connection.sendAnswerToClient(answer);
+                answer.setAnswer(new ErrorAnswer("This match doesn't exist yet! You can create a new match or wait for others to create one.", ErrorClassification.MATCH_NOT_FOUND));
+                connection.sendAnswerToClient(answer);
             }
         }else{
             SerializedAnswer answer = new SerializedAnswer();
