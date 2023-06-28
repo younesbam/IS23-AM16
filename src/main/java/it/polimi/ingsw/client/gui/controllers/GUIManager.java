@@ -31,6 +31,7 @@ public class GUIManager extends UI {
     private static final String BOOKSHELFS2 = "bookshelf2PlayerScene.fxml";
     private static final String BOOKSHELFS3 = "bookshelf3PlayerScene.fxml";
     private static final String SETUP = "joinScene.fxml";
+    private static final String CHAT = "chatScene.fxml";
     private static final String COUNTDOWN = "countDown.fxml";
     private static final String GAME_OVER = "gameOverScene.fxml";
     private static final String MULTI_GAME = "multiGameScene.fxml";
@@ -65,7 +66,7 @@ public class GUIManager extends UI {
     }
     public HashMap<String, Scene> setup() {
         List<String> fxmList = new ArrayList<>(Arrays.asList(SETUP, MULTI_GAME, LOADER, MAIN_GUI, GOALS, BOOKSHELFS1, BOOKSHELFS2,
-                                                            BOOKSHELFS3, COUNTDOWN, GAME_OVER));
+                                                            BOOKSHELFS3, CHAT, COUNTDOWN, GAME_OVER));
         try {
             for (String path : fxmList) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + path));
