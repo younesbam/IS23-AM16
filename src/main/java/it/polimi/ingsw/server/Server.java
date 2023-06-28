@@ -536,6 +536,21 @@ public class Server {
 
 
     /**
+     * Method used to remove a gameHandler instance from the matchMap after the game has come to an end.
+     * @param matchName
+     */
+    public void removeGameHandler(String matchName){
+        int i;
+
+        for(i = 0; i < matchMap.size(); i++){
+            if(matchMap.containsKey(matchName)){
+                matchMap.remove(matchName);
+            }
+        }
+    }
+
+
+    /**
      * Suspend a client after failed ping {@link CSConnection#ping() ping} request
      * @param connection client-server connection of the client to be suspended.
      */

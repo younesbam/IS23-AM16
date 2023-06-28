@@ -402,4 +402,13 @@ public class GameHandler {
         System.out.println(GREEN_COLOR + "Setup mode ended for game " + nameOfTheMatch + ". Clients are now welcome!" + RESET_COLOR);
         getController().setPhase(Phase.LOBBY);
     }
+
+
+    /**
+     * Name of current match getter.
+     * @return
+     */
+    public String getNameOfTheMatch(){
+        return this.nameOfTheMatch;
+    }
 }
