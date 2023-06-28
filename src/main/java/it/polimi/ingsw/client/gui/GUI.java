@@ -83,6 +83,7 @@ public class GUI extends Application {
     }
 
     public void run() {
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/icon.png")));
         stage.setTitle("MyShelfie");
         stage.setScene(currentScene);
         stage.show();

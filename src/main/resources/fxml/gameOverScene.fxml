@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/14.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.GameOverController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/14.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.GameOverController">
    <children>
       <ImageView fx:id="mainPane" fitHeight="600.0" fitWidth="960.0" pickOnBounds="true">
          <image>
-            <Image url="@../graphics/bg2.jpg" />
+            <Image url="@../graphics/background.jpg" />
          </image>
       </ImageView>
       <ImageView fitHeight="98.0" fitWidth="427.0" layoutX="267.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
