@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/14.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.MainSceneController">
+<AnchorPane prefHeight="600.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.MainSceneController">
    <children>
       <ImageView fx:id="mainPane" fitHeight="600.0" fitWidth="960.0" pickOnBounds="true">
          <image>
@@ -244,5 +244,10 @@
             </GridPane>
          </children>
       </AnchorPane>
+      <ImageView fx:id="userIcon" fitHeight="25.0" fitWidth="25.0" layoutX="817.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/user.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
