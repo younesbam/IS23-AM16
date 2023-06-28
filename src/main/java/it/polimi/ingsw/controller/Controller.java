@@ -519,8 +519,13 @@ public class Controller implements PropertyChangeListener {
         // Disconnect all the players.
         gameHandler.sendToEveryone(new EndGame());
 
-        // Shutdown the server.
-        gameHandler.shutdownServer();
+        System.out.println(RED_COLOR + "Game " + gameHandler.getNameOfTheMatch() + " has come to an end!\n" + RESET_COLOR);
+
+        //remove this gameHandler instance from the map of gameHandlers in the Server.
+        gameHandler.getServer().removeGameHandler(gameHandler.getNameOfTheMatch());
+
+        //Shutdown the server.
+        //gameHandler.shutdownServer();
     }
 
 
