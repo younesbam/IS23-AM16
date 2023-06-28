@@ -53,7 +53,7 @@ public class SetupController implements GUIController{
                 guiManager.connectToServer(connectionType, ipaddress.getText(), parseInt(serverport.getText()), username.getText());
                 //Client.LOGGER.log(Level.INFO, "Client successfully connected");
             } catch (RemoteException | NotBoundException e) {
-                Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e);
+                Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection. Check the parameters and try again");
                 System.exit(-1);
             }
         }

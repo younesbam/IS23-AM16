@@ -74,7 +74,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
      */
     @Override
     public void disconnect() throws RemoteException {
-        serverInterface.logout();
+        serverInterface.logout(this);
         disconnectMe();
         deactivatePingTimeout();
     }
@@ -87,7 +87,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
     public void sendToServer(Message message) {
         SerializedMessage serializedMessage = new SerializedMessage(getID() ,message);
         try{
-            serverInterface.sendMessageToServer(serializedMessage);
+            serverInterface.sendMessageToServer(this, serializedMessage);
         } catch (RemoteException | InterruptedException e){
             Client.LOGGER.log(Level.SEVERE, "Failed to send message to server", e);
         }
@@ -101,7 +101,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
     public void sendToServer(GameAction gameAction) {
         SerializedMessage serializedMessage = new SerializedMessage(getID(), gameAction);
         try{
-            serverInterface.sendMessageToServer(serializedMessage);
+            serverInterface.sendMessageToServer(this, serializedMessage);
         } catch (RemoteException | InterruptedException e){
             Client.LOGGER.log(Level.SEVERE, "Failed to send message to server", e);
         }

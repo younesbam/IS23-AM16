@@ -250,7 +250,7 @@ public class Server {
             //TODO qua poi sarà ancora da chiamare il metodo lobby.
             //lobby(connection);
         } catch (IOException e){//| InterruptedException e) {
-            Server.LOGGER.log(Level.SEVERE, "Failed to register the new client", e);
+            Server.LOGGER.log(Level.SEVERE, "Failed to register the new client");
         }
     }
 
@@ -285,11 +285,13 @@ public class Server {
             // Check if a disconnected player wants to reconnect with the same username
             VirtualPlayer playerToRestore = getVirtualPlayerByID(clientID);
             if(!playerToRestore.getConnection().isAlive()){
+                // Restore player parameters
                 clientConnection.setID(clientID);
                 playerToRestore.restorePlayer(clientConnection);  // Assign the actual client-server connection
                 answer.setAnswer(new ConnectionOutcome(true, playerToRestore.getID(), "Welcome back!"));
                 clientConnection.sendAnswerToClient(answer);
 
+                // Restore the player in the game
                 restoreClient(clientConnection);
 
                 answer.setAnswer(new RestorePlayer());
@@ -310,12 +312,12 @@ public class Server {
      * @param matchName
      * @throws InterruptedException
      */
-    public void createNewMatch(CSConnection connection, String matchName) throws InterruptedException {
+    public synchronized void createNewMatch(CSConnection connection, String matchName) throws InterruptedException {
         boolean newPlayer = false;
 
         //check if the player hasn't already joined a match.
         for(VirtualPlayer p : playersConnectedList){
-            if(p.getUsername() == connection.getUsername() && p.getGameHandler() == null){
+            if(p.getUsername().equals(connection.getUsername()) && p.getGameHandler() == null){
                 newPlayer = true;
             }
         }
@@ -350,7 +352,7 @@ public class Server {
      * @param connection
      * @throws InterruptedException
      */
-    public void joinMatch(String matchName, CSConnection connection) throws InterruptedException {
+    public synchronized void joinMatch(String matchName, CSConnection connection) throws InterruptedException {
         GameHandler gameHandler = matchMap.get(matchName);
         boolean newPlayer = false;
 

@@ -183,7 +183,7 @@ public class CLI extends UI implements Runnable{
         try{
             connectToServer(connectionType, ipAddress, numOfPort, username);
         }catch (RemoteException | NotBoundException e){
-            Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e);
+            Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection. Check the parameters and try again");
             System.exit(-1);
         }
     }
