@@ -209,12 +209,16 @@ public class GUIManager extends UI {
             MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
             mainSceneController.updatePoints(points);
             GoalCardSceneController goalCardSceneController = (GoalCardSceneController) getControllerFromName(GOALS);
-            goalCardSceneController.setToken1(GOAL_CARD_TOKEN_PATH +
-                    modelView.getGame().getPlayerByID(getPlayerID()).getCommonCardPoints(0)
-                    + ".jpg");
+            int commonGoalPoints = modelView.getGame().getPlayerByID(getPlayerID()).getCommonCardPoints(0);
+            if(commonGoalPoints!=0)
+                goalCardSceneController.setToken1(GOAL_CARD_TOKEN_PATH +
+                    commonGoalPoints
+                    + ".png");
+            commonGoalPoints = modelView.getGame().getPlayerByID(getPlayerID()).getCommonCardPoints(1);
+            if(commonGoalPoints!=0)
             goalCardSceneController.setToken2(GOAL_CARD_TOKEN_PATH +
-                    modelView.getGame().getPlayerByID(getPlayerID()).getCommonCardPoints(1)
-                    + ".jpg");
+                    commonGoalPoints
+                    + ".png");
         });
     }
     public void printGoalCards(){
