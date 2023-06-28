@@ -15,6 +15,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
 
+import static it.polimi.ingsw.Const.RED_COLOR;
+import static it.polimi.ingsw.Const.RESET_COLOR;
+
 /**
  * Socket handler.
  */
@@ -89,16 +92,21 @@ public class SocketClientHandler extends Client implements Runnable {
      * Instantiates a new socket on client's side, establishing a connection with the server.
      */
     private void setup() throws IOException {
-        System.out.println("Establishing a connection...\n");
-        socket = new Socket(getAddress(), getPort());
-        outputStream = new ObjectOutputStream(socket.getOutputStream());
-        inputStream = new ObjectInputStream(socket.getInputStream());
+        try {
+            System.out.println("Establishing a connection...\n");
+            socket = new Socket(getAddress(), getPort());
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            inputStream = new ObjectInputStream(socket.getInputStream());
 
-        sendToServer(new UsernameSetup(username));
+            sendToServer(new UsernameSetup(username));
 
-        modelView.setConnected(true);
-        messageReceiver = new Thread(this);
-        messageReceiver.start();
+            modelView.setConnected(true);
+            messageReceiver = new Thread(this);
+            messageReceiver.start();
+        }catch(IllegalArgumentException e){
+            System.out.println(RED_COLOR + "Number of port out of bound. Please try again. Shutting down..." + RESET_COLOR);
+            System.exit(0);
+        }
     }
 
 
