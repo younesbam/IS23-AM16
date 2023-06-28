@@ -26,17 +26,12 @@ public final class Utils {
      */
     public static String convertFileIntoString(String fileName) {
         String result=null;
-        /*
-        Insert the relative path where the files are located (usually in resources). Only one slash is permitted.
-        We use the get() method of Paths to get the file data.
-        We use readAllBytes() method of Files to read byted data from the files.
-         */
-        //File directory = new File("src/main/resources/" + fileName);
+
+        // Read json file located in resources
         try{
             Reader reader = new InputStreamReader(MyShelfie.class.getResourceAsStream(fileName));
             Scanner s = new Scanner(reader).useDelimiter("\\A");
             result = s.hasNext() ? s.next() : "";
-            //result = new String(Files.readAllBytes(Paths.get(directory.getAbsolutePath())));
         } catch (NullPointerException e){
             e.printStackTrace();
             System.err.println("Failed to load " + fileName + " file from filesystem");

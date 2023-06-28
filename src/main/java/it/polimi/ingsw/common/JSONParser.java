@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common;
 
+import it.polimi.ingsw.MyShelfie;
 import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Tile;
@@ -7,6 +8,10 @@ import it.polimi.ingsw.model.cards.PersonalGoalCard;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
@@ -120,37 +125,6 @@ public class JSONParser {
             board[y][x].setTile(tile);
         }
         return board;
-    }
-
-
-    /**
-     * Get port of the server with RMI.
-     * @return server port
-     */
-    public int getServerRmiPort(){ return getJSONObject().getInt("RmiPort"); }
-
-
-    /**
-     * Get port of the server with socket.
-     * @return server port
-     */
-    public int getServerSocketPort(){ return getJSONObject().getInt("SocketPort"); }
-
-
-    /**
-     * Get server name.
-     * @return server name
-     */
-    public String getServerName(){ return getJSONObject().getString("ServerName"); }
-
-    /**
-     * Get server IP.
-     * <p></p>
-     * Warning: this IP must be the same of the server machine!
-     * @return server IP.
-     */
-    public String getServerIP(){
-        return getJSONObject().getString("ServerIP");
     }
 
 
