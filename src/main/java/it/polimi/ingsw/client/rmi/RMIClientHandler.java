@@ -10,11 +10,15 @@ import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.server.rmi.IRMIServer;
 
+import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.logging.Level;
+
+import static it.polimi.ingsw.Const.RED_COLOR;
+import static it.polimi.ingsw.Const.RESET_COLOR;
 
 /**
  * Class that implements all the methods that the client shows to the server (through RMI).
@@ -51,11 +55,19 @@ public class RMIClientHandler extends Client implements IRMIClient {
      */
     @Override
     public void connect() throws RemoteException, NotBoundException {
-        System.setProperty("java.rmi.server.hostname", getAddress());
-        Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
-        server = (IRMIServer) registry.lookup(jsonParser.getServerName());
-        server.login(getUsername(), this);
-        modelView.setConnected(true);
+        try {
+            System.setProperty("java.rmi.server.hostname", getAddress());
+            Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
+            server = (IRMIServer) registry.lookup(jsonParser.getServerName());
+            server.login(getUsername(), this);
+            modelView.setConnected(true);
+        }catch(IllegalArgumentException e){
+            System.out.println(RED_COLOR + "Number of port out of bound. Please try again. Shutting down..." + RESET_COLOR);
+            System.exit(0);
+        }catch (ConnectException e){
+            System.out.println(RED_COLOR + "Can't connect to server. Please try again. Shutting down..." + RESET_COLOR);
+            System.exit(0);
+        }
     }
 
 

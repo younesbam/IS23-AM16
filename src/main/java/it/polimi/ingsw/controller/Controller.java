@@ -14,6 +14,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.CommonGoalCard;
 import it.polimi.ingsw.server.GameHandler;
 import it.polimi.ingsw.server.Server;
+import it.polimi.ingsw.server.VirtualPlayer;
 import it.polimi.ingsw.server.connection.CSConnection;
 
 import java.beans.PropertyChangeEvent;
@@ -520,6 +521,11 @@ public class Controller implements PropertyChangeListener {
         gameHandler.sendToEveryone(new EndGame());
 
         System.out.println(RED_COLOR + "Game " + gameHandler.getNameOfTheMatch() + " has come to an end!\n" + RESET_COLOR);
+
+        //remove the players from the server list of connected players.
+        for(VirtualPlayer p : gameHandler.getPlayersConnected()){
+            gameHandler.getServer().removePlayer(p.getID());
+        }
 
         //remove this gameHandler instance from the map of gameHandlers in the Server.
         gameHandler.getServer().removeGameHandler(gameHandler.getNameOfTheMatch());

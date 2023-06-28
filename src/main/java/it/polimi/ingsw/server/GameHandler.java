@@ -194,6 +194,15 @@ public class GameHandler {
 
 
     /**
+     * Method used to get the list of this game's connected players.
+     * @return
+     */
+    public List<VirtualPlayer> getPlayersConnected(){
+        return this.playersConnected;
+    }
+
+
+    /**
      * Start the actual game.
      */
     public void startGame(){
@@ -265,7 +274,7 @@ public class GameHandler {
         playersConnected.add(server.getVirtualPlayerByID(connection.getID()));
         if(getController().getPhase() == SETUP && playersWaitingList.size() == 1) { //if it's the first player
             System.out.println(RED_COLOR + "Setup mode started for game " + nameOfTheMatch + ". Clients are not welcome. Wait for the lobby host to choose the number of players." + RESET_COLOR);
-            answer.setAnswer(new HowManyPlayersRequest("Hi " + getWaitingPlayerByID(connection.getID()).getUsername() + ", you are now the host of this lobby.\nPlease choose the number of players you want to play with:"));
+            answer.setAnswer(new HowManyPlayersRequest("Hi " + getWaitingPlayerByID(connection.getID()).getUsername() + ", you are now the host of this lobby.\nPlease choose the number of players you want to play with: (a number between 2 and 4 is required)"));
             connection.sendAnswerToClient(answer);
             getController().setCurrentPlayer(getController().getGame().getPlayers().get(0));
         } else if(playersWaitingList.size() == numOfPlayers) {  // Game has reached the right number of players. Game is starting.
