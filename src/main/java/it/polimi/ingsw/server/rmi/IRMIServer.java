@@ -33,5 +33,5 @@ public interface IRMIServer extends Remote {
      * @param message to send to the server.
      * @throws RemoteException error during communication.
      */
-    void sendMessageToServer(SerializedMessage message) throws RemoteException;
+    void sendMessageToServer(SerializedMessage message) throws RemoteException, InterruptedException;
 }

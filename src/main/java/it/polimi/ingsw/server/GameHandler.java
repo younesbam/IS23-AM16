@@ -8,6 +8,7 @@ import it.polimi.ingsw.communications.clientmessages.actions.PrintCardsAction;
 import it.polimi.ingsw.communications.serveranswers.*;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorClassification;
+import it.polimi.ingsw.communications.serveranswers.info.EndOfYourTurn;
 import it.polimi.ingsw.communications.serveranswers.info.PlayerNumberChosen;
 import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.start.ChairAssigned;
@@ -256,10 +257,9 @@ public class GameHandler {
         answer.setAnswer(new CustomAnswer(BLUE_BOLD_COLOR + "\nType MAN to know all the valid commands\n" + RESET_COLOR));
         connection.sendAnswerToClient(answer);
 
-        // If the game is already started and the player wants to reconnect, skip the lobby phase
+        // If the game is already started and the player wants to reconnect, skip the lobby phase.
         if(isGameStarted())
             return;
-
 
         playersWaitingList.add(server.getVirtualPlayerByID(connection.getID()));
         playersConnected.add(server.getVirtualPlayerByID(connection.getID()));
@@ -280,13 +280,10 @@ public class GameHandler {
             startGame();
             playersWaitingList.clear();
 
-        }else if(numOfPlayers != 0 && (playersWaitingList.size() > numOfPlayers)) {
-                answer.setAnswer(new ErrorAnswer("The game already started and the maximum number of players has been reached. Try again when te actual game ends.", ErrorClassification.MAX_PLAYERS_REACHED));
-                connection.sendAnswerToClient(answer);
-
             }else {
             getWaitingPlayerByID(connection.getID()).send(new CustomAnswer("You're now connected\n"));
             sendToEveryone(new CustomAnswer("There are " + (numOfPlayers - playersWaitingList.size()) + " slots left!"));
+            sendToPlayer(new EndOfYourTurn(), connection.getID());
         }
     }
 

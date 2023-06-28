@@ -167,9 +167,9 @@ public class CLI extends UI implements Runnable{
         /*
         Set port, IP address, username.
          */
-        ConnectionType connectionType = ConnectionType.RMI;//askConnectionType();
-        String ipAddress = "127.0.0.1";
-        int numOfPort = 2099;
+        ConnectionType connectionType = askConnectionType();//askConnectionType();
+        String ipAddress = askIpAddress();
+        int numOfPort = askPort();
         String username = askUsername();
 
         /*
@@ -321,7 +321,8 @@ public class CLI extends UI implements Runnable{
     private void errorAnswer(ErrorAnswer a){
         System.out.println(RED_COLOR + a.getAnswer() + RESET_COLOR);
         switch (a.getError()){
-            case LOBBY_NOT_READY, MAX_PLAYERS_REACHED, TAKEN_USERNAME -> endGameMessage();
+            case LOBBY_NOT_READY, TAKEN_USERNAME -> endGameMessage();
+            case MAX_PLAYERS_REACHED -> System.out.print(">");
             default -> System.out.print(">");
         }
     }

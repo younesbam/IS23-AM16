@@ -78,7 +78,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
         SerializedMessage serializedMessage = new SerializedMessage(getID() ,message);
         try{
             server.sendMessageToServer(serializedMessage);
-        } catch (RemoteException e){
+        } catch (RemoteException | InterruptedException e){
             Client.LOGGER.log(Level.SEVERE, "Failed to send message to server", e);
         }
     }
@@ -92,7 +92,7 @@ public class RMIClientHandler extends Client implements IRMIClient {
         SerializedMessage serializedMessage = new SerializedMessage(getID(), gameAction);
         try{
             server.sendMessageToServer(serializedMessage);
-        } catch (RemoteException e){
+        } catch (RemoteException | InterruptedException e){
             Client.LOGGER.log(Level.SEVERE, "Failed to send message to server", e);
         }
     }
