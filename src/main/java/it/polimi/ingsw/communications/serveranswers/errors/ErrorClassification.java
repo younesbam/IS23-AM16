@@ -18,6 +18,10 @@ public enum ErrorClassification {
      * Maximum number of players reached.
      */
     MAX_PLAYERS_REACHED,
+    /**
+     * Match doesn't exist.
+     */
+    MATCH_NOT_FOUND,
 
     // Generic in-game errors
     // ----------------------------------------------------------

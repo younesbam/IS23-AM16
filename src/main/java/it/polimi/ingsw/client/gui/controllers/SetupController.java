@@ -8,6 +8,7 @@ import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.common.ConnectionType;
 import it.polimi.ingsw.server.connection.CSConnection;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -63,6 +64,4 @@ public class SetupController implements GUIController{
     public void setGuiManger(GUIManager guiManager) {
         this.guiManager = guiManager;
     }
-
-
 }
