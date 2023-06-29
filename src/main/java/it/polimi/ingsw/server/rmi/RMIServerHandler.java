@@ -49,7 +49,9 @@ public class RMIServerHandler extends UnicastRemoteObject implements IRMIServer 
     @Override
     public void login(String username, IRMIClient client) {
         RMICSConnection rmiConnection = new RMICSConnection(server, client);
-        connections.add(rmiConnection);
+        synchronized (this){
+            connections.add(rmiConnection);
+        }
         server.tryToConnect(username, rmiConnection);
     }
 

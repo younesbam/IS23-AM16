@@ -105,7 +105,7 @@ public class GameHandler {
      * Method used to remove a player from the game.
      * @param playerID ID of the player.
      */
-    public void removePlayer(int playerID){
+    public void removePlayerFromGame(int playerID){
         game.removePlayer(game.getPlayerByID(playerID));
     }
 
@@ -116,6 +116,15 @@ public class GameHandler {
      */
     public void removeWaitingPlayer(int playerID){
         playersWaitingList.remove(getWaitingPlayerByID(playerID));
+    }
+
+    /**
+     * Method used to remove a player from the players' connected list.
+     * This method remove the player from this match only.
+     * @param playerID
+     */
+    public void removeConnectedPlayer(int playerID){
+        playersConnected.remove(getConnectedPlayerByID(playerID));
     }
 
 
@@ -351,8 +360,9 @@ public class GameHandler {
     }
 
     /**
-     * Suspend the selected client after a disconnection. It acts on controller.
+     * Suspend the selected client after a disconnection. It acts on controller. The player can reconnect and restore the game.
      * @param ID Unique ID of the player to be suspended.
+     * @see GameHandler#restoreClient(int)
      */
     public void suspendClient(int ID){
         controller.suspendClient(ID);
@@ -361,10 +371,26 @@ public class GameHandler {
     /**
      * Restore the selected client after a disconnection and a reconnection. It acts on controller.
      * @param ID Unique ID of the player that was suspended
+     * @see GameHandler#suspendClient(int)
      */
     public void restoreClient(int ID){
         controller.restoreClient(ID);
     }
+
+//    /**
+//     * Remove the selected client after a disconnection. During the lobby phase the player can't reconnect because the game isn't started.
+//     * <p></p>
+//     * Note: use this method in lobby phase only.
+//     * @param ID Unique ID of the player to be suspended.
+//     */
+//    public void removeClientFromLobby(int ID){
+//        VirtualPlayer playerInLobby = getWaitingPlayerByID(ID);
+//        if(playerInLobby != null){
+//            removeWaitingPlayer(ID);
+//            removeConnectedPlayer(ID);
+//            removePlayerFromGame(ID);
+//        }
+//    }
 
 
     /**
@@ -374,6 +400,21 @@ public class GameHandler {
      */
     public synchronized VirtualPlayer getWaitingPlayerByID(int ID) {
         List<VirtualPlayer> list = List.copyOf(playersWaitingList);
+        for(VirtualPlayer p : list){
+            if(ID == p.getID()){
+                return p;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get a connected player by ID.
+     * @param ID Unique ID of the player.
+     * @return virtual player related to the passed ID.
+     */
+    public synchronized VirtualPlayer getConnectedPlayerByID(int ID) {
+        List<VirtualPlayer> list = List.copyOf(playersConnected);
         for(VirtualPlayer p : list){
             if(ID == p.getID()){
                 return p;
