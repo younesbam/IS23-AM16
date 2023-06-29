@@ -70,6 +70,7 @@ public class GUI extends Application {
     public void start(Stage stage) throws IOException {
         nameMapScene = guiManager.setup();
         this.stage = stage;
+        this.stage.setResizable(false);
         run();
 
     }
@@ -115,6 +116,7 @@ public class GUI extends Application {
         Stage popupStage = new Stage();
         popupStage.setScene(nameMapScene.get(newScene));
         popupStage.setTitle(title);
+        popupStage.setResizable(false);
         popupStage.show();
     }
 
