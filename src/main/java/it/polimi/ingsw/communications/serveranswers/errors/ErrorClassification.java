@@ -66,5 +66,9 @@ public enum ErrorClassification {
     /**
      * Placing error: the selected column is full.
      */
-    FULL_COLUMN
+    FULL_COLUMN,
+    /**
+     * Match name error: a match with the chosen match name already exist.
+     */
+    INVALID_MATCH_NAME
 }

@@ -278,7 +278,7 @@ public class Server {
             playersConnectedList.add(newPlayer);
 
             System.out.println(username + " is now connected, his ID is " + clientID);
-            answer.setAnswer(new ConnectionOutcome(true, clientID, "Welcome! You have been associated with the following ID " + clientID));
+            answer.setAnswer(new ConnectionOutcome(true, clientID, "Welcome! You have been associated with the following ID: " + clientID));
             clientConnection.sendAnswerToClient(answer);
 
         } else {  // Username already in use.
@@ -322,8 +322,10 @@ public class Server {
             }
         }
 
+
         //if he hasn't joined a match yet, he can create a new one.
-        if(newPlayer) {
+        if(newPlayer && !matchMap.containsKey(matchName)) {
+
             GameHandler gameHandler = new GameHandler(this);
             gameHandler.setNameOfTheMatch(matchName);
             gameHandler.createPlayer(connection.getUsername(), connection.getID());
@@ -337,6 +339,11 @@ public class Server {
             matchMap.put(matchName, gameHandler);
 
             gameHandler.lobby(connection);
+
+        }else if(newPlayer && matchMap.containsKey(matchName)){
+            SerializedAnswer answer = new SerializedAnswer();
+            answer.setAnswer(new ErrorAnswer("A match with that name already exists! Please choose another name for your match!", ErrorClassification.INVALID_MATCH_NAME));
+            connection.sendAnswerToClient(answer);
         }
         else{
             SerializedAnswer answer = new SerializedAnswer();
@@ -389,8 +396,6 @@ public class Server {
                 }
             } else {
                 SerializedAnswer answer = new SerializedAnswer();
-                answer.setAnswer(new ErrorAnswer("This match doesn't exist yet! You can create a new match or wait for others to create one.", ErrorClassification.INVALID_PARAMETERS));
-                connection.sendAnswerToClient(answer);
                 answer.setAnswer(new ErrorAnswer("This match doesn't exist yet! You can create a new match or wait for others to create one.", ErrorClassification.MATCH_NOT_FOUND));
                 connection.sendAnswerToClient(answer);
             }
