@@ -29,14 +29,14 @@ public class GoalCardSceneController implements GUIController{
         commonGoalCard2.setImage(new Image(GUI.class.getResourceAsStream(path)));
     }
 
-    public void setToken1(String path){
-        goalCardToken1.setImage(new Image(GUI.class.getResourceAsStream(path)));
-        goalCardToken1.setVisible(true);
+    public void setTokens(int tokenID, String path){
+        if(tokenID == 0){
+            goalCardToken1.setImage(new Image(GUI.class.getResourceAsStream(path)));
+            goalCardToken1.setVisible(true);
+        }
+        else{
+            goalCardToken2.setImage(new Image(GUI.class.getResourceAsStream(path)));
+            goalCardToken2.setVisible(true);
+        }
     }
-
-    public void setToken2(String path){
-        goalCardToken2.setImage(new Image(GUI.class.getResourceAsStream(path)));
-        goalCardToken2.setVisible(true);
-    }
-
 }

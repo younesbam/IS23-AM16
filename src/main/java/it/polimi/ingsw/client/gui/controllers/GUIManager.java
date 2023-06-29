@@ -9,6 +9,7 @@ import it.polimi.ingsw.client.gui.GUI;
 import it.polimi.ingsw.communications.serveranswers.start.CountDown;
 import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
 import it.polimi.ingsw.communications.serveranswers.network.ConnectionOutcome;
+import it.polimi.ingsw.model.Player;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -37,6 +38,8 @@ public class GUIManager extends UI {
     private static final String PERSONAL_GOAL_CARD_PATH = "/graphics/personal_goal_cards/";
     private static final String COMMON_GOAL_CARD_PATH = "/graphics/common_goal_cards/";
     private static final String GOAL_CARD_TOKEN_PATH = "/graphics/tokens/scoring";
+    private static final int MAX_TOKEN_POINTS = 8;
+    private static final int TOKEN_POINTS_RANGE = 2;
     private boolean playingGame = false;
     private final Logger logger = Logger.getLogger(getClass().getName());
     private final HashMap<String, Scene> nameMapScene = new HashMap<>();
@@ -150,7 +153,31 @@ public class GUIManager extends UI {
                     mainSceneController.updateTurn(modelView.getGame().getCurrentPlayer().getUsername());
                 });
             }
+            GoalCardSceneController goalCardSceneController = (GoalCardSceneController) getControllerFromName(GOALS);
+            Platform.runLater(()->{
+                int countGoal1Completed = 0;
+                int countGoal2Completed = 0;
+                for (Player p: modelView.getGame().getPlayers()) {
+                    if(p.getCommonCardPoints(0)>0)
+                        countGoal1Completed++;
+                    if(p.getCommonCardPoints(1)>0)
+                        countGoal2Completed++;
+                }
+                mainSceneController.setTokens(0 , GOAL_CARD_TOKEN_PATH +
+                        modelView.getGame().getPlayerByID(getPlayerID()).getCommonCardPoints(0)
+                        +".png");
+                mainSceneController.setTokens(1, GOAL_CARD_TOKEN_PATH +
+                        modelView.getGame().getPlayerByID(getPlayerID()).getCommonCardPoints(1)
+                        +".png");
+                goalCardSceneController.setTokens(0,GOAL_CARD_TOKEN_PATH +
+                        (MAX_TOKEN_POINTS - TOKEN_POINTS_RANGE * countGoal1Completed)
+                        + ".png");
+                goalCardSceneController.setTokens(1,GOAL_CARD_TOKEN_PATH +
+                        (MAX_TOKEN_POINTS - TOKEN_POINTS_RANGE * countGoal2Completed)
+                        + ".png");
+            });
         }
+
         modelView.setIsYourTurn(yourTurn);
     }
     private void initialPhaseOfTheTurn(String request){
@@ -210,17 +237,6 @@ public class GUIManager extends UI {
         Platform.runLater(()->{
             MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
             mainSceneController.updatePoints(points);
-            GoalCardSceneController goalCardSceneController = (GoalCardSceneController) getControllerFromName(GOALS);
-            int commonGoalPoints = modelView.getGame().getPlayerByID(getPlayerID()).getCommonCardPoints(0);
-            if(commonGoalPoints!=0)
-                goalCardSceneController.setToken1(GOAL_CARD_TOKEN_PATH +
-                    commonGoalPoints
-                    + ".png");
-            commonGoalPoints = modelView.getGame().getPlayerByID(getPlayerID()).getCommonCardPoints(1);
-            if(commonGoalPoints!=0)
-            goalCardSceneController.setToken2(GOAL_CARD_TOKEN_PATH +
-                    commonGoalPoints
-                    + ".png");
         });
     }
     public void printGoalCards(){
@@ -299,10 +315,10 @@ public class GUIManager extends UI {
 
     private void bookShelfCompleted(String message){
         Platform.runLater(() -> {
-            if(message.contains("Congratulations")){
-                MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
+            MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
+            mainSceneController.hideEndGameToken();
+            if(message.contains("Congratulations"))
                 mainSceneController.showEndGameToken();
-            }
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("GAME");
             alert.setHeaderText("Last turn!");

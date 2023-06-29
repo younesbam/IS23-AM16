@@ -58,6 +58,8 @@ public class MainSceneController implements GUIController{
     private ImageView endGameToken;
     @FXML
     private ImageView userIcon;
+    @FXML
+    private GridPane tokenGrid;
 
     private final double bookShelfStartX = 560.0;
     private final double booShelfEndX = 900.0;
@@ -294,13 +296,19 @@ public class MainSceneController implements GUIController{
         }
         allowPlaceTiles();
     }
-
+    public void setTokens(int tokenID, String path){
+        ((ImageView)tokenGrid.getChildren().get(tokenID)).setImage(new Image(GUI.class.getResourceAsStream(path)));
+        tokenGrid.getChildren().get(tokenID).setVisible(true);
+    }
     public void printGoalCards(){
         guiManager.popupStage(GOALS,"Goal Cards");
         guiManager.printGoalCards();
     }
     public void showEndGameToken(){
-        endGameToken.setVisible(true);
+        tokenGrid.getChildren().get(0).setVisible(true);
+    }
+    public void hideEndGameToken(){
+        endGameToken.setVisible(false);
     }
     public void printBookShelfs(){
         guiManager.printBookShelfs();
