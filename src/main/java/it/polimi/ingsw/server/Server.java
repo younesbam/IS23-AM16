@@ -39,7 +39,7 @@ import static it.polimi.ingsw.Const.*;
 import static it.polimi.ingsw.controller.Phase.SETUP;
 
 public class Server {
-    public final Object clientLock = new Object();
+
     /**
      * Logger of the server.
      */
@@ -66,11 +66,6 @@ public class Server {
     private final int socketPort;
 
     /**
-     * Number of players for this match, chosen by the host in the initial phase of the game.
-     */
-    private int numOfPlayers = 0;
-
-    /**
      * Current player ID, progressive order.
      */
     private int currentPlayerID;
@@ -85,11 +80,11 @@ public class Server {
      */
     ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-
     /**
      * HashMap used to associate each Match to its name.
      */
     private final Map<String, GameHandler> matchMap = new HashMap<>();
+
 
 
     /**
@@ -224,7 +219,6 @@ public class Server {
      * @param action game action from client
      */
     private void actionHandler(VirtualPlayer currentPlayer, GameAction action){
-        //qua non ha ancora il game handler!
         getGameHandlerByID(currentPlayer.getID()).dispatchActions(action);
     }
 
@@ -247,8 +241,6 @@ public class Server {
             answer.setAnswer(new CustomAnswer("\nType CREATE <Name_Of_The_Game> if you want to create a new game, or type JOIN <Name_Of_The_Game> if you want to join an existing one.\n>"));
             connection.sendAnswerToClient(answer);
 
-            //TODO qua poi sarà ancora da chiamare il metodo lobby.
-            //lobby(connection);
         } catch (IOException e){//| InterruptedException e) {
             Server.LOGGER.log(Level.SEVERE, "Failed to register the new client");
         }
@@ -258,7 +250,7 @@ public class Server {
     /**
      * Register the new client to the match. It also checks if the username chosen by the player is not already taken.
      * @param username username of the client that want to register.
-     * @param clientConnection Already created connection between client-server
+     * @param clientConnection Already created connection between client-server.
      * @throws IOException thrown if there are communication problem.
      */
     private synchronized Integer newClientRegistration(String username, CSConnection clientConnection) throws IOException{
@@ -308,8 +300,8 @@ public class Server {
 
     /**
      * Method used in order to create a new match.
-     * @param connection
-     * @param matchName
+     * @param connection Already created connection between client-server.
+     * @param matchName Name of the match chosen by the player.
      * @throws InterruptedException
      */
     public synchronized void createNewMatch(CSConnection connection, String matchName) throws InterruptedException {
@@ -355,9 +347,9 @@ public class Server {
 
     /**
      * Method used to join an already existing match.
-     * @param matchName
-     * @param connection
-     * @throws InterruptedException
+     * @param matchName Name of the match the player wants to join.
+     * @param connection Already created connection between client-server.
+     * @throws InterruptedException if the lobby timer is interrupted while sleeping.
      */
     public synchronized void joinMatch(String matchName, CSConnection connection) throws InterruptedException {
         GameHandler gameHandler = matchMap.get(matchName);
@@ -519,9 +511,10 @@ public class Server {
      */
     public synchronized void removePlayer(int ID) {
         System.out.println("Removing player " + getUsernameByID(ID));
-        getGameHandlerByID(ID).removePlayer(ID);
+        //getGameHandlerByID(ID).removePlayer(ID);
         try{
             playersConnectedList.remove(getVirtualPlayerByID(ID));
+
         }catch (NullPointerException e){
             //
         }
@@ -536,7 +529,7 @@ public class Server {
 
     /**
      * Method used to remove a gameHandler instance from the matchMap after the game has come to an end.
-     * @param matchName
+     * @param matchName The name of the match to remove.
      */
     public void removeGameHandler(String matchName){
         int i;

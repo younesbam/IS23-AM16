@@ -27,7 +27,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import static it.polimi.ingsw.Const.*;
@@ -142,7 +141,7 @@ public class GameHandler {
 
     /**
      * Set this match's name.
-     * @param name
+     * @param name Name of this match.
      */
     public void setNameOfTheMatch(String name){
         this.nameOfTheMatch = name;
@@ -195,7 +194,7 @@ public class GameHandler {
 
     /**
      * Method used to get the list of this game's connected players.
-     * @return
+     * @return List of connected players.
      */
     public List<VirtualPlayer> getPlayersConnected(){
         return this.playersConnected;
@@ -219,6 +218,7 @@ public class GameHandler {
     public void initialSetup(){
         sendToEveryone(new CustomAnswer("Now the first player to play is being randomly selected, be ready, it could be you!"));
 
+        Player firstPlayer = null;
         int firstPlayerID = 0;
 
         //genera numero casuale tra 0 e il n° di giocatori - 1.
@@ -234,9 +234,11 @@ public class GameHandler {
                 game.getPlayers().get(i).setChair(true);
                 game.setCurrentPlayer(game.getPlayers().get(i));
                 firstPlayerID = game.getPlayers().get(i).getID();
+                firstPlayer = game.getPlayers().get(i);
             }
         }
 
+        game.setFirstPlayer(firstPlayer);
         sendToEveryoneExcept(new CustomAnswer("The first player is: " + server.getUsernameByID(firstPlayerID) + "!"), firstPlayerID);
         sendToEveryoneExcept(new FirstPlayerSelected(server.getUsernameByID(firstPlayerID)), firstPlayerID);
         sendToPlayer(new CustomAnswer("You are the first player! Here's your chair! \n " +
@@ -415,7 +417,7 @@ public class GameHandler {
 
     /**
      * Name of current match getter.
-     * @return
+     * @return Name of this match.
      */
     public String getNameOfTheMatch(){
         return this.nameOfTheMatch;

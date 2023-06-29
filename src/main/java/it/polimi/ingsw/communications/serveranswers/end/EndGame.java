@@ -6,7 +6,7 @@ public class EndGame implements Answer {
     public String answer;
 
     public EndGame(){
-        answer = "Game is ended.\nType exit to close the application";
+        answer = "The game has come to an end.\n";
     }
     @Override
     public String getAnswer() {
