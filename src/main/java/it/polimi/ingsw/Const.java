@@ -71,11 +71,15 @@ public final class Const {
      */
     public static final int SERVER_PING_DELAY = 5;
 
+    /**
+     * Maximum period [s] without receiving ping signal. After that the client will shut down.
+     */
+    public static final int CLIENT_PING_TIMEOUT = 10;
 
     /**
-     * Delay time [s] between two pings. Activated from the server.
+     * Maximum period [s] the client have to connect to the server.
      */
-    public static final int CLIENT_DISCONNECTION_TIME = 10;
+    public static final int CLIENT_CONNECTION_TIMEOUT = 15;
 
     // Regular colors.
     public static final String RESET_COLOR = "\033[0m";

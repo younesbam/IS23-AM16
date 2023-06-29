@@ -64,15 +64,10 @@ public class CLI extends UI implements Runnable{
             loop();
         }
 
-
-        disconnectFromServer();
-        endGameMessage();
-        /*
-        Disconnect from server when the game is ended.
-         */
+        endGameProperly();
     }
 
-    public void finallyEndThisGame(){
+    private void endGameProperly(){
         disconnectFromServer();
         endGameMessage();
     }
@@ -385,12 +380,12 @@ public class CLI extends UI implements Runnable{
      * End game message from server.
      * @param answer message from server.
      */
-    private void endGame(String answer){
+    private void endGameRequest(String answer){
         System.out.println(answer);
         setActiveGame(false);
-        Thread.currentThread().interrupt();
+        Thread.currentThread().interrupt();  // Close the current thread and close also the input.
 
-        finallyEndThisGame();
+        endGameProperly();
     }
 
     /**
@@ -415,7 +410,7 @@ public class CLI extends UI implements Runnable{
             case "PlayerFinalPoints" -> finalPoints((String) event.getNewValue());
             case "Ranking" -> ranking((String) event.getNewValue());
             case "PlayerFinalResult" -> playerFinalResult((String) event.getNewValue());
-            case "EndGame" -> endGame((String) event.getNewValue());
+            case "EndGame" -> endGameRequest((String) event.getNewValue());
 
             case "ErrorAnswer" -> errorAnswer((ErrorAnswer) event.getNewValue());
         }
