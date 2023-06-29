@@ -25,7 +25,7 @@ public interface IRMIServer extends Remote {
      * Disconnect the client from the server.
      * @throws RemoteException error during communication.
      */
-    void logout() throws RemoteException;
+    void logout(IRMIClient client) throws RemoteException;
 
 
     /**
@@ -33,5 +33,5 @@ public interface IRMIServer extends Remote {
      * @param message to send to the server.
      * @throws RemoteException error during communication.
      */
-    void sendMessageToServer(SerializedMessage message) throws RemoteException, InterruptedException;
+    void sendMessageToServer(IRMIClient client, SerializedMessage message) throws RemoteException, InterruptedException;
 }

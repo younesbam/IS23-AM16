@@ -56,7 +56,7 @@ public class RMICSConnection extends CSConnection {
                 client.disconnectMe();
                 Server.LOGGER.log(Level.INFO, "Client " + ID + " successfully disconnected");
             }catch (RemoteException e){
-                Server.LOGGER.log(Level.WARNING, "Failed to disconnect the client " + ID, e);
+                Server.LOGGER.log(Level.WARNING, "Failed to disconnect the client " + ID);
             }
         }
         if(getID() != null){
@@ -76,8 +76,15 @@ public class RMICSConnection extends CSConnection {
                 client.onServerAnswer(answer);
             } catch (RemoteException e) {
                 Server.LOGGER.log(Level.WARNING, "Failed to send message to the client " + ID);
-                //disconnect();
             }
         }
+    }
+
+    /**
+     * Get client reference.
+     * @return client reference interface.
+     */
+    public IRMIClient getClient() {
+        return client;
     }
 }

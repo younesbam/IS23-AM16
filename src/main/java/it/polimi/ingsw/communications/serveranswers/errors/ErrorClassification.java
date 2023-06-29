@@ -22,6 +22,10 @@ public enum ErrorClassification {
      * Match doesn't exist.
      */
     MATCH_NOT_FOUND,
+    /**
+     * Match name error: a match with the chosen match name already exist.
+     */
+    INVALID_MATCH_NAME,
 
     // Generic in-game errors
     // ----------------------------------------------------------

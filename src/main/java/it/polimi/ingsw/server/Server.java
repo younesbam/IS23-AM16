@@ -39,7 +39,7 @@ import static it.polimi.ingsw.Const.*;
 import static it.polimi.ingsw.controller.Phase.SETUP;
 
 public class Server {
-    public final Object clientLock = new Object();
+
     /**
      * Logger of the server.
      */
@@ -66,11 +66,6 @@ public class Server {
     private final int socketPort;
 
     /**
-     * Number of players for this match, chosen by the host in the initial phase of the game.
-     */
-    private int numOfPlayers = 0;
-
-    /**
      * Current player ID, progressive order.
      */
     private int currentPlayerID;
@@ -85,11 +80,11 @@ public class Server {
      */
     ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-
     /**
      * HashMap used to associate each Match to its name.
      */
     private final Map<String, GameHandler> matchMap = new HashMap<>();
+
 
 
     /**
@@ -224,7 +219,6 @@ public class Server {
      * @param action game action from client
      */
     private void actionHandler(VirtualPlayer currentPlayer, GameAction action){
-        //qua non ha ancora il game handler!
         getGameHandlerByID(currentPlayer.getID()).dispatchActions(action);
     }
 
@@ -247,10 +241,8 @@ public class Server {
             answer.setAnswer(new CustomAnswer("\nType CREATE <Name_Of_The_Game> if you want to create a new game, or type JOIN <Name_Of_The_Game> if you want to join an existing one.\n>"));
             connection.sendAnswerToClient(answer);
 
-            //TODO qua poi sarà ancora da chiamare il metodo lobby.
-            //lobby(connection);
         } catch (IOException e){//| InterruptedException e) {
-            Server.LOGGER.log(Level.SEVERE, "Failed to register the new client", e);
+            Server.LOGGER.log(Level.SEVERE, "Failed to register the new client");
         }
     }
 
@@ -258,7 +250,7 @@ public class Server {
     /**
      * Register the new client to the match. It also checks if the username chosen by the player is not already taken.
      * @param username username of the client that want to register.
-     * @param clientConnection Already created connection between client-server
+     * @param clientConnection Already created connection between client-server.
      * @throws IOException thrown if there are communication problem.
      */
     private synchronized Integer newClientRegistration(String username, CSConnection clientConnection) throws IOException{
@@ -278,18 +270,20 @@ public class Server {
             playersConnectedList.add(newPlayer);
 
             System.out.println(username + " is now connected, his ID is " + clientID);
-            answer.setAnswer(new ConnectionOutcome(true, clientID, "Welcome! You have been associated with the following ID " + clientID));
+            answer.setAnswer(new ConnectionOutcome(true, clientID, "Welcome! You have been associated with the following ID: " + clientID));
             clientConnection.sendAnswerToClient(answer);
 
         } else {  // Username already in use.
             // Check if a disconnected player wants to reconnect with the same username
             VirtualPlayer playerToRestore = getVirtualPlayerByID(clientID);
             if(!playerToRestore.getConnection().isAlive()){
+                // Restore player parameters
                 clientConnection.setID(clientID);
                 playerToRestore.restorePlayer(clientConnection);  // Assign the actual client-server connection
                 answer.setAnswer(new ConnectionOutcome(true, playerToRestore.getID(), "Welcome back!"));
                 clientConnection.sendAnswerToClient(answer);
 
+                // Restore the player in the game
                 restoreClient(clientConnection);
 
                 answer.setAnswer(new RestorePlayer());
@@ -306,22 +300,24 @@ public class Server {
 
     /**
      * Method used in order to create a new match.
-     * @param connection
-     * @param matchName
+     * @param connection Already created connection between client-server.
+     * @param matchName Name of the match chosen by the player.
      * @throws InterruptedException
      */
-    public void createNewMatch(CSConnection connection, String matchName) throws InterruptedException {
+    public synchronized void createNewMatch(CSConnection connection, String matchName) throws InterruptedException {
         boolean newPlayer = false;
 
         //check if the player hasn't already joined a match.
         for(VirtualPlayer p : playersConnectedList){
-            if(p.getUsername() == connection.getUsername() && p.getGameHandler() == null){
+            if(p.getUsername().equals(connection.getUsername()) && p.getGameHandler() == null){
                 newPlayer = true;
             }
         }
 
+
         //if he hasn't joined a match yet, he can create a new one.
-        if(newPlayer) {
+        if(newPlayer && !matchMap.containsKey(matchName)) {
+
             GameHandler gameHandler = new GameHandler(this);
             gameHandler.setNameOfTheMatch(matchName);
             gameHandler.createPlayer(connection.getUsername(), connection.getID());
@@ -335,6 +331,11 @@ public class Server {
             matchMap.put(matchName, gameHandler);
 
             gameHandler.lobby(connection);
+
+        }else if(newPlayer && matchMap.containsKey(matchName)){
+            SerializedAnswer answer = new SerializedAnswer();
+            answer.setAnswer(new ErrorAnswer("A match with that name already exists! Please choose another name for your match!", ErrorClassification.INVALID_MATCH_NAME));
+            connection.sendAnswerToClient(answer);
         }
         else{
             SerializedAnswer answer = new SerializedAnswer();
@@ -346,11 +347,11 @@ public class Server {
 
     /**
      * Method used to join an already existing match.
-     * @param matchName
-     * @param connection
-     * @throws InterruptedException
+     * @param matchName Name of the match the player wants to join.
+     * @param connection Already created connection between client-server.
+     * @throws InterruptedException if the lobby timer is interrupted while sleeping.
      */
-    public void joinMatch(String matchName, CSConnection connection) throws InterruptedException {
+    public synchronized void joinMatch(String matchName, CSConnection connection) throws InterruptedException {
         GameHandler gameHandler = matchMap.get(matchName);
         boolean newPlayer = false;
 
@@ -387,7 +388,7 @@ public class Server {
                 }
             } else {
                 SerializedAnswer answer = new SerializedAnswer();
-                answer.setAnswer(new ErrorAnswer("This match doesn't exist yet! You can create a new match or wait for others to create one.", ErrorClassification.INVALID_PARAMETERS));
+                answer.setAnswer(new ErrorAnswer("This match doesn't exist yet! You can create a new match or wait for others to create one.", ErrorClassification.MATCH_NOT_FOUND));
                 connection.sendAnswerToClient(answer);
                 answer.setAnswer(new ErrorAnswer("This match doesn't exist yet! You can create a new match or wait for others to create one.", ErrorClassification.MATCH_NOT_FOUND));
                 connection.sendAnswerToClient(answer);
@@ -512,9 +513,10 @@ public class Server {
      */
     public synchronized void removePlayer(int ID) {
         System.out.println("Removing player " + getUsernameByID(ID));
-        getGameHandlerByID(ID).removePlayer(ID);
+        //getGameHandlerByID(ID).removePlayer(ID);
         try{
             playersConnectedList.remove(getVirtualPlayerByID(ID));
+
         }catch (NullPointerException e){
             //
         }
@@ -529,7 +531,7 @@ public class Server {
 
     /**
      * Method used to remove a gameHandler instance from the matchMap after the game has come to an end.
-     * @param matchName
+     * @param matchName The name of the match to remove.
      */
     public void removeGameHandler(String matchName){
         int i;

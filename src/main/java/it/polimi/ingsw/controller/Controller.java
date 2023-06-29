@@ -358,7 +358,9 @@ public class Controller implements PropertyChangeListener {
         pickedTiles.clear();
         // Update game board
         game.getBoard().updateBoard();
-        // Check if a player has completed his bookshelf, otherwise it sets lastTurn to true, in order to start the last turns for the remaining players.
+
+        // Check if a player has completed his bookshelf. This check is done only if no-one has already completed his bookshelf (lastTurn == false). If the player has not yet completed it, the method nextPlayer() is called, and the turns go on normally.
+        // Otherwise, it sets lastTurn to true, in order to start the last turns for the remaining players.
         if(!lastTurn){
             if(!game.getCurrentPlayer().getBookShelf().checkEndGame()){
                 if(phase == STANDBY){
@@ -369,7 +371,8 @@ public class Controller implements PropertyChangeListener {
                 nextPlayer();
             } else {
                 lastTurn = true;
-                checkFullBookshelf();  // Add one additional point to the first player that complete the bookshelf.
+                checkFullBookshelf();  // Add one additional point to the first player that completes the bookshelf.
+                updateTotalPoints();
                 leftPlayers = leftPlayersCalc();
                 gameHandler.sendToPlayer(new CustomAnswer("\nCongratulations, you have completed your Bookshelf! Now let the remaining players complete their turn in order to complete the round, and than we will reward the winner!\n"), currentPlayer.getID());
                 gameHandler.sendToPlayer(new BookShelfCompleted(), currentPlayer.getID());
@@ -453,6 +456,7 @@ public class Controller implements PropertyChangeListener {
             leftPlayers--;
             setPhase(Phase.TILESPICKING);
             nextPlayer();
+            gameHandler.sendToEveryone(new GameReplica(game));
             askToPickTiles();
         }
         else
@@ -515,7 +519,6 @@ public class Controller implements PropertyChangeListener {
         gameHandler.sendToEveryone(new CustomAnswer("And the winner is... " + rightPointsOrder.get(0).getUsername() + "!!\nCongratulations!"));
         gameHandler.sendToEveryoneExcept(new PlayerFinalResult("\nUnfortunately you have not won this game, but better luck next time!"), rightPointsOrder.get(0).getID());
         gameHandler.sendToPlayer(new PlayerFinalResult("\nYou are the undisputed winner! Congratulations again!"), rightPointsOrder.get(0).getID());
-        gameHandler.sendToEveryone(new CustomAnswer("\nThe game has come to an end."));
 
         // Disconnect all the players.
         gameHandler.sendToEveryone(new EndGame());
@@ -530,8 +533,6 @@ public class Controller implements PropertyChangeListener {
         //remove this gameHandler instance from the map of gameHandlers in the Server.
         gameHandler.getServer().removeGameHandler(gameHandler.getNameOfTheMatch());
 
-        //Shutdown the server.
-        //gameHandler.shutdownServer();
     }
 
 

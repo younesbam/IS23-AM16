@@ -60,13 +60,19 @@ public class CLI extends UI implements Runnable{
     public void run() {
         connect();
 
-        while(isActiveGame()){
+        while (isActiveGame()) {
             loop();
         }
 
+
+        disconnectFromServer();
+        endGameMessage();
         /*
         Disconnect from server when the game is ended.
          */
+    }
+
+    public void finallyEndThisGame(){
         disconnectFromServer();
         endGameMessage();
     }
@@ -76,8 +82,10 @@ public class CLI extends UI implements Runnable{
      * Loop the CLI waiting for new ACTION command.
      */
     private void loop(){
-        input.reset();
-        pcsDispatcher.firePropertyChange("action", null, input.nextLine());
+        if(isActiveGame()) {
+            input.reset();
+            pcsDispatcher.firePropertyChange("action", null, input.nextLine());
+        }
     }
 
 
@@ -167,9 +175,9 @@ public class CLI extends UI implements Runnable{
         /*
         Set port, IP address, username.
          */
-        ConnectionType connectionType = askConnectionType();
-        String ipAddress = askIpAddress();
-        int numOfPort = askPort();
+        ConnectionType connectionType = SOCKET;
+        String ipAddress = "127.0.0.1";
+        int numOfPort = 2345;
         String username = askUsername();
 
         /*
@@ -183,7 +191,7 @@ public class CLI extends UI implements Runnable{
         try{
             connectToServer(connectionType, ipAddress, numOfPort, username);
         }catch (RemoteException | NotBoundException e){
-            Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e);
+            Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection. Check the parameters and try again");
             System.exit(-1);
         }
     }
@@ -380,6 +388,9 @@ public class CLI extends UI implements Runnable{
     private void endGame(String answer){
         System.out.println(answer);
         setActiveGame(false);
+        Thread.currentThread().interrupt();
+
+        finallyEndThisGame();
     }
 
     /**
