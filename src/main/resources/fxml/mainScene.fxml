@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.MainSceneController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/14.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.MainSceneController">
    <children>
       <ImageView fx:id="mainPane" fitHeight="600.0" fitWidth="960.0" pickOnBounds="true">
          <image>
@@ -115,15 +115,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="bookShelfsBtn" layoutX="123.0" layoutY="7.0" mnemonicParsing="false" onAction="#printBookShelfs" text="BOOKSHELFS" textFill="#ac856e">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button layoutX="390.0" layoutY="8.0" mnemonicParsing="false" text="CHAT" textFill="#ac856e">
+            <Button fx:id="bookShelfsBtn" layoutX="123.0" layoutY="7.0" mnemonicParsing="false" onAction="#printBookShelfs" text="BOOKSHELVES" textFill="#ac856e">
                <font>
                   <Font size="16.0" />
                </font>
@@ -249,5 +241,13 @@
             <Image url="@../graphics/user.png" />
          </image>
       </ImageView>
+      <Label alignment="CENTER" layoutX="870.0" layoutY="551.0" onMouseClicked="#help" prefHeight="20.0" prefWidth="47.0" text="Help?" textFill="WHITE">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
    </children>
 </AnchorPane>

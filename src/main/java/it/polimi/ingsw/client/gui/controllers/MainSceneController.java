@@ -324,6 +324,27 @@ public class MainSceneController implements GUIController{
         userIcon.setVisible(false);
     }
 
+    public void help(){
+        Alert help = new Alert(Alert.AlertType.INFORMATION);
+        help.setTitle("HELP");
+        help.setHeaderText("Here are some info to play!");
+        help.setContentText("- PICK TILES: \n" +
+                "\t- Click on the tiles you want to pick\n" +
+                "\t- Confirm to start placing them\n" +
+                "\t  OR Cancel to pick other tiles\n" +
+                "- PLACE TILES: \n" +
+                "\t- Drag and Drop them in the column you want,\n" +
+                "\t  you can choose the order of placement\n" +
+                "\t- Confirm to complete the move\n" +
+                "\t  OR Cancel to place them in another column\n" +
+                "- GOAL CARDS:\n" +
+                "\t- Click on \"GOAL CARDS\" to view the your personal\n" +
+                "\t goal and the common goals\n" +
+                "- BOOKSHELVES:\n" +
+                "\t- Click on \"BOOKSHELVES\" to view the bookshelves\n" +
+                "\t of other players");
+        help.showAndWait();
+    }
     public void setUsername(String username){
         this.username.setText(username);
     }
