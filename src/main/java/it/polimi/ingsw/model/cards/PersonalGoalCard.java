@@ -37,8 +37,8 @@ public class PersonalGoalCard extends Card {
      * @return ObjectTile corresponding to the related x,y coordinate inside the grid.
      * @author Nicolo' Gandini
      */
-    public Tile getTile(int x, int y){
-        return grid[x][y].getTile();
+    public Tile getTile(int row, int col){
+        return grid[row][col].getTile();
     }
 
 

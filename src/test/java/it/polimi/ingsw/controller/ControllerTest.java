@@ -50,7 +50,6 @@ class ControllerTest {
     Player p1, p2, p3;
     ArrayList<Player> players = new ArrayList<>();
     List<CommonGoalCard> commCards = new ArrayList<>();
-    LinkedList<PersonalGoalCard> persCards = new LinkedList<>();
     PropertyChangeSupport pcsController = new PropertyChangeSupport(this);
     List<Coordinate> coordinates = new ArrayList<>();
     List<Tile> tiles3pink = new ArrayList<>();
@@ -349,6 +348,7 @@ class ControllerTest {
         controller.setPhase(Phase.TILESPICKING);
         coordinates.add(new Coordinate(1,3));
         coordinates.add(new Coordinate (0,3));
+        assertDoesNotThrow(()->pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates)));
         pcsController.firePropertyChange("PickTilesAction", null, new PickTilesAction(coordinates));
     }
 
