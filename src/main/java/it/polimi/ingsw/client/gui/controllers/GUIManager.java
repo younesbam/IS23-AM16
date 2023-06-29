@@ -163,10 +163,10 @@ public class GUIManager extends UI {
                     if(p.getCommonCardPoints(1)>0)
                         countGoal2Completed++;
                 }
-                mainSceneController.setTokens(0 , GOAL_CARD_TOKEN_PATH +
+                mainSceneController.setTokens(1 , GOAL_CARD_TOKEN_PATH +
                         modelView.getGame().getPlayerByID(getPlayerID()).getCommonCardPoints(0)
                         +".png");
-                mainSceneController.setTokens(1, GOAL_CARD_TOKEN_PATH +
+                mainSceneController.setTokens(2, GOAL_CARD_TOKEN_PATH +
                         modelView.getGame().getPlayerByID(getPlayerID()).getCommonCardPoints(1)
                         +".png");
                 goalCardSceneController.setTokens(0,GOAL_CARD_TOKEN_PATH +
@@ -300,7 +300,7 @@ public class GUIManager extends UI {
                     Client.LOGGER.log(Level.INFO, a.getError().name());
                     endGame();
             }
-            case MATCH_NOT_FOUND -> {
+            case MATCH_NOT_FOUND, INVALID_MATCH_NAME -> {
                 Platform.runLater(()->gui.changeStage(MULTI_GAME));
             }
         }
@@ -317,7 +317,7 @@ public class GUIManager extends UI {
         Platform.runLater(() -> {
             MainSceneController mainSceneController = (MainSceneController) getControllerFromName(MAIN_GUI);
             mainSceneController.hideEndGameToken();
-            if(message.contains("Congratulations"))
+            if(message.contains("You have completed your Bookshelf"))
                 mainSceneController.showEndGameToken();
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("GAME");

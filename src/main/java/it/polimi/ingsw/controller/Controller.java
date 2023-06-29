@@ -193,7 +193,7 @@ public class Controller implements PropertyChangeListener {
                 System.out.println(GREEN_COLOR + "Game successfully restored!" + RESET_COLOR);
             setPhase(Phase.TILESPICKING);
             gameHandler.sendToPlayer(new ItsYourTurn(), currentPlayer.getID());
-           // gameHandler.sendToEveryoneExcept(new UpdateTurn(), currentPlayer.getID());
+            gameHandler.sendToEveryoneExcept(new UpdateTurn(), currentPlayer.getID());
         }catch (NoNextPlayerException e){
             // No players connected
             System.out.println(RED_COLOR + "Not enough players connected. Standby mode activated. I will resume the game when there are at least 2 connected players. zzz..." + RESET_COLOR);
