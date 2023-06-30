@@ -19,7 +19,7 @@ import static java.util.Collections.shuffle;
 /**
  * This class represents the game's board.
  */
-public abstract class Board implements Serializable {
+public abstract class Board implements Serializable, IBoard {
 
     /**
      * This variable represents the board.

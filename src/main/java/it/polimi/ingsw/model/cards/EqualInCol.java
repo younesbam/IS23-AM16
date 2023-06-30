@@ -27,11 +27,6 @@ public class EqualInCol extends CommonGoalCard {
     private int repetition;
 
     /**
-     * Orientation of the check
-     */
-    private Direction dir;
-
-    /**
      * Initialize repetition, direction and equal tiles based on the card number
      * @param cardNumber number of the card
      */

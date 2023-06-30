@@ -32,13 +32,13 @@ public class PersonalGoalCard extends Card {
 
     /**
      *
-     * @param x abscissa's coordinate of the grid.
-     * @param y ordinate's coordinate of the grid.
+     * @param row abscissa's coordinate of the grid.
+     * @param col ordinate's coordinate of the grid.
      * @return ObjectTile corresponding to the related x,y coordinate inside the grid.
      * @author Nicolo' Gandini
      */
-    public Tile getTile(int x, int y){
-        return grid[x][y].getTile();
+    public Tile getTile(int row, int col){
+        return grid[row][col].getTile();
     }
 
 

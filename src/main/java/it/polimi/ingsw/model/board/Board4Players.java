@@ -5,7 +5,11 @@ import it.polimi.ingsw.common.JSONParser;
 /**
  * This is the board for 4 players.
  */
-public class Board4Players extends Board implements IBoard {
+public class Board4Players extends Board{
+
+    /**
+     * Constructor for the board.
+     */
     public Board4Players() {
         super();
 
