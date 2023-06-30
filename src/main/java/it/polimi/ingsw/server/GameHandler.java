@@ -308,13 +308,6 @@ public class GameHandler {
     }
 
 
-//    /**
-//     * This method terminates the game.
-//     */
-//    public void shutdownServer(){
-//        server.exit();
-//    }
-
     /**
      * Set match as stared.
      * @param gameStarted game started bit.

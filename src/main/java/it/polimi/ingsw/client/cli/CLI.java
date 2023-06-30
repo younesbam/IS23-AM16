@@ -19,7 +19,6 @@ import java.util.Scanner;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.Const.*;
-import static it.polimi.ingsw.common.ConnectionType.SOCKET;
 
 /**
  * Command line interface. It allows interacting with the game with commands from a client
@@ -67,6 +66,10 @@ public class CLI extends UI implements Runnable{
         endGameProperly();
     }
 
+
+    /**
+     * Final end game, disconnecting all the players.
+     */
     private void endGameProperly(){
         disconnectFromServer();
         endGameMessage();

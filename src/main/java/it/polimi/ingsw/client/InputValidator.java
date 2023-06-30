@@ -55,7 +55,7 @@ public class InputValidator {
 
     /**
      * Check if the input for the CreateGameMessage is valid.
-     * @param s
+     * @param s String written by the user
      * @return
      */
     public CreateGameMessage createGame(String[] s){
@@ -73,7 +73,7 @@ public class InputValidator {
 
     /**
      * Check if the input for the JoinGameMessage is valid.
-     * @param s
+     * @param s String written by the user
      * @return
      */
     public JoinGameMessage joinGame(String[] s){

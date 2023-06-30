@@ -272,7 +272,7 @@ public class Server {
             answer.setAnswer(new ConnectionOutcome(true, clientID, "Welcome! You have been associated with the following ID: " + clientID));
             clientConnection.sendAnswerToClient(answer);
 
-            answer.setAnswer(new CustomAnswer("\nType CREATE <Name_Of_The_Game> if you want to create a new game, or type JOIN <Name_Of_The_Game> if you want to join an existing one.\n>"));
+            answer.setAnswer(new CustomAnswer("\nType " + GREEN_BOLD_COLOR + "CREATE" + RESET_COLOR + " <Name_Of_The_Game> if you want to create a new game, or type " +  GREEN_BOLD_COLOR + "JOIN" +  RESET_COLOR + " <Name_Of_The_Game> if you want to join an existing one.\n>"));
             clientConnection.sendAnswerToClient(answer);
 
         } else {  // Username already in use.
@@ -392,8 +392,6 @@ public class Server {
                 SerializedAnswer answer = new SerializedAnswer();
                 answer.setAnswer(new ErrorAnswer("This match doesn't exist yet! You can create a new match or wait for others to create one.", ErrorClassification.MATCH_NOT_FOUND));
                 connection.sendAnswerToClient(answer);
-                answer.setAnswer(new ErrorAnswer("This match doesn't exist yet! You can create a new match or wait for others to create one.", ErrorClassification.MATCH_NOT_FOUND));
-                connection.sendAnswerToClient(answer);
             }
         }else{
             SerializedAnswer answer = new SerializedAnswer();
@@ -498,15 +496,6 @@ public class Server {
         }
         return null;
     }
-
-
-//    /**
-//     * Get connected virtual player list.
-//     * @return list of connected players.
-//     */
-//    public List<VirtualPlayer> getConnectedPlayers(){
-//        return playersConnectedList;
-//    }
 
 
     /**

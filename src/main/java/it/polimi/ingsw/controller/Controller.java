@@ -529,7 +529,7 @@ public class Controller implements PropertyChangeListener {
 
         // Sending the ranking and the final messages to everyone.
         gameHandler.sendToEveryone(new Ranking(finalRanking));
-        gameHandler.sendToEveryone(new CustomAnswer("And the winner is... " + rightPointsOrder.get(0).getUsername() + "!!\nCongratulations!"));
+        gameHandler.sendToEveryone(new CustomAnswer(GREEN_BOLD_COLOR + "And the winner is... " + rightPointsOrder.get(0).getUsername() + "!!\nCongratulations!" + RESET_COLOR));
         gameHandler.sendToEveryoneExcept(new PlayerFinalResult("\nUnfortunately you have not won this game, but better luck next time!"), rightPointsOrder.get(0).getID());
         gameHandler.sendToPlayer(new PlayerFinalResult("\nYou are the undisputed winner! Congratulations again!"), rightPointsOrder.get(0).getID());
 
@@ -595,9 +595,9 @@ public class Controller implements PropertyChangeListener {
         }
 
 
-        gameHandler.sendToEveryone(new CustomAnswer(game.getPlayerByID(ID).getUsername() + " is disconnected. Every potential tile picked from the board will be replaced on the board\n" +
-                "Turns of " + game.getPlayerByID(ID).getUsername() + " will be skipped until it connects again"));
-        gameHandler.sendToEveryone(new PlayerDisconnection(game.getPlayerByID(ID).getUsername() + " is disconnected. Every potential tile picked from the board will be replaced on the board\n" +
+        gameHandler.sendToEveryone(new CustomAnswer(RED_BOLD_COLOR + "\n" + game.getPlayerByID(ID).getUsername() + " is disconnected. Every potential tile picked from the board will be replaced on the board\n" +
+                "Turns of " + game.getPlayerByID(ID).getUsername() + " will be skipped until it connects again" + RESET_COLOR));
+        gameHandler.sendToEveryone(new PlayerDisconnection("\n" + game.getPlayerByID(ID).getUsername() + " is disconnected. Every potential tile picked from the board will be replaced on the board\n" +
                 "Turns of " + game.getPlayerByID(ID).getUsername() + " will be skipped until it connects again"));
     }
 
@@ -616,7 +616,7 @@ public class Controller implements PropertyChangeListener {
             endTurn();
         }
 
-        gameHandler.sendToEveryone(new CustomAnswer(game.getPlayerByID(ID).getUsername() + " reconnects! Now the turns will consider his/her presence"));
+        gameHandler.sendToEveryone(new CustomAnswer(RED_BOLD_COLOR + "\n" + game.getPlayerByID(ID).getUsername() + " reconnects! Now the turns will consider his/her presence" + RESET_COLOR));
     }
 
 
