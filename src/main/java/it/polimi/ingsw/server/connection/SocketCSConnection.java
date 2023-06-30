@@ -106,7 +106,6 @@ public class SocketCSConnection extends CSConnection implements Runnable{
                 this.alive = false;
                 Server.LOGGER.log(Level.WARNING, "Failed to send message to the client " + ID);
                 server.suspendClient(this);
-                //disconnect();
             }
         }
     }

@@ -127,29 +127,29 @@ public abstract class Client extends UnicastRemoteObject {
     }
 
     /**
-     * Activate ping request by cancelling a timer that shut the client down after {@link Const#CLIENT_DISCONNECTION_TIME x} seconds.
+     * Activate ping request by cancelling a timer that shut the client down after {@link Const#CLIENT_PING_TIMEOUT x} seconds.
      */
     protected synchronized void activatePingTimeout(){
         pingTimer.cancel();
         pingTimer = new Timer();
-        pingTimer.schedule(new PingTimeoutTask(), Const.CLIENT_DISCONNECTION_TIME*1000);
+        pingTimer.schedule(new PingTimeoutTask(), Const.CLIENT_PING_TIMEOUT *1000);
     }
 
     /**
-     * Activate ping request by cancelling a timer that shut the client down after {@link Const#CLIENT_DISCONNECTION_TIME x} seconds.
+     * Activate ping request by cancelling a timer that shut the client down after {@link Const#CLIENT_PING_TIMEOUT x} seconds.
      */
     protected synchronized void deactivatePingTimeout(){
         pingTimer.cancel();
     }
 
     /**
-     * Activate connection timeout request by cancelling a timer that shut the client down after {@link Const#CLIENT_DISCONNECTION_TIME x} seconds.
+     * Activate connection timeout request by cancelling a timer that shut the client down after {@link Const#CLIENT_PING_TIMEOUT x} seconds.
      * @see Client#deactivateConnectionTimeout()
      */
     protected synchronized void activateConnectionTimeout(){
         connectionTimer.cancel();
         connectionTimer = new Timer();
-        connectionTimer.schedule(new ConnectionTimeoutTask(), Const.CLIENT_DISCONNECTION_TIME*1000);
+        connectionTimer.schedule(new ConnectionTimeoutTask(), Const.CLIENT_CONNECTION_TIMEOUT*1000);
     }
 
     /**

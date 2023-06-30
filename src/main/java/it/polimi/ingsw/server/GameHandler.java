@@ -105,7 +105,7 @@ public class GameHandler {
      * Method used to remove a player from the game.
      * @param playerID ID of the player.
      */
-    public void removePlayer(int playerID){
+    public void removePlayerFromGame(int playerID){
         game.removePlayer(game.getPlayerByID(playerID));
     }
 
@@ -116,6 +116,15 @@ public class GameHandler {
      */
     public void removeWaitingPlayer(int playerID){
         playersWaitingList.remove(getWaitingPlayerByID(playerID));
+    }
+
+    /**
+     * Method used to remove a player from the players' connected list.
+     * This method remove the player from this match only.
+     * @param playerID
+     */
+    public void removeConnectedPlayer(int playerID){
+        playersConnected.remove(getConnectedPlayerByID(playerID));
     }
 
 
@@ -197,7 +206,7 @@ public class GameHandler {
      * @return List of connected players.
      */
     public List<VirtualPlayer> getPlayersConnected(){
-        return this.playersConnected;
+        return List.copyOf(this.playersConnected);
     }
 
 
@@ -300,13 +309,6 @@ public class GameHandler {
 
 
     /**
-     * This method terminates the game.
-     */
-    public void shutdownServer(){
-        server.exit();
-    }
-
-    /**
      * Set match as stared.
      * @param gameStarted game started bit.
      */
@@ -351,8 +353,9 @@ public class GameHandler {
     }
 
     /**
-     * Suspend the selected client after a disconnection. It acts on controller.
+     * Suspend the selected client after a disconnection. It acts on controller. The player can reconnect and restore the game.
      * @param ID Unique ID of the player to be suspended.
+     * @see GameHandler#restoreClient(int)
      */
     public void suspendClient(int ID){
         controller.suspendClient(ID);
@@ -361,6 +364,7 @@ public class GameHandler {
     /**
      * Restore the selected client after a disconnection and a reconnection. It acts on controller.
      * @param ID Unique ID of the player that was suspended
+     * @see GameHandler#suspendClient(int)
      */
     public void restoreClient(int ID){
         controller.restoreClient(ID);
@@ -374,6 +378,21 @@ public class GameHandler {
      */
     public synchronized VirtualPlayer getWaitingPlayerByID(int ID) {
         List<VirtualPlayer> list = List.copyOf(playersWaitingList);
+        for(VirtualPlayer p : list){
+            if(ID == p.getID()){
+                return p;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get a connected player by ID.
+     * @param ID Unique ID of the player.
+     * @return virtual player related to the passed ID.
+     */
+    public synchronized VirtualPlayer getConnectedPlayerByID(int ID) {
+        List<VirtualPlayer> list = List.copyOf(playersConnected);
         for(VirtualPlayer p : list){
             if(ID == p.getID()){
                 return p;

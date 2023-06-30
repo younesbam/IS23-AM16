@@ -40,7 +40,7 @@ public abstract class UI implements PropertyChangeListener {
     protected PropertyChangeSupport pcsDispatcher;
 
     /**
-     * Game active
+     * Game active.
      */
     private boolean activeGame;
 
