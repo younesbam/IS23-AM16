@@ -4,21 +4,30 @@ import it.polimi.ingsw.client.*;
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.client.common.UI;
 import it.polimi.ingsw.common.ConnectionType;
-import it.polimi.ingsw.communications.serveranswers.RequestTiles;
+import it.polimi.ingsw.communications.serveranswers.Answer;
+import it.polimi.ingsw.communications.serveranswers.network.ConnectionOutcome;
+import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
+import it.polimi.ingsw.model.cards.CommonGoalCard;
+import it.polimi.ingsw.model.cards.PersonalGoalCard;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 
+import static it.polimi.ingsw.Const.*;
+
+/**
+ * Command line interface. It allows interacting with the game with commands from a client
+ */
 public class CLI extends UI implements Runnable{
     /**
      * Input scanner.
      */
     private final Scanner input;
-
 
 
     /**
@@ -30,7 +39,6 @@ public class CLI extends UI implements Runnable{
         this.modelView = new ModelView(this);
         this.actionHandler = new ActionHandler(this, this.modelView);
         setActiveGame(true);
-//        setSetupMode(true);
     }
 
 
@@ -44,30 +52,38 @@ public class CLI extends UI implements Runnable{
     }
 
 
+    /**
+     * Run the {@link  it.polimi.ingsw.client.cli.CLI#loop() loop} method to read new incoming commands.
+     */
     @Override
     public void run() {
-        // TODO: bisogna gestire questo bit di activeGame. Va messo a FALSE da qualcuno che sa quando il gioco è finito
         connect();
 
-        while(isActiveGame()){
-            if(!isSetupMode())
-                loop();
+        while (isActiveGame()) {
+            loop();
         }
 
-        /*
-        Disconnect from server when the game is ended.
-         */
-        disconnectFromServer();
+        endGameProperly();
     }
 
 
     /**
-     * Loop the CLI waiting for new ACTION command
+     * Final end game, disconnecting all the players.
+     */
+    private void endGameProperly(){
+        disconnectFromServer();
+        endGameMessage();
+    }
+
+
+    /**
+     * Loop the CLI waiting for new ACTION command.
      */
     private void loop(){
-        System.out.println("SONO NEL LOOOOOOOOPPPPPPP");
-        input.reset();
-        pcsDispatcher.firePropertyChange("action", null, input.nextLine());
+        if(isActiveGame()) {
+            input.reset();
+            pcsDispatcher.firePropertyChange("action", null, input.nextLine());
+        }
     }
 
 
@@ -80,11 +96,11 @@ public class CLI extends UI implements Runnable{
         boolean nameChosen = false;
         while (!nameChosen) {
             System.out.println("Choose your username:");
-            System.out.println(">");
+            System.out.print(">");
             username = input.nextLine();
             System.out.println("You username choice is: " + username);
             System.out.println("Are you happy with your choice? [y/n] ");
-            System.out.println(">");
+            System.out.print(">");
 
             if (input.nextLine().equalsIgnoreCase("y"))
                 nameChosen = true;
@@ -98,9 +114,21 @@ public class CLI extends UI implements Runnable{
      * @return type of connection
      */
     private ConnectionType askConnectionType(){
-        System.out.println("Please choose your connection type.\nType SOCKET or RMI to confirm your choice.");
-        System.out.println(">");
-        return ConnectionType.valueOf(input.nextLine().toUpperCase());
+        ConnectionType conn = null;
+        boolean connChosen = false;
+        while (!connChosen){
+            System.out.println("Please choose your connection type.\nType SOCKET or RMI to confirm your choice.");
+            System.out.print(">");
+
+            try {
+                conn = ConnectionType.valueOf(input.nextLine().toUpperCase());
+                connChosen = true;
+            } catch (IllegalArgumentException e) {
+                connChosen = false;
+            }
+        }
+
+        return conn;
     }
 
 
@@ -110,7 +138,7 @@ public class CLI extends UI implements Runnable{
      */
     private String askIpAddress(){
         System.out.println("Insert the IP Address of the server");
-        System.out.println(">");
+        System.out.print(">");
         return input.nextLine();
     }
 
@@ -120,9 +148,21 @@ public class CLI extends UI implements Runnable{
      * @return selected port
      */
     private int askPort(){
-        System.out.println("Insert the port number of the server, it should be a number between 1024 and 65565");
-        System.out.println(">");
-        return input.nextInt();
+        int port = 0;
+        boolean portChosen = false;
+        while (!portChosen){
+            System.out.println("Insert the port number of the server, it should be a number between 1024 and 65565");
+            System.out.print(">");
+
+            try {
+                port = Integer.parseInt(input.nextLine());
+                portChosen = true;
+            } catch (NumberFormatException e) {
+                portChosen = false;
+            }
+        }
+
+        return port;
     }
 
 
@@ -133,9 +173,9 @@ public class CLI extends UI implements Runnable{
         /*
         Set port, IP address, username.
          */
-        ConnectionType connectionType = ConnectionType.RMI;   // askConnectionType();
-        String ipAddress = "127.0.0.1";    //askIpAddress();
-        int numOfPort = 1098;    //askPort();
+        ConnectionType connectionType = askConnectionType();
+        String ipAddress = askIpAddress();
+        int numOfPort = askPort();
         String username = askUsername();
 
         /*
@@ -148,115 +188,107 @@ public class CLI extends UI implements Runnable{
          */
         try{
             connectToServer(connectionType, ipAddress, numOfPort, username);
-            Client.LOGGER.log(Level.INFO, "Client successfully connected");
         }catch (RemoteException | NotBoundException e){
-            Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection: ", e);
+            Client.LOGGER.log(Level.SEVERE, "Failed to start client-server connection. Check the parameters and try again");
             System.exit(-1);
         }
     }
 
 
     /**
+     * Set unique ID generated by the server.
+     * @param a answer from the server.
+     */
+    private void connectionOutcome(ConnectionOutcome a){
+        System.out.println(a.getAnswer());
+        client.setID(a.getID());
+        modelView.setIsYourTurn(true);
+    }
+
+
+    /**
      * Server asks for total number of players
-     * @param s
+     * @param s number of players. String format.
      */
-     private void howManyPlayerRequest(String s){
-         System.out.println(s);
-
-         updateTurn(true);
-         setSetupMode(true);
-
-         pcsDispatcher.firePropertyChange("playerResponse", null, input.nextLine());
-
-         updateTurn(false);
-     }
+    private void howManyPlayerRequest(String s){
+        System.out.println(s);
+        System.out.print(">");
+        modelView.setIsYourTurn(true);
+    }
 
 
     /**
-     * Server tells the client that setup of players has been completed. Now the client can listen for commands from the player.
-     * @param s
-     */
-    private void setupCompleted(String s){
-         System.out.println(s);
-         setSetupMode(false);
-     }
-
-
-    /**
-     * Update turn
-     * @param yourTurn
+     * Update turn in model view. Used to know if the user can write a command or not.
+     * @see ModelView#getIsYourTurn()
+     * @param yourTurn set if it's your turn or not.
      */
     private void updateTurn(Boolean yourTurn) {
+        if(yourTurn){
+            System.out.println("\nIt's now your turn!");
+        }
+        else
+            System.out.println("\nWait for your next turn now!");
         modelView.setIsYourTurn(yourTurn);
-        if(yourTurn)
-            System.out.print(">");
-    }
-
-    private void askWhatToDo(String request){
-
-        if(tmp == 0){
-            modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
-            modelView.getGame().getBoard().printBoard();
-        }
-
-        System.out.println(request);
-
-        Scanner in = new Scanner(System.in);
-        String action = in.nextLine();
-
-
-        switch (Integer.parseInt(action)){
-            case 1 -> {
-                requestTiles(new RequestTiles().getAnswer());
-                tmp = 0;
-            }
-            case 2 -> {
-                printPersonalGoalCard();
-                tmp = 1;
-            }
-            case 3 -> {
-                printCommonGoalCard();
-                tmp = 1;
-            }
-        }
-        //pcs.firePropertyChange("ActionToPerform", null, action);
-
-    }
-
-
-    private void printPersonalGoalCard(){
-        //print the card
-    }
-
-
-    private void printCommonGoalCard(){
-        //print the card
-
     }
 
 
     /**
-     * Method used to request the tiles to the player.
+     * Prints the messages for the initial phase of a player's turn. It also asks him to place his tiles.
+     * @param request message from server.
      */
-    public void requestTiles(String request){
+    private void initialPhaseOfTheTurn(String request){
+        modelView.setIsYourTurn(true);
 
-        System.out.println(request);
+        System.out.println("\nHere is your Bookshelf:\n");
+        modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
 
-        System.out.println("In order to do it, please write firstly the number of tiles that you want to pick in capital letters, followed by the coordinates of the each tile, just like this: THREE row1 col1 row2 col2 row3 col3");
+        System.out.println("\nHere is the game board:\n");
+        modelView.getGame().getBoard().printBoard();
 
-        Scanner in = new Scanner(System.in);
-        String chosenTiles = in.nextLine();
-        pcsDispatcher.firePropertyChange("PickTiles", null, chosenTiles);
+        System.out.println("\nAnd here your total points earned until now:");
+        System.out.println(modelView.getGame().getCurrentPlayer().getTotalPoints());
+
+        printManMessage();
+        System.out.print(request + "\n>");
     }
 
 
+    /**
+     * This method asks the player where he wants to place his tiles.
+     * @param request message from server.
+     */
     public void requestWhereToPlaceTiles(String request){
+
+        System.out.println("\n");
+        modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
+        System.out.println("\n");
+        printManMessage();
+
+        System.out.println(request);
+        System.out.print(">");
+    }
+
+
+    /**
+     * This method confirms the correct tiles placing, displaying the new Bookshelf.
+     * @param request message from server.
+     */
+    private void tilesPlaced(String request) {
         System.out.println(request);
 
+        System.out.println("\n\nHere is your new Bookshelf:\n");
         modelView.getGame().getCurrentPlayer().getBookShelf().printBookShelf();
+    }
 
-        System.out.println("Please type the coordinates");
 
+    /**
+     * Confirms the correct number of players choice.
+     * @param request message from server.
+     */
+    public void playerNumberChosen(String request){
+        System.out.println(request);
+
+        updateTurn(false);
     }
 
 
@@ -265,30 +297,126 @@ public class CLI extends UI implements Runnable{
      */
     public void endGameMessage() {
         System.out.println("Thanks for playing MyShelfie! Shutting down...");
+        Thread.currentThread().interrupt();
         System.exit(0);
     }
 
 
     /**
-     * Method used to print a personalized answer sent by the server.
-     * @param answer
+     * Print a custom answer sent by the server.
+     * @param answer message from server.
      */
-    private void printAnswer(String answer){
+    private void customAnswer(String answer){
         System.out.println(answer);
     }
 
 
-    public void propertyChange(PropertyChangeEvent event){
-        switch (event.getPropertyName()){
-            case "HowManyPlayersRequest" -> howManyPlayerRequest((String) event.getNewValue());
-            case "SetupCompleted" -> setupCompleted((String) event.getNewValue());
-            case "UpdateTurn" -> updateTurn((Boolean) event.getNewValue());
-            case "PersonalizedAnswer" -> printAnswer((String) event.getNewValue());
-            case "RequestWhatToDo" -> askWhatToDo((String) event.getNewValue());
-            case "RequestTiles" -> requestTiles((String) event.getNewValue());
-            case "RequestToPlaceTiles" -> requestWhereToPlaceTiles((String) event.getNewValue());
+    /**
+     * Print the manual message. Helps the player to know all the valid commands.
+     * @see InputValidator#printManual()
+     */
+    public void printManMessage(){
+        System.out.println(BLUE_BOLD_COLOR + "\nType MAN to know all the valid commands\n" + RESET_COLOR);
+    }
 
 
+    /**
+     * Handles the errors sent by the server.
+     * @param a error answer by the server.
+     */
+    private void errorAnswer(ErrorAnswer a){
+        System.out.println(RED_COLOR + a.getAnswer() + RESET_COLOR);
+        switch (a.getError()){
+            case LOBBY_NOT_READY, TAKEN_USERNAME -> endGameMessage();
+            case MAX_PLAYERS_REACHED -> System.out.print(">");
+            default -> System.out.print(">");
         }
     }
+
+
+    /**
+     * Print both common and personal goal cards assigned to the game.
+     */
+    public void printCards(){
+        List<CommonGoalCard> commons = modelView.getGame().getCommonGoalCards();
+        PersonalGoalCard personal = modelView.getGame().getCurrentPlayer().getPersonalGoalCard();
+
+        // Print commons.
+        for(int i=0; i < commons.size(); i++){
+            commons.get(i).printCard();
+        }
+        System.out.println();
+
+        // Print personal.
+        personal.printCard();
+    }
+
+    /**
+     * Final points message.
+     * @param answer message from server.
+     */
+    private void finalPoints(String answer){
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println(answer);
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    }
+
+    /**
+     * Final ranking message.
+     * @param answer message from server.
+     */
+    private void ranking(String answer){
+        System.out.println(answer);
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    }
+
+    /**
+     * Final results message.
+     * @param answer message from server.
+     */
+    private void playerFinalResult(String answer){
+        System.out.println(answer);
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    }
+
+    /**
+     * End game message from server.
+     * @param answer message from server.
+     */
+    private void endGameRequest(String answer){
+        System.out.println(answer);
+        setActiveGame(false);
+        Thread.currentThread().interrupt();  // Close the current thread and close also the input.
+
+        endGameProperly();
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p></p>
+     * This method is called by the {@link  ActionHandler#answerManager(Answer) answer manager} after a successfully received message from the server.
+     * @param event A PropertyChangeEvent object describing the event source
+     *          and the property that has changed.
+     */
+    public void propertyChange(PropertyChangeEvent event){
+        switch (event.getPropertyName()){
+            case "ConnectionOutcome" -> connectionOutcome((ConnectionOutcome) event.getNewValue());
+            case "HowManyPlayersRequest" -> howManyPlayerRequest((String) event.getNewValue());
+            case "CustomAnswer" -> customAnswer((String) event.getNewValue());
+            case "PickTilesRequest" -> initialPhaseOfTheTurn((String) event.getNewValue());
+            case "RequestToPlaceTiles" -> requestWhereToPlaceTiles((String) event.getNewValue());
+            case "BookShelfFilledWithTiles" -> tilesPlaced((String) event.getNewValue());
+            case "ItsYourTurn" -> updateTurn(true);
+            case "EndOfYourTurn" -> updateTurn(false);
+            case "PlayerNumberChosen" -> playerNumberChosen((String) event.getNewValue());
+            case "PrintCardsAnswer" -> printCards();
+            case "PlayerFinalPoints" -> finalPoints((String) event.getNewValue());
+            case "Ranking" -> ranking((String) event.getNewValue());
+            case "PlayerFinalResult" -> playerFinalResult((String) event.getNewValue());
+            case "EndGame" -> endGameRequest((String) event.getNewValue());
+
+            case "ErrorAnswer" -> errorAnswer((ErrorAnswer) event.getNewValue());
+        }
+    }
+
 }

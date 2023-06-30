@@ -7,23 +7,30 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
 
+/**
+ * Socket handler.
+ */
 public class ServerSideSocket implements Runnable{
-
     private final ExecutorService executorService;
+    /**
+     * Port of the server.
+     */
     private final int numOfPort;
+    /**
+     * Server reference.
+     */
     private final Server server;
-    private boolean isActive;
 
 
     /**
      * Class constructor
      *
-     * @param server
-     * @param numOfPort
+     * @param server server reference
+     * @param numOfPort server port number (socket side).
      */
     public ServerSideSocket(Server server, int numOfPort) {
-        isActive = true;
         this.server = server;
         this.numOfPort = numOfPort;
         executorService = Executors.newCachedThreadPool();
@@ -35,33 +42,23 @@ public class ServerSideSocket implements Runnable{
      * The accept() method remains blocked until a client tries to connect.
      * @param serverSocket
      */
-    public void newConnection(ServerSocket serverSocket) {
-        while (isActive) {
+    private void newConnection(ServerSocket serverSocket) {
+        while (true) {
             try {
                 SocketCSConnection clientSocket = new SocketCSConnection(server, serverSocket.accept());
                 executorService.submit(clientSocket);
             } catch (IOException e) {
-                System.err.println("An error has occurred while trying to establish a connection. Shutting down..." + e.getMessage());
+                Server.LOGGER.log(Level.SEVERE, "An error has occurred while trying to establish a connection. Shutting down...");
             }
         }
     }
 
 
     /**
-     * This method sets the server side socket connection as active/inactive.
-     * @param bool
+     * Shutdown active threads.
      */
-    public void setIsActive(boolean bool) {
-        this.isActive = bool;
-    }
-
-
-    /**
-     * IsActive getter.
-     * @return
-     */
-    public boolean getIsActive(){
-        return this.isActive;
+    public void shutdown(){
+        executorService.shutdownNow();
     }
 
 
@@ -72,12 +69,9 @@ public class ServerSideSocket implements Runnable{
     public void run() {
         try {
             ServerSocket serverSocket = new ServerSocket(numOfPort);
-            System.out.println("Selected port accepted, server side socket now initializing...");
-            System.out.println("Type EXIT to end connection.");
             newConnection(serverSocket);
-
         } catch(IOException e) {
-            System.err.println("An error has occurred while trying to establish a connection. Shutting down...");
+            Server.LOGGER.log(Level.SEVERE, "An error has occurred while trying to establish a connection. Shutting down...");
             System.exit(0);
         }
     }

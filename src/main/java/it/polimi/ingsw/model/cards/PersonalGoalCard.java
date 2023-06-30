@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.model.*;
 
 import java.util.Hashtable;
@@ -9,17 +10,16 @@ import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
 
 /**
  * Personal goal card
- * @author Nicolo' Gandini
  */
 public class PersonalGoalCard extends Card {
     /**
      * Grid that represent the bookshelf of the card
      */
-    private Cell[][] grid;
+    private final Cell[][] grid;
     /**
-     * Hashtable of Integer type used to transform the number of matches into points
+     * Hashtable of Integer type used to transform the number of matches into points.
      */
-    private Hashtable<Integer, Integer> points;
+    private final Hashtable<Integer, Integer> points;
 
     /**
      * Initialize the personal goal card grid with empty Cells and initialize the hashtable, used to get the points, based on the number of matches.
@@ -32,19 +32,18 @@ public class PersonalGoalCard extends Card {
 
     /**
      *
-     * @param x abscissa's coordinate of the grid.
-     * @param y ordinate's coordinate of the grid.
+     * @param row abscissa's coordinate of the grid.
+     * @param col ordinate's coordinate of the grid.
      * @return ObjectTile corresponding to the related x,y coordinate inside the grid.
      * @author Nicolo' Gandini
      */
-    public Tile getTile(int x, int y){
-        return grid[x][y].getTile();
+    public Tile getTile(int row, int col){
+        return grid[row][col].getTile();
     }
 
+
     /**
-     * Check the scheme to observe in order to get points.
-     * @param player actual player
-     * @return points achieved
+     * {@inheritDoc}
      */
     public Integer checkScheme(Player player) {
         int matches = 0;
@@ -57,5 +56,22 @@ public class PersonalGoalCard extends Card {
             }
         }
         return points.get(matches);
+    }
+
+
+    /**
+     * Prints the card on the CLI.
+     * {@inheritDoc}
+     */
+    public void printCard(){
+        Utils.printGrids(MAXBOOKSHELFROW, MAXBOOKSHELFCOL, grid);
+
+        System.out.println("\n This is how you will earn points with your Personal Goal Card: \n"+
+                            "\n" +
+                "+-------------------------+---+---+---+---+---+----+\n" +
+                "| Number of correct tiles | 1 | 2 | 3 | 4 | 5 | 6  |\n" +
+                "+-------------------------+---+---+---+---+---+----+\n" +
+                "| Earned points           | 1 | 2 | 4 | 6 | 9 | 12 |\n" +
+                "+-------------------------+---+---+---+---+---+----+\n");
     }
 }

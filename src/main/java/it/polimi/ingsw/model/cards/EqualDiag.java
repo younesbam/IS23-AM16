@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 
+import java.sql.SQLOutput;
+
 import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
 import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
 
@@ -15,33 +17,97 @@ import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
  *     there are two diagonals to check. Based on requirements, no preferred diagonal to check is specified.
  * </p>
  *
- * @author Nicolo' Gandini
  */
 public class EqualDiag extends CommonGoalCard {
 
+    /**
+     * Constructor.
+     * @param cardNumber
+     */
     public EqualDiag(int cardNumber) {
         super(cardNumber);
     }
 
     /**
-     * Check if the player respect the rules to obtain the card's points
+     * Checks whether the scheme is valid.
      * @param player actual player
-     * @return Integer which represent the points that the player can obtain. 0 can be returned
+     * @return points earned from the player.
      */
     public Integer checkScheme(Player player) {
         /*
-        Controllo che le celle in diagonale siano uguali e non BLANK. Siccome ci sono due diagonali da controllare
-        le controllo entrambe (non è specificato quale controllare).
-        Cerco il minimo tra MAXROW e MAXCOL perchè se cambia la dimensione della matrice potrebbe esserci un lato più lungo dell'altro.
+        Check if the cells on the diagonal are the same and not blank. Since there are 2 diagonals to check, we check
+        them both.
+        We look for the minimum between MAXROW and MAXCOL because if the grid changes, there could be one side longer
+        than the other.
          */
         Cell[][] grid = player.getBookShelf().getGrid();
+        boolean valid;
 
-        for(int i = 0; i<Math.min(MAXBOOKSHELFROW, MAXBOOKSHELFCOL); i++) {
-            if(grid[0][0].getTile() == Tile.BLANK || grid[0][0].getTile() != grid[i][i].getTile())
-                return 0;
-            if(grid[0][0].getTile() == Tile.BLANK || grid[1][0].getTile() != grid[i+1][i].getTile())
-                return 0;
+        // Check of the first diagonal, starting from the top left corner (moving from L to R).
+        valid = true;
+        for(int i = 0; i<Math.min(MAXBOOKSHELFROW, MAXBOOKSHELFCOL)-1; i++) {
+            if(grid[i][i].getTile() == Tile.BLANK || grid[i][i].getTile() != grid[i+1][i+1].getTile()){
+                valid = false;
+                break;
+            }
         }
-        return getScore();
+        if(valid)
+            return getScore();
+
+        // Invalid check. Check of the other diagonal, starting from cell [1,0] (moving from L to R).
+        valid = true;
+        for(int i = 0; i<Math.min(MAXBOOKSHELFROW, MAXBOOKSHELFCOL)-1; i++) {
+            if(grid[i+1][i].getTile() == Tile.BLANK || grid[i+1][i].getTile() != grid[i+2][i+1].getTile()) {
+                valid = false;
+                break;
+            }
+        }
+        if(valid)
+            return getScore();
+
+        // Check of the first diagonal, starting from the top right corner (moving from R to L).
+        valid = true;
+        int j=0;
+        for(int i=MAXBOOKSHELFCOL-1; i>0; i--) {
+            if(grid[j][i].getTile() == Tile.BLANK || grid[j][i].getTile() != grid[j+1][i-1].getTile()) {
+                valid = false;
+                break;
+            }
+            j++;
+        }
+        if(valid)
+            return getScore();
+
+        // Invalid check. Check of the other diagonal, starting from cell [1, MAXCOL-1] (moving from R to L).
+        valid = true;
+        j=1;
+        for(int i=MAXBOOKSHELFCOL-1; i>0; i--) {
+            if(grid[j][i].getTile() == Tile.BLANK || grid[j][i].getTile() != grid[j+1][i-1].getTile()) {
+                valid = false;
+                break;
+            }
+            j++;
+        }
+        if(valid)
+            return getScore();
+
+        return 0;
+    }
+
+
+    /**
+     * Prints the card on the CLI.
+     * {@inheritDoc}
+     */
+    public void printCard(){
+        System.out.println( "COMMON CARD NUMBER 11: \n"+
+                            "Five tiles of the same type forming a diagonal. \n" +
+                            "++++++++++++++++++++++++++++ \n" +
+                            "+  | = |                   + \n" +
+                            "+      | = |               + \n" +
+                            "+          | = |           + \n" +
+                            "+              | = |       + \n" +
+                            "+                  | = |   + \n"+
+                            "++++++++++++++++++++++++++++ \n");
     }
 }

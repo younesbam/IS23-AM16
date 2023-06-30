@@ -14,11 +14,10 @@ import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
  *     Represent card n.9.
  * </p>
  * Eight tiles in random order must me the same.
- * @author Nicolo' Gandini
  */
 public class EqualRand extends CommonGoalCard {
     /**
-     * Number of tiles that must me the same, in a random order
+     * Number of tiles that must be the same, in a random order
      */
     int eq;
 
@@ -32,22 +31,21 @@ public class EqualRand extends CommonGoalCard {
     }
 
     /**
-     * Check if the player respect the rules to obtain the card's points
+     * Checks whether the scheme is valid.
      * @param player actual player
-     * @return Integer which represent the points that the player can obtain. 0 can be returned
+     * @return points earned from the player.
      */
     public Integer checkScheme(Player player) {
         Cell[][] grid = player.getBookShelf().getGrid();
-        List<Tile> list = new ArrayList<>();  //Creo una lista per cercare le occorrenze
+        List<Tile> list = new ArrayList<>(); // List to look for occurrences.
 
         for(int j = 0; j< MAXBOOKSHELFROW; j++) {
             for (int i = 0; i< MAXBOOKSHELFCOL; i++) {
                 list.add(grid[j][i].getTile());
             }
         }
-        /*
-        Itero tutti i tipi delle tessere per cercare la frequenza con cui compaiono nella lista.
-         */
+
+        // Iteration on tile's type to find how many times they are found on the list.
         for(Tile type : Tile.values()){
             if(type != Tile.BLANK) {
                 int occurrences = Collections.frequency(list, type);
@@ -56,5 +54,21 @@ public class EqualRand extends CommonGoalCard {
             }
         }
         return 0;
+    }
+
+
+    /**
+     * Prints the card on the CLI.
+     * {@inheritDoc}
+     */
+    public void printCard(){
+        System.out.println( "COMMON CARD NUMBER 9: \n" +
+                            "Eight tiles of the same type. \n" +
+                            "There’s no restriction about the position of these tiles.\n" +
+                            "++++++++++++++++++++++++++++ \n"+
+                            "+      | = |   | = |       + \n" +
+                            "+  | = |   | = |   | = |   + \n" +
+                            "+  | = |   | = |   | = |   + \n" +
+                            "++++++++++++++++++++++++++++");
     }
 }

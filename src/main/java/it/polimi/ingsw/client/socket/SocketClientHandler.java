@@ -1,33 +1,57 @@
 package it.polimi.ingsw.client.socket;
 
 import it.polimi.ingsw.client.*;
-import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.communications.clientmessages.messages.Message;
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
 import it.polimi.ingsw.communications.clientmessages.messages.UsernameSetup;
 import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
-import it.polimi.ingsw.communications.serveranswers.ConnectionOutcome;
-import it.polimi.ingsw.communications.serveranswers.ErrorAnswer;
-import it.polimi.ingsw.communications.serveranswers.ErrorClassification;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
-import it.polimi.ingsw.exceptions.TakenUsername;
+import it.polimi.ingsw.communications.serveranswers.network.PingRequest;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.rmi.RemoteException;
-import java.util.logging.Level;
 
-public class SocketClientHandler extends Client {
-//    SocketClass socketClass;
-    AnswerListener answerListener;
-    private ObjectOutputStream outputStream;
+import static it.polimi.ingsw.Const.RED_COLOR;
+import static it.polimi.ingsw.Const.RESET_COLOR;
+
+/**
+ * Socket handler.
+ */
+public class SocketClientHandler extends Client implements Runnable {
+    /**
+     * Output stream.
+     */
+    private transient ObjectOutputStream outputStream;
+
+    /**
+     * Input stream.
+     */
+    private transient ObjectInputStream inputStream;
+
+    /**
+     * Socket representation.
+     */
+    private transient Socket socket;
+
+    /**
+     * Message receiver thread.
+     */
+    private transient Thread messageReceiver;
 
 
+    /**
+     * Class constructor.
+     * @param address IP address of the client.
+     * @param port of the client.
+     * @param username of the client.
+     * @param modelView representation of the model.
+     * @param actionHandler server answer handler.
+     * @throws RemoteException
+     */
     public SocketClientHandler(String address, int port, String username, ModelView modelView, ActionHandler actionHandler) throws RemoteException {
         super(address, port, username, modelView, actionHandler);
     }
@@ -38,13 +62,10 @@ public class SocketClientHandler extends Client {
      */
     public void connect(){
         try {
-            if(!setup(username, modelView, actionHandler)) {
-                Client.LOGGER.log(Level.SEVERE, "The entered IP/port doesn't match any active server or the server is not running. Please try again!");
-                CLI.main(null);
-            }
-            Client.LOGGER.log(Level.INFO, "Connection established!");
-        } catch (TakenUsername e) {
-            CLI.main(null);
+            setup();
+        } catch (IOException e) {
+            System.err.println("Connection establishment error! Check the parameters and try again. Shutting down...");
+            System.exit(-1);
         }
     }
 
@@ -53,112 +74,47 @@ public class SocketClientHandler extends Client {
      * {@inheritDoc}
      */
     @Override
-    public void disconnect() throws RemoteException {
-        answerListener.endConnection();
+    public void disconnect() {
+        messageReceiver.interrupt();
+        modelView.setConnected(false);
+        deactivatePingTimeout();
+        try{
+            inputStream.close();
+            socket.close();
+        }catch (IOException e){
+            System.out.println("Error occurred while closing connection.");
+        }
+        System.out.println("Ending connection...");
     }
 
 
     /**
-     * This method instantiates a new socket on client's side, establishing a connection with the server.
-     *
-     * @param username
-     * @param modelView
-     * @param actionHandler
-     * @return
-     * @throws TakenUsername
+     * Instantiates a new socket on client's side, establishing a connection with the server.
      */
-    public boolean setup(String username, ModelView modelView, ActionHandler actionHandler) throws TakenUsername{
+    private void setup() throws IOException {
         try {
-            System.out.println("Establishing a connection...");
-            Socket socket;
-            try {
-                socket = new Socket(getAddress(), getPort());
-            } catch (SocketException | UnknownHostException e) {
-                return false;
-            }
+            System.out.println("Establishing a connection...\n");
+            socket = new Socket(getAddress(), getPort());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
-            ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
+            inputStream = new ObjectInputStream(socket.getInputStream());
 
-            while (true) {
-                if (readInput(username, input)) {
-                    break;
-                }
-            }
+            sendToServer(new UsernameSetup(username));
 
             modelView.setConnected(true);
-            answerListener = new AnswerListener(socket, modelView, input, actionHandler);
-            Thread thread = new Thread(answerListener);
-            thread.start();
-            return true;
-
-        } catch (IOException e) {
-            System.err.println("Connection establishment error! Shutting down...");
+            messageReceiver = new Thread(this);
+            messageReceiver.start();
+        }catch(IllegalArgumentException e){
+            System.out.println(RED_COLOR + "Number of port out of bound. Please try again. Shutting down..." + RESET_COLOR);
             System.exit(0);
-            return false;
         }
     }
 
 
     /**
-     * This method calls the sendToServer method to send the username choice to the server. The server will then write an answer on its stream based on the usarname choice.
-     * Then the isUsernameFreeToUse() method is called to react to server's answer.
-     * @param username
-     * @param input
-     * @return
-     * @throws TakenUsername
-     */
-    private boolean readInput(String username, ObjectInputStream input) throws TakenUsername{
-        try {
-            sendToServer(new UsernameSetup(username));
-            /*
-            TODO:
-             Qui il client si blocca, secondo me perchè aspetta una risposta dal server troppo velocemente.
-             Da risolvere.
-             */
-            if (isUsernameFreeToUse(input.readObject())) {
-                return true;
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * This method reads server's answer to the player's username choice, and reacts by showing relevant messages on CLI.
-     * @param answerToUsername
-     * @return
-     * @throws TakenUsername
-     */
-    public boolean isUsernameFreeToUse(Object answerToUsername) throws TakenUsername{
-
-        SerializedAnswer answer = (SerializedAnswer) answerToUsername;
-
-        if (answer.getAnswer() instanceof ConnectionOutcome
-                && ((ConnectionOutcome) answer.getAnswer()).isConnected()) {
-            return true;
-        } else if (answer.getAnswer() instanceof ErrorAnswer) {
-            if (((ErrorAnswer) answer.getAnswer()).getError().equals(ErrorClassification.TAKENUSERNAME)) {
-                System.err.println("This nickname is already in use! Please choose one other.");
-                throw new TakenUsername();
-            } else if (((ErrorAnswer) answer.getAnswer()).getError().equals(ErrorClassification.MAXPLAYERSREACHED)) {
-                System.err.println(
-                        "This match is already full, please try again later!\nApplication will now close...");
-                System.exit(0);
-            }
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Method to put a client -> server communication on the socket output stream (and in doing so send it to the server).
-     * @param c
+     * {@inheritDoc}
      */
     public void sendToServer(Message c) {
-        SerializedMessage userInput = new SerializedMessage(c);
+        SerializedMessage userInput = new SerializedMessage(getID(), c);
         try {
             outputStream.reset();
             outputStream.writeObject(userInput);
@@ -171,17 +127,39 @@ public class SocketClientHandler extends Client {
 
 
     /**
-     * Method to put a client -> server action communication on the socket output stream (and in doing so send it to the server).
-     * @param a
+     * {@inheritDoc}
      */
     public void sendToServer(GameAction a) {
-        SerializedMessage userInput = new SerializedMessage(a);
+        SerializedMessage userInput = new SerializedMessage(getID(), a);
         try {
             outputStream.reset();
             outputStream.writeObject(userInput);
             outputStream.flush();
         } catch (IOException e) {
             System.err.println("Error during send process.");
+        }
+    }
+
+
+    /**
+     * Listen for new socket messages through the stream.
+     */
+    public void run() {
+        try {
+            while (modelView.isConnected()) {
+                SerializedAnswer serializedAnswer = (SerializedAnswer) inputStream.readObject();
+                // If the request is a ping request
+                if(serializedAnswer.getAnswer() instanceof PingRequest){
+                    activatePingTimeout();
+                } else {
+                    modelView.setAnswerFromServer(serializedAnswer.getAnswer());
+                    actionHandler.answerManager(modelView.getAnswerFromServer());
+                }
+            }
+        } catch (ClassNotFoundException | IOException e) {
+            System.out.println("A connection error occurred. Shutting down... ");
+            disconnect();
+            System.exit(0);
         }
     }
 

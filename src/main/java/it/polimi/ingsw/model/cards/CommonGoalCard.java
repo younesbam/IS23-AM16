@@ -2,29 +2,30 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
 /**
  * Represent a generic common card.
- * @author Nicolo' Gandini
  */
 public abstract class CommonGoalCard extends Card {
     /**
      * Score queue. This is based on the number of players in the game
      */
-    private Queue<Integer> score;
+    private LinkedList<Integer> score;
 
     public CommonGoalCard(int cardNumber){
         this.cardNumber = cardNumber;
-        score = new PriorityQueue<>();
+        score = new LinkedList<>();
     }
 
     /**
      * Get score points based on the number of players.
      * @return score points
      */
-    public Integer getScore(){
+    protected Integer getScore(){
         return score.poll();
     }
 
@@ -44,27 +45,21 @@ public abstract class CommonGoalCard extends Card {
      */
     public void placePoints(int playerNum){
         switch (playerNum) {
-            case 2:
+            case 2 -> {
                 score.add(8);
                 score.add(4);
-            case 3:
+            }
+            case 3 -> {
                 score.add(8);
                 score.add(6);
                 score.add(4);
-            case 4:
+            }
+            case 4 -> {
                 score.add(8);
                 score.add(6);
                 score.add(4);
                 score.add(2);
+            }
         }
     }
-
-
-    /**
-     * Check the scheme to observe in order to get points.
-     * @param player actual player
-     * @return points achieved
-     */
-    public abstract Integer checkScheme(Player player);
-
 }

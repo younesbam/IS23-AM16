@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common;
 
+import it.polimi.ingsw.MyShelfie;
 import it.polimi.ingsw.Utils;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Tile;
@@ -7,9 +8,11 @@ import it.polimi.ingsw.model.cards.PersonalGoalCard;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Set;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
 import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
 import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
@@ -17,7 +20,6 @@ import static it.polimi.ingsw.Const.MAXBOARDDIM;
 
 /**
  * Easily get what's inside the json file
- * @author Nicolo' Gandini
  */
 public class JSONParser {
     private final String fileName;
@@ -25,10 +27,10 @@ public class JSONParser {
 
     /**
      * Constructor
-     * @param fileName name of the file. If there are subdirectories, specifies them in the string. In case of subdirectories, don't add the initial "/"
+     * @param fileName name of the file. If there are subdirectories, specifies them in the string. In case of subdirectories, don't add the initial "/". All the files must be in "resources" directory
      */
     public JSONParser(String fileName) {
-        this.fileName = new String(fileName);
+        this.fileName = "/json/" + fileName;
     }
 
 
@@ -36,8 +38,8 @@ public class JSONParser {
      * Get all the personal goal card stored in the json file.
      * @return Set of PersonalGoalCard
      */
-    public Set<PersonalGoalCard> getPersonalGoalCards(){
-        Set<PersonalGoalCard> set = new HashSet<>();
+    public LinkedList<PersonalGoalCard> getPersonalGoalCards(){
+        LinkedList<PersonalGoalCard> list = new LinkedList<>();
         Hashtable<Integer, Integer> persCardPoints = new Hashtable<>();
         String jsonString = Utils.convertFileIntoString(fileName);
         // Get the json object from the string
@@ -78,9 +80,9 @@ public class JSONParser {
                 personalCardGrid[y][x].setTile(tile);
             }
             // Save all the retrieved information into the card
-            set.add(new PersonalGoalCard(descr, persCardPoints, personalCardGrid));
+            list.add(new PersonalGoalCard(descr, persCardPoints, personalCardGrid));
         }
-        return set;
+        return list;
     }
 
 
@@ -124,43 +126,6 @@ public class JSONParser {
         }
         return board;
     }
-
-
-    /**
-     * Get port of the server with RMI.
-     * @return server port
-     */
-    public int getServerRmiPort(){ return getJSONObject().getInt("RmiPort"); }
-
-
-    /**
-     * Get port of the server with socket.
-     * @return server port
-     */
-    public int getServerSocketPort(){ return getJSONObject().getInt("SocketPort"); }
-
-
-    /**
-     * Get port of the server.
-     * @return server IP
-     */
-    public String getServerIP(){ return getJSONObject().getString("IP"); }
-
-
-    /**
-     * Get server name.
-     * @return server name
-     */
-    public String getServerName(){ return getJSONObject().getString("ServerName"); }
-
-
-    /**
-     * Get timeout valure to close connection
-     * @return timeout value [ms]
-     */
-     public int getTimeout(){
-         return getJSONObject().getInt("timeout");
-     }
 
 
     /**

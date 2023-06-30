@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/14.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.CountDownController">
+   <children>
+      <ImageView fitHeight="608.0" fitWidth="1000.0" pickOnBounds="true">
+         <image>
+            <Image url="@../graphics/background.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="362.0" layoutY="208.0" text="Game will start in" textAlignment="CENTER" textFill="WHITE" visible="false">
+         <font>
+            <Font name="System Italic" size="31.0" />
+         </font>
+      </Label>
+      <Label fx:id="time" alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="202.0" prefHeight="204.0" prefWidth="766.0" text="STARTING" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="140.0" />
+         </font></Label>
+      <ImageView fitHeight="99.0" fitWidth="322.0" layoutX="321.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/Title.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

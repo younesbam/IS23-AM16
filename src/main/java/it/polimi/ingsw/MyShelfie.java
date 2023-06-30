@@ -12,7 +12,17 @@ import java.util.Scanner;
  */
 public class MyShelfie {
     public static void main(String[] args) {
-            System.out.println("Welcome to MyShelfie!\nSelect one of the following:");
+            System.out.println("Welcome to \n" +
+                                " ____    ____             ______   __             __     ___  _         \n" +
+                    "|_   \\  /   _|          .' ____ \\ [  |           [  |  .' ..](_)        \n" +
+                    "  |   \\/   |    _   __  | (___ \\_| | |--.  .---.  | | _| |_  __  .---.  \n" +
+                    "  | |\\  /| |   [ \\ [  ]  _.____`.  | .-. |/ /__\\\\ | |'-| |-'[  |/ /__\\\\ \n" +
+                    " _| |_\\/_| |_   \\ '/ /  | \\____) | | | | || \\__., | |  | |   | || \\__., \n" +
+                    "|_____||_____|[\\_:  /    \\______.'[___]|__]'.__.'[___][___] [___]'.__.' \n" +
+                    "               \\__.'                                                    ");
+            System.out.println("Authors: \n" +
+                    "Francesca Rosa Diz \nNicolò Gandini \nTommaso Baroni \nYounes Bamhaoud \n");
+            System.out.println("Select one of the following:");
             System.out.println("0. SERVER\n1. CLI CLIENT\n2. GUI CLIENT");
             System.out.print(">");
             Scanner scanner = new Scanner(System.in);

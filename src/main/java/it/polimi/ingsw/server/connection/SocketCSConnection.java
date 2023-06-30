@@ -1,8 +1,11 @@
 package it.polimi.ingsw.server.connection;
 
 import it.polimi.ingsw.communications.clientmessages.SerializedMessage;
+import it.polimi.ingsw.communications.clientmessages.messages.CreateGameMessage;
+import it.polimi.ingsw.communications.clientmessages.messages.JoinGameMessage;
+import it.polimi.ingsw.communications.clientmessages.messages.UsernameSetup;
 import it.polimi.ingsw.communications.serveranswers.*;
-import it.polimi.ingsw.server.GameHandler;
+import it.polimi.ingsw.communications.serveranswers.network.PingRequest;
 import it.polimi.ingsw.server.Server;
 
 import java.io.IOException;
@@ -11,18 +14,28 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 
+/**
+ * Represent Socket connection. Here all the methods useful for Socket technology.
+ */
 public class SocketCSConnection extends CSConnection implements Runnable{
-
+    /**
+     * Input stream.
+     */
     private ObjectInputStream inputStream;
+    /**
+     * Output stream.
+     */
     private ObjectOutputStream outputStream;
+    /**
+     * Socket reference.
+     */
     private final Socket socket;
-    private Integer ID;
 
 
     /**
      * Class constructor.
-     * @param server
-     * @param socket
+     * @param server server reference.
+     * @param socket socket class reference.
      */
     public SocketCSConnection(Server server, Socket socket) {
         this.socket = socket;
@@ -40,7 +53,7 @@ public class SocketCSConnection extends CSConnection implements Runnable{
 
     /**
      * Socket getter.
-     * @return
+     * @return socket
      */
     public Socket getSocket() {
         return socket;
@@ -49,17 +62,26 @@ public class SocketCSConnection extends CSConnection implements Runnable{
 
     /**
      * This method reads and reacts to client's messages, also deserializing them.
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws IOException error during stream reading.
+     * @throws ClassNotFoundException error during stream reading.
      */
-    public synchronized void readStreamFromClient() throws IOException, ClassNotFoundException {
+    public synchronized void readStreamFromClient() throws IOException, ClassNotFoundException, InterruptedException {
         SerializedMessage input = (SerializedMessage) inputStream.readObject();
-        onClientMessage(input);
+        if(input.message instanceof UsernameSetup){
+            server.tryToConnect(((UsernameSetup) input.message).getUsername(), this);
+        } else if(input.message instanceof CreateGameMessage){
+            server.createNewMatch(this, ((CreateGameMessage) input.message).getMatchName());
+        }
+        else if(input.message instanceof JoinGameMessage){
+            server.joinMatch(((JoinGameMessage) input.message).getMatchName(), this);
+        }else {
+            server.onClientMessage(input);
+        }
     }
 
 
     /**
-     * This method ends the player's connection.
+     * {@inheritDoc}
      */
     public void disconnect() {
         server.removePlayer(ID);
@@ -72,53 +94,21 @@ public class SocketCSConnection extends CSConnection implements Runnable{
 
 
     /**
-     * Method that sends a message to the server.
-     * @param answer to the client
+     * {@inheritDoc}
      */
     public void sendAnswerToClient(SerializedAnswer answer) {
-        if(alive){
+        if(this.alive){
             try {
                 outputStream.reset();
                 outputStream.writeObject(answer);
                 outputStream.flush();
             } catch (IOException e) {
-                Server.LOGGER.log(Level.SEVERE, "Failed to send message to the client: ", e);
-                disconnect();
+                this.alive = false;
+                Server.LOGGER.log(Level.WARNING, "Failed to send message to the client " + ID);
+                server.suspendClient(this);
             }
         }
     }
-
-//    /**
-//     * Override of superclass method, used to setup the number of players in the initial phase of the game.
-//     * @param request
-//     */
-//    public void setupPlayers(HowManyPlayersRequest request) {
-//
-//        SerializedAnswer answer = new SerializedAnswer();
-//        answer.setAnswer(request);
-//        sendAnswerToClient(answer);
-//
-//        while(true) {
-//            try {
-//                SerializedMessage input = (SerializedMessage) inputStream.readObject();
-//                Message messageFromClient = input.message;
-//                if(messageFromClient instanceof HowManyPlayersResponse) {
-//                    try {
-//                        int numOfPlayers = ((HowManyPlayersResponse) messageFromClient).getNumChoice();
-//                        server.setNumOfPlayers(numOfPlayers);
-//                        server.getGameHandlerByID(ID).setNumOfPlayers(numOfPlayers);
-//                        server.getVirtualPlayerByID(ID).send(new PersonalizedAnswer(false, "The number of players for this match has been chosen: it's a " + numOfPlayers + " players match!"));
-//                        break;
-//                    } catch(OutOfBoundException e) {
-//                        server.getVirtualPlayerByID(ID).send(new PersonalizedAnswer(true, "A number of players between 2 and 4 is required!"));
-//                    }
-//                }
-//            } catch (IOException | ClassNotFoundException e) {
-//                disconnect();
-//                System.err.println("Error occurred while setting-up the game mode: " + e.getMessage());
-//            }
-//        }
-//    }
 
 
     /**
@@ -126,7 +116,9 @@ public class SocketCSConnection extends CSConnection implements Runnable{
      */
     @Override
     public void ping() {
-        System.out.println("PING DA IMPLEMENTARE LATO SOCKET!!!!");
+        SerializedAnswer answer = new SerializedAnswer();
+        answer.setAnswer(new PingRequest());
+        sendAnswerToClient(answer);
     }
 
 
@@ -135,22 +127,10 @@ public class SocketCSConnection extends CSConnection implements Runnable{
      */
     public void run() {
         try {
-            while (isAlive()) {
+            while (alive)
                 readStreamFromClient();
-            }
-        } catch(IOException e) {
-            GameHandler game = server.getGameHandlerByID(ID);
-            String username = server.getUsernameByID(ID);
-            server.removePlayer(ID);
-            if (game.isAlreadyStarted()) {
-                game.endMatch(username);
-            }
-        } catch(ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch(IOException | ClassNotFoundException | InterruptedException e) {
+            Server.LOGGER.log(Level.WARNING, "Failed to read the stream from client " + ID);
         }
-        SerializedAnswer serverDown = new SerializedAnswer();
-        serverDown.setAnswer(new ErrorAnswer(ErrorClassification.SERVERISDOWN));
-        sendAnswerToClient(serverDown);
     }
-
 }

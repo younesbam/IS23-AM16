@@ -1,20 +1,38 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CLI;
-import it.polimi.ingsw.client.gui.GUI;
+import it.polimi.ingsw.client.gui.controllers.GUIManager;
 import it.polimi.ingsw.communications.serveranswers.*;
+import it.polimi.ingsw.communications.serveranswers.end.*;
+import it.polimi.ingsw.communications.serveranswers.errors.ErrorAnswer;
+import it.polimi.ingsw.communications.serveranswers.network.ConnectionOutcome;
+import it.polimi.ingsw.communications.serveranswers.info.PlayerNumberChosen;
+import it.polimi.ingsw.communications.serveranswers.info.*;
+import it.polimi.ingsw.communications.serveranswers.network.RestorePlayer;
+import it.polimi.ingsw.communications.serveranswers.requests.HowManyPlayersRequest;
+import it.polimi.ingsw.communications.serveranswers.requests.PickTilesRequest;
+import it.polimi.ingsw.communications.serveranswers.requests.PlaceTilesRequest;
+import it.polimi.ingsw.communications.serveranswers.start.ChairAssigned;
+import it.polimi.ingsw.communications.serveranswers.start.CountDown;
+import it.polimi.ingsw.communications.serveranswers.start.FirstPlayerSelected;
+import it.polimi.ingsw.communications.serveranswers.start.GameReady;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 
 /**
  * Handle the answer from the server.
  */
 public class ActionHandler {
-
     private final ModelView modelView;
     private CLI cli;
-    private GUI gui;
+    private GUIManager guiManager;
 
+    /**
+     * View's property change support. Used by CLI or GUI.
+     * @see CLI#propertyChange(PropertyChangeEvent)
+     * @see GUIManager#propertyChange(PropertyChangeEvent)
+     */
     private final PropertyChangeSupport pcsView = new PropertyChangeSupport(this);
 
 
@@ -31,40 +49,49 @@ public class ActionHandler {
 
     /**
      * Constructor in case of a GUI match
-     * @param gui GUI instance
+     * @param guiManager GUIManager instance
      * @param modelView modelView instance
      */
-    public ActionHandler(GUI gui, ModelView modelView) {
-        this.gui = gui;
+    public ActionHandler(GUIManager guiManager, ModelView modelView) {
+        this.guiManager = guiManager;
         this.modelView = modelView;
-        //view.addPropertyChangeListener(gui);
+        pcsView.addPropertyChangeListener(guiManager);
     }
 
 
     /**
-     * Manage the answer from the server
+     * Manage the answer from the server. Called after a successfully received message from Socket or RMI.
      * @param a Answer, received from the server
      */
     public void answerManager(Answer a){
+
+        if(a instanceof PlayerNumberChosen){
+            pcsView.firePropertyChange("PlayerNumberChosen", null, a.getAnswer());
+            return;
+        }
+
+        if(a instanceof ConnectionOutcome){
+            pcsView.firePropertyChange("ConnectionOutcome", null, a);
+            return;
+        }
 
         if(a instanceof HowManyPlayersRequest){
             pcsView.firePropertyChange("HowManyPlayersRequest", null, a.getAnswer());
             return;
         }
 
-        if(a instanceof SetupCompleted){
-            pcsView.firePropertyChange("SetupCompleted", null, a.getAnswer());
-            return;
-        }
-
         if(a instanceof UpdateTurn){
-            // modelView.setIsYourTurn(((UpdateTurn) a).getInputEnabled());  Non so se va qui o nella cli
-            pcsView.firePropertyChange("UpdateTurn", null, ((UpdateTurn) a).isYourTurn());
+            pcsView.firePropertyChange("EndOfYourTurn", null, a.getAnswer());
             return;
         }
 
-        if(a instanceof RequestTiles){
-            pcsView.firePropertyChange("RequestTiles", null, ((RequestTiles) a).getAnswer());
+        if(a instanceof ItsYourTurn){
+            pcsView.firePropertyChange("ItsYourTurn", null, a.getAnswer());
+            return;
+        }
+
+        if(a instanceof EndOfYourTurn){
+            pcsView.firePropertyChange("EndOfYourTurn", null, a.getAnswer());
             return;
         }
 
@@ -73,29 +100,93 @@ public class ActionHandler {
             return;
         }
 
-        if(a instanceof PersonalizedAnswer){
-            pcsView.firePropertyChange("PersonalizedAnswer", null, a.getAnswer());
+        if(a instanceof CustomAnswer){
+            pcsView.firePropertyChange("CustomAnswer", null, a.getAnswer());
             return;
         }
 
-        if(a instanceof RequestWhereToPlaceTiles){
-            pcsView.firePropertyChange("RequestToPlaceTiles", null, ((RequestWhereToPlaceTiles) a).getAnswer());
+        if(a instanceof PlaceTilesRequest){
+            pcsView.firePropertyChange("RequestToPlaceTiles", null, ((PlaceTilesRequest) a).getAnswer());
             return;
         }
 
-        if(a instanceof RequestWhatToDo){
-            pcsView.firePropertyChange("RequestWhatToDo", null, ((RequestWhatToDo) a).getAnswer());
+        if(a instanceof PickTilesRequest){
+            pcsView.firePropertyChange("PickTilesRequest", null, ((PickTilesRequest) a).getAnswer());
             return;
         }
 
-        if(a instanceof PlayerDisconnected){
-            if(gui != null) {
-            } else if(cli != null) {
-                cli.endGameMessage();
-            }
+        if(a instanceof BookShelfFilledWithTiles){
+            pcsView.firePropertyChange("BookShelfFilledWithTiles", null, ((BookShelfFilledWithTiles) a).getAnswer());
+            return;
+        }
+        if(a instanceof PrintCardsAnswer){
+            pcsView.firePropertyChange("PrintCardsAnswer", null, a);
+            return;
+        }
+
+        if(a instanceof ErrorAnswer){
+            pcsView.firePropertyChange("ErrorAnswer", null, a);
+            return;
+        }
+
+        if(a instanceof CountDown){
+            pcsView.firePropertyChange("CountDown", null, a);
+            return;
+        }
+
+        if(a instanceof FirstPlayerSelected){
+            pcsView.firePropertyChange("FirstPlayerSelected", null, ((FirstPlayerSelected) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof ChairAssigned){
+            pcsView.firePropertyChange("ChairAssigned", null, ((ChairAssigned) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof GameReady){
+            pcsView.firePropertyChange("GameReady", null, ((GameReady) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof UpdatePlayerPoints){
+            pcsView.firePropertyChange("UpdatePlayerPoints", null, ((UpdatePlayerPoints) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof BookShelfCompleted){
+            pcsView.firePropertyChange("BookShelfCompleted", null, ((BookShelfCompleted) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof PlayerFinalPoints){
+            pcsView.firePropertyChange("PlayerFinalPoints", null, ((PlayerFinalPoints) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof Ranking){
+            pcsView.firePropertyChange("Ranking", null, ((Ranking) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof PlayerFinalResult){
+            pcsView.firePropertyChange("PlayerFinalResult", null, ((PlayerFinalResult) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof RestorePlayer){
+            pcsView.firePropertyChange("RestorePlayer", null, ((RestorePlayer) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof PlayerDisconnection){
+            pcsView.firePropertyChange("PlayerDisconnection", null, ((PlayerDisconnection) a).getAnswer());
+            return;
+        }
+
+        if(a instanceof EndGame){
+            pcsView.firePropertyChange("EndGame", null, ((EndGame) a).getAnswer());
             return;
         }
     }
-
-
 }

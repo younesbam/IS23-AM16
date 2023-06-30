@@ -4,13 +4,16 @@ import it.polimi.ingsw.common.JSONParser;
 
 /**
  * This is the board for 4 players.
- * @author Francesca Rosa Diz
  */
-public class Board4Players extends Board implements IBoard {
+public class Board4Players extends Board{
+
+    /**
+     * Constructor for the board.
+     */
     public Board4Players() {
         super();
 
-        JSONParser jsonParser = new JSONParser("json/initSetup.json");
+        JSONParser jsonParser = new JSONParser("initSetup.json");
         this.grid = jsonParser.getBoard(4);
     }
 

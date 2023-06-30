@@ -1,8 +1,6 @@
 package it.polimi.ingsw.server.connection;
 
 import it.polimi.ingsw.client.rmi.IRMIClient;
-import it.polimi.ingsw.communications.serveranswers.Answer;
-import it.polimi.ingsw.communications.serveranswers.HowManyPlayersRequest;
 import it.polimi.ingsw.communications.serveranswers.SerializedAnswer;
 import it.polimi.ingsw.server.Server;
 
@@ -10,8 +8,7 @@ import java.rmi.RemoteException;
 import java.util.logging.Level;
 
 /**
- * Represent RMI connection to a client
- * @author Nicolo' Gandini
+ * Represent RMI connection. Here all the methods useful for RMI technology.
  */
 public class RMICSConnection extends CSConnection {
     /**
@@ -19,6 +16,11 @@ public class RMICSConnection extends CSConnection {
      */
     private final IRMIClient client;
 
+    /**
+     * Constructor.
+     * @param server server reference.
+     * @param client client reference.
+     */
     public RMICSConnection(Server server, IRMIClient client) {
         this.server = server;
         this.client = client;
@@ -30,13 +32,16 @@ public class RMICSConnection extends CSConnection {
      * {@inheritDoc}
      */
     @Override
-    public void ping() {
-        try {
-            client.ping();
-        }catch (RemoteException e){
-            Server.LOGGER.log(Level.WARNING, "Disconnect directive. No response from client", e);
-            disconnect();
+    public void ping(){
+        if(this.alive){
+            try{
+                client.ping();
+            }catch (RemoteException e){
+                this.alive = false;
+                server.suspendClient(this);
+            }
         }
+
     }
 
 
@@ -46,15 +51,19 @@ public class RMICSConnection extends CSConnection {
     @Override
     public void disconnect() {
         if(this.alive){
+            this.alive = false;
             try {
                 client.disconnectMe();
-                Server.LOGGER.log(Level.INFO, "Client successfully disconnected");
+                Server.LOGGER.log(Level.INFO, "Client " + ID + " successfully disconnected");
             }catch (RemoteException e){
-                Server.LOGGER.log(Level.WARNING, "Failed to disconnect the client", e);
+                Server.LOGGER.log(Level.WARNING, "Failed to disconnect the client " + ID);
             }
-            this.alive = false;
-            server.removePlayer(getID());
         }
+        if(getID() != null){
+            server.removePlayer(getID());
+            return;
+        }
+        Server.LOGGER.log(Level.WARNING, "Client " + ID + " never registered in the server");
     }
 
 
@@ -62,32 +71,20 @@ public class RMICSConnection extends CSConnection {
      * {@inheritDoc}
      */
     public void sendAnswerToClient(SerializedAnswer answer) {
-        try{
-            client.onServerAnswer(answer);
-        } catch (RemoteException e) {
-            Server.LOGGER.log(Level.SEVERE, "Failed to send message to the client: ", e);
-            disconnect();
+        if(this.alive){
+            try{
+                client.onServerAnswer(answer);
+            } catch (RemoteException e) {
+                Server.LOGGER.log(Level.WARNING, "Failed to send message to the client " + ID);
+            }
         }
     }
 
-//    @Override
-//    public void setupPlayers(HowManyPlayersRequest request) {
-//        SerializedAnswer answer = new SerializedAnswer();
-//        answer.setAnswer(request);
-//        /*
-//        Send the answer to the client
-//         */
-//        try{
-//            sendAnswerToClient(answer);
-//        } catch (RemoteException e){
-//            Server.LOGGER.log(Level.SEVERE, "Failed to request the client the number of players in the game", e);
-//            disconnect();
-//        }
-//
-//        /*
-//        Wait for the client response. The server must have the numbers of players.
-//         */
-//
-//
-//    }
+    /**
+     * Get client reference.
+     * @return client reference interface.
+     */
+    public IRMIClient getClient() {
+        return client;
+    }
 }

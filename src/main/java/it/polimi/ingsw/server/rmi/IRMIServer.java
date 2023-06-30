@@ -10,28 +10,28 @@ import java.rmi.RemoteException;
  * Interface used to communicate with the server from the client. This is what the server shows to the clients.
  * <p>
  * All these methods are used by the client.
- * @author Nicolo' Gandini
  */
 public interface IRMIServer extends Remote {
     /**
      * Connect the client to the server.
      * @param username name of the player.
-     * @throws RemoteException
+     * @param client client reference
+     * @throws RemoteException error during communication.
      */
-    public void login(String username, IRMIClient client) throws RemoteException;
+    void login(String username, IRMIClient client) throws RemoteException;
 
 
     /**
      * Disconnect the client from the server.
-     * @throws RemoteException
+     * @throws RemoteException error during communication.
      */
-    public void logout() throws RemoteException;
+    void logout(IRMIClient client) throws RemoteException;
 
 
     /**
      * Send message to the server.
      * @param message to send to the server.
-     * @throws RemoteException
+     * @throws RemoteException error during communication.
      */
-    public void sendMessageToServer(SerializedMessage message) throws RemoteException;
+    void sendMessageToServer(IRMIClient client, SerializedMessage message) throws RemoteException, InterruptedException;
 }

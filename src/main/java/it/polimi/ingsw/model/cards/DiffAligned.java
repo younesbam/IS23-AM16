@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
 import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
 
@@ -10,7 +13,6 @@ import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
  *     Represent card n.2,6.
  * </p>
  * Different cards in a row/column
- * @author Nicolo' Gandini
  */
 public class DiffAligned extends CommonGoalCard {
     /**
@@ -29,80 +31,106 @@ public class DiffAligned extends CommonGoalCard {
      */
     public DiffAligned(int cardNumber) {
         super(cardNumber);
-        switch(cardNumber){
-            case 2:
+        switch (cardNumber) {
+            case 2 -> {
                 repetition = 2;
                 dir = Direction.N;
-            case 6:
+            }
+            case 6 -> {
                 repetition = 2;
                 dir = Direction.E;
-            default:
+            }
+            default -> {
                 repetition = -1;
                 dir = Direction.N;
+            }
         }
     }
 
     /**
-     * Check if the player respect the rules to obtain the card's points
+     * Checks whether the scheme is valid.
      * @param player actual player
-     * @return Integer which represent the points that the player can obtain. 0 can be returned
+     * @return points earned from the player.
      */
     public Integer checkScheme(Player player) {
-        int actualRepetition = 0;  // Rappresenta il numero di ripetizioni dello stesso algoritmo. Sulle carte indicate come "x2", "x3"...
-        int k = 0;  // Variabile incrementale che controlla le tessere sulla stessa riga/colonna.
+        int actualRepetition = 0; // Number of repetitions of the same algorithm. On cards as "x2", "x3", ...
         final int maxI;
         final int maxJ;
         Cell[][] grid = player.getBookShelf().getGrid();
-        Tile tileType;
-        Tile nextTileType;
 
         /*
-        Le variabili maxI e maxJ servono per dare un limite alla tabella. La variabile j è quella che incrementa sempre
-        per controllare se le tessere sono uguali/deverse o no. La variabile i è quella che fa spostare di riga/colonna.
-        Se devo controllare in verticale che le tessere siano diverse devo limitare la variaible j come MAXROW-1.
-        Se devo controllare in orizzontale che le tessere siano diverse devo limitare la variaible j come MAXCOL-1.
+        Variables maxI and maxJ are used to give boundaries to the table. j controls whether tiles are equals or not.
+        i lets you change row or column.
+        To check vertically: j must be limited to MAXROW-1.
+        To check horizontally: j must be limited to MAXCOL-1.
          */
         if(dir == Direction.N || dir == Direction.S){
-            maxJ = MAXBOOKSHELFROW -1;
+            maxJ = MAXBOOKSHELFROW;
             maxI = MAXBOOKSHELFCOL;
         } else {
-            maxJ = MAXBOOKSHELFCOL -1;
+            maxJ = MAXBOOKSHELFCOL;
             maxI = MAXBOOKSHELFROW;
         }
-        for(int i=0; i<maxI; i++){
-            for(int j=0; j<maxJ; j++){
-                /*
-                Devo invertire la variabile j per i controlli, in base a se sto controllando sulla riga o colonna.
-                 */
-                if(dir == Direction.N || dir == Direction.S)
-                    tileType = grid[j][i].getTile();
-                else
-                    tileType = grid[i][j].getTile();
-                k = j+1;
-                /*
-                Uso la variaible k per controllare le tessere successive alla tessera di riferimento (controllata da j)
-                 */
-                while(k<maxJ){
-                    if(dir == Direction.N || dir == Direction.S)
-                        nextTileType = grid[k][i].getTile();
-                    else
-                        nextTileType = grid[i][k].getTile();
 
-                    if(tileType == nextTileType || tileType== Tile.BLANK || nextTileType== Tile.BLANK)
-                        break;
-                    /*
-                    Se le tessere sono tutte diverse, vuol dire che sono arrivato in fondo, sia con j che con k.
-                    j arriverà alla riga o colonna massima -1, k invece deve arrivare in fondo.
-                     */
-                    if(j==maxJ-2 && k==maxJ-1)
-                        actualRepetition++;
-                    k++;
-                }
+        List<Tile> list = new ArrayList<>();
+        for(int i=0; i<maxI; i++){
+            list.clear();
+            for(int j=0; j<maxJ; j++){
+                if(dir == Direction.N || dir == Direction.S)
+                    list.add(grid[j][i].getTile()); // Vertically
+                else
+                    list.add(grid[i][j].getTile()); // Horizontally
             }
+            if(diffTiles(list))
+                actualRepetition++;
             if(actualRepetition >= repetition){
                 return getScore();
             }
         }
         return 0;
+    }
+
+    /**
+     * Check whether all the tiles are different.
+     * @param list of tiles contained in one row/column.
+     * @return true if all tiles are different.
+     */
+    private boolean diffTiles(List<Tile> list){
+        for(int i=0; i<list.size()-1; i++){
+            for(int j=i+1; j<list.size(); j++)
+                if(list.get(i).equals(list.get(j)) || list.contains(Tile.BLANK))
+                    return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * Prints the card on the CLI.
+     * {@inheritDoc}
+     */
+    public void printCard(){
+        switch (cardNumber) {
+            case 2 -> {
+                System.out.println( "COMMON CARD NUMBER 2:  \n"+
+                                    "Two columns each formed by 6 different types of tiles.\n"+
+                                    "++++++++++++++++++ \n" +
+                                    "+      | ≠ |     + \n" +
+                                    "+      | ≠ |     + \n" +
+                                    "+      | ≠ | x2  + \n" +
+                                    "+      | ≠ |     + \n" +
+                                    "+      | ≠ |     + \n" +
+                                    "+      | ≠ |     + \n" +
+                                    "++++++++++++++++++ \n");
+            }
+            case 6 -> {
+                System.out.println( "COMMON CARD NUMBER 6:  \n"+
+                                    "Two lines each formed by 5 different types of tiles. \n" +
+                                    "One line can show the same or a different combination of the other line. \n"+
+                                    "++++++++++++++++++++++++++++++++ \n" +
+                                    "+   | ≠ | ≠ | ≠ | ≠ | ≠ | x2   + \n" +
+                                    "++++++++++++++++++++++++++++++++ \n");
+            }
+        }
     }
 }

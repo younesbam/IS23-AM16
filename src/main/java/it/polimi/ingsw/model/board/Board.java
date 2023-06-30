@@ -1,57 +1,69 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.Utils;
+import it.polimi.ingsw.common.Coordinate;
+import it.polimi.ingsw.common.exceptions.CellNotEmptyException;
+import it.polimi.ingsw.common.exceptions.WrongCoordinateException;
+import it.polimi.ingsw.common.exceptions.WrongTilesException;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Tile;
 
+import java.io.Serializable;
+import java.security.InvalidParameterException;
 import java.util.*;
 
-import static it.polimi.ingsw.Const.MAXBOARDDIM;
-import static it.polimi.ingsw.Const.MAXTILES;
+import static it.polimi.ingsw.Const.*;
+import static it.polimi.ingsw.Const.RESET_COLOR;
+import static java.util.Collections.shuffle;
 
 /**
  * This class represents the game's board.
- * @author Francesca Rosa Diz.
  */
-public abstract class Board {
+public abstract class Board implements Serializable, IBoard {
 
-     /*This variable represents the board.
-     The board is composed by cells.*/
+    /**
+     * This variable represents the board.
+     * The board is composed by cells.
+     */
     protected Cell[][] grid = new Cell[MAXBOARDDIM][MAXBOARDDIM];
 
-    // Set of all the tiles.
-    private Set<Tile> initTileSet;
-
-    // Queue of the tiles.
-    private Queue<Tile> tiles;
+    /**
+     * List of all tiles.
+     */
+    private final LinkedList<Tile> initTileList;
 
     /**
      * Constructor of the board, used by the subclasses.
      */
-    public Board(){
+    public Board() {
         /*
         Creation of the tile queue
          */
-        initTileSet = new HashSet<>();
+        initTileList = new LinkedList<>();
         for (Tile tile : Tile.values())
-            for (int i=0; i<MAXTILES; i++)
-                initTileSet.add(tile);
-        tiles = new PriorityQueue<>(initTileSet);
+            if (!tile.name().equals("BLANK") && !tile.name().equals("UNAVAILABLE")) {
+                for (int i = 0; i < MAXTILES; i++){
+                    initTileList.add(tile);
+                }
+            }
+
+        shuffle(initTileList);
     }
 
 
     /**
      * This method refills the board when needed (if all the tiles are isolated or if the board is empty).
      */
-    public void updateBoard(){
+    public void updateBoard() {
 
         // If there is no need to refill, the board isn't updated.
 
-        if(!refillNeeded())
+        if (!refillNeeded())
             return;
 
-        for (int i=0; i<MAXBOARDDIM; i++)
-            for (int j = 0; j< MAXBOARDDIM; j++)
-                if(grid[i][j].getTile() == Tile.BLANK)
+        for (int i = 0; i < MAXBOARDDIM; i++)
+            for (int j = 0; j < MAXBOARDDIM; j++)
+                if (grid[i][j].getTile() == Tile.BLANK)
                     grid[i][j].setTile(insertTile());
     }
 
@@ -59,11 +71,10 @@ public abstract class Board {
      * This method checks if the board must be refilled (if the tiles in the board are isolated).
      * @return true if the board must be refilled.
      */
-    public boolean refillNeeded() {
-
+    private boolean refillNeeded() {
         // If there is at least one cell pickable there is no need to refill.
-        for (int i=0; i<MAXBOARDDIM; i++)
-            for (int j = 0; j< MAXBOARDDIM; j++)
+        for (int i = 0; i < MAXBOARDDIM; i++)
+            for (int j = 0; j < MAXBOARDDIM; j++)
                 if (isPickable(i, j))
                     return false;
 
@@ -71,64 +82,102 @@ public abstract class Board {
     }
 
     /**
+     * Restore tiles on the board following a picking action and disconnection of the player.
+     * @param map containing tiles picked and coordinate of where tiles were picked.
+     * @throws WrongTilesException wrong tiles passed.
+     * @throws WrongCoordinateException wrong coordinates passed.
+     * @throws CellNotEmptyException wrong cell selected. The cell is not empty.
+     */
+    public void restoreTiles(Map<Tile, Coordinate> map) throws WrongTilesException, WrongCoordinateException, CellNotEmptyException {
+        Tile tile;
+        int row, col;
+        // Iterate all over the map for preliminary checks
+        for (Map.Entry<Tile, Coordinate> entry : map.entrySet()) {
+            row = entry.getValue().getRow();
+            col = entry.getValue().getCol();
+            tile = entry.getKey();
+
+            if(tile == Tile.BLANK || tile == Tile.UNAVAILABLE) throw new WrongTilesException();
+            if(row >= MAXBOARDDIM || row < 0 || col >= MAXBOARDDIM || col < 0) throw new WrongCoordinateException();
+            if(grid[row][col].getTile() != Tile.BLANK) throw new CellNotEmptyException();
+        }
+        // Iterate all over the map to restore tiles
+        for (Map.Entry<Tile, Coordinate> entry : map.entrySet()) {
+            row = entry.getValue().getRow();
+            col = entry.getValue().getCol();
+            tile = entry.getKey();
+
+            grid[row][col].setTile(tile);
+        }
+    }
+
+    /**
      * This method checks is a tile can be picked or not (so if it has at least one free side and at least one
      * occupied side).
-     * @param x x coordinate of the cell to check.
-     * @param y y coordinate of the cell to check.
+     * Check also the validity of the parameters
+     * @param row row coordinate of the cell to check.
+     * @param col col coordinate of the cell to check.
      * @return true if the tile can be picked.
      */
-    public boolean isPickable(int x, int y) {
+    public boolean isPickable(int row, int col) throws InvalidParameterException {
+        // Exception if coordinates are wrong
+        if(row > MAXBOARDDIM-1 || col > MAXBOARDDIM-1 || row < 0 || col < 0) throw new InvalidParameterException();
 
-        // These variables represent the adjacent cells.
-        int north = y-1;
-        int east = x+1;
-        int south = y+1;
-        int west = x-1;
+        if(!grid[row][col].getTile().name().equals("BLANK") && !grid[row][col].getTile().name().equals("UNAVAILABLE")) {
 
-        // Number of free and occupied cells.
-        int free = 0;
-        int occupied = 0;
+            // These variables represent the adjacent cells.
+            int west = col - 1;
+            int south = row + 1;
+            int east = col + 1;
+            int north = row - 1;
 
-        if(north>=0){
-            if (grid[x][north].getTile() == Tile.BLANK || grid[x][north].getTile() == Tile.UNAVAILABLE)
-                free++;
-            else
-                occupied++;
+
+            // Number of free and occupied cells.
+            int free = 0;
+            int occupied = 0;
+
+            if (west >= 0) {
+                if (grid[row][west].getTile() == Tile.BLANK || grid[row][west].getTile() == Tile.UNAVAILABLE)
+                    free++;
+                else
+                    occupied++;
+            }
+            if (east < MAXBOARDDIM) {
+                if (grid[row][east].getTile() == Tile.BLANK || grid[row][east].getTile() == Tile.UNAVAILABLE)
+                    free++;
+                else
+                    occupied++;
+            }
+            if (south < MAXBOARDDIM) {
+                if (grid[south][col].getTile() == Tile.BLANK || grid[south][col].getTile() == Tile.UNAVAILABLE)
+                    free++;
+                else
+                    occupied++;
+            }
+            if (north >= 0) {
+                if (grid[north][col].getTile() == Tile.BLANK || grid[north][col].getTile() == Tile.UNAVAILABLE)
+                    free++;
+                else
+                    occupied++;
+            }
+
+            return occupied > 0 && free > 0;
         }
-        if(south<MAXBOARDDIM){
-            if (grid[x][south].getTile() == Tile.BLANK || grid[x][south].getTile() == Tile.UNAVAILABLE)
-                free++;
-            else
-                occupied++;
-        }
-        if(east<MAXBOARDDIM) {
-            if (grid[east][y].getTile() == Tile.BLANK || grid[east][y].getTile() == Tile.UNAVAILABLE)
-                free++;
-            else
-                occupied++;
-        }
-        if(west>=0) {
-            if (grid[west][y].getTile() == Tile.BLANK || grid[west][y].getTile() == Tile.UNAVAILABLE)
-                free++;
-            else
-                occupied++;
-        }
-
-        return occupied > 0 && free > 0;
-
+        else
+            return false;
     }
 
 
     /**
      * This method removes the tile the player has chosen.
-     * @param x x coordinate of the tile the player has chosen.
-     * @param y y coordinate of the tile the player has chosen.
+     * @param row row of the tile the player has chosen.
+     * @param col column of the tile the player has chosen.
      * @return the tile the player has picked.
      */
-    public Tile removeTile(int x, int y) {
-        Tile tile = grid[x][y].getTile();
+    public Tile removeTile(int row, int col) {
+        Tile tile = grid[row][col].getTile();
 
-        grid[x][y].setTile(Tile.BLANK);
+        grid[row][col].setTile(Tile.BLANK);
 
         return tile;
     }
@@ -138,31 +187,38 @@ public abstract class Board {
      * @return An enumeration of type Tile.
      */
     private Tile insertTile() {
-        return tiles.poll();
+        return initTileList.poll();
     }
 
 
     /**
      * This method returns the tile at the requested coordinates.
-     * @param x
-     * @param y
+     * @param row row
+     * @param col column
      * @return
      */
-    public Tile getTile(int x, int y){
-        return grid[x][y].getTile();
-    }
+    public Tile getTile(int row, int col) {return grid[row][col].getTile();}
 
 
     /**
      * Method used to print the board.
      */
-    public void printBoard(){
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                System.out.print(grid[i][j].getTile().name() + " ");
-            }
-            System.out.println();
-        }
+    public void printBoard() {
+        Utils.printGrids(MAXBOARDDIM, MAXBOARDDIM, grid);
     }
 
+    /**
+     * Method used to get the board for GUI.
+     * @return array of strings.
+     */
+    public String[][] getBoardforGUI() {
+        String[][] board = new String[MAXBOARDDIM][MAXBOARDDIM];
+        for (int i = 0; i < MAXBOARDDIM; i++) {
+            for (int j = 0; j < MAXBOARDDIM; j++) {
+                board[i][j] = grid[i][j].getTile().name();
+            }
+        }
+        return board;
+    }
 }
+

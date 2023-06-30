@@ -7,6 +7,7 @@ import it.polimi.ingsw.client.rmi.RMIClientHandler;
 import it.polimi.ingsw.client.socket.SocketClientHandler;
 import it.polimi.ingsw.common.ConnectionType;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.rmi.NotBoundException;
@@ -14,13 +15,13 @@ import java.rmi.RemoteException;
 import java.util.logging.Level;
 
 /**
- * Manage the game. Listen for messages also.
+ * Manage the game. Listen for messages also. Superclass representing a generic user interface and implemented by {@link it.polimi.ingsw.client.cli.CLI CLI} or {@link it.polimi.ingsw.client.gui.GUI GUI}.
  */
 public abstract class UI implements PropertyChangeListener {
     /**
      * Generic client, RMI or socket.
      */
-    Client client;
+    protected Client client;
 
     /**
      * Client's action handler.
@@ -33,20 +34,15 @@ public abstract class UI implements PropertyChangeListener {
     protected ModelView modelView;
 
     /**
-     * Property change support.
+     * Dispatcher's property change support.
+     * @see Dispatcher#propertyChange(PropertyChangeEvent)
      */
     protected PropertyChangeSupport pcsDispatcher;
 
     /**
-     * Game active
+     * Game active.
      */
     private boolean activeGame;
-
-    /**
-     * Setup mode. Represent the initial game phase. This allows the CLI to respond to the server without sending him commands.
-     */
-    private boolean setupMode;
-    protected int tmp = 0;
 
 
     /**
@@ -55,12 +51,12 @@ public abstract class UI implements PropertyChangeListener {
      * @param address of the server
      * @param port of the server
      * @param username of the player
-     * @param disconnectionListener
-     * @throws Exception
+     * @throws RemoteException exception thrown by RMI methods.
+     * @throws NotBoundException thrown by {@link java.rmi.registry.Registry#lookup(String) lookup} method.
      */
     public void connectToServer(ConnectionType connectionType, String address, int port, String username) throws RemoteException, NotBoundException {
         /*
-        Connect to server based on tpye of connection.
+        Connect to server based on type of connection.
          */
         if (connectionType == ConnectionType.SOCKET) {
             client = new SocketClientHandler(address, port, username, modelView, actionHandler);
@@ -77,7 +73,10 @@ public abstract class UI implements PropertyChangeListener {
          */
         pcsDispatcher.addPropertyChangeListener(new Dispatcher(modelView, client));
 
+        client.activateConnectionTimeout();  // Activate a timer to close the client if it can't connect to server.
         client.connect();
+        client.deactivateConnectionTimeout();  // Deactivate the timer due to successfully connection.
+
     }
 
 
@@ -85,32 +84,28 @@ public abstract class UI implements PropertyChangeListener {
      * Disconnect from server.
      */
     public void disconnectFromServer() {
-        int status;
         try {
             client.disconnect();
             Client.LOGGER.log(Level.INFO, "Client successfully disconnected from the server");
-            status = 0;
         } catch (RemoteException e) {
             Client.LOGGER.log(Level.WARNING, "Error while properly disconnect the server. Client will be shut down in any case");
-            status = -1;
         }
-        System.exit(status);
     }
 
-
+    /**
+     * Get active game status.
+     * @return active game status.
+     */
     public synchronized boolean isActiveGame() {
         return activeGame;
     }
 
+    /**
+     * Set active game bit.
+     * @param activeGame Boolean to set the status of the game
+     */
     public synchronized void setActiveGame(boolean activeGame) {
         this.activeGame = activeGame;
     }
 
-    public synchronized boolean isSetupMode() {
-        return setupMode;
-    }
-
-    public synchronized void setSetupMode(boolean setupMode) {
-        this.setupMode = setupMode;
-    }
 }
