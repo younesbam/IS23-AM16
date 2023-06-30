@@ -1,12 +1,6 @@
 package it.polimi.ingsw.client.gui.tiles;
 
-import it.polimi.ingsw.client.gui.controllers.MainSceneController;
 import javafx.scene.Cursor;
-import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -39,23 +33,22 @@ public class Tile extends Rectangle{
         setOnMouseEntered(mouseEvent -> setCursor(Cursor.HAND));
     }
 
-
     /**
-     * Method setPosition sets tile's cell.
+     * Returns the x-coordinate (row) of the tile.
      *
-     * @param x of type int - the row of the cell.
-     * @param y of type int - the column of the cell.
+     * @return The abscissa of the tile.
      */
-    public void setPosition(int x, int y) {
-        this.abscissa = x;
-        this.ordinate = y;
-    }
-
     public int getAbscissa() {
         return abscissa;
     }
 
+    /**
+     * Returns the y-coordinate (column) of the tile.
+     *
+     * @return The ordinate of the tile.
+     */
     public int getOrdinate() {
         return ordinate;
     }
+
 }
