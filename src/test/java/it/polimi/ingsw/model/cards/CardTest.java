@@ -5,31 +5,32 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Tile;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * CardTest class instantiates the Card class to run tests on all Cards.
+ */
 class CardTest {
-    /*
-    List of picked tiles.
-     */
-    List<Tile> list = new ArrayList<>();
-    /*
-    Player.
-     */
-    Player player;
-    /*
-    Common goal card.
-     */
-    CommonGoalCard commonCard;
+    List<Tile> list = new ArrayList<>();    // List of picked tiles.
+    Player player;  // Player.
+    CommonGoalCard commonCard;  // Common goal card.
 
     /*
-    ATTENTION: le carte all'interno del file json devono essere inserite in ordine di caduta.
-    Ovvero, si parte dall'indice più alto che sta in basso a quello più basso che sta in alto.
-    Questo permette di usare il metodo placeTiles per inserire le tessere lette da json.
+    WARNING: cards in the json file must be inserted as they are inserted into the bookshelf:
+    the highest index is the one in the bottom, while the lowest index is on the top.
+    This lets us use method placeTiles() to insert the tiles contained in the json file.
+     */
+
+    /**
+     * This method takes the schemes to check from file .json.
+     * @param cardID number of the selected card.
+     * @return array containing tests for the selected card.
      */
     JSONArray getBookshelfFromJSON(int cardID) {
-        String jsonString = Utils.convertFileIntoString("json/testCommonCard.json");
+        String jsonString = Utils.convertFileIntoString("/json/testCommonCard.json");
         // Get the json object from the string
         JSONObject obj = new JSONObject(jsonString);
         // Get cardTests array

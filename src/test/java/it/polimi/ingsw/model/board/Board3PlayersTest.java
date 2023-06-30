@@ -1,21 +1,34 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.Tile;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Board3PlayersTest class tests the Board class when it's filled for 3 players.
+ * @see Board
+ * @see Board3PlayersTest
+ */
 class Board3PlayersTest extends BoardTest{
     Board3Players b = new Board3Players();
 
-    @Test
-    void board3Test(){
-        // The board has just been created, so it's empty.
-        //assertTrue(b.refillNeeded());
-
-        // Filling the board.
+    /**
+     * This method instantiates the board to run tests.
+     */
+    @BeforeEach
+    void init(){
         b.updateBoard();
+    }
 
+    /**
+     * This method tests method isPickable() in Board class.
+     * @see Board#isPickable(int, int)
+     */
+    @Test
+    void isPickableTest(){
         // Testing the pickability of some cells.
         assertTrue(b.isPickable(0,3));
         assertTrue(b.isPickable(1,3));
@@ -41,7 +54,14 @@ class Board3PlayersTest extends BoardTest{
         assertFalse(b.isPickable(5,2));     // Hasn't free sides.
         assertFalse(b.isPickable(3,6));     // Hasn't free sides.
         assertFalse(b.isPickable(2,4));     // Hasn't free sides.
+    }
 
+    /**
+     * This method tests method removeTile() in Board class.
+     * @see Board#removeTile(int, int)
+     */
+    @Test
+    void removeTileTest(){
         // The board is filled randomly, so we just have to check that the method doesn't return blank or unavailable.
         assertNotEquals(Tile.BLANK, b.removeTile(0,3));
         assertNotEquals(Tile.UNAVAILABLE, b.removeTile(0,3));
@@ -63,7 +83,14 @@ class Board3PlayersTest extends BoardTest{
         assertNotEquals(Tile.UNAVAILABLE, b.removeTile(6,6));
         assertNotEquals(Tile.BLANK, b.removeTile(2,6));
         assertNotEquals(Tile.UNAVAILABLE, b.removeTile(2,6));
+    }
 
+    /**
+     * This method tests method getTile() in Board class.
+     * @see Board#getTile(int, int)
+     */
+    @Test
+    void getTileTest(){
         // Check that the cell contains the expected value.
         assertEquals(Tile.UNAVAILABLE, b.getTile(0,4));     // Cell for 4 players.
         assertEquals(Tile.UNAVAILABLE, b.getTile(1,5));     // Cell for 4 players.
@@ -84,5 +111,14 @@ class Board3PlayersTest extends BoardTest{
         assertNotEquals(Tile.BLANK, b.getTile(5,5));
         assertNotEquals(Tile.UNAVAILABLE, b.getTile(3,3));
         assertNotEquals(Tile.UNAVAILABLE, b.getTile(7,4));
+    }
+
+    /**
+     * This method tests method printBoard() in Board class.
+     * @see Board#printBoard()
+     */
+    @Test
+    void printBoard3PlayersTest(){
+        b.printBoard();
     }
 }
