@@ -20,6 +20,7 @@ public class ModelView {
      * Represent if the client is connected to the server.
      */
     private boolean isConnected;
+    private final boolean isGUI;
 
 
     /**
@@ -29,6 +30,7 @@ public class ModelView {
     public ModelView(GUI gui) {
         this.gui = gui;
         this.cli = null;
+        this.isGUI = true;
     }
 
     /**
@@ -38,6 +40,7 @@ public class ModelView {
     public ModelView(CLI cli)  {
         this.cli = cli;
         this.gui = null;
+        this.isGUI = false;
     }
 
     /**
@@ -71,6 +74,21 @@ public class ModelView {
         return this.cli;
     }
 
+    /**
+     * GUI getter.
+     * @return
+     */
+    public GUI getGui(){
+        return this.gui;
+    }
+
+    /**
+     * isGUI getter.
+     * @return true if modelView is GUI, false if is CLI
+     */
+    public boolean isGui(){
+        return this.isGUI;
+    }
 
     /**
      * Game updater.

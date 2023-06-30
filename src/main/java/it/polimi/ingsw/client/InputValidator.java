@@ -3,6 +3,8 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.cli.CLI;
 import it.polimi.ingsw.client.common.Client;
 import it.polimi.ingsw.common.Coordinate;
+import it.polimi.ingsw.client.gui.GUI;
+import it.polimi.ingsw.communications.clientmessages.actions.GameAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PickTilesAction;
 import it.polimi.ingsw.communications.clientmessages.actions.PlaceTilesAction;
 import it.polimi.ingsw.communications.clientmessages.messages.CreateGameMessage;
@@ -19,7 +21,9 @@ import static it.polimi.ingsw.Const.*;
  * Check if the action performed by the user is actually feasible and, if so, returns the action to the dispatcher.
  */
 public class InputValidator {
-    private final CLI cli;
+
+    private CLI cli;
+    private GUI gui;
     private final ModelView modelView;
     private final Client client;
 
@@ -36,10 +40,22 @@ public class InputValidator {
         this.client = client;
     }
 
+    /**
+     * Class constructor, only for GUI use.
+     * @param gui
+     * @param modelView
+     * @param client
+     */
+    public InputValidator(GUI gui, ModelView modelView, Client client) {
+        this.gui = gui;
+        this.modelView = modelView;
+        this.client = client;
+    }
+
 
     /**
      * Check if the input for the CreateGameMessage is valid.
-     * @param s
+     * @param s String written by the user
      * @return
      */
     public CreateGameMessage createGame(String[] s){
@@ -57,7 +73,7 @@ public class InputValidator {
 
     /**
      * Check if the input for the JoinGameMessage is valid.
-     * @param s
+     * @param s String written by the user
      * @return
      */
     public JoinGameMessage joinGame(String[] s){

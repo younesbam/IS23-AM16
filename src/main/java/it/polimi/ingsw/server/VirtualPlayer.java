@@ -26,7 +26,6 @@ public class VirtualPlayer {
      * Class constructor.
      * @param username username of the player.
      * @param c Client-server connection of the player.
-     * @param g Game handler of the player.
      */
     public VirtualPlayer(String username, CSConnection c) {
         this.username = username;

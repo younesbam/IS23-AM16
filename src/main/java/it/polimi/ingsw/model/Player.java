@@ -11,17 +11,31 @@ import static it.polimi.ingsw.Const.*;
 
 /**
  * This class represent the PLAYER model.
- * @author Younes Bamhaoud
  */
 public class Player implements Serializable {
+    /**
+     * Player's username.
+     */
     private String username;
+    /**
+     * Player's ID.
+     */
     private final int ID;
+    /**
+     * Total points earned by the player.
+     */
     private int totalPoints;
+    /**
+     * Player's bookshelf.
+     */
     private BookShelf bookShelf;
+    /**
+     * Player's personal goal card.
+     */
     private PersonalGoalCard personalGoalCard;
 
     /**
-     * Specify if the player is the FIRST of the round in all the game
+     * The chair is used to specify whether the player is the first to play.
      */
     private boolean chair;
 
@@ -50,20 +64,31 @@ public class Player implements Serializable {
      */
     private int numOfTurns;
 
+    /**
+     * Specifies if the player is still active during a game.
+     */
     private boolean active;
 
+    /**
+     * Activity getter.
+     * @return the status of the player.
+     */
     public boolean isActive() {
         return active;
     }
 
+    /**
+     * Sets the current status of the player.
+     * @param active true if the player's active, false otherwise.
+     */
     public void setActive(boolean active) {
         this.active = active;
     }
 
     /**
      * Player constructor.
-     * @param username
-     * @param ID
+     * @param username username chosen by the player
+     * @param ID player's ID
      */
     public Player(String username, Integer ID){
         this.bookShelf = new BookShelf();
@@ -78,8 +103,8 @@ public class Player implements Serializable {
     }
 
     /**
-     * Player's username getter.
-     * @return
+     * Username setter.
+     * @return username chosen by the player.
      */
     public String getUsername() {
         return this.username;
@@ -87,31 +112,31 @@ public class Player implements Serializable {
 
     /**
      * Player's username setter.
-     * @param nickname
+     * @param nickname chosen by the player.
      */
     public void setUsername(String nickname) {
         this.username = nickname;
     }
 
     /**
-     * This method returns the boolean value representing if a player has the first player chair or not.
-     * @return
+     * Chair getter.
+     * @return boolean value representing the chair.
      */
     public boolean hasChair() {
         return this.chair;
     }
 
     /**
-     * CHair setter.
-     * @param chair
+     * Chair setter.
+     * @param chair true if the player has the  chair, false otherwise.
      */
     public void setChair(boolean chair){
         this.chair = chair;
     }
 
     /**
-     * BookShelf getter.
-     * @return
+     * Bookshelf getter.
+     * @return player's bookshelf.
      */
     public BookShelf getBookShelf() {
         return bookShelf;
@@ -119,14 +144,24 @@ public class Player implements Serializable {
 
     /**
      * Number of turns getter.
-     * @return
+     * @return number of played turns.
      */
     public int getNumOfTurns() {
         return numOfTurns;
     }
 
+
     /**
-     * Method used to set the number of turns played.
+     * Number of turns setter.
+     * @param numOfTurns number of turns played by the player.
+     */
+    public void setNumOfTurns(int numOfTurns) {
+        this.numOfTurns = numOfTurns;
+    }
+
+
+    /**
+     * Method used to update the number of turns played.
      */
     public void updateNumOfTurns() {
         this.numOfTurns++;
@@ -134,7 +169,7 @@ public class Player implements Serializable {
 
     /**
      * Player points getter.
-     * @return
+     * @return total points earned by the player.
      */
     public int getTotalPoints() {
         return totalPoints;
@@ -156,7 +191,7 @@ public class Player implements Serializable {
 
 
     /**
-     * Get points earned form the common goal card.
+     * Getter of points earned from the common goal card.
      * @param i index of the card.  This is strictly related to the index of the common goal card in Game class.
      * @return points earned from that common goal card.
      */
@@ -166,7 +201,7 @@ public class Player implements Serializable {
 
 
     /**
-     * Set points earned form the common goal card.
+     * Setter of points earned from the common goal card.
      * @param i index of the card.  This is strictly related to the index of the common goal card in Game class.
      * @param value points earned from that common goal card.
      */
@@ -290,7 +325,6 @@ public class Player implements Serializable {
     /**
      * Personal goal card setter.
      * @param card Personal goal card, picked from the bag
-     * @return
      */
     public void setPersonalGoalCard(PersonalGoalCard card) {
         this.personalGoalCard = card;
@@ -299,7 +333,7 @@ public class Player implements Serializable {
 
     /**
      * Personal goal card getter.
-     * @return
+     * @return player's personal goal card.
      */
     public PersonalGoalCard getPersonalGoalCard() {
         return this.personalGoalCard;
@@ -308,7 +342,7 @@ public class Player implements Serializable {
 
     /**
      * ID getter.
-     * @return
+     * @return player's ID.
      */
     public int getID(){
         return this.ID;

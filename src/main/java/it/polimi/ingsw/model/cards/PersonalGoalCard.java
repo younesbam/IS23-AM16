@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.*;
 
 import java.util.Hashtable;
 
-import static it.polimi.ingsw.Const.*;
-import static it.polimi.ingsw.Const.RESET_COLOR;
+import static it.polimi.ingsw.Const.MAXBOOKSHELFCOL;
+import static it.polimi.ingsw.Const.MAXBOOKSHELFROW;
 
 /**
  * Personal goal card
@@ -32,8 +32,8 @@ public class PersonalGoalCard extends Card {
 
     /**
      *
-     * @param x abscissa's coordinate of the grid.
-     * @param y ordinate's coordinate of the grid.
+     * @param row abscissa's coordinate of the grid.
+     * @param col ordinate's coordinate of the grid.
      * @return ObjectTile corresponding to the related x,y coordinate inside the grid.
      * @author Nicolo' Gandini
      */
