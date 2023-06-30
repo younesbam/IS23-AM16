@@ -185,7 +185,7 @@ public class Controller implements PropertyChangeListener {
      * Switches the current player to the next one.
      */
     private void nextPlayer(){
-        gameHandler.sendToPlayer(new EndOfYourTurn(), currentPlayer.getID());
+        //gameHandler.sendToPlayer(new EndOfYourTurn(), currentPlayer.getID());
         try {
             game.nextPlayer();
             this.currentPlayer = game.getCurrentPlayer();
@@ -371,9 +371,10 @@ public class Controller implements PropertyChangeListener {
                 nextPlayer();
             } else {
                 lastTurn = true;
+                game.getPlayerByID(currentPlayer.getID()).updateNumOfTurns();
+                leftPlayers = leftPlayersCalc();
                 checkFullBookshelf();  // Add one additional point to the first player that completes the bookshelf.
                 updateTotalPoints();
-                leftPlayers = leftPlayersCalc();
                 gameHandler.sendToPlayer(new CustomAnswer("\nCongratulations, you have completed your Bookshelf! Now let the remaining players complete their turn in order to complete the round, and than we will reward the winner!\n"), currentPlayer.getID());
                 gameHandler.sendToPlayer(new BookShelfCompleted(), currentPlayer.getID());
                 gameHandler.sendToEveryone(new CustomAnswer("\nPlayer " + currentPlayer.getUsername() + " has completed his Bookshelf!\nNow we will go on with turns until we reach the player that started the match! (The one and only with the majestic chair!)\n"));
@@ -452,6 +453,7 @@ public class Controller implements PropertyChangeListener {
      * Handles the last turns, after a player has completed his bookshelf.
      */
     private void lastTurnHandler(){
+
         if(leftPlayers > 0){
             leftPlayers--;
             setPhase(Phase.TILESPICKING);
@@ -469,13 +471,24 @@ public class Controller implements PropertyChangeListener {
      * @return
      */
     private int leftPlayersCalc(){
-        if(game.getFirstPlayer().getID() > currentPlayer.getID()){
-            return game.getFirstPlayer().getID() - currentPlayer.getID() - 1;
+
+        int i;
+        int max = 0;
+
+        for(i = 0; i < game.getNumOfPlayers(); i++){
+            if(game.getPlayers().get(i).getNumOfTurns() > max){
+                max = game.getPlayers().get(i).getNumOfTurns();
+            }
         }
-        if(game.getFirstPlayer().getID() < currentPlayer.getID()){
-            return  (game.getNumOfPlayers() - currentPlayer.getID() - 1) + game.getFirstPlayer().getID();
+
+        int count = 0;
+        for(i = 0; i < game.getNumOfPlayers(); i++){
+            if(game.getPlayers().get(i).getNumOfTurns() != max){
+                count++;
+            }
         }
-        return game.getNumOfPlayers() - 1;
+
+        return count;
     }
 
 
@@ -547,6 +560,19 @@ public class Controller implements PropertyChangeListener {
             if(p.getID() == ID && !p.isActive())
                 return;
 
+
+        //set the new first player.
+        if(game.getFirstPlayer().equals(game.getPlayerByID(ID))){
+            int i = game.getPlayers().indexOf(game.getPlayerByID(ID));
+
+            if(game.getPlayers().get(i + 1) != null){
+                game.setFirstPlayer(game.getPlayers().get(i + 1));
+            }
+            else{
+                game.setFirstPlayer(game.getPlayers().get(0));
+            }
+        }
+
         // Set player as not active
         game.setActivePlayer(ID, false);
         // Disconnected player is the current player.
@@ -564,6 +590,7 @@ public class Controller implements PropertyChangeListener {
             endTurn();
         }
 
+
         gameHandler.sendToEveryone(new CustomAnswer(game.getPlayerByID(ID).getUsername() + " is disconnected. Every potential tile picked from the board will be replaced on the board\n" +
                 "Turns of " + game.getPlayerByID(ID).getUsername() + " will be skipped until it connects again"));
         gameHandler.sendToEveryone(new PlayerDisconnection(game.getPlayerByID(ID).getUsername() + " is disconnected. Every potential tile picked from the board will be replaced on the board\n" +
@@ -579,7 +606,7 @@ public class Controller implements PropertyChangeListener {
     public synchronized void restoreClient(int ID){
         // Set player as not active
         game.setActivePlayer(ID, true);
-
+        game.setNewNumOfTurns(ID);
         // Check if in standby mode and try to switch to the next player
         if(getPhase() == STANDBY){
             endTurn();

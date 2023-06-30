@@ -24,6 +24,7 @@ public class Game implements Serializable {
     private final Bag bag;
     private Player firstPlayer;
 
+
     /**
      * Constructor.
      */
@@ -62,6 +63,22 @@ public class Game implements Serializable {
      */
     public int getNumOfPlayers(){
         return this.numOfPlayers;
+    }
+
+
+    /**
+     * NumOfTurns setter.
+     * @param ID of the player to update num of turns.
+     */
+    public void setNewNumOfTurns(int ID) {
+        int i = players.indexOf(getPlayerByID(ID));
+
+        if(players.get(i + 1) != null){
+            players.get(i).setNumOfTurns(players.get(i + 1).getNumOfTurns());
+        }
+        else{
+            players.get(i).setNumOfTurns(players.get(0).getNumOfTurns());
+        }
     }
 
 

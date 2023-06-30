@@ -150,6 +150,16 @@ public class Player implements Serializable {
         return numOfTurns;
     }
 
+
+    /**
+     * Number of turns setter.
+     * @param numOfTurns number of turns played by the player.
+     */
+    public void setNumOfTurns(int numOfTurns) {
+        this.numOfTurns = numOfTurns;
+    }
+
+
     /**
      * Method used to update the number of turns played.
      */
