@@ -159,6 +159,7 @@ public class SocketClientHandler extends Client implements Runnable {
         } catch (ClassNotFoundException | IOException e) {
             System.out.println("A connection error occurred. Shutting down... ");
             disconnect();
+            System.exit(0);
         }
     }
 
