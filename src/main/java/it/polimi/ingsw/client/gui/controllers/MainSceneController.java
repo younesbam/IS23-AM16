@@ -19,6 +19,12 @@ import javafx.scene.control.Label;
 
 import static it.polimi.ingsw.Const.*;
 
+/**
+ * The MainSceneController class is responsible for controlling the main scene of the application.
+ * It implements the GUIController interface.
+ *
+ * @author Younes Bamhaoud
+ */
 public class MainSceneController implements GUIController{
     private GUIManager guiManager;
     private static final String IMAGEPATH = "/graphics/item_tiles/";
@@ -50,9 +56,6 @@ public class MainSceneController implements GUIController{
     @FXML
     private Button cancelPlacementBtn;
     @FXML
-    private Button goalCardsBtn;
-
-    @FXML
     private Label points;
     @FXML
     private ImageView endGameToken;
@@ -72,22 +75,37 @@ public class MainSceneController implements GUIController{
     private int columnChosen;
     private int numOfTilesPlaced;
     private String[][] board;
+    private double mouseAnchorX;
+    private double mouseAnchorY;
+
+    /**
+     * Sets the GUI manager for the controller.
+     *
+     * @param guiManager The GUI manager to be set.
+     */
     @Override
     public void setGuiManger(GUIManager guiManager) {
         this.guiManager = guiManager;
     }
 
+    /**
+     * Retrieves the GUI manager associated with the controller.
+     *
+     * @return The GUI manager.
+     */
     public GUIManager getGuiManager(){return this.guiManager;}
+
+    /**
+     * Prints the game board on the GUI.
+     */
     public void printBoard(){
         boardGrid.getChildren().clear();
         imageChoise = guiManager.getModelView().getGame().getNumOfPlayers()-1;
         board = guiManager.getModelView().getGame().getBoard().getBoardforGUI();
-        //Random random = new Random();
         for (int i = 0; i < MAXBOARDDIM; i++) {
             for (int j = 0; j < MAXBOARDDIM; j++) {
                 if(!(board[i][j].equals("BLANK")||board[i][j].equals("UNAVAILABLE"))){
                     Tile tile = new Tile(i,j);
-                    //imageChoise = (i*j)%3+1;
                     tile.setFill(
                             new ImagePattern(
                                     new Image(GUI.class.getResourceAsStream(IMAGEPATH
@@ -101,8 +119,11 @@ public class MainSceneController implements GUIController{
         }
     }
 
+
+    /**
+     * Prints the bookshelf on the GUI.
+     */
     public void printBookShelf(){
-        //bookShelf = guiManager.getModelView().getGame().getCurrentPlayer().getBookShelf();
         bookShelfGrid.getChildren().clear();
         bookShelf = guiManager.getModelView().getGame().getPlayerByID(guiManager.getPlayerID()).getBookShelf();
         imageChoise = guiManager.getModelView().getGame().getNumOfPlayers()-1;
@@ -111,7 +132,6 @@ public class MainSceneController implements GUIController{
             for (int j = 0; j < MAXBOOKSHELFCOL; j++) {
                 if(!(grid[i][j].getTile().name().equals("BLANK")||grid[i][j].getTile().name().equals("UNAVAILABLE"))){
                     Tile tile = new Tile(i,j);
-                    //imageChoise = (i*j)%3+1;
                     tile.setFill(
                             new ImagePattern(
                                     new Image(GUI.class.getResourceAsStream(IMAGEPATH
@@ -124,6 +144,11 @@ public class MainSceneController implements GUIController{
         }
     }
 
+    /**
+     * Chooses a tile from the board.
+     *
+     * @param chosenTile The tile chosen by the player.
+     */
     private void chooseTile(Tile chosenTile){
         chosenTiles[numOfChosenTiles]=chosenTile;
         chosenTilesGrid.add(chosenTile, numOfChosenTiles, 0);
@@ -135,6 +160,9 @@ public class MainSceneController implements GUIController{
             disablePickTiles();
     }
 
+    /**
+     * Cancels the tile choice and restores the chosen tiles to the board.
+     */
     public void cancelTilesChoise(){
         restoreChosenTilesToBoard();
         allowPickTiles();
@@ -142,6 +170,9 @@ public class MainSceneController implements GUIController{
         cancelTilesChoiseBtn.setVisible(false);
     }
 
+    /**
+     * Restores the chosen tiles to the board from the chosen tiles grid.
+     */
     private void restoreChosenTilesToBoard(){
         Tile tileToRemove;
         for (int i=0;i<MAX_CHOOSABLE_TILES; i++){
@@ -155,6 +186,9 @@ public class MainSceneController implements GUIController{
         }
     }
 
+    /**
+     * Confirms the tile choice and sends the chosen tiles to the server.
+     */
     public void confirmTilesChoise(){
         if(chosenTilesGrid.getChildren()!=null){
             String numOfTilesToPick;
@@ -174,6 +208,10 @@ public class MainSceneController implements GUIController{
         disablePickTiles();
 
     }
+
+    /**
+     * Allows the player to place tiles on the bookshelf.
+     */
     public void allowPlaceTiles(){
         columnChosen = -1;
         numOfTilesPlaced = 0;
@@ -204,24 +242,39 @@ public class MainSceneController implements GUIController{
 
     }
 
-
-    private double mouseAnchorX;
-    private double mouseAnchorY;
+    /**
+     * Handles the mouse press event on a tile.
+     *
+     * @param mouseEvent The mouse event.
+     * @param tile The tile being pressed.
+     */
     private void tilePressed(MouseEvent mouseEvent, Tile tile){
-        //bookShelfPane.getChildren().add(tile);
-        //chosenTilesGrid.getChildren().remove(tile);
         mouseAnchorX = mouseEvent.getSceneX() - tile.getTranslateX();
         mouseAnchorY = mouseEvent.getSceneY() - tile.getTranslateY();
     }
+
+    /**
+     * Handles the mouse drag event on a tile.
+     *
+     * @param mouseEvent The mouse event.
+     * @param tile The tile being dragged.
+     */
     private void tileDragged(MouseEvent mouseEvent, Tile tile){
         tile.setTranslateX(mouseEvent.getSceneX()-mouseAnchorX);
         tile.setTranslateY(mouseEvent.getSceneY()-mouseAnchorY);
         //System.out.println("tile: " + tile.getTranslateX() + ", " + tile.getTranslateY());
     }
+
+    /**
+     * Handles the mouse release event on a tile.
+     *
+     * @param mouseEvent The mouse event.
+     * @param tile The tile being released.
+     */
     private void tileReleased(MouseEvent mouseEvent, Tile tile){
         /* CASE TILE DROPPED OUTSIDE THE BOOKSHELF*/
         if(mouseEvent.getSceneX()<bookShelfStartX || mouseEvent.getSceneX()>booShelfEndX
-            || mouseEvent.getSceneY()<bookShelfStartY || mouseEvent.getSceneY()>booShelfEndY){
+                || mouseEvent.getSceneY()<bookShelfStartY || mouseEvent.getSceneY()>booShelfEndY){
         }
         else{ /* CASE TILE DROPPED INSIDE THE BOOKSHELF*/
             int tryColumn = (int) ((mouseEvent.getSceneX() - bookShelfStartX) / dropSpace);
@@ -241,10 +294,17 @@ public class MainSceneController implements GUIController{
         tile.setTranslateX(0);
         tile.setTranslateY(0);
     }
+
+    /**
+     * Adds a tile to the bookshelf grid.
+     *
+     * @param tile The tile to add.
+     * @param columnChosen The column chosen for placement.
+     */
     private void addTileToBookShelfGrid(Tile tile, int columnChosen){
         for (int i = MAXBOOKSHELFROW-1; i >= 0; i--) {
             if(bookShelf.getGrid()[i][columnChosen].getTile().name().equals("BLANK")
-            || bookShelf.getGrid()[i][columnChosen].getTile().name().equals("UNAVAILABLE")){
+                    || bookShelf.getGrid()[i][columnChosen].getTile().name().equals("UNAVAILABLE")){
                 bookShelfGrid.add(tile, columnChosen, i - numOfTilesPlaced);
                 /* ORDER chosenTiles based on column order */
                 for (int j = 0; j < numOfChosenTiles; j++) {
@@ -259,6 +319,10 @@ public class MainSceneController implements GUIController{
 
         }
     }
+
+    /**
+     * Confirms the tile placement and sends the placement information to the server.
+     */
     public void confirmPlacement(){
         if(numOfTilesPlaced == numOfChosenTiles){
             StringBuilder cmd = new StringBuilder("PLACETILES ");
@@ -284,6 +348,9 @@ public class MainSceneController implements GUIController{
 
     }
 
+    /**
+     * Cancels the tile placement and restores the tiles to the chosen tiles grid.
+     */
     public void cancelPlacement(){
         chosenTilesGrid.getChildren().clear();
         int i;
@@ -296,63 +363,115 @@ public class MainSceneController implements GUIController{
         }
         allowPlaceTiles();
     }
+
+    /**
+     * Sets the image of a token in the token grid.
+     *
+     * @param tokenID The ID of the token.
+     * @param path The path to the image file.
+     */
     public void setTokens(int tokenID, String path){
         ((ImageView)tokenGrid.getChildren().get(tokenID)).setImage(new Image(GUI.class.getResourceAsStream(path)));
         tokenGrid.getChildren().get(tokenID).setVisible(true);
     }
+
+    /**
+     * Displays the goal cards popup window.
+     */
     public void printGoalCards(){
         guiManager.popupStage(GOALS,"Goal Cards");
         guiManager.printGoalCards();
     }
+
+    /**
+     * Shows the end game token.
+     */
     public void showEndGameToken(){
         tokenGrid.getChildren().get(0).setVisible(true);
     }
+
+    /**
+     * Hides the end game token.
+     */
     public void hideEndGameToken(){
         endGameToken.setVisible(false);
     }
+
+    /**
+     * Prints the bookshelves of other players.
+     */
     public void printBookShelfs(){
         guiManager.printBookShelfs();
     }
+
+    /**
+     * Updates the points display.
+     *
+     * @param points The new points value.
+     */
     public void updatePoints(String points){
         this.points.setText(points);
     }
+
+    /**
+     * Enables the picking of tiles from the board.
+     */
     public void allowPickTiles(){
         boardGrid.setDisable(false);
     }
 
+    /**
+     * Disables the picking of tiles from the board.
+     */
     public void disablePickTiles(){
         boardGrid.setDisable(true);
     }
+
+    /**
+     * Updates the current turn display.
+     *
+     * @param turn The new turn value.
+     */
     public void updateTurn(String turn){
         this.turn.setText(turn);
     }
 
+    /**
+     * Displays the chair and hides the user icon.
+     */
     public void showChair(){
         chair.setVisible(true);
         userIcon.setVisible(false);
     }
 
+    /**
+     * Displays a help dialog with game instructions.
+     */
     public void help(){
         Alert help = new Alert(Alert.AlertType.INFORMATION);
         help.setTitle("HELP");
         help.setHeaderText("Here are some info to play!");
         help.setContentText("- PICK TILES: \n" +
-                "\t- Click on the tiles you want to pick\n" +
-                "\t- Confirm to start placing them\n" +
-                "\t  OR Cancel to pick other tiles\n" +
-                "- PLACE TILES: \n" +
-                "\t- Drag and Drop them in the column you want,\n" +
-                "\t  you can choose the order of placement\n" +
-                "\t- Confirm to complete the move\n" +
-                "\t  OR Cancel to place them in another column\n" +
-                "- GOAL CARDS:\n" +
-                "\t- Click on \"GOAL CARDS\" to view the your personal\n" +
-                "\t goal and the common goals\n" +
-                "- BOOKSHELVES:\n" +
-                "\t- Click on \"BOOKSHELVES\" to view the bookshelves\n" +
-                "\t of other players");
+                "\tClick on a tile to choose it.\n" +
+                "\tClick on it again to un-choose it. \n" +
+                "\tClick on the confirm button to send it to the server.\n" +
+                "\tClick on the cancel button to abort the tile choice.\n\n" +
+                "- PLACE TILES:\n" +
+                "\tDrag and drop a tile on the bookshelf to place it.\n" +
+                "\tClick on the confirm button to send the placement information to the server.\n" +
+                "\tClick on the cancel button to abort the tile placement.\n\n" +
+                "- GET GOAL CARD:\n" +
+                "\tClick on the goal cards button to see your goal cards.\n\n" +
+                "- END TURN:\n" +
+                "\tClick on the end turn button to pass the turn to the next player.\n\n" +
+                "ENJOY THE GAME!");
         help.showAndWait();
     }
+
+    /**
+     * Sets username of player.
+     * @param username of type String
+     */
     public void setUsername(String username){
         this.username.setText(username);
     }
