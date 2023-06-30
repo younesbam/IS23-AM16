@@ -132,7 +132,7 @@ public class Server {
                 pingClients();
             }catch (Exception e){
                 LOGGER.log(Level.SEVERE, "Error while pinging clients");
-                e.printStackTrace();
+                //e.printStackTrace();
             }
 
         }, 1, Const.SERVER_PING_DELAY, TimeUnit.SECONDS);

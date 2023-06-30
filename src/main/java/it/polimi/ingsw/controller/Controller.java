@@ -533,8 +533,12 @@ public class Controller implements PropertyChangeListener {
         gameHandler.sendToEveryoneExcept(new PlayerFinalResult("\nUnfortunately you have not won this game, but better luck next time!"), rightPointsOrder.get(0).getID());
         gameHandler.sendToPlayer(new PlayerFinalResult("\nYou are the undisputed winner! Congratulations again!"), rightPointsOrder.get(0).getID());
 
+
         // Disconnect all the players.
-        gameHandler.sendToEveryone(new EndGame());
+        List<VirtualPlayer> players = gameHandler.getPlayersConnected();
+        for(VirtualPlayer p: players)
+            gameHandler.sendToPlayer(new EndGame(), p.getID());
+
 
         System.out.println(RED_COLOR + "Game " + gameHandler.getNameOfTheMatch() + " has come to an end!\n" + RESET_COLOR);
 

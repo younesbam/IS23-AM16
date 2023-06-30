@@ -29,12 +29,7 @@ public class BookShelf implements Serializable {
      * It sets initially BLANK all the cells contained in the BookShelf.
      */
     public BookShelf() {
-
-        //creare bookshelf quasi piena
-        setInitTileList();
-        grid = createSemiFullGrid(MAXBOOKSHELFROW, MAXBOOKSHELFCOL);
-
-        //grid = Utils.createBlankGrid(MAXBOOKSHELFROW, MAXBOOKSHELFCOL);
+        grid = Utils.createBlankGrid(MAXBOOKSHELFROW, MAXBOOKSHELFCOL);
     }
 
     /**
@@ -122,50 +117,6 @@ public class BookShelf implements Serializable {
         Utils.printGrids(MAXBOOKSHELFROW, MAXBOOKSHELFCOL, grid);
     }
 
-
-    //TODO: SERVE PER TESTARE VELOCEMENTE UN FINE PARTITA. CREA UNA BOOKSHELF QUASI PIENA
-    public Cell[][] createSemiFullGrid(int rows, int columns) {
-        Cell[][] grid;
-
-        grid = new Cell[rows][columns];
-        for(int i=0; i<rows; i++){
-            for (int j=0; j<columns; j++){
-                grid[i][j] = new Cell();
-                grid[i][j].setTile(insertTile());
-            }
-        }
-
-        grid[0][0].setTile(Tile.BLANK);
-        //grid[0][1].setTile(Tile.BLANK);
-        return grid;
-    }
-
-
-    //sempre per creare bookshelf quasi piena.
-    private LinkedList<Tile> initTileList;
-
-    /**
-     * Constructor of the board, used by the subclasses.
-     */
-    public void setInitTileList(){
-        /*
-        Creation of the tile queue
-         */
-        initTileList = new LinkedList<>();
-        for (Tile tile : Tile.values())
-            if (!tile.name().equals("BLANK") && !tile.name().equals("UNAVAILABLE")) {
-                for (int i = 0; i < MAXTILES; i++){
-                    initTileList.add(tile);
-                }
-            }
-
-        shuffle(initTileList);
-    }
-
-    //Sempre per creare bookshelf quasi piena
-    private Tile insertTile() {
-        return initTileList.poll();
-    }
 }
 
 
