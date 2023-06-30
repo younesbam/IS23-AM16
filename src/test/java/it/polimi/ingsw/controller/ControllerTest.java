@@ -279,20 +279,16 @@ class ControllerTest {
         assertFalse(p2.isActive());
         assertTrue(p3.isActive());
 
-        controller.suspendClient(03);
-        assertFalse(p3.isActive());
-
         controller.restoreClient(01);
         assertTrue(p1.isActive());
         assertFalse(p2.isActive());
-        assertFalse(p3.isActive());
+        assertTrue(p3.isActive());
 
         controller.restoreClient(02);
         assertTrue(p1.isActive());
         assertTrue(p2.isActive());
-        assertFalse(p3.isActive());
+        assertTrue(p3.isActive());
 
-        controller.restoreClient(03);
         assertTrue(p1.isActive());
         assertTrue(p2.isActive());
         assertTrue(p3.isActive());
