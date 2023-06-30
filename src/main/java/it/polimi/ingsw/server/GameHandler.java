@@ -114,7 +114,7 @@ public class GameHandler {
      * Method used to remove a player from the players' waiting list.
      * @param playerID
      */
-    public void removeWaitingPlayer(int playerID){
+    public synchronized void removeWaitingPlayer(int playerID){
         playersWaitingList.remove(getWaitingPlayerByID(playerID));
     }
 
@@ -170,7 +170,7 @@ public class GameHandler {
      * Send a message to every player.
      * @param answer answer to be sent to every player.
      */
-    public void sendToEveryone(Answer answer){
+    public synchronized void sendToEveryone(Answer answer){
         for(VirtualPlayer p: playersConnected)
             sendToPlayer(answer, p.getID());
     }
@@ -181,7 +181,7 @@ public class GameHandler {
      * @param answer answer to be sent to every player except a specific player.
      * @param notToHim ID of the excluded player.
      */
-    public void sendToEveryoneExcept(Answer answer, int notToHim) {
+    public synchronized void sendToEveryoneExcept(Answer answer, int notToHim) {
         for(VirtualPlayer p : playersConnected) {
             if(p.getID() != notToHim)
                 sendToPlayer(answer, p.getID());
@@ -194,7 +194,7 @@ public class GameHandler {
      * @param answer answer to be sent.
      * @param playerID ID of the player whom you want to send the message.
      */
-    public void sendToPlayer(Answer answer, int playerID){
+    public synchronized void sendToPlayer(Answer answer, int playerID){
         VirtualPlayer player = server.getVirtualPlayerByID(playerID);
         if(player != null)
             player.send(answer);
@@ -205,7 +205,7 @@ public class GameHandler {
      * Method used to get the list of this game's connected players.
      * @return List of connected players.
      */
-    public List<VirtualPlayer> getPlayersConnected(){
+    public synchronized List<VirtualPlayer> getPlayersConnected(){
         return this.playersConnected;
     }
 
@@ -308,12 +308,12 @@ public class GameHandler {
     }
 
 
-    /**
-     * This method terminates the game.
-     */
-    public void shutdownServer(){
-        server.exit();
-    }
+//    /**
+//     * This method terminates the game.
+//     */
+//    public void shutdownServer(){
+//        server.exit();
+//    }
 
     /**
      * Set match as stared.
@@ -377,21 +377,6 @@ public class GameHandler {
         controller.restoreClient(ID);
     }
 
-//    /**
-//     * Remove the selected client after a disconnection. During the lobby phase the player can't reconnect because the game isn't started.
-//     * <p></p>
-//     * Note: use this method in lobby phase only.
-//     * @param ID Unique ID of the player to be suspended.
-//     */
-//    public void removeClientFromLobby(int ID){
-//        VirtualPlayer playerInLobby = getWaitingPlayerByID(ID);
-//        if(playerInLobby != null){
-//            removeWaitingPlayer(ID);
-//            removeConnectedPlayer(ID);
-//            removePlayerFromGame(ID);
-//        }
-//    }
-
 
     /**
      * Get a waiting player by ID.
@@ -430,7 +415,7 @@ public class GameHandler {
      * @param numOfPlayers number of players in the game.
      * @throws OutOfBoundException thrown if the range of players is not correct.
      */
-    public void setNumOfPlayers(VirtualPlayer player, int numOfPlayers) throws OutOfBoundException{
+    public synchronized void setNumOfPlayers(VirtualPlayer player, int numOfPlayers) throws OutOfBoundException{
         /*
         Check if we are in the setup phase, which is true just for the first player. After the first player chooses the number of players, the phase is set to LOBBY,
         and if other players will try to use the PLAYERS command, they will receive an incorrect phase message.

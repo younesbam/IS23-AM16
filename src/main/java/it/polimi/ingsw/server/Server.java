@@ -132,6 +132,7 @@ public class Server {
                 pingClients();
             }catch (Exception e){
                 LOGGER.log(Level.SEVERE, "Error while pinging clients");
+                e.printStackTrace();
             }
 
         }, 1, Const.SERVER_PING_DELAY, TimeUnit.SECONDS);
@@ -142,8 +143,10 @@ public class Server {
      * Ping every connected client.
      */
     private synchronized void pingClients(){
-        for(VirtualPlayer p : playersConnectedList)
-            p.getConnection().ping();
+        List<VirtualPlayer> list = List.copyOf(playersConnectedList);
+        for(VirtualPlayer p : list)
+            if(playersConnectedList.contains(p))
+                p.getConnection().ping();
     }
 
 
@@ -497,13 +500,13 @@ public class Server {
     }
 
 
-    /**
-     * Get connected virtual player list.
-     * @return list of connected players.
-     */
-    public List<VirtualPlayer> getConnectedPlayers(){
-        return playersConnectedList;
-    }
+//    /**
+//     * Get connected virtual player list.
+//     * @return list of connected players.
+//     */
+//    public List<VirtualPlayer> getConnectedPlayers(){
+//        return playersConnectedList;
+//    }
 
 
     /**
@@ -538,7 +541,7 @@ public class Server {
      * Method used to remove a gameHandler instance from the matchMap after the game has come to an end.
      * @param matchName The name of the match to remove.
      */
-    public void removeGameHandler(String matchName){
+    public synchronized void removeGameHandler(String matchName){
         for(int i = 0; i < matchMap.size(); i++){
             if(matchMap.containsKey(matchName)){
                 matchMap.remove(matchName);
@@ -552,13 +555,21 @@ public class Server {
      * @param connection client-server connection of the client to be suspended.
      * @see Server#restoreClient(CSConnection)
      */
-    public void suspendClient(CSConnection connection){
+    public synchronized void suspendClient(CSConnection connection){
         VirtualPlayer suspendedClient = getVirtualPlayerByID(connection.getID());
         if(suspendedClient == null){
             System.out.println("Player doesn't exist. Impossible to suspend it");
             return;
         }
         Integer ID = connection.getID();
+
+        // Check if game handler has not been created yet.
+        if(getGameHandlerByID(ID) == null){
+            System.out.println("Removing player " + suspendedClient.getUsername() + " ...");
+            removePlayer(ID);
+            System.out.println("Player successfully removed");
+            return;
+        }
 
         // Check if in lobby phase, remove the player from the lobby.
         if(getGameHandlerByID(ID).getController().getPhase() == Phase.LOBBY){
@@ -591,7 +602,7 @@ public class Server {
      * Note: in order to properly restore the client, username must be the same of the disconnected client
      * @param connection client-server connection of the client to be restored.
      */
-    public void restoreClient(CSConnection connection){
+    public synchronized void restoreClient(CSConnection connection){
         VirtualPlayer restoredClient = getVirtualPlayerByID(connection.getID());
         System.out.println("Restoring player " + restoredClient.getUsername() + " ...");
         getGameHandlerByID(connection.getID()).restoreClient(restoredClient.getID());

@@ -541,7 +541,7 @@ public class Controller implements PropertyChangeListener {
      * @see Server#suspendClient(CSConnection) suspendClient
      * @param ID unique ID of the client
      */
-    public synchronized void suspendClient(int ID){
+    public void suspendClient(int ID){
         // Check if the players is already suspended
         for(Player p : game.getPlayers())
             if(p.getID() == ID && !p.isActive())
@@ -576,7 +576,7 @@ public class Controller implements PropertyChangeListener {
      * @see Server#restoreClient(CSConnection) restoreClient
      * @param ID unique ID of the client
      */
-    public synchronized void restoreClient(int ID){
+    public void restoreClient(int ID){
         // Set player as not active
         game.setActivePlayer(ID, true);
 
