@@ -648,6 +648,6 @@ public class Server {
         // Reset input
         in.reset();
 
-        new Server("localhost", 2099, 2345);
+        new Server(serverIP, rmiPort, socketPort);
     }
 }
